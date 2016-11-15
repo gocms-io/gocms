@@ -1,11 +1,13 @@
 FROM golang:1.6.2
 
-WORKDIR /go/src/theGoApp
-Add . /go/src/theGoApp
+WORKDIR /go/src/bitbucket.org/menklab/grnow-services
+Add . /go/src/bitbucket.org/menklab/grnow-services
 
-go get -u github.com/kardianos/govendor
+RUN go get -u github.com/kardianos/govendor
 
-RUN go install theGoApp
+RUN govendor sync
+
+RUN go install bitbucket.org/menklab/grnow-services
 
 EXPOSE 8080
-ENTRYPOINT ["/go/bin/theGoApp"]
+ENTRYPOINT ["/go/bin/grnow-services"]
