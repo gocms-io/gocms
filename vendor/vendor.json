@@ -1,0 +1,164 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "FwxTDf3E9qpIJlxec5aT8GjRX+o=",
+			"path": "github.com/dgrijalva/jwt-go",
+			"revision": "c04502f106d7c5b3fae17c5da49a1bbdd3006b3c",
+			"revisionTime": "2016-06-07T00:56:07Z"
+		},
+		{
+			"checksumSHA1": "0tLUaPu821o4eu5/hQ0wVUQifPU=",
+			"origin": "bitbucket.org/menklab/grnow-services/server/vendor/github.com/gin-gonic/gin",
+			"path": "github.com/gin-gonic/gin",
+			"revision": "da11b57389cb77a01125b010cbaf92f9b567a68a",
+			"revisionTime": "2016-09-28T07:56:49Z"
+		},
+		{
+			"checksumSHA1": "UsILDoIB2S7ra+w2fMdb85mX3HM=",
+			"origin": "bitbucket.org/menklab/grnow-services/server/vendor/github.com/gin-gonic/gin/binding",
+			"path": "github.com/gin-gonic/gin/binding",
+			"revision": "da11b57389cb77a01125b010cbaf92f9b567a68a",
+			"revisionTime": "2016-09-28T07:56:49Z"
+		},
+		{
+			"checksumSHA1": "PHv9FNb7YavJWtAHcY6ZgXmkmHs=",
+			"origin": "bitbucket.org/menklab/grnow-services/server/vendor/github.com/gin-gonic/gin/render",
+			"path": "github.com/gin-gonic/gin/render",
+			"revision": "da11b57389cb77a01125b010cbaf92f9b567a68a",
+			"revisionTime": "2016-09-28T07:56:49Z"
+		},
+		{
+			"checksumSHA1": "BIY45G2IVrTttD4Rlk9tHwiIOCM=",
+			"origin": "bitbucket.org/menklab/grnow-services/server/vendor/github.com/go-sql-driver/mysql",
+			"path": "github.com/go-sql-driver/mysql",
+			"revision": "da11b57389cb77a01125b010cbaf92f9b567a68a",
+			"revisionTime": "2016-09-28T07:56:49Z"
+		},
+		{
+			"checksumSHA1": "8oKBuAPKT7noCrssdsxPRp6/vxk=",
+			"origin": "bitbucket.org/menklab/grnow-services/server/vendor/github.com/golang/protobuf/proto",
+			"path": "github.com/golang/protobuf/proto",
+			"revision": "da11b57389cb77a01125b010cbaf92f9b567a68a",
+			"revisionTime": "2016-09-28T07:56:49Z"
+		},
+		{
+			"checksumSHA1": "KGNq4ztyTW9YXWGsjr8fatksuyw=",
+			"origin": "bitbucket.org/menklab/grnow-services/server/vendor/github.com/jmoiron/sqlx",
+			"path": "github.com/jmoiron/sqlx",
+			"revision": "da11b57389cb77a01125b010cbaf92f9b567a68a",
+			"revisionTime": "2016-09-28T07:56:49Z"
+		},
+		{
+			"checksumSHA1": "1xHw4GDrTYiMezf8+BNMHxydtDI=",
+			"origin": "bitbucket.org/menklab/grnow-services/server/vendor/github.com/jmoiron/sqlx/reflectx",
+			"path": "github.com/jmoiron/sqlx/reflectx",
+			"revision": "da11b57389cb77a01125b010cbaf92f9b567a68a",
+			"revisionTime": "2016-09-28T07:56:49Z"
+		},
+		{
+			"checksumSHA1": "ljZrmD7pmMXAkGNfp6IEzj31fY8=",
+			"origin": "bitbucket.org/menklab/grnow-services/server/vendor/github.com/joho/godotenv",
+			"path": "github.com/joho/godotenv",
+			"revision": "da11b57389cb77a01125b010cbaf92f9b567a68a",
+			"revisionTime": "2016-09-28T07:56:49Z"
+		},
+		{
+			"checksumSHA1": "UE4lhbPYYWEhqHXQk24OA73m5+8=",
+			"origin": "bitbucket.org/menklab/grnow-services/server/vendor/github.com/joho/godotenv/autoload",
+			"path": "github.com/joho/godotenv/autoload",
+			"revision": "da11b57389cb77a01125b010cbaf92f9b567a68a",
+			"revisionTime": "2016-09-28T07:56:49Z"
+		},
+		{
+			"checksumSHA1": "b0T0Hzd+zYk+OCDTFMps+jwa/nY=",
+			"origin": "bitbucket.org/menklab/grnow-services/server/vendor/github.com/manucorporat/sse",
+			"path": "github.com/manucorporat/sse",
+			"revision": "da11b57389cb77a01125b010cbaf92f9b567a68a",
+			"revisionTime": "2016-09-28T07:56:49Z"
+		},
+		{
+			"checksumSHA1": "Y1gIGoR8z/lDf2j+vcH1eKZGDSk=",
+			"path": "github.com/rubenv/sql-migrate",
+			"revision": "6f4757563362064790a6687a6b60f182062c8634",
+			"revisionTime": "2016-06-20T08:32:29Z"
+		},
+		{
+			"checksumSHA1": "aoSLe79p1m0Lznfed0X0SoYofNg=",
+			"path": "github.com/rubenv/sql-migrate/sqlparse",
+			"revision": "6f4757563362064790a6687a6b60f182062c8634",
+			"revisionTime": "2016-06-20T08:32:29Z"
+		},
+		{
+			"checksumSHA1": "vE43s37+4CJ2CDU6TlOUOYE0K9c=",
+			"path": "golang.org/x/crypto/bcrypt",
+			"revision": "b6789ab629056511030d652d851e7dc10c9e9c9e",
+			"revisionTime": "2016-05-04T15:20:23Z"
+		},
+		{
+			"checksumSHA1": "udD2DzUPFZbMVXP0VNADhef4zKk=",
+			"path": "golang.org/x/crypto/blowfish",
+			"revision": "b6789ab629056511030d652d851e7dc10c9e9c9e",
+			"revisionTime": "2016-05-04T15:20:23Z"
+		},
+		{
+			"checksumSHA1": "9jjO5GjLa0XF/nfWihF02RoH4qc=",
+			"origin": "bitbucket.org/menklab/grnow-services/server/vendor/golang.org/x/net/context",
+			"path": "golang.org/x/net/context",
+			"revision": "da11b57389cb77a01125b010cbaf92f9b567a68a",
+			"revisionTime": "2016-09-28T07:56:49Z"
+		},
+		{
+			"checksumSHA1": "9+TP2NPlTWXoRndq02uwZW26AqI=",
+			"origin": "bitbucket.org/menklab/grnow-services/server/vendor/gopkg.in/go-playground/validator.v8",
+			"path": "gopkg.in/go-playground/validator.v8",
+			"revision": "da11b57389cb77a01125b010cbaf92f9b567a68a",
+			"revisionTime": "2016-09-28T07:56:49Z"
+		},
+		{
+			"checksumSHA1": "iq5WdjScmTU+LfNoerLuwcnXpdM=",
+			"path": "gopkg.in/gomail.v2",
+			"revision": "81ebce5c23dfd25c6c67194b37d3dd3f338c98b1",
+			"revisionTime": "2016-04-11T21:29:32Z"
+		},
+		{
+			"checksumSHA1": "xunNOgG8P6Xh4SM+LPQ1zMDXa8Q=",
+			"path": "gopkg.in/gorp.v1",
+			"revision": "c87af80f3cc5036b55b83d77171e156791085e2e",
+			"revisionTime": "2015-02-04T08:55:30Z"
+		},
+		{
+			"checksumSHA1": "sKHFPwLKWnaLi38REvlx/2IYzNI=",
+			"path": "gopkg.in/olebedev/go-duktape-fetch.v2",
+			"revision": "a4ba37699f8bae499586df39f367460ab7566f1b",
+			"revisionTime": "2016-04-18T10:53:35Z"
+		},
+		{
+			"checksumSHA1": "+OgOXBoiQ+X+C2dsAeiOHwBIEH0=",
+			"origin": "bitbucket.org/menklab/grnow-services/server/vendor/gopkg.in/yaml.v2",
+			"path": "gopkg.in/yaml.v2",
+			"revision": "da11b57389cb77a01125b010cbaf92f9b567a68a",
+			"revisionTime": "2016-09-28T07:56:49Z"
+		},
+		{
+			"checksumSHA1": "Ws49OXAQSZDjhQz035Dsp+cHUto=",
+			"path": "stash.cqlcorp.net/mp/moja-portal/config",
+			"revision": "9c89c38ae98be458243efd7d4a8dc6d926fd1091",
+			"revisionTime": "2016-09-21T03:08:07Z"
+		},
+		{
+			"checksumSHA1": "KEmXZ+dus0qk1L+iw0tK+qHE7bg=",
+			"path": "stash.cqlcorp.net/mp/moja-portal/models",
+			"revision": "9c89c38ae98be458243efd7d4a8dc6d926fd1091",
+			"revisionTime": "2016-09-21T03:08:07Z"
+		},
+		{
+			"checksumSHA1": "GlrxG5ndbaBXmLhDXRG8rDXiHKw=",
+			"path": "stash.cqlcorp.net/mp/moja-portal/utility",
+			"revision": "9c89c38ae98be458243efd7d4a8dc6d926fd1091",
+			"revisionTime": "2016-09-21T03:08:07Z"
+		}
+	],
+	"rootPath": "bitbucket.org/menklab/grnow-services"
+}
