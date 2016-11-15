@@ -1,0 +1,17 @@
+# OSX
+.DS_Store
+
+# Git
+.git
+.gitignore
+
+# AWS
+.elasticbeanstalk
+
+# Webstorm
+.idea
+www
+README.md
+
+# Godeps
+Godeps

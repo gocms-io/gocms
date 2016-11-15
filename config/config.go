@@ -3,7 +3,7 @@ package config
 import (
 	"os"
 	"strconv"
-	"stash.cqlcorp.net/mp/moja-portal/utility"
+	"fmt"
 )
 
 var (
@@ -72,12 +72,12 @@ func init() {
 func getIntOrFail(envVar string) int64 {
 	is := os.Getenv(envVar)
 	if is == "" {
-		utility.Debug("Error retrieving envVar: " + envVar)
+		fmt.Println("Error retrieving envVar: " + envVar)
 		os.Exit(1)
 	}
 	i, err := strconv.ParseInt(is, 10, 34)
 	if err != nil {
-		utility.Debug("Error parsing envVar: " + envVar + " into int: " + err.Error())
+		fmt.Println("Error parsing envVar: " + envVar + " into int: " + err.Error())
 		os.Exit(0)
 	}
 	return i
@@ -86,7 +86,7 @@ func getIntOrFail(envVar string) int64 {
 func getStringOrFail(envVar string) string {
 	s := os.Getenv(envVar)
 	if s == "" {
-		utility.Debug("Error retrieving envVar: " + envVar)
+		fmt.Println("Error retrieving envVar: " + envVar)
 		os.Exit(1)
 	}
 	return s
@@ -94,12 +94,12 @@ func getStringOrFail(envVar string) string {
 func getBoolOrFail(envVar string) bool {
 	bs := os.Getenv(envVar)
 	if bs == "" {
-		utility.Debug("Error retrieving envVar: " + envVar)
+		fmt.Println("Error retrieving envVar: " + envVar)
 		os.Exit(1)
 	}
 	b, err := strconv.ParseBool(os.Getenv(envVar))
 	if err != nil {
-		utility.Debug("Error parsing envVar: " + envVar + " into bool: " + err.Error())
+		fmt.Println("Error parsing envVar: " + envVar + " into bool: " + err.Error())
 		os.Exit(0)
 	}
 	return b
