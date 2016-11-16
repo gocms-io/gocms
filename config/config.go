@@ -19,6 +19,8 @@ var (
 
 	// App Config
 	Port string
+	PublicApiUrl string
+	RedirectRootUrl string
 
 	// Authentication
 	AuthKey string
@@ -52,6 +54,8 @@ func init() {
 
 	// App Config
 	Port= getStringOrFail("PORT")
+	PublicApiUrl = getStringOrFail("PUBLIC_URL")
+	RedirectRootUrl = getStringOrFail("REDIRECT_ROOT_URL")
 
 	// Authentication
 	AuthKey = getStringOrFail("AUTHENTICATION_KEY")

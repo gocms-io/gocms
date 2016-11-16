@@ -39,7 +39,7 @@ func (e *apiError) Include() bool {
 	return e.include
 }
 
-func Response(c *gin.Context, code int, message string, err interface{}) {
+func Response(c *gin.Context, code int, message string, err interface{}, a ...interface{}) {
 
 	e, ok := err.(appError)
 	if ok {
@@ -52,16 +52,18 @@ func Response(c *gin.Context, code int, message string, err interface{}) {
 	c.JSON(code, gin.H{
 		"code":    code,
 		"message": message,
+		"data": a,
 	})
 
 	return
 }
 
-func ResponseWithSoftRedirect(c *gin.Context, code int, message string, redirect string) {
+func ResponseWithSoftRedirect(c *gin.Context, code int, message string, redirect string, a ...interface{}) {
 	c.Abort()
 	c.JSON(code, gin.H{
 		"code":     code,
 		"message":  message,
 		"redirect": redirect,
+		"data": a,
 	})
 }
