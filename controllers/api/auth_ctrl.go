@@ -11,6 +11,8 @@ import (
 	"bitbucket.org/menklab/grnow-services/utility"
 	"bitbucket.org/menklab/grnow-services/controllers/routes"
 	"bitbucket.org/menklab/grnow-services/controllers/api/middleware"
+	"log"
+	"encoding/json"
 )
 
 // Login form structure.
@@ -51,6 +53,7 @@ func init() {
 func (ac *AuthController) Apply() {
 	routes := routes.Routes()
 	routes.Public.POST("/login", ac.login)
+	routes.Public.POST("/login/facebook", ac.loginFacebook)
 	routes.Public.POST("/reset-password", ac.resetPassword)
 	routes.Public.PUT("/reset-password", ac.setPassword)
 }
@@ -107,6 +110,45 @@ func (ac *AuthController) login(c *gin.Context) {
 
 	c.JSON(http.StatusOK, user)
 	return
+}
+
+type fbMe struct{
+	Name    string `json:"name" binding:"required"`
+	Id string `json:"id" binding:"required"`
+}
+
+func (ac *AuthController) loginFacebook(c *gin.Context) {
+	// check for token in header
+	fToken := c.Request.Header.Get("X-FACEBOOK-TOKEN")
+	if fToken == ""{
+		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Missing Token", middleware.REDIRECT_LOGIN)
+		return
+	}
+
+	// use token to verify user on facebook and get id
+	req := services.RestRequest{
+		Url: "https://graph.facebook.com/v2.8/me?access_token=" + fToken + "&fields=id,name,email,picture{url,is_silhouette}",
+		//me?fields=id,name,email,picture{url,is_silhouette},gender,age_range,friendlists{name}
+	}
+	res, err := req.Get()
+	if err != nil {
+		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Validate With Facebook", middleware.REDIRECT_LOGIN)
+		return
+	}
+	log.Printf("body: %s", string(res.Body))
+	// get facebook me object back
+	var me fbMe
+	err = json.Unmarshal(res.Body, &me)
+	if err != nil {
+		log.Printf("Error marshaling response from facebook /me: %s", err.Error())
+		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Parse Facebook Response", middleware.REDIRECT_LOGIN)
+		return
+	}
+
+	log.Printf("User: %v", me)
+	c.JSON(http.StatusOK, me)
+
+
 }
 
 

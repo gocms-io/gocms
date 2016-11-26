@@ -31,7 +31,6 @@ func init() {
 
 	//rest API controllers
 	new(api.AuthController).Apply()
-	new(api.OauthController).Apply()
 	new(api.HealthyController).Apply()
 
 	//new(controllers.UserController).Init(routes)
