@@ -180,7 +180,10 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 		user.Gender = models.GENDER_MALE
 	} else if me.Gender == "female" {
 		user.Gender = models.GENDER_FEMALE
+	} else {
+		user.Gender = models.GENDER_UNKNOWN
 	}
+
 	user.MaxAge = me.AgeRange.Max
 	user.MinAge = me.AgeRange.Min
 	user.Photo = me.Picture.Data.Url
@@ -232,7 +235,6 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Missing Token in header X-GOOGLE-TOKEN", middleware.REDIRECT_LOGIN)
 		return
 	}
-
 	var headers map[string]string
 	headers = make(map[string]string)
 	headers["Authorization"] = fmt.Sprintf("Bearer %s", token)

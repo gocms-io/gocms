@@ -4,8 +4,9 @@ import (
 	"time"
 )
 
-var GENDER_MALE = 0
-var GENDER_FEMALE = 1
+var GENDER_UNKNOWN = 0
+var GENDER_MALE = 1
+var GENDER_FEMALE = 2
 
 type User struct {
 	Id              int       `json:"id,string" db:"id"`
