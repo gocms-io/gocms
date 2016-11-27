@@ -111,10 +111,25 @@ func (ac *AuthController) login(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 	return
 }
-
+type fbData struct {
+	Height    int `json:"height" binding:"required"`
+	Width    int `json:"width" binding:"required"`
+	Url    string `json:"url" binding:"required"`
+}
+type fbPicture struct {
+	Data    fbData `json:"data" binding:"required"`
+}
+type fbAgeRange struct {
+	Min    int `json:"min" binding:"required"`
+	Max    int `json:"max" binding:"required"`
+}
 type fbMe struct{
-	Name    string `json:"name" binding:"required"`
 	Id string `json:"id" binding:"required"`
+	Name    string `json:"name" binding:"required"`
+	Email    string `json:"email" binding:"required"`
+	Picture    fbPicture `json:"picture" binding:"required"`
+	Gender    string `json:"gender" binding:"required"`
+	AgeRange    fbAgeRange `json:"age_range" binding:"required"`
 }
 
 func (ac *AuthController) loginFacebook(c *gin.Context) {
@@ -127,8 +142,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 
 	// use token to verify user on facebook and get id
 	req := services.RestRequest{
-		Url: "https://graph.facebook.com/v2.8/me?access_token=" + fToken + "&fields=id,name,email,picture{url,is_silhouette}",
-		//me?fields=id,name,email,picture{url,is_silhouette},gender,age_range,friendlists{name}
+		Url: "https://graph.facebook.com/v2.8/me?fields=id,name,email,picture.width(800).height(800),gender,age_range&access_token=" + fToken,
 	}
 	res, err := req.Get()
 	if err != nil {
@@ -145,7 +159,6 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 		return
 	}
 
-	log.Printf("User: %v", me)
 	c.JSON(http.StatusOK, me)
 
 

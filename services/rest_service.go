@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"log"
 	"io/ioutil"
+	"stash.cqlcorp.net/mp/moja-portal/utility/errors"
 )
 
 var GET string = "GET"
@@ -13,17 +14,16 @@ var PUT string = "PUT"
 var DELETE string = "DELETE"
 
 type RestRequest struct {
-	Url string
+	Url     string
 	Headers map[string]string
-	Body []byte
-	method string
+	Body    []byte
+	method  string
 }
 
 type RestResponse struct {
 	StatusCode int
-	Headers map[string][]string
-	Body []byte
-
+	Headers    map[string][]string
+	Body       []byte
 }
 
 func (rr *RestRequest) Get() (*RestResponse, error) {
@@ -63,6 +63,12 @@ func (rr *RestRequest) do() (*RestResponse, error) {
 	if err != nil {
 		log.Printf("Error parsing request body: %s", err.Error())
 		return nil, err
+	}
+
+	// check status code
+	if res.StatusCode != 200 && res.StatusCode != 203 {
+		log.Printf("Request was not ok: %s", body)
+		return nil, errors.New(string(body))
 	}
 
 	restResponse := RestResponse{
