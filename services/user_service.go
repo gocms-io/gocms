@@ -14,13 +14,13 @@ type IUserService interface {
 	GetAll() (*[]models.User, error)
 	Delete(int) error
 	Update(int, *models.User) error
-
+	UpdatePassword(int, string) error
 }
 
 type UserService struct {
-	userRepo       repositories.IUserRepository
-	authService    IAuthService
-	mailService    IMailService
+	userRepo    repositories.IUserRepository
+	authService IAuthService
+	mailService IMailService
 }
 
 var userService *UserService
@@ -32,7 +32,6 @@ func init() {
 		mailService: new(MailService),
 	}
 }
-
 
 func (us *UserService) Get(id int) (*models.User, error) {
 
@@ -96,20 +95,28 @@ func (us *UserService) Delete(id int) error {
 }
 
 func (us *UserService) Update(id int, userForUpdate *models.User) error {
-
-	// if new password test it, hash it, save it, move on
-	if userForUpdate.NewPassword != "" {
-		if len(userForUpdate.NewPassword) < 8 {
-			return errors.NewToUser("Password must be atleast 8 chars long.")
-		}
-		newHash, err := userService.authService.HashPassword(userForUpdate.NewPassword)
-		if err != nil {
-			return err
-		}
-		userForUpdate.Password = newHash
+	err := userService.userRepo.Update(id, userForUpdate)
+	if err != nil {
+		return err
 	}
 
-	err := userService.userRepo.Update(id, userForUpdate)
+	return nil
+}
+func (us *UserService) UpdatePassword(id int, password string) error {
+
+	// check complexity
+	if len(password) < 8 {
+		return errors.NewToUser("Password must be atleast 8 chars long.")
+	}
+
+	// make hash
+	newHash, err := userService.authService.HashPassword(password)
+	if err != nil {
+		return err
+	}
+
+	// update database
+	err = userService.userRepo.UpdatePassword(id, newHash)
 	if err != nil {
 		return err
 	}

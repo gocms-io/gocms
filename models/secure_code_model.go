@@ -5,7 +5,6 @@ import "time"
 type SecureCodeType int
 
 const (
-	Code_ActivateAccount SecureCodeType = 0
 	Code_VerifyEmail SecureCodeType = 1
 	Code_VerifyDevice SecureCodeType = 2
 	Code_ResetPassword SecureCodeType = 3

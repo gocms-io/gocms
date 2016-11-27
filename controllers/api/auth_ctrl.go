@@ -354,8 +354,7 @@ func (ac *AuthController) setPassword(c *gin.Context) {
 	}
 
 	// reset password
-	user.NewPassword = resetPassword.Password
-	err = authController.userService.Update(user.Id, user)
+	err = authController.userService.UpdatePassword(user.Id, resetPassword.Password)
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, "Couldn't reset password.", err)
 		return

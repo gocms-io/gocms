@@ -16,6 +16,7 @@ type IUserRepository interface {
 	GetAll() (*[]models.User, error)
 	Add(*models.User) error
 	Update(int, *models.User) error
+	UpdatePassword(int, string) error
 	Delete(int) error
 }
 
@@ -93,6 +94,23 @@ func (ur *UserRepository) Update(id int, user *models.User) error {
 	user.Id = id
 	_, err := userRepository.database.NamedExec(`
 	UPDATE users SET fullName=:fullName, email=:email, email2=:email2, gender=:gender, photo=:photo, maxAge=:maxAge, minAge=:minAge WHERE id=:id
+	`, user)
+	if err != nil {
+		log.Println("---ERROR---", err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (ur *UserRepository) UpdatePassword(id int, hash string) error {
+	// insert row
+	user := models.User{
+		Id: id,
+		Password: hash,
+	}
+	_, err := userRepository.database.NamedExec(`
+	UPDATE users SET password=:password WHERE id=:id
 	`, user)
 	if err != nil {
 		log.Println("---ERROR---", err.Error())
