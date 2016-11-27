@@ -15,6 +15,7 @@ import (
 	"encoding/json"
 	"bitbucket.org/menklab/grnow-services/models"
 	"database/sql"
+	"fmt"
 )
 
 // Login form structure.
@@ -56,6 +57,7 @@ func (ac *AuthController) Apply() {
 	routes := routes.Routes()
 	routes.Public.POST("/login", ac.login)
 	routes.Public.POST("/login/facebook", ac.loginFacebook)
+	routes.Public.POST("/login/google", ac.loginGoogle)
 	routes.Public.POST("/reset-password", ac.resetPassword)
 	routes.Public.PUT("/reset-password", ac.setPassword)
 }
@@ -134,7 +136,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	// check for token in header
 	fToken := c.Request.Header.Get("X-FACEBOOK-TOKEN")
 	if fToken == "" {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Missing Token", middleware.REDIRECT_LOGIN)
+		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Missing Token in header X-FACEBOOK-TOKEN", middleware.REDIRECT_LOGIN)
 		return
 	}
 
@@ -192,11 +194,103 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from facebook.", middleware.REDIRECT_LOGIN)
 			return
 		}
-	} else { // update user
+	} else {
+		// update user
 		err = authController.userService.Update(user.Id, user)
 		if err != nil {
 			log.Printf("error updating user from facebook login: %s", err.Error())
 			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from facebook.", middleware.REDIRECT_LOGIN)
+			return
+		}
+	}
+
+	// create token
+	tokenString, err := ac.createToken(user.Id)
+	if err != nil {
+		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error generating token.", middleware.REDIRECT_LOGIN)
+		return
+	}
+
+	c.Header("X-AUTH-TOKEN", tokenString)
+
+	c.JSON(http.StatusOK, user)
+	return
+
+}
+
+type gMe struct {
+	Id      string `json:"id" binding:"required"`
+	Name    string `json:"name" binding:"required"`
+	Email   string `json:"email" binding:"required"`
+	Picture string `json:"picture" binding:"required"`
+}
+
+func (ac *AuthController) loginGoogle(c *gin.Context) {
+	// check for token in header
+	token := c.Request.Header.Get("X-GOOGLE-TOKEN")
+	if token == "" {
+		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Missing Token in header X-GOOGLE-TOKEN", middleware.REDIRECT_LOGIN)
+		return
+	}
+
+	var headers map[string]string
+	headers = make(map[string]string)
+	headers["Authorization"] = fmt.Sprintf("Bearer %s", token)
+	// use token to verify user on facebook and get id
+	req := services.RestRequest{
+		Url: "https://www.googleapis.com/userinfo/v2/me",
+		Headers: headers,
+
+	}
+	res, err := req.Get()
+	if err != nil {
+		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Validate With Google", middleware.REDIRECT_LOGIN)
+		return
+	}
+	// get facebook user object back
+	var me gMe
+	err = json.Unmarshal(res.Body, &me)
+	if err != nil {
+		log.Printf("Error marshaling response from Google /me: %s", err.Error())
+		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Parse Google Response", middleware.REDIRECT_LOGIN)
+		return
+	}
+
+	// check if user exists
+	user, err := authController.userService.GetByEmail(me.Email)
+	if err != nil {
+		// other error
+		if err != sql.ErrNoRows {
+			log.Printf("error looking up user: %s", err.Error())
+			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error Validating User", middleware.REDIRECT_LOGIN)
+			return
+
+		} else {
+			// user doesn't exist
+			user = &models.User{
+				Email: me.Email,
+			}
+		}
+	}
+	// merge in facebook data
+	// set gender
+	user.Photo = me.Picture
+	user.FullName = me.Name
+
+	// add user if it doesn't have an id
+	if user.Id == 0 {
+		err = authController.userService.Add(user)
+		if err != nil {
+			log.Printf("error adding user from google login: %s", err.Error())
+			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from google.", middleware.REDIRECT_LOGIN)
+			return
+		}
+	} else {
+		// update user
+		err = authController.userService.Update(user.Id, user)
+		if err != nil {
+			log.Printf("error updating user from google login: %s", err.Error())
+			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from google.", middleware.REDIRECT_LOGIN)
 			return
 		}
 	}
@@ -226,7 +320,7 @@ func (ac *AuthController) resetPassword(c *gin.Context) {
 	}
 
 	// respond as everything after this doesn't matter to the requester
-	c.String(http.StatusOK, "Email will be sent if account exists.")
+	c.String(http.StatusOK, "Email will be sent to the account provided.")
 
 	// send password reset link
 	err = authController.authServices.SendPasswordResetCode(resetRequest.Email)
