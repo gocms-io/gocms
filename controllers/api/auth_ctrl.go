@@ -13,6 +13,8 @@ import (
 	"bitbucket.org/menklab/grnow-services/controllers/api/middleware"
 	"log"
 	"encoding/json"
+	"bitbucket.org/menklab/grnow-services/models"
+	"database/sql"
 )
 
 // Login form structure.
@@ -37,9 +39,10 @@ type ResetPassword struct {
 }
 
 type AuthController struct {
-	userService      services.IUserService
-	authServices     services.IAuthService
+	userService  services.IUserService
+	authServices services.IAuthService
 }
+
 var authController *AuthController
 
 func init() {
@@ -48,7 +51,6 @@ func init() {
 		authServices: new(services.AuthService),
 	}
 }
-
 
 func (ac *AuthController) Apply() {
 	routes := routes.Routes()
@@ -95,12 +97,7 @@ func (ac *AuthController) login(c *gin.Context) {
 
 
 	// create token
-	expire := time.Now().Add(time.Minute * utility.GetTimeout(config.UserAuthTimeout))
-	userToken := jwt.New(jwt.SigningMethodHS256)
-	userToken.Claims["userId"] = user.Id
-	userToken.Claims["exp"] = expire.Unix()
-	tokenString, err := userToken.SignedString([]byte(config.AuthKey))
-
+	tokenString, err := ac.createToken(user.Id)
 	if err != nil {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error generating token.", middleware.REDIRECT_LOGIN)
 		return
@@ -111,31 +108,32 @@ func (ac *AuthController) login(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 	return
 }
+
 type fbData struct {
-	Height    int `json:"height" binding:"required"`
-	Width    int `json:"width" binding:"required"`
+	Height int `json:"height" binding:"required"`
+	Width  int `json:"width" binding:"required"`
 	Url    string `json:"url" binding:"required"`
 }
 type fbPicture struct {
-	Data    fbData `json:"data" binding:"required"`
+	Data fbData `json:"data" binding:"required"`
 }
 type fbAgeRange struct {
-	Min    int `json:"min" binding:"required"`
-	Max    int `json:"max" binding:"required"`
+	Min int `json:"min" binding:"required"`
+	Max int `json:"max" binding:"required"`
 }
-type fbMe struct{
-	Id string `json:"id" binding:"required"`
-	Name    string `json:"name" binding:"required"`
+type fbMe struct {
+	Id       string `json:"id" binding:"required"`
+	Name     string `json:"name" binding:"required"`
 	Email    string `json:"email" binding:"required"`
-	Picture    fbPicture `json:"picture" binding:"required"`
-	Gender    string `json:"gender" binding:"required"`
-	AgeRange    fbAgeRange `json:"age_range" binding:"required"`
+	Picture  fbPicture `json:"picture" binding:"required"`
+	Gender   string `json:"gender" binding:"required"`
+	AgeRange fbAgeRange `json:"age_range" binding:"required"`
 }
 
 func (ac *AuthController) loginFacebook(c *gin.Context) {
 	// check for token in header
 	fToken := c.Request.Header.Get("X-FACEBOOK-TOKEN")
-	if fToken == ""{
+	if fToken == "" {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Missing Token", middleware.REDIRECT_LOGIN)
 		return
 	}
@@ -149,8 +147,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Validate With Facebook", middleware.REDIRECT_LOGIN)
 		return
 	}
-	log.Printf("body: %s", string(res.Body))
-	// get facebook me object back
+	// get facebook user object back
 	var me fbMe
 	err = json.Unmarshal(res.Body, &me)
 	if err != nil {
@@ -159,11 +156,64 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, me)
+	// check if user exists
+	user, err := authController.userService.GetByEmail(me.Email)
+	if err != nil {
+		// other error
+		if err != sql.ErrNoRows {
+			log.Printf("error looking up user: %s", err.Error())
+			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error Validating User", middleware.REDIRECT_LOGIN)
+			return
 
+		} else {
+			// user doesn't exist
+			user = &models.User{
+				Email: me.Email,
+			}
+		}
+	}
+	// merge in facebook data
+	// set gender
+	if me.Gender == "male" {
+		user.Gender = models.GENDER_MALE
+	} else if me.Gender == "female" {
+		user.Gender = models.GENDER_FEMALE
+	}
+	user.MaxAge = me.AgeRange.Max
+	user.MinAge = me.AgeRange.Min
+	user.Photo = me.Picture.Data.Url
+	user.FullName = me.Name
+
+	// add user if it doesn't have an id
+	if user.Id == 0 {
+		err = authController.userService.Add(user)
+		if err != nil {
+			log.Printf("error adding user from facebook login: %s", err.Error())
+			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from facebook.", middleware.REDIRECT_LOGIN)
+			return
+		}
+	} else { // update user
+		err = authController.userService.Update(user.Id, user)
+		if err != nil {
+			log.Printf("error updating user from facebook login: %s", err.Error())
+			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from facebook.", middleware.REDIRECT_LOGIN)
+			return
+		}
+	}
+
+	// create token
+	tokenString, err := ac.createToken(user.Id)
+	if err != nil {
+		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error generating token.", middleware.REDIRECT_LOGIN)
+		return
+	}
+
+	c.Header("X-AUTH-TOKEN", tokenString)
+
+	c.JSON(http.StatusOK, user)
+	return
 
 }
-
 
 func (ac *AuthController) resetPassword(c *gin.Context) {
 
@@ -216,4 +266,12 @@ func (ac *AuthController) setPassword(c *gin.Context) {
 	}
 
 	c.Status(http.StatusOK)
+}
+
+func (ac *AuthController) createToken(userId int) (string, error) {
+	expire := time.Now().Add(time.Minute * utility.GetTimeout(config.UserAuthTimeout))
+	userToken := jwt.New(jwt.SigningMethodHS256)
+	userToken.Claims["userId"] = userId
+	userToken.Claims["exp"] = expire.Unix()
+	return userToken.SignedString([]byte(config.AuthKey))
 }

@@ -42,7 +42,7 @@ func init() {
 //}
 
 func Migrate() error {
-	migrate.SetTable("cms_migrations")
+	migrate.SetTable("migrations")
 	n, err := migrate.Exec(db, "mysql", migs, migrate.Up)
 	if err != nil {
 		utility.DebugF("MIGRATION ERROR: %s\n", err.Error())

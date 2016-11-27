@@ -13,8 +13,12 @@ func init() {
 			id int(11) NOT NULL AUTO_INCREMENT,
 			fullName varchar(255) NOT NULL,
 			email varchar(255) NOT NULL UNIQUE,
-			email2 varchar(255) NOT NULL UNIQUE,
+			email2 varchar(255),
 			password varchar(255) NOT NULL,
+			gender int(2),
+			minAge int(3),
+			maxAge int(3),
+			photo varchar(255),
 			created datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY (id)
 			) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;

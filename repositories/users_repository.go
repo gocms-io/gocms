@@ -75,15 +75,13 @@ func (ur *UserRepository) Add(user *models.User) error {
 
 	user.Created = time.Now()
 
-	// insert row
+	// insert user
 	result, err := userRepository.database.NamedExec(`
-	INSERT INTO users (fullName, email, email2, password, created) VALUES (:fullName, :email, :email2, :password, :created)
+	INSERT INTO users (fullName, email, email2, gender, photo, minAge, maxAge, password, created) VALUES (:fullName, :email, :email2, :gender, :photo, :minAge, :maxAge, :password, :created)
 	`, user)
 	if err != nil {
 		return err
 	}
-
-	// add id to user object
 	id, _ := result.LastInsertId()
 	user.Id = int(id)
 
@@ -94,7 +92,7 @@ func (ur *UserRepository) Update(id int, user *models.User) error {
 	// insert row
 	user.Id = id
 	_, err := userRepository.database.NamedExec(`
-	UPDATE users SET fullName=:fullName, email=:email, email2=:email2, password=:password, WHERE id=:id
+	UPDATE users SET fullName=:fullName, email=:email, email2=:email2, gender=:gender, photo=:photo, maxAge=:maxAge, minAge=:minAge WHERE id=:id
 	`, user)
 	if err != nil {
 		log.Println("---ERROR---", err.Error())
@@ -132,3 +130,5 @@ func (ur *UserRepository) userExistsByEmail(email string) error {
 	}
 	return nil
 }
+
+

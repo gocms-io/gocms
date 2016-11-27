@@ -4,6 +4,7 @@ import (
 	"bitbucket.org/menklab/grnow-services/models"
 	"bitbucket.org/menklab/grnow-services/repositories"
 	"bitbucket.org/menklab/grnow-services/utility/errors"
+	"bitbucket.org/menklab/grnow-services/utility"
 )
 
 type IUserService interface {
@@ -13,6 +14,7 @@ type IUserService interface {
 	GetAll() (*[]models.User, error)
 	Delete(int) error
 	Update(int, *models.User) error
+
 }
 
 type UserService struct {
@@ -66,6 +68,9 @@ func (us *UserService) GetAll() (*[]models.User, error) {
 func (us *UserService) Add(user *models.User) error {
 
 	// hash password
+	if user.NewPassword == "" {
+		user.NewPassword, _ = utility.GenerateRandomString(32)
+	}
 	hashPassword, err := userService.authService.HashPassword(user.NewPassword)
 	if err != nil {
 		return nil
