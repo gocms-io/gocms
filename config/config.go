@@ -26,6 +26,8 @@ var (
 	AuthKey string
 	UserAuthTimeout int64
 	PasswordResetTimeout int64
+	DeviceAuthTimeout int64
+	TwoFactorTimeout int64
 
 
 	// SMTP
@@ -61,6 +63,8 @@ func init() {
 	AuthKey = getStringOrFail("AUTHENTICATION_KEY")
 	UserAuthTimeout = getIntOrFail("USER_AUTHENTICATION_TIMEOUT")
 	PasswordResetTimeout = getIntOrFail("PASSWORD_RESET_TIMEOUT")
+	DeviceAuthTimeout = getIntOrFail("DEVICE_AUTHENTICATION_TIMEOUT")
+	TwoFactorTimeout = getIntOrFail("TWO_FACTOR_TIMEOUT")
 
 	// SMTP
 	SMTPServer = getStringOrFail("SMTP_SERVER")

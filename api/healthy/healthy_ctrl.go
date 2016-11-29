@@ -1,9 +1,10 @@
-package api
+package healthy
 
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"github.com/menklab/goCMS/utility"
+	"github.com/menklab/goCMS/routes"
 )
 
 
@@ -11,11 +12,20 @@ import (
 // @SubApi Allows you access to different features of the users , login , get status etc [/users]
 
 type HealthyController struct {
+	routes *routes.ApiRoutes
 }
 
-func (hc *HealthyController) Use(routes *Routes) {
-	routes.Public.GET("/healthy", hc.healthy)
-	routes.Auth.GET("/verify", hc.user)
+func Default(routes *routes.ApiRoutes) *HealthyController{
+	hc := &HealthyController{
+		routes: routes,
+	}
+
+	return hc
+}
+
+func (hc *HealthyController) Use() {
+	hc.routes.Public.GET("/healthy", hc.healthy)
+	hc.routes.Auth.GET("/verify", hc.user)
 }
 
 // @Title Get Users Information

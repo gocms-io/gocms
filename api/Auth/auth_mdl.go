@@ -1,4 +1,4 @@
-package middleware
+package auth
 
 import (
 	"github.com/dgrijalva/jwt-go"
@@ -16,13 +16,18 @@ const (
 )
 
 type AuthMiddleware struct {
-	AuthService      services.IAuthService
-	UserService      services.IUserService
+	authService      services.IAuthService
+	userService      services.IUserService
 }
 
-func (am *AuthMiddleware) init() {
-	am.authService = new(services.AuthService)
-	am.userService = new (services.UserService)
+func NewAuthMiddleware(sg *services.ServicesGroup) *AuthMiddleware {
+
+	authMiddleware := &AuthMiddleware {
+		authService: sg.AuthService,
+		userService: sg.UserService,
+	}
+
+	return authMiddleware
 }
 
 // middleware
