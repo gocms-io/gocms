@@ -16,6 +16,8 @@ type IAuthService interface {
 	SendPasswordResetCode(string) error
 	VerifyPassword(string, string) bool
 	VerifyPasswordResetCode(int, string) bool
+        SendTwoFactorCode(*models.User) error
+	VerifyTwoFactorCode(id int, code string) bool
 }
 
 type AuthUser struct {
@@ -153,6 +155,75 @@ func (self *AuthService) SendPasswordResetCode(email string) error {
 	}
 
 	return nil
+}
+
+func (self *AuthService) SendTwoFactorCode(user *models.User) error {
+
+	// create code
+	code, hashedCode, err := authService.getRandomCode(8)
+	if err != nil {
+		return err
+	}
+
+
+	// update user with new code
+	err = authService.secureCodeRepo.Add(&models.SecureCode{
+		UserId: user.Id,
+		Type:   models.Code_VerifyDevice,
+		Code:   hashedCode,
+	})
+	if err != nil {
+		return err
+	}
+
+	// send email
+	authService.mailService.Send(&Mail{
+		To:      user.Email,
+		Subject: "Device Verification",
+		Body:    "Your verification code is: " + code + "\n\nThe code will expire at: " + time.Now().Add(time.Minute * time.Duration(config.TwoFactorCodeTimeout)).String() + ".",
+	})
+	if err != nil {
+		utility.Debug("Error sending mail: " + err.Error())
+	}
+
+	return nil
+}
+
+func (self *AuthService) VerifyTwoFactorCode(id int, code string) bool {
+
+	// get code from db
+	secureCode, err := authService.secureCodeRepo.GetLatestForUserByType(id, models.Code_VerifyDevice)
+	if err != nil {
+		return false
+	}
+
+	// check code
+	if ok := authService.VerifyPassword(secureCode.Code, code); !ok {
+		return false
+	}
+
+	// check within time
+	if time.Since(secureCode.Created) > (time.Minute * time.Duration(config.TwoFactorCodeTimeout)) {
+		return false
+	}
+
+	// at this point the code is good and we must respond this way... yet we want to null out the code so it can't be used again
+	// create code
+	_, hashedCode, err := authService.getRandomCode(8)
+	if err != nil {
+		return false
+	}
+
+	err = authService.secureCodeRepo.Add(&models.SecureCode{
+		UserId: id,
+		Type:   models.Code_VerifyDevice,
+		Code:   hashedCode,
+	})
+	if err != nil {
+		return false
+	}
+
+	return true
 }
 
 func (self *AuthService) HashPassword(password string) (string, error) {

@@ -43,9 +43,6 @@ func Default(r *gin.Engine, sg *services.ServicesGroup) *API {
 
 	// init authentication defaults
 	auth.Default(routes, sg).Use()
-	//auth.Use(api.Routes, sg)
-	//authMdl.RequireAuthenticatedUser()
-	//api.Routes.Auth.Use(authMdl.RequireAuthenticatedUser())
 
 	//new(AuthController).Apply()
 	healthy.Default(routes).Use()

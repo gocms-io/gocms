@@ -41,7 +41,7 @@ type ResetPassword struct {
 type AuthController struct {
 	userService  services.IUserService
 	authServices services.IAuthService
-	routes routes.ApiRoutes
+	routes *routes.ApiRoutes
 }
 
 func Default(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AuthController {
@@ -56,7 +56,10 @@ func Default(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AuthControll
 	// apply middleware
 	authMiddleware := NewAuthMiddleware(sg)
 	routes.Auth.Use(authMiddleware.RequireAuthenticatedUser())
-
+	routes.PreTwofactor = routes.Auth
+	if config.UseTwoFactor {
+		routes.Auth.Use(authMiddleware.RequireAuthenticatedDevice())
+	}
 	return authController
 }
 
@@ -66,6 +69,11 @@ func (ac *AuthController) Use() {
 	ac.routes.Public.POST("/login/google", ac.loginGoogle)
 	ac.routes.Public.POST("/reset-password", ac.resetPassword)
 	ac.routes.Public.PUT("/reset-password", ac.setPassword)
+
+	if config.UseTwoFactor {
+		ac.routes.PreTwofactor.GET("/verify-device", ac.getDeviceCode)
+		ac.routes.PreTwofactor.POST("/verify-device", ac.verifyDevice)
+	}
 }
 
 // login controller
