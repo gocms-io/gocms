@@ -3,8 +3,8 @@ package api
 //import (
 //	"github.com/gin-gonic/gin"
 //	"net/http"
-//	"bitbucket.org/menklab/grnow-services/services"
-//	"bitbucket.org/menklab/grnow-services/utility/errors"
+//	"github.com/menklab/goCMS/services"
+//	"github.com/menklab/goCMS/utility/errors"
 //)
 //
 //type UserController struct {

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"log"
 	"time"
-	"bitbucket.org/menklab/grnow-services/models"
-	"bitbucket.org/menklab/grnow-services/database"
+	"github.com/menklab/goCMS/models"
+	"github.com/menklab/goCMS/database"
 	"github.com/jmoiron/sqlx"
 )
 

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"time"
-	"bitbucket.org/menklab/grnow-services/models"
-	"bitbucket.org/menklab/grnow-services/config"
+	"github.com/menklab/goCMS/models"
+	"github.com/menklab/goCMS/config"
 	"io/ioutil"
 )
 

@@ -1,10 +1,10 @@
 package services
 
 import (
-	"bitbucket.org/menklab/grnow-services/models"
-	"bitbucket.org/menklab/grnow-services/repositories"
-	"bitbucket.org/menklab/grnow-services/utility/errors"
-	"bitbucket.org/menklab/grnow-services/utility"
+	"github.com/menklab/goCMS/models"
+	"github.com/menklab/goCMS/repositories"
+	"github.com/menklab/goCMS/utility/errors"
+	"github.com/menklab/goCMS/utility"
 )
 
 type IUserService interface {

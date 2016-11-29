@@ -4,10 +4,10 @@ package api
 //	"github.com/gin-gonic/gin"
 //	"net/http"
 //	"strconv"
-//	"bitbucket.org/menklab/grnow-services/config"
-//	"bitbucket.org/menklab/grnow-services/models"
-//	"bitbucket.org/menklab/grnow-services/utility/errors"
-//	"bitbucket.org/menklab/grnow-services/services"
+//	"github.com/menklab/goCMS/config"
+//	"github.com/menklab/goCMS/models"
+//	"github.com/menklab/goCMS/utility/errors"
+//	"github.com/menklab/goCMS/services"
 //)
 //
 //type AdminUserController struct {

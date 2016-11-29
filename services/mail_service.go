@@ -2,8 +2,8 @@ package services
 
 import (
 	"gopkg.in/gomail.v2"
-	"bitbucket.org/menklab/grnow-services/config"
-	"bitbucket.org/menklab/grnow-services/utility"
+	"github.com/menklab/goCMS/config"
+	"github.com/menklab/goCMS/utility"
 )
 
 type IMailService interface {

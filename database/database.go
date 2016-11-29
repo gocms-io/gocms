@@ -4,11 +4,11 @@ import (
 	_"github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"log"
-	"bitbucket.org/menklab/grnow-services/config"
-	"bitbucket.org/menklab/grnow-services/database/migrations"
+	"github.com/menklab/goCMS/config"
+	"github.com/menklab/goCMS/database/migrations"
 	"github.com/rubenv/sql-migrate"
 	"database/sql"
-	"bitbucket.org/menklab/grnow-services/utility"
+	"github.com/menklab/goCMS/utility"
 )
 
 type Database struct {

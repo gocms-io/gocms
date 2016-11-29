@@ -4,10 +4,10 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"bitbucket.org/menklab/grnow-services/services"
-	"bitbucket.org/menklab/grnow-services/utility/errors"
-	"bitbucket.org/menklab/grnow-services/utility"
-	"bitbucket.org/menklab/grnow-services/config"
+	"github.com/menklab/goCMS/services"
+	"github.com/menklab/goCMS/utility/errors"
+	"github.com/menklab/goCMS/utility"
+	"github.com/menklab/goCMS/config"
 )
 
 const (
@@ -16,25 +16,25 @@ const (
 )
 
 type AuthMiddleware struct {
-	authService      services.IAuthService
-	userService      services.IUserService
+	AuthService      services.IAuthService
+	UserService      services.IUserService
 }
 
-func (self *AuthMiddleware) init() {
-	self.authService = new(services.AuthService)
-	self.userService = new (services.UserService)
+func (am *AuthMiddleware) init() {
+	am.authService = new(services.AuthService)
+	am.userService = new (services.UserService)
 }
 
 // middleware
-func (self *AuthMiddleware) RequireAuthenticatedUser() gin.HandlerFunc {
-	return self.requireAuthedUser
+func (am *AuthMiddleware) RequireAuthenticatedUser() gin.HandlerFunc {
+	return am.requireAuthedUser
 }
-func (self *AuthMiddleware) RequireAuthenticatedDevice() gin.HandlerFunc {
-	return self.requireAuthedDevice
+func (am *AuthMiddleware) RequireAuthenticatedDevice() gin.HandlerFunc {
+	return am.requireAuthedDevice
 }
 
 // requireAuthedUser middleware
-func (self *AuthMiddleware) requireAuthedUser(c *gin.Context) {
+func (am *AuthMiddleware) requireAuthedUser(c *gin.Context) {
 
 	// get token
 	authHeader := c.Request.Header.Get("X-AUTH-TOKEN")
@@ -45,7 +45,7 @@ func (self *AuthMiddleware) requireAuthedUser(c *gin.Context) {
 	}
 
 	// parse token
-	token, err := self.verifyToken(authHeader)
+	token, err := am.verifyToken(authHeader)
 	if err != nil {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_UserToken, REDIRECT_LOGIN)
 		return
@@ -59,7 +59,7 @@ func (self *AuthMiddleware) requireAuthedUser(c *gin.Context) {
 	}
 
 	// get user
-	user, err := self.userService.Get(int(userId))
+	user, err := am.userService.Get(int(userId))
 	if err != nil {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_UserToken, REDIRECT_LOGIN)
 	}
@@ -69,7 +69,7 @@ func (self *AuthMiddleware) requireAuthedUser(c *gin.Context) {
 }
 
 // requireAuthedDevice
-func (self *AuthMiddleware) requireAuthedDevice(c *gin.Context) {
+func (am *AuthMiddleware) requireAuthedDevice(c *gin.Context) {
 
 	// get for deviceAuthToken header if it exists
 	authDeviceHeader := c.Request.Header.Get("X-DEVICE-TOKEN")
@@ -81,7 +81,7 @@ func (self *AuthMiddleware) requireAuthedDevice(c *gin.Context) {
 	}
 
 	// parse token
-	_, err := self.verifyToken(authDeviceHeader)
+	_, err := am.verifyToken(authDeviceHeader)
 	if err != nil {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_DeviceToken, REDIRECT_VERIFY_DEVICE)
 		return
@@ -93,7 +93,7 @@ func (self *AuthMiddleware) requireAuthedDevice(c *gin.Context) {
 }
 
 // verifyToken
-func (self *AuthMiddleware) verifyToken(authHeader string) (*jwt.Token, error) {
+func (am *AuthMiddleware) verifyToken(authHeader string) (*jwt.Token, error) {
 	token, err := jwt.Parse(authHeader, func(token *jwt.Token) (interface{}, error) {
 		if jwt.SigningMethodHS256 != token.Method {
 			return nil, errors.New("Token signing method does not match.")
