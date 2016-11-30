@@ -21,27 +21,28 @@ type Mail struct {
 	Body    string
 }
 
-var mailService *MailService
 
-func init() {
-	mailService = &MailService{
+func DefaultMailService() *MailService {
+	mailService := &MailService{
 		Dialer: gomail.NewDialer(config.SMTPServer, int(config.SMTPPort), config.SMTPUser, config.SMTPPassword),
 		From: config.SMTPFromAddress,
 	}
+
+	return mailService
 
 }
 
 func (ms *MailService) Send(mail *Mail) error {
 
 	m := gomail.NewMessage()
-	m.SetHeader("From", mailService.From)
+	m.SetHeader("From", ms.From)
 	m.SetHeader("To", mail.To)
 	m.SetHeader("Subject", mail.Subject)
 	m.SetBody("text/plain", mail.Body)
 
 	// Send the email
 	if !config.SMTPSimulate {
-		err := mailService.Dialer.DialAndSend(m)
+		err := ms.Dialer.DialAndSend(m)
 		if err != nil {
 			log.Print("Error sending mail: " + err.Error())
 		}

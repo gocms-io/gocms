@@ -24,20 +24,19 @@ type UserRepository struct {
 	database *sqlx.DB
 }
 
-var userRepository *UserRepository
 
-func init() {
-	userRepository = &UserRepository{
+func DefaultUserRepository() *UserRepository{
+	userRepository := &UserRepository{
 		database: database.Dbx,
-		//database: database.GetDatabase(),
-
 	}
+
+	return userRepository
 }
 
 // get user by id
 func (ur *UserRepository) Get(id int) (*models.User, error) {
 	var user models.User
-	err := userRepository.database.Get(&user, "SELECT * FROM users WHERE id=?", id)
+	err := ur.database.Get(&user, "SELECT * FROM users WHERE id=?", id)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +46,7 @@ func (ur *UserRepository) Get(id int) (*models.User, error) {
 // get user by email
 func (ur *UserRepository) GetByEmail(email string) (*models.User, error) {
 	var user models.User
-	err := userRepository.database.Get(&user, "SELECT * FROM users WHERE email=? OR email2=?", email, email)
+	err := ur.database.Get(&user, "SELECT * FROM users WHERE email=? OR email2=?", email, email)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +56,7 @@ func (ur *UserRepository) GetByEmail(email string) (*models.User, error) {
 // get a list of all users
 func (ur *UserRepository) GetAll() (*[]models.User, error) {
 	var users []models.User
-	err := userRepository.database.Select(&users, `
+	err := ur.database.Select(&users, `
 	SELECT * from users
 	`)
 	if err != nil {
@@ -69,7 +68,7 @@ func (ur *UserRepository) GetAll() (*[]models.User, error) {
 func (ur *UserRepository) Add(user *models.User) error {
 
 	// check if user exists
-	err := userRepository.userExistsByEmail(user.Email)
+	err := ur.userExistsByEmail(user.Email)
 	if err != nil {
 		return err
 	}
@@ -77,7 +76,7 @@ func (ur *UserRepository) Add(user *models.User) error {
 	user.Created = time.Now()
 
 	// insert user
-	result, err := userRepository.database.NamedExec(`
+	result, err := ur.database.NamedExec(`
 	INSERT INTO users (fullName, email, email2, gender, photo, minAge, maxAge, password, created) VALUES (:fullName, :email, :email2, :gender, :photo, :minAge, :maxAge, :password, :created)
 	`, user)
 	if err != nil {
@@ -92,7 +91,7 @@ func (ur *UserRepository) Add(user *models.User) error {
 func (ur *UserRepository) Update(id int, user *models.User) error {
 	// insert row
 	user.Id = id
-	_, err := userRepository.database.NamedExec(`
+	_, err := ur.database.NamedExec(`
 	UPDATE users SET fullName=:fullName, email=:email, email2=:email2, gender=:gender, photo=:photo, maxAge=:maxAge, minAge=:minAge WHERE id=:id
 	`, user)
 	if err != nil {
@@ -109,7 +108,7 @@ func (ur *UserRepository) UpdatePassword(id int, hash string) error {
 		Id: id,
 		Password: hash,
 	}
-	_, err := userRepository.database.NamedExec(`
+	_, err := ur.database.NamedExec(`
 	UPDATE users SET password=:password WHERE id=:id
 	`, user)
 	if err != nil {
@@ -126,7 +125,7 @@ func (ur *UserRepository) Delete(id int) error {
 		return errors.New("Missing id")
 	}
 
-	_, err := userRepository.database.Exec(`
+	_, err := ur.database.Exec(`
 	DELETE FROM users WHERE id=?
 	`, id)
 	if err != nil {
@@ -140,7 +139,7 @@ func (ur *UserRepository) Delete(id int) error {
 
 func (ur *UserRepository) userExistsByEmail(email string) error {
 	user := models.User{}
-	err := userRepository.database.QueryRow(`
+	err := ur.database.QueryRow(`
 	SELECT email, email2 FROM users WHERE email = ? OR email2 = ?
 	`, email, email).Scan(&user.Email, &user.Email2)
 	if err != nil && err != sql.ErrNoRows {

@@ -16,18 +16,19 @@ type SecureCodeRepository struct {
 	database *sqlx.DB
 }
 
-var secureCodeRepository *SecureCodeRepository
 
-func init() {
-	secureCodeRepository = &SecureCodeRepository{
+func DefaultSecureCodeRepository() *SecureCodeRepository{
+	secureCodeRepository := &SecureCodeRepository{
 		database: database.Dbx,
 	}
+
+	return secureCodeRepository
 }
 
 func (scr *SecureCodeRepository) Add(code *models.SecureCode) error {
 	code.Created = time.Now()
 	// insert row
-	result, err := secureCodeRepository.database.NamedExec(`
+	result, err := scr.database.NamedExec(`
 	INSERT INTO secure_codes (userId, type, code, created) VALUES (:userId, :type, :code, :created)
 	`, code)
 	if err != nil {
@@ -44,7 +45,7 @@ func (scr *SecureCodeRepository) Add(code *models.SecureCode) error {
 // get all events
 func (scr *SecureCodeRepository) GetLatestForUserByType(id int, codeType models.SecureCodeType) (*models.SecureCode, error) {
 	var secureCode models.SecureCode
-	err := secureCodeRepository.database.Get(&secureCode, `
+	err := scr.database.Get(&secureCode, `
 	SELECT * from secure_codes WHERE userId=? AND type=? ORDER BY created DESC LIMIT 1
 	`, id, codeType)
 	if err != nil {

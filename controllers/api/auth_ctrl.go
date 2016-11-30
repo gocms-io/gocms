@@ -44,9 +44,8 @@ type ResetPassword struct {
 }
 
 type AuthController struct {
-	routes *routes.ApiRoutes
-	userService  services.IUserService
-	authServices services.IAuthService
+	routes        *routes.ApiRoutes
+	ServicesGroup *services.ServicesGroup
 }
 
 func DefaultAuthController(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AuthController {
@@ -54,8 +53,7 @@ func DefaultAuthController(routes *routes.ApiRoutes, sg *services.ServicesGroup)
 	// create controller
 	authController := &AuthController{
 		routes: routes,
-		authServices: sg.AuthService,
-		userService: sg.UserService,
+		ServicesGroup: sg,
 	}
 
 	// apply auth middleware
@@ -65,7 +63,7 @@ func DefaultAuthController(routes *routes.ApiRoutes, sg *services.ServicesGroup)
 	routes.Admin = routes.Auth.Group("/admin")
 
 	//apply acl middleware
-	DefaultAclMiddleware(sg, routes)
+	DefaultAclMiddleware(routes)
 
 	authController.Default()
 
@@ -110,7 +108,7 @@ func (ac *AuthController) login(c *gin.Context) {
 	}
 
 	// auth user
-	user, authed := ac.authServices.AuthUser(loginDisplay.Email, loginDisplay.Password)
+	user, authed := ac.ServicesGroup.AuthService.AuthUser(loginDisplay.Email, loginDisplay.Password)
 	if !authed {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Incorrect Email / Password", REDIRECT_LOGIN)
 		return
@@ -135,7 +133,7 @@ func (ac *AuthController) getDeviceCode(c *gin.Context) {
 
 	user, _ := utility.GetUserFromContext(c)
 
-	err := ac.authServices.SendTwoFactorCode(user)
+	err := ac.ServicesGroup.AuthService.SendTwoFactorCode(user)
 
 	if err != nil {
 		errors.ResponseWithSoftRedirect(c, http.StatusInternalServerError, "Error sending device code.", REDIRECT_LOGIN)
@@ -173,7 +171,7 @@ func (ac *AuthController) verifyDevice(c *gin.Context) {
 	}
 
 	// verify code is correct
-	ok := ac.authServices.VerifyTwoFactorCode(user.Id, verifyDeviceDisplay.DeviceCode)
+	ok := ac.ServicesGroup.AuthService.VerifyTwoFactorCode(user.Id, verifyDeviceDisplay.DeviceCode)
 	if !ok {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Incorrect Device Code.", REDIRECT_VERIFY_DEVICE)
 		return
@@ -244,7 +242,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	}
 
 	// check if user exists
-	user, err := ac.userService.GetByEmail(me.Email)
+	user, err := ac.ServicesGroup.UserService.GetByEmail(me.Email)
 	if err != nil {
 		// other error
 		if err != sql.ErrNoRows {
@@ -276,7 +274,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 
 	// add user if it doesn't have an id
 	if user.Id == 0 {
-		err = ac.userService.Add(user)
+		err = ac.ServicesGroup.UserService.Add(user)
 		if err != nil {
 			log.Printf("error adding user from facebook login: %s", err.Error())
 			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from facebook.", REDIRECT_LOGIN)
@@ -284,7 +282,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 		}
 	} else {
 		// update user
-		err = ac.userService.Update(user.Id, user)
+		err = ac.ServicesGroup.UserService.Update(user.Id, user)
 		if err != nil {
 			log.Printf("error updating user from facebook login: %s", err.Error())
 			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from facebook.", REDIRECT_LOGIN)
@@ -344,7 +342,7 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 	}
 
 	// check if user exists
-	user, err := ac.userService.GetByEmail(me.Email)
+	user, err := ac.ServicesGroup.UserService.GetByEmail(me.Email)
 	if err != nil {
 		// other error
 		if err != sql.ErrNoRows {
@@ -366,7 +364,7 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 
 	// add user if it doesn't have an id
 	if user.Id == 0 {
-		err = ac.userService.Add(user)
+		err = ac.ServicesGroup.UserService.Add(user)
 		if err != nil {
 			log.Printf("error adding user from google login: %s", err.Error())
 			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from google.", REDIRECT_LOGIN)
@@ -374,7 +372,7 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 		}
 	} else {
 		// update user
-		err = ac.userService.Update(user.Id, user)
+		err = ac.ServicesGroup.UserService.Update(user.Id, user)
 		if err != nil {
 			log.Printf("error updating user from google login: %s", err.Error())
 			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from google.", REDIRECT_LOGIN)
@@ -410,7 +408,7 @@ func (ac *AuthController) resetPassword(c *gin.Context) {
 	c.String(http.StatusOK, "Email will be sent to the account provided.")
 
 	// send password reset link
-	err = ac.authServices.SendPasswordResetCode(resetRequest.Email)
+	err = ac.ServicesGroup.AuthService.SendPasswordResetCode(resetRequest.Email)
 	if err != nil {
 		return
 	}
@@ -426,20 +424,20 @@ func (ac *AuthController) setPassword(c *gin.Context) {
 	}
 
 	// get user
-	user, err := ac.userService.GetByEmail(resetPassword.Email)
+	user, err := ac.ServicesGroup.UserService.GetByEmail(resetPassword.Email)
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, "Couldn't reset password.", err)
 		return
 	}
 
 	// verify code
-	if ok := ac.authServices.VerifyPasswordResetCode(user.Id, resetPassword.ResetCode); !ok {
+	if ok := ac.ServicesGroup.AuthService.VerifyPasswordResetCode(user.Id, resetPassword.ResetCode); !ok {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error resetting password.", REDIRECT_LOGIN)
 		return
 	}
 
 	// reset password
-	err = ac.userService.UpdatePassword(user.Id, resetPassword.Password)
+	err = ac.ServicesGroup.UserService.UpdatePassword(user.Id, resetPassword.Password)
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, "Couldn't reset password.", err)
 		return

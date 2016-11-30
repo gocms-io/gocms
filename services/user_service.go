@@ -18,24 +18,25 @@ type IUserService interface {
 }
 
 type UserService struct {
-	userRepo    repositories.IUserRepository
-	authService IAuthService
-	mailService IMailService
+	AuthService IAuthService
+	MailService IMailService
+	RepositoriesGroup *repositories.RepositoriesGroup
 }
 
-var userService *UserService
 
-func init() {
-	userService = &UserService{
-		userRepo: new(repositories.UserRepository),
-		authService: new(AuthService),
-		mailService: new(MailService),
+func DefaultUserService(rg *repositories.RepositoriesGroup, authService *AuthService, mailService *MailService) *UserService {
+	userService := &UserService{
+		AuthService: authService,
+		MailService: mailService,
+		RepositoriesGroup: rg,
 	}
+
+	return userService
 }
 
 func (us *UserService) Get(id int) (*models.User, error) {
 
-	user, err := userService.userRepo.Get(id)
+	user, err := us.RepositoriesGroup.UsersRepository.Get(id)
 
 	if err != nil {
 		return nil, err
@@ -45,7 +46,7 @@ func (us *UserService) Get(id int) (*models.User, error) {
 }
 
 func (us *UserService) GetByEmail(email string) (*models.User, error) {
-	user, err := userService.userRepo.GetByEmail(email)
+	user, err := us.RepositoriesGroup.UsersRepository.GetByEmail(email)
 
 	if err != nil {
 		return nil, err
@@ -56,7 +57,7 @@ func (us *UserService) GetByEmail(email string) (*models.User, error) {
 
 func (us *UserService) GetAll() (*[]models.User, error) {
 
-	users, err := userService.userRepo.GetAll()
+	users, err := us.RepositoriesGroup.UsersRepository.GetAll()
 	if err != nil {
 		return nil, err
 	}
@@ -70,14 +71,14 @@ func (us *UserService) Add(user *models.User) error {
 	if user.NewPassword == "" {
 		user.NewPassword, _ = utility.GenerateRandomString(32)
 	}
-	hashPassword, err := userService.authService.HashPassword(user.NewPassword)
+	hashPassword, err := us.AuthService.HashPassword(user.NewPassword)
 	if err != nil {
 		return nil
 	}
 	user.Password = hashPassword
 
 	// add to db
-	err = userService.userRepo.Add(user)
+	err = us.RepositoriesGroup.UsersRepository.Add(user)
 	if err != nil {
 		return err
 	}
@@ -87,7 +88,7 @@ func (us *UserService) Add(user *models.User) error {
 
 func (us *UserService) Delete(id int) error {
 
-	err := userService.userRepo.Delete(id)
+	err := us.RepositoriesGroup.UsersRepository.Delete(id)
 	if err != nil {
 		return err
 	}
@@ -95,7 +96,7 @@ func (us *UserService) Delete(id int) error {
 }
 
 func (us *UserService) Update(id int, userForUpdate *models.User) error {
-	err := userService.userRepo.Update(id, userForUpdate)
+	err := us.RepositoriesGroup.UsersRepository.Update(id, userForUpdate)
 	if err != nil {
 		return err
 	}
@@ -110,13 +111,13 @@ func (us *UserService) UpdatePassword(id int, password string) error {
 	}
 
 	// make hash
-	newHash, err := userService.authService.HashPassword(password)
+	newHash, err := us.AuthService.HashPassword(password)
 	if err != nil {
 		return err
 	}
 
 	// update database
-	err = userService.userRepo.UpdatePassword(id, newHash)
+	err = us.RepositoriesGroup.UsersRepository.UpdatePassword(id, newHash)
 	if err != nil {
 		return err
 	}

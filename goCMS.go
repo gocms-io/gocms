@@ -5,6 +5,7 @@ import (
 	"log"
 	"github.com/menklab/goCMS/services"
 	"github.com/menklab/goCMS/controllers"
+	"github.com/menklab/goCMS/repositories"
 )
 
 
@@ -13,6 +14,7 @@ type Engine struct {
 	Gin *gin.Engine
 	ControllersGroup *controllers.ControllersGroup
 	ServicesGroup *services.ServicesGroup
+	RepositoriesGroup *repositories.RepositoriesGroup
 }
 
 
@@ -21,11 +23,11 @@ func Default() *Engine{
 	// start gin with defaults
 	r := gin.Default()
 
+	// setup repositories
+	rg := repositories.DefaultRepositoriesGroup()
+
 	// setup services
-	sg := &services.ServicesGroup{
-		AuthService: new(services.AuthService),
-		UserService: new(services.UserService),
-	}
+	sg := services.DefaultServicesGroup(rg)
 
 	// setup controllers
 	cg := controllers.DefaultControllerGroup(r, sg)
@@ -35,6 +37,7 @@ func Default() *Engine{
 		Gin: r,
 		ControllersGroup: cg,
 		ServicesGroup: sg,
+		RepositoriesGroup: rg,
 	}
 	return &engine
 }

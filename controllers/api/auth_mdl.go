@@ -12,15 +12,13 @@ import (
 )
 
 type AuthMiddleware struct {
-	authService      services.IAuthService
-	userService      services.IUserService
+	ServicesGroup *services.ServicesGroup
 }
 
 func DefaultAuthMiddleware(sg *services.ServicesGroup, routes *routes.ApiRoutes) *AuthMiddleware {
 
 	authMiddleware := &AuthMiddleware {
-		authService: sg.AuthService,
-		userService: sg.UserService,
+		ServicesGroup: sg,
 	}
 
 	authMiddleware.Default(routes)
@@ -68,7 +66,7 @@ func (am *AuthMiddleware) requireAuthedUser(c *gin.Context) {
 		return
 	}
 	// get user
-	user, err := am.userService.Get(int(userId))
+	user, err := am.ServicesGroup.UserService.Get(int(userId))
 	if err != nil {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_UserToken, REDIRECT_LOGIN)
 	}

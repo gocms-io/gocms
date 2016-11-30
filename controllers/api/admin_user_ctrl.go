@@ -11,16 +11,14 @@ import (
 )
 
 type AdminUserController struct {
-	routes *routes.ApiRoutes
-	userService  services.IUserService
-	authServices services.IAuthService
+	routes        *routes.ApiRoutes
+	ServicesGroup *services.ServicesGroup
 }
 
 func DefaultAdminUserController(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AdminUserController{
 	adminUserController := &AdminUserController{
 		routes: routes,
-		userService: sg.UserService,
-		authServices: sg.AuthService,
+		ServicesGroup: sg,
 	}
 
 	adminUserController.Default()
@@ -53,7 +51,7 @@ func (auc *AdminUserController) add(c *gin.Context) {
 	}
 
 	// add user
-	err = auc.userService.Add(user)
+	err = auc.ServicesGroup.UserService.Add(user)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, err.Error(), err)
 		return
@@ -69,7 +67,7 @@ func (auc *AdminUserController) get(c *gin.Context) {
 		errors.Response(c, http.StatusInternalServerError, err.Error(), err)
 	}
 
-	user, err := auc.userService.Get(userId)
+	user, err := auc.ServicesGroup.UserService.Get(userId)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, "Couldn't find user.", err)
 		return
@@ -79,7 +77,7 @@ func (auc *AdminUserController) get(c *gin.Context) {
 }
 
 func (auc *AdminUserController) getAll(c *gin.Context) {
-	users, err := auc.userService.GetAll()
+	users, err := auc.ServicesGroup.UserService.GetAll()
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, "Couldn't get users", err)
 		return
@@ -106,7 +104,7 @@ func (auc *AdminUserController) update(c *gin.Context) {
 	}
 
 	// do update
-	err = auc.userService.Update(userId, user)
+	err = auc.ServicesGroup.UserService.Update(userId, user)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, "Couldn't update user.", err)
 		return
@@ -123,7 +121,7 @@ func (auc *AdminUserController) delete(c *gin.Context) {
 	}
 
 	// delete user
-	err = auc.userService.Delete(userId)
+	err = auc.ServicesGroup.UserService.Delete(userId)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, "Couldn't delete user.", err)
 		return

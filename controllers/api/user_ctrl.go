@@ -11,16 +11,14 @@ import (
 )
 
 type UserController struct {
-	routes *routes.ApiRoutes
-	userService  services.IUserService
-	authServices services.IAuthService
+	routes        *routes.ApiRoutes
+	ServicesGroup *services.ServicesGroup
 }
 
 func DefaultUserController(routes *routes.ApiRoutes, sg *services.ServicesGroup) *UserController{
 	userController := &UserController{
 		routes: routes,
-		userService: sg.UserService,
-		authServices: sg.AuthService,
+		ServicesGroup: sg,
 	}
 	userController.Default()
 	return userController
@@ -54,7 +52,7 @@ func (uc *UserController) update(c *gin.Context) {
 	}
 
 	// verify password
-	if ok := uc.authServices.VerifyPassword(authUser.Password, userForUpdate.ConfirmPassword); !ok {
+	if ok := uc.ServicesGroup.AuthService.VerifyPassword(authUser.Password, userForUpdate.ConfirmPassword); !ok {
 		errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
 		return
 	}
@@ -65,7 +63,7 @@ func (uc *UserController) update(c *gin.Context) {
 	authUser.NewPassword = userForUpdate.NewPassword
 
 	// do update
-	err = uc.userService.Update(authUser.Id, authUser)
+	err = uc.ServicesGroup.UserService.Update(authUser.Id, authUser)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, "Couldn't update user.", err)
 		return
