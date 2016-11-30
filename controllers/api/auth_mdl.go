@@ -1,4 +1,4 @@
-package auth
+package api
 
 import (
 	"github.com/dgrijalva/jwt-go"
@@ -16,17 +16,18 @@ type AuthMiddleware struct {
 	userService      services.IUserService
 }
 
-func NewAuthMiddleware(sg *services.ServicesGroup) *AuthMiddleware {
+func DefaultAuthMiddleware(sg *services.ServicesGroup, routes *routes.ApiRoutes) *AuthMiddleware {
 
 	authMiddleware := &AuthMiddleware {
 		authService: sg.AuthService,
 		userService: sg.UserService,
 	}
 
+	authMiddleware.Default(routes)
 	return authMiddleware
 }
 
-func (am *AuthMiddleware) DefaultAuth(routes *routes.ApiRoutes) {
+func (am *AuthMiddleware) Default(routes *routes.ApiRoutes) {
 	routes.Auth.Use(am.RequireAuthenticatedUser())
 	routes.PreTwofactor = routes.Auth
 	if config.UseTwoFactor {

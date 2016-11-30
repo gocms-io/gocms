@@ -1,4 +1,4 @@
-package users
+package api
 
 import (
 	"github.com/gin-gonic/gin"
@@ -16,17 +16,18 @@ type AdminUserController struct {
 	authServices services.IAuthService
 }
 
-func DefaultAdmin(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AdminUserController{
+func DefaultAdminUserController(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AdminUserController{
 	adminUserController := &AdminUserController{
 		routes: routes,
 		userService: sg.UserService,
 		authServices: sg.AuthService,
 	}
 
+	adminUserController.Default()
 	return adminUserController
 }
 
-func (auc *AdminUserController) Use() {
+func (auc *AdminUserController) Default() {
 
 	auc.routes.Admin.GET("/user", auc.getAll)
 	auc.routes.Admin.GET("/user/:userId", auc.get)

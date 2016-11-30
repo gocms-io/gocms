@@ -1,4 +1,5 @@
-package auth
+package api
+
 
 import (
 	"github.com/gin-gonic/gin"
@@ -14,18 +15,20 @@ type AclMiddleware struct {
 	userService      services.IUserService
 }
 
-func NewAclMiddleware(sg *services.ServicesGroup) *AclMiddleware {
+func DefaultAclMiddleware(sg *services.ServicesGroup, routes *routes.ApiRoutes) *AclMiddleware {
 
 	aclMiddleware := &AclMiddleware {
 		authService: sg.AuthService,
 		userService: sg.UserService,
 	}
 
+	aclMiddleware.Default(routes)
+
 	return aclMiddleware
 }
 
-func (acl *AclMiddleware) DefaultAcl(r *routes.ApiRoutes) {
-	r.Admin.Use(acl.RequireAdmin())
+func (acl *AclMiddleware) Default(routes *routes.ApiRoutes) {
+	routes.Admin.Use(acl.RequireAdmin())
 }
 
 // middleware

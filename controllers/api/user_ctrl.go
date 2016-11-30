@@ -1,4 +1,4 @@
-package users
+package api
 
 import (
 	"github.com/gin-gonic/gin"
@@ -16,16 +16,17 @@ type UserController struct {
 	authServices services.IAuthService
 }
 
-func Default(routes *routes.ApiRoutes, sg *services.ServicesGroup) *UserController{
+func DefaultUserController(routes *routes.ApiRoutes, sg *services.ServicesGroup) *UserController{
 	userController := &UserController{
 		routes: routes,
 		userService: sg.UserService,
 		authServices: sg.AuthService,
 	}
+	userController.Default()
 	return userController
 }
 
-func (uc *UserController) Use() {
+func (uc *UserController) Default() {
 
 	uc.routes.Auth.GET("/user", uc.get)
 	uc.routes.Auth.PUT("/user", uc.update)

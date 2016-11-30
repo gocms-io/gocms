@@ -28,6 +28,7 @@ func init() {
 		Dialer: gomail.NewDialer(config.SMTPServer, int(config.SMTPPort), config.SMTPUser, config.SMTPPassword),
 		From: config.SMTPFromAddress,
 	}
+
 }
 
 func (ms *MailService) Send(mail *Mail) error {

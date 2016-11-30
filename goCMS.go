@@ -3,15 +3,15 @@ package goCMS
 import (
 	"github.com/gin-gonic/gin"
 	"log"
-	"github.com/menklab/goCMS/api"
 	"github.com/menklab/goCMS/services"
+	"github.com/menklab/goCMS/controllers"
 )
 
 
 
 type Engine struct {
 	Gin *gin.Engine
-	Api *api.API
+	ControllersGroup *controllers.ControllersGroup
 	ServicesGroup *services.ServicesGroup
 }
 
@@ -27,12 +27,13 @@ func Default() *Engine{
 		UserService: new(services.UserService),
 	}
 
-	a := api.Default(r, sg)
+	// setup controllers
+	cg := controllers.DefaultControllerGroup(r, sg)
 
 	// create engine
 	engine := Engine{
 		Gin: r,
-		Api: a,
+		ControllersGroup: cg,
 		ServicesGroup: sg,
 	}
 	return &engine

@@ -1,4 +1,4 @@
-package healthy
+package api
 
 import (
 	"github.com/gin-gonic/gin"
@@ -15,15 +15,16 @@ type HealthyController struct {
 	routes *routes.ApiRoutes
 }
 
-func Default(routes *routes.ApiRoutes) *HealthyController{
+func DefaultHealthyController(routes *routes.ApiRoutes) *HealthyController{
 	hc := &HealthyController{
 		routes: routes,
 	}
 
+	hc.Default()
 	return hc
 }
 
-func (hc *HealthyController) Use() {
+func (hc *HealthyController) Default() {
 	hc.routes.Public.GET("/healthy", hc.healthy)
 	hc.routes.Auth.GET("/verify", hc.user)
 }

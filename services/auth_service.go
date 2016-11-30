@@ -6,13 +6,12 @@ import (
 	"github.com/menklab/goCMS/models"
 	"github.com/menklab/goCMS/repositories"
 	"github.com/menklab/goCMS/utility"
-	"github.com/menklab/goCMS/utility/errors"
 	"github.com/menklab/goCMS/config"
 	"log"
 )
 
 type IAuthService interface {
-	AuthUser(*AuthUser) (*models.User, bool)
+	AuthUser(string, string) (*models.User, bool)
 	HashPassword(string) (string, error)
 	SendPasswordResetCode(string) error
 	VerifyPassword(string, string) bool
@@ -35,29 +34,21 @@ type AuthService struct {
 
 var authService *AuthService
 
-func init() {
+func init(){
 	authService = &AuthService{
 		mailService: new(MailService),
 		userRepo: new(repositories.UserRepository),
 		secureCodeRepo: new(repositories.SecureCodeRepository),
 	}
 
-
 }
 
-func (self *AuthService) AuthUser(authUser *AuthUser) (*models.User, bool) {
+func (self *AuthService) AuthUser(email string, password string) (*models.User, bool) {
 
 	var dbUser *models.User
 	var err error
-	// get user by id
-	if authUser.Id != 0 {
-		dbUser, err = authService.userRepo.Get(authUser.Id)
-	} else if authUser.Email != "" {
-		dbUser, err = authService.userRepo.GetByEmail(authUser.Email)
+		dbUser, err = authService.userRepo.GetByEmail(email)
 
-	} else {
-		err = errors.New("You must provide an Id or Email")
-	}
 	if err != nil {
 		log.Print("Error authing user: " + err.Error())
 		return nil, false
@@ -66,7 +57,7 @@ func (self *AuthService) AuthUser(authUser *AuthUser) (*models.User, bool) {
 
 
 	// check password
-	if ok := authService.VerifyPassword(dbUser.Password, authUser.Password); !ok {
+	if ok := authService.VerifyPassword(dbUser.Password, password); !ok {
 		return nil, false
 	}
 

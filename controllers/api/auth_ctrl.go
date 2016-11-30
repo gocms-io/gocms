@@ -1,4 +1,4 @@
-package auth
+package api
 
 import (
 	"github.com/menklab/goCMS/routes"
@@ -49,7 +49,7 @@ type AuthController struct {
 	authServices services.IAuthService
 }
 
-func Default(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AuthController {
+func DefaultAuthController(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AuthController {
 
 	// create controller
 	authController := &AuthController{
@@ -59,18 +59,20 @@ func Default(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AuthControll
 	}
 
 	// apply auth middleware
-	NewAuthMiddleware(sg).DefaultAuth(routes)
+	DefaultAuthMiddleware(sg, routes)
 
 	// admin admin route
 	routes.Admin = routes.Auth.Group("/admin")
 
 	//apply acl middleware
-	NewAclMiddleware(sg).DefaultAcl(routes)
+	DefaultAclMiddleware(sg, routes)
+
+	authController.Default()
 
 	return authController
 }
 
-func (ac *AuthController) Use() {
+func (ac *AuthController) Default() {
 	ac.routes.Public.POST("/login", ac.login)
 	ac.routes.Public.POST("/login/facebook", ac.loginFacebook)
 	ac.routes.Public.POST("/login/google", ac.loginGoogle)
@@ -108,11 +110,7 @@ func (ac *AuthController) login(c *gin.Context) {
 	}
 
 	// auth user
-	authUser := services.AuthUser{
-		Email:    loginDisplay.Email,
-		Password: loginDisplay.Password,
-	}
-	user, authed := ac.authServices.AuthUser(&authUser)
+	user, authed := ac.authServices.AuthUser(loginDisplay.Email, loginDisplay.Password)
 	if !authed {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Incorrect Email / Password", REDIRECT_LOGIN)
 		return
