@@ -21,4 +21,5 @@ type User struct {
 	ConfirmPassword string    `json:"confirmPassword,omitempty"`
 	NewPassword     string    `json:"newPassword,omitempty"`
 	Created         time.Time `json:"created,omitempty" db:"created"`
+	IsAdmin         bool      `json:"isAdmin, omitempty" db:"isAdmin"`
 }

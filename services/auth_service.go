@@ -8,6 +8,7 @@ import (
 	"github.com/menklab/goCMS/utility"
 	"github.com/menklab/goCMS/utility/errors"
 	"github.com/menklab/goCMS/config"
+	"log"
 )
 
 type IAuthService interface {
@@ -58,7 +59,7 @@ func (self *AuthService) AuthUser(authUser *AuthUser) (*models.User, bool) {
 		err = errors.New("You must provide an Id or Email")
 	}
 	if err != nil {
-		utility.Debug("Error authing user: " + err.Error())
+		log.Print("Error authing user: " + err.Error())
 		return nil, false
 	}
 
@@ -151,7 +152,7 @@ func (self *AuthService) SendPasswordResetCode(email string) error {
 			time.Now().Add(time.Minute * time.Duration(config.PasswordResetTimeout)).String() + ".",
 	})
 	if err != nil {
-		utility.Debug("Error sending mail: " + err.Error())
+		log.Print("Error sending mail: " + err.Error())
 	}
 
 	return nil
@@ -183,7 +184,7 @@ func (self *AuthService) SendTwoFactorCode(user *models.User) error {
 		Body:    "Your verification code is: " + code + "\n\nThe code will expire at: " + time.Now().Add(time.Minute * time.Duration(config.TwoFactorCodeTimeout)).String() + ".",
 	})
 	if err != nil {
-		utility.Debug("Error sending mail: " + err.Error())
+		log.Print("Error sending mail: " + err.Error())
 	}
 
 	return nil

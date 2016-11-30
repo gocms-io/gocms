@@ -6,6 +6,7 @@ import (
 	"github.com/menklab/goCMS/routes"
 	"github.com/menklab/goCMS/api/healthy"
 	"github.com/menklab/goCMS/api/auth"
+	"github.com/menklab/goCMS/api/users"
 )
 
 type API struct {
@@ -41,12 +42,10 @@ func Default(r *gin.Engine, sg *services.ServicesGroup) *API {
 		servicesGroup: sg,
 	}
 
-	// init authentication defaults
+	// init api defaults
 	auth.Default(routes, sg).Use()
-
-	//new(AuthController).Apply()
 	healthy.Default(routes).Use()
-
+	users.Default(routes, sg).Use()
 
 	return api
 }

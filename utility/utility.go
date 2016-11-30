@@ -7,32 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"time"
 	"github.com/menklab/goCMS/models"
-	"github.com/menklab/goCMS/config"
 	"io/ioutil"
 )
-
-func Debug(message string) {
-	if config.Debug {
-		fmt.Println(message)
-	}
-}
-func DebugF(format string, a ...interface{}) {
-	if config.Debug {
-		fmt.Printf(format, a...)
-	}
-}
-
-func DebugSecurity(message string) {
-	if config.DebugSecurity {
-		fmt.Println(message)
-	}
-}
-
-func DebugSecurityF(format string, a ...interface{}) {
-	if config.Debug {
-		fmt.Printf(format, a...)
-	}
-}
 
 func GenerateRandomBytes(n int) ([]byte, error) {
 	b := make([]byte, n)

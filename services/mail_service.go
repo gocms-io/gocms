@@ -3,7 +3,7 @@ package services
 import (
 	"gopkg.in/gomail.v2"
 	"github.com/menklab/goCMS/config"
-	"github.com/menklab/goCMS/utility"
+	"log"
 )
 
 type IMailService interface {
@@ -42,10 +42,10 @@ func (ms *MailService) Send(mail *Mail) error {
 	if !config.SMTPSimulate {
 		err := mailService.Dialer.DialAndSend(m)
 		if err != nil {
-			utility.Debug("Error sending mail: " + err.Error())
+			log.Print("Error sending mail: " + err.Error())
 		}
 	} else {
-		utility.Debug("Email simulated: " + mail.Body)
+		log.Print("Email simulated: " + mail.Body)
 	}
 
 	return nil

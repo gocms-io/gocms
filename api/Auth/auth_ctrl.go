@@ -9,12 +9,17 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/menklab/goCMS/config"
 	"github.com/menklab/goCMS/utility/errors"
-	"github.com/menklab/goCMS/utility"
 	"log"
 	"encoding/json"
 	"github.com/menklab/goCMS/models"
 	"database/sql"
 	"fmt"
+	"github.com/menklab/goCMS/utility"
+)
+
+const (
+	REDIRECT_LOGIN         = "login"
+	REDIRECT_VERIFY_DEVICE = "verifyDevice"
 )
 
 // Login form structure.
@@ -39,9 +44,9 @@ type ResetPassword struct {
 }
 
 type AuthController struct {
+	routes *routes.ApiRoutes
 	userService  services.IUserService
 	authServices services.IAuthService
-	routes *routes.ApiRoutes
 }
 
 func Default(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AuthController {
@@ -53,13 +58,15 @@ func Default(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AuthControll
 		userService: sg.UserService,
 	}
 
-	// apply middleware
-	authMiddleware := NewAuthMiddleware(sg)
-	routes.Auth.Use(authMiddleware.RequireAuthenticatedUser())
-	routes.PreTwofactor = routes.Auth
-	if config.UseTwoFactor {
-		routes.Auth.Use(authMiddleware.RequireAuthenticatedDevice())
-	}
+	// apply auth middleware
+	NewAuthMiddleware(sg).DefaultAuth(routes)
+
+	// admin admin route
+	routes.Admin = routes.Auth.Group("/admin")
+
+	//apply acl middleware
+	NewAclMiddleware(sg).DefaultAcl(routes)
+
 	return authController
 }
 

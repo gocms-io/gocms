@@ -8,7 +8,6 @@ import (
 	"github.com/menklab/goCMS/database/migrations"
 	"github.com/rubenv/sql-migrate"
 	"database/sql"
-	"github.com/menklab/goCMS/utility"
 )
 
 type Database struct {
@@ -45,22 +44,22 @@ func Migrate() error {
 	migrate.SetTable("migrations")
 	n, err := migrate.Exec(db, "mysql", migs, migrate.Up)
 	if err != nil {
-		utility.DebugF("MIGRATION ERROR: %s\n", err.Error())
+		log.Printf("MIGRATION ERROR: %s\n", err.Error())
 		if n > 0 {
 			rn, err := migrate.ExecMax(db, "mysql", migs, migrate.Down, n)
 			if err != nil {
-				utility.DebugF("ROLLBACK FAILED: %s\n", err.Error())
+				log.Printf("ROLLBACK FAILED: %s\n", err.Error())
 				return err
 			}
-			utility.DebugF("Rolled back %d migrations.\n", rn)
+			log.Printf("Rolled back %d migrations.\n", rn)
 			return err
 		} else {
-			utility.DebugF("No rollback required.\n")
+			log.Printf("No rollback required.\n")
 			return err
 		}
 	}
 	if n > 0 {
-		utility.DebugF("Applied %d migrations. Database up to date.\n", n)
+		log.Printf("Applied %d migrations. Database up to date.\n", n)
 	}
 	return nil
 }

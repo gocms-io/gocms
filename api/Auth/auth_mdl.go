@@ -6,13 +6,9 @@ import (
 	"net/http"
 	"github.com/menklab/goCMS/services"
 	"github.com/menklab/goCMS/utility/errors"
-	"github.com/menklab/goCMS/utility"
 	"github.com/menklab/goCMS/config"
-)
-
-const (
-	REDIRECT_LOGIN         = "login"
-	REDIRECT_VERIFY_DEVICE = "verifyDevice"
+	"log"
+	"github.com/menklab/goCMS/routes"
 )
 
 type AuthMiddleware struct {
@@ -28,6 +24,14 @@ func NewAuthMiddleware(sg *services.ServicesGroup) *AuthMiddleware {
 	}
 
 	return authMiddleware
+}
+
+func (am *AuthMiddleware) DefaultAuth(routes *routes.ApiRoutes) {
+	routes.Auth.Use(am.RequireAuthenticatedUser())
+	routes.PreTwofactor = routes.Auth
+	if config.UseTwoFactor {
+		routes.Auth.Use(am.RequireAuthenticatedDevice())
+	}
 }
 
 // middleware
@@ -58,11 +62,10 @@ func (am *AuthMiddleware) requireAuthedUser(c *gin.Context) {
 
 	userId, ok := token.Claims["userId"].(float64)
 	if !ok {
-		utility.Debug("UserId not contained in token.")
+		log.Print("UserId not contained in token.")
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_UserToken, REDIRECT_LOGIN)
 		return
 	}
-
 	// get user
 	user, err := am.userService.Get(int(userId))
 	if err != nil {
