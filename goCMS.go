@@ -1,3 +1,5 @@
+//go:generate swagger generate spec -o ./docs/swagger.json
+
 package goCMS
 
 import (
@@ -7,6 +9,8 @@ import (
 	"github.com/menklab/goCMS/controllers"
 	"github.com/menklab/goCMS/repositories"
 	"github.com/menklab/goCMS/database"
+
+
 )
 
 

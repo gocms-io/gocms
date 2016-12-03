@@ -1,3 +1,4 @@
+
 package api
 
 import (
@@ -7,9 +8,6 @@ import (
 	"github.com/menklab/goCMS/routes"
 )
 
-
-// @SubApi User  [/users]
-// @SubApi Allows you access to different features of the users , login , get status etc [/users]
 
 type HealthyController struct {
 	routes *routes.ApiRoutes
@@ -29,15 +27,15 @@ func (hc *HealthyController) Default() {
 	hc.routes.Auth.GET("/verify", hc.user)
 }
 
-// @Title Get Users Information
-// @Description Get Users Information
-// @Accept json
-// @Param userId path int true "User ID"
-// @Success 200 {object} string "Success"
-// @Failure 401 {object} string "Access denied"
-// @Failure 404 {object} string "Not Found"
-// @Resource /users
-// @Router /v1/users/:userId.json [get]
+/**
+ * @api {get} /api/healthy Health Check
+ * @apiName Healthy
+ * @apiGroup Basic
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *
+ */
 func (hc *HealthyController) healthy(c *gin.Context) {
 	c.Status(http.StatusOK)
 }

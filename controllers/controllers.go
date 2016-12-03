@@ -1,3 +1,6 @@
+
+//     License: MIT http://opensource.org/licenses/MIT
+
 package controllers
 
 import (
@@ -8,27 +11,25 @@ import (
 )
 
 type ControllersGroup struct {
-	Api *Api
+	Api          *Api
 }
 
 type Api struct {
-	RoutePrefix string
-	Routes      *routes.ApiRoutes
+	RoutePrefix    string
+	Routes         *routes.ApiRoutes
 	ApiControllers *ApiControllers
 }
 
 type ApiControllers struct {
-	AuthController *api.AuthController
-	HealthyController *api.HealthyController
-	UserController *api.UserController
+	AuthController      *api.AuthController
+	HealthyController   *api.HealthyController
+	UserController      *api.UserController
 	AdminUserController *api.AdminUserController
 }
 
 var (
 	defaultRoutePrefix = "/api"
 )
-
-
 
 func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *ControllersGroup {
 
@@ -45,16 +46,17 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 		AdminUserController: api.DefaultAdminUserController(routes, sg),
 	}
 
-	api := &Api {
+	api := &Api{
 		RoutePrefix: "/api",
 		Routes: routes,
 		ApiControllers: apiControllers,
 	}
 
-
 	controllersGroup := &ControllersGroup{
 		Api: api,
 	}
+
+	r.Static("/docs", "./docs")
 
 	return controllersGroup
 }
