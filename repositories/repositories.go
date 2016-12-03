@@ -1,16 +1,18 @@
 package repositories
 
+import "github.com/menklab/goCMS/database"
+
 type RepositoriesGroup struct {
 	UsersRepository IUserRepository
 	SecureCodeRepository ISecureCodeRepository
 }
 
-func DefaultRepositoriesGroup() *RepositoriesGroup {
+func DefaultRepositoriesGroup(db *database.Database) *RepositoriesGroup {
 
 	// setup repositories
 	rg := &RepositoriesGroup{
-		UsersRepository: DefaultUserRepository(),
-		SecureCodeRepository: DefaultSecureCodeRepository(),
+		UsersRepository: DefaultUserRepository(db),
+		SecureCodeRepository: DefaultSecureCodeRepository(db),
 	}
 	return rg
 }

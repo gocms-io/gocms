@@ -2,10 +2,9 @@ package migrations
 
 import "github.com/rubenv/sql-migrate"
 
-var create_initial *migrate.Migration
 
-func init() {
-	create_initial = &migrate.Migration{
+func CreateInitial() *migrate.Migration{
+	create_initial := migrate.Migration{
 		Id: "1",
 		Up: []string{`
 
@@ -44,4 +43,6 @@ func init() {
 			"DROP TABLE users;",
 		},
 	}
+
+	return &create_initial
 }

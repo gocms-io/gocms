@@ -25,9 +25,9 @@ type UserRepository struct {
 }
 
 
-func DefaultUserRepository() *UserRepository{
+func DefaultUserRepository(db *database.Database) *UserRepository{
 	userRepository := &UserRepository{
-		database: database.Dbx,
+		database: db.Dbx,
 	}
 
 	return userRepository

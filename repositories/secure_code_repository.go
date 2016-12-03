@@ -17,9 +17,9 @@ type SecureCodeRepository struct {
 }
 
 
-func DefaultSecureCodeRepository() *SecureCodeRepository{
+func DefaultSecureCodeRepository(db *database.Database) *SecureCodeRepository{
 	secureCodeRepository := &SecureCodeRepository{
-		database: database.Dbx,
+		database: db.Dbx,
 	}
 
 	return secureCodeRepository
