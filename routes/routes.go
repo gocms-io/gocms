@@ -7,4 +7,5 @@ type ApiRoutes struct {
 	PreTwofactor *gin.RouterGroup
 	Auth   *gin.RouterGroup
 	Admin *gin.RouterGroup
+	Root *gin.RouterGroup
 }

@@ -5,12 +5,12 @@ import (
 )
 
 const (
-	ApiError_UserToken         = "Your user token is not valid or has expired."
-	ApiError_DeviceToken       = "Your device token is not valid or has expired."
-	ApiError_Json              = "Could not parse request. Some fields may be missing."
-	ApiError_UserDoesntExist   = "User Doesn't Exist."
+	ApiError_UserToken = "Your user token is not valid or has expired."
+	ApiError_DeviceToken = "Your device token is not valid or has expired."
+	ApiError_Json = "Could not parse request. Some fields may be missing."
+	ApiError_UserDoesntExist = "User Doesn't Exist."
 	ApiError_UserAlreadyExists = "User Already Exists."
-	ApiError_Permissions       = "You do not have access."
+	ApiError_Permissions = "You do not have access."
 )
 
 type appError interface {
@@ -37,6 +37,17 @@ func (e *apiError) Error() string {
 
 func (e *apiError) Include() bool {
 	return e.include
+}
+
+
+// An Error Response is the default error that is used for api responses.
+//
+// swagger:model error
+type ErrorResponse struct {
+	Code     int  `json:"code,string"`
+	Message  string `json:"message,string"`
+	Redirect string `json:"redirect,string"`
+	Data     interface{} `json:"data,string"`
 }
 
 func Response(c *gin.Context, code int, message string, err interface{}, a ...interface{}) {
@@ -67,3 +78,4 @@ func ResponseWithSoftRedirect(c *gin.Context, code int, message string, redirect
 		"data": a,
 	})
 }
+

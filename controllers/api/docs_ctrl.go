@@ -6,25 +6,25 @@ import (
 	"net/http"
 	"github.com/menklab/goCMS/utility"
 	"github.com/menklab/goCMS/routes"
+	"stash.cqlcorp.net/ce/wrist-reader-api/controllers/routes"
 )
 
 
-type HealthyController struct {
+type DocumentationController struct {
 	routes *routes.ApiRoutes
 }
 
-func DefaultHealthyController(routes *routes.ApiRoutes) *HealthyController{
-	hc := &HealthyController{
+func DefaultDocumentationController(routes *routes.ApiRoutes) *DocumentationController{
+	dc := &HealthyController{
 		routes: routes,
 	}
 
-	hc.Default()
-	return hc
+	dc.Default()
+	return dc
 }
 
-func (hc *HealthyController) Default() {
-	hc.routes.Public.GET("/healthy", hc.healthy)
-	hc.routes.Auth.GET("/verify", hc.user)
+func (dc *DocumentationController) Default() {
+	dc.routes.Root.StaticFile("/docs", "./docs/")
 }
 
 // @api {get} /healthy Service Health Status

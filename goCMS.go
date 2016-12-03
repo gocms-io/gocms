@@ -1,5 +1,3 @@
-//go:generate swagger generate spec -o ./docs/swagger.json
-
 package goCMS
 
 import (
@@ -10,10 +8,9 @@ import (
 	"github.com/menklab/goCMS/repositories"
 	"github.com/menklab/goCMS/database"
 
-
 )
 
-
+//go:generate apidoc -i ./ -o ./docs/ -f ".*\\.js$" -f ".\\.go$"
 
 type Engine struct {
 	Gin *gin.Engine
@@ -25,6 +22,8 @@ type Engine struct {
 
 
 func Default() *Engine{
+
+	// setup docs
 
 	// setup database
 	db := database.Default()

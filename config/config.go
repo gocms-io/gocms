@@ -21,6 +21,7 @@ var (
 	Port string
 	PublicApiUrl string
 	RedirectRootUrl string
+	CorsHost string
 
 	// Authentication
 	AuthKey string
@@ -59,6 +60,7 @@ func init() {
 	Port= getStringOrFail("PORT")
 	PublicApiUrl = getStringOrFail("PUBLIC_URL")
 	RedirectRootUrl = getStringOrFail("REDIRECT_ROOT_URL")
+	CorsHost = getStringOrFail("CORS_HOST")
 
 	// Authentication
 	AuthKey = getStringOrFail("AUTHENTICATION_KEY")
