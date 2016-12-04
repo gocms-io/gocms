@@ -83,20 +83,6 @@ func (ac *AuthController) Default() {
 	}
 }
 
-// login controller
-/**
- * @api {post} /api/login Login
- * @apiName login
- * @apiGroup Authentication
- *
- * @apiParam {json} email User's email address.
- * @apiParam {json} password User's password.
- *
- * @apiSuccess {Header} X-Auth-Token JWT token used for subsequent authenticated requests.
- *
- * @apiSuccessExample Success-Response:
- *     	HTTP/1.1 200 OK
- */
 func (ac *AuthController) login(c *gin.Context) {
 
 	var loginDisplay LoginDisplay
@@ -144,19 +130,6 @@ func (ac *AuthController) getDeviceCode(c *gin.Context) {
 
 }
 
-// verifyDevice controller
-/**
- * @api {post} /api/verify-device Verify Device
- * @apiName  verify device
- * @apiGroup Authentication
- *
- * @apiParam {json} deviceCode One time device code sent to user's email.
- *
- * @apiSuccess {Header} X-Device-Token JWT token used for subsequent authenticated requests.
- *
- * @apiSuccessExample Success-Response:
- *     	HTTP/1.1 200 OK
- */
 func (ac *AuthController) verifyDevice(c *gin.Context) {
 
 	// get userId

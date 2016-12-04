@@ -27,32 +27,23 @@ func (hc *HealthyController) Default() {
 	hc.routes.Auth.GET("/verify", hc.user)
 }
 
-// @api {get} /healthy Service Health Status
-// @apiName GetHealthy
-// @apiGroup Utility
-//
-// @apiSuccessExample Success-Response:
-//     HTTP/1.1 200 OK
-//
-// @apiError Not Found The services are not online.
-//
-// @apiErrorExample Error-Response:
-//     HTTP/1.1 404 Not Found
+/**
+* @api {get} /healthy Service Health Status
+* @apiName GetHealthy
+* @apiGroup Utility
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*
+* @apiError Not Found The services are not online.
+*
+* @apiErrorExample Error-Response:
+*     HTTP/1.1 404 Not Found
+*/
 func (hc *HealthyController) healthy(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-// @api {get} /verify Verify Authentication
-// @apiName Verify Authentication
-// @apiGroup Authentication
-//
-// @apiSuccessExample Success-Response:
-//     HTTP/1.1 200 OK
-//
-// @apiError Unauthorized The user is not authorized.
-//
-// @apiErrorExample Error-Response:
-//     HTTP/1.1 401 Unauthorized
 
 func (hc *HealthyController) user(c *gin.Context) {
 	// get logged in user

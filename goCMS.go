@@ -10,8 +10,6 @@ import (
 
 )
 
-//go:generate apidoc -i ./ -o ./docs/ -f ".*\\.js$" -f ".\\.go$"
-
 type Engine struct {
 	Gin *gin.Engine
 	ControllersGroup *controllers.ControllersGroup
