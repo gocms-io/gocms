@@ -51,18 +51,6 @@
 			"revisionTime": "2016-06-05T17:15:01Z"
 		},
 		{
-			"checksumSHA1": "ljZrmD7pmMXAkGNfp6IEzj31fY8=",
-			"path": "github.com/joho/godotenv",
-			"revision": "4ed13390c0acd2ff4e371e64d8b97c8954138243",
-			"revisionTime": "2015-09-07T01:02:28Z"
-		},
-		{
-			"checksumSHA1": "UE4lhbPYYWEhqHXQk24OA73m5+8=",
-			"path": "github.com/joho/godotenv/autoload",
-			"revision": "4ed13390c0acd2ff4e371e64d8b97c8954138243",
-			"revisionTime": "2015-09-07T01:02:28Z"
-		},
-		{
 			"checksumSHA1": "b0T0Hzd+zYk+OCDTFMps+jwa/nY=",
 			"path": "github.com/manucorporat/sse",
 			"revision": "ee05b128a739a0fb76c7ebd3ae4810c1de808d6d",
@@ -97,6 +85,12 @@
 			"path": "golang.org/x/net/context",
 			"revision": "ef00b378c73f107bf44d5c9b69875255ce89b79a",
 			"revisionTime": "2016-05-15T03:16:23Z"
+		},
+		{
+			"checksumSHA1": "6IzzHO9p32aHJhMYMwijccDUIVA=",
+			"path": "gopkg.in/alexcesaro/quotedprintable.v3",
+			"revision": "2caba252f4dc53eaf6b553000885530023f54623",
+			"revisionTime": "2015-07-16T17:19:45Z"
 		},
 		{
 			"checksumSHA1": "9+TP2NPlTWXoRndq02uwZW26AqI=",

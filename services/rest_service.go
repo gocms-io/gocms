@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"log"
 	"io/ioutil"
-	"stash.cqlcorp.net/mp/moja-portal/utility/errors"
+	"github.com/menklab/goCMS/utility/errors"
 )
 
 var GET string = "GET"
