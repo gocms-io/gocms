@@ -31,6 +31,30 @@ func (uc *UserController) Default() {
 
 }
 
+/**
+* @api {get} /user User Profile (Get)
+* @apiName GetUser
+* @apiGroup User
+*
+* @apiUse AuthHeader
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+* 	{
+*		"id": "1234",
+*  		"fullName": "John Doe",
+*		"email": "name@email.com",
+*		"gender": "1",
+*		"photo": "www.photo.com",
+*		"minAge": "0",
+*		"maxAge": "0",
+*		"created": "2016-12-02T23:54:59Z",
+*		"isAdmin": false
+* 	}
+*
+* @apiErrorExample Error-Response:
+*     HTTP/1.1 403 Unauthorized
+*/
 func (uc *UserController) get(c *gin.Context) {
 
 	authUser, _ := utility.GetUserFromContext(c)
@@ -38,6 +62,24 @@ func (uc *UserController) get(c *gin.Context) {
 	c.JSON(http.StatusOK, authUser)
 }
 
+/**
+* @api {put} /user User Profile (Update)
+* @apiName UpdateUser
+* @apiGroup User
+*
+* @apiUse AuthHeader
+*
+* @apiParam {string} fullName
+* @apiParam {string} email
+* @apiParam {string} newPassword set a new password for the user.
+* @apiParam {string} password (required) the current password must be entered to update profile information
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*
+* @apiErrorExample Error-Response:
+*     HTTP/1.1 403 Unauthorized
+*/
 func (uc *UserController) update(c *gin.Context) {
 
 	// get logged in user

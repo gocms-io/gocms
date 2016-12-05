@@ -44,7 +44,25 @@ func (hc *HealthyController) healthy(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-
+/**
+* @api {get} /verify Verify User
+* @apiName VerifyUser
+* @apiGroup Authentication
+*
+* @apiUse UserAuthHeader
+*
+* @apiSuccessExample Success-Response:
+*	HTTP/1.1 200 OK
+*	{
+*		"id": "1234",
+*		"fullName": "john doe",
+*		"email": "name@email.com",
+*		"gender": "1"
+*	}
+*
+* @apiErrorExample Error-Response:
+*     HTTP/1.1 403 Unauthorized
+*/
 func (hc *HealthyController) user(c *gin.Context) {
 	// get logged in user
 	authUser, _ := utility.GetUserFromContext(c)

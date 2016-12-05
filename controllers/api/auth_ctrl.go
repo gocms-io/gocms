@@ -18,7 +18,7 @@ import (
 )
 
 const (
-	REDIRECT_LOGIN         = "login"
+	REDIRECT_LOGIN = "login"
 	REDIRECT_VERIFY_DEVICE = "verifyDevice"
 )
 
@@ -83,6 +83,35 @@ func (ac *AuthController) Default() {
 	}
 }
 
+/**
+* @api {post} /login Login
+* @apiName Login
+* @apiGroup Authentication
+*
+* @apiUse UserAuthHeader
+*
+* @apiParam {string} email
+* @apiParam {string} password
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*	Headers:
+*		x-auth-token: xxx.xxx.xxx
+* 	{
+*		"id": "1234",
+*  		"fullName": "John Doe",
+*		"email": "name@email.com",
+*		"gender": "1",
+*		"photo": "www.photo.com",
+*		"minAge": "0",
+*		"maxAge": "0",
+*		"created": "2016-12-02T23:54:59Z",
+*		"isAdmin": false
+* 	}
+*
+* @apiErrorExample Error-Response:
+*     HTTP/1.1 403 Unauthorized
+*/
 func (ac *AuthController) login(c *gin.Context) {
 
 	var loginDisplay LoginDisplay
@@ -166,7 +195,6 @@ func (ac *AuthController) verifyDevice(c *gin.Context) {
 	c.String(http.StatusOK, "ok")
 }
 
-
 type fbData struct {
 	Height int `json:"height" binding:"required"`
 	Width  int `json:"width" binding:"required"`
@@ -188,6 +216,32 @@ type fbMe struct {
 	AgeRange fbAgeRange `json:"age_range" binding:"required"`
 }
 
+/**
+* @api {post} /login/facebook Login - Facebook
+* @apiName LoginFacebook
+* @apiGroup Authentication
+*
+* @apiHeader {String} x-facebook-token Facebook Authorization Token generated from facebook sdk in app.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*	Headers:
+*		x-auth-token: xxx.xxx.xxx
+* 	{
+*		"id": "1234",
+*  		"fullName": "John Doe",
+*		"email": "name@email.com",
+*		"gender": "1",
+*		"photo": "www.photo.com",
+*		"minAge": "0",
+*		"maxAge": "0",
+*		"created": "2016-12-02T23:54:59Z",
+*		"isAdmin": false
+* 	}
+*
+* @apiErrorExample Error-Response:
+*     HTTP/1.1 403 Unauthorized
+*/
 func (ac *AuthController) loginFacebook(c *gin.Context) {
 	// check for token in header
 	fToken := c.Request.Header.Get("X-FACEBOOK-TOKEN")
@@ -284,6 +338,32 @@ type gMe struct {
 	Picture string `json:"picture" binding:"required"`
 }
 
+/**
+* @api {post} /login/google Login - Google
+* @apiName LoginGoogle
+* @apiGroup Authentication
+*
+* @apiHeader {String} x-google-token Google Authorization Token generated from google sdk in app.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*	Headers:
+*		x-auth-token: xxx.xxx.xxx
+* 	{
+*		"id": "1234",
+*  		"fullName": "John Doe",
+*		"email": "name@email.com",
+*		"gender": "1",
+*		"photo": "www.photo.com",
+*		"minAge": "0",
+*		"maxAge": "0",
+*		"created": "2016-12-02T23:54:59Z",
+*		"isAdmin": false
+* 	}
+*
+* @apiErrorExample Error-Response:
+*     HTTP/1.1 403 Unauthorized
+*/
 func (ac *AuthController) loginGoogle(c *gin.Context) {
 	// check for token in header
 	token := c.Request.Header.Get("X-GOOGLE-TOKEN")
@@ -367,6 +447,21 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 
 }
 
+/**
+* @api {post} /reset-password Reset Password (Request)
+* @apiName ResetPassword
+* @apiGroup Authentication
+*
+* @apiUse AuthHeader
+*
+* @apiParam {string} email
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*
+* @apiErrorExample Error-Response:
+*     HTTP/1.1 403 Unauthorized
+*/
 func (ac *AuthController) resetPassword(c *gin.Context) {
 
 	// get email for reset
@@ -387,6 +482,23 @@ func (ac *AuthController) resetPassword(c *gin.Context) {
 	}
 }
 
+/**
+* @api {put} /reset-password Reset Password (Verify/Set)
+* @apiName SetResetPassword
+* @apiGroup Authentication
+*
+* @apiUse AuthHeader
+*
+* @apiParam {string} email
+* @apiParam {string} password
+* @apiParam {string} resetCode
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*
+* @apiErrorExample Error-Response:
+*     HTTP/1.1 403 Unauthorized
+*/
 func (ac *AuthController) setPassword(c *gin.Context) {
 	// get password and code for reset
 	var resetPassword ResetPassword

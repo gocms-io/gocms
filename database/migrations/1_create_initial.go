@@ -33,9 +33,6 @@ func CreateInitial() *migrate.Migration{
 				REFERENCES users (id)
 				ON DELETE CASCADE
 			) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-			`,`
-			INSERT INTO users (fullName, email, email2, password)
-			VALUES ('Test User', 'test@grnow.com', '', '$2a$10$D1C8R1pdLp59o8/2e/b7N.2fZ7gUk6Gr8gux1O1JVkQHTPPjMVHCK');
 			`,
 
 		},
