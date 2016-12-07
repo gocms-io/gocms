@@ -1,5 +1,5 @@
 
-package api
+package static
 
 import (
 	"github.com/menklab/goCMS/routes"
