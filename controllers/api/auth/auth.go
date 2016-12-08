@@ -42,6 +42,7 @@ func DefaultAuthController(routes *routes.ApiRoutes, sg *services.ServicesGroup)
 }
 
 func (ac *AuthController) Default() {
+	ac.routes.Public.POST("/register", ac.register)
 	ac.routes.Public.POST("/login", ac.login)
 	ac.routes.Public.POST("/login/facebook", ac.loginFacebook)
 	ac.routes.Public.POST("/login/google", ac.loginGoogle)

@@ -3,8 +3,8 @@ package services
 import (
 	"github.com/menklab/goCMS/models"
 	"github.com/menklab/goCMS/repositories"
-	"github.com/menklab/goCMS/utility/errors"
 	"github.com/menklab/goCMS/utility"
+	"github.com/menklab/goCMS/utility/errors"
 )
 
 type IUserService interface {
@@ -70,7 +70,14 @@ func (us *UserService) Add(user *models.User) error {
 	// hash password
 	if user.NewPassword == "" {
 		user.NewPassword, _ = utility.GenerateRandomString(32)
+	} else {
+		// password complexity
+		if !us.AuthService.PasswordIsComplex(user.NewPassword) {
+			return errors.NewToUser("Password is not complex enough.")
+		}
 	}
+
+
 	hashPassword, err := us.AuthService.HashPassword(user.NewPassword)
 	if err != nil {
 		return nil
@@ -106,9 +113,9 @@ func (us *UserService) Update(id int, userForUpdate *models.User) error {
 func (us *UserService) UpdatePassword(id int, password string) error {
 
 	// check complexity
-	if len(password) < 8 {
-		return errors.NewToUser("Password must be atleast 8 chars long.")
-	}
+	//if !us.AuthService.(password) {
+	//	return errors.NewToUser("Password is not complex enough.")
+	//}
 
 	// make hash
 	newHash, err := us.AuthService.HashPassword(password)

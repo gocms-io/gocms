@@ -48,8 +48,7 @@ func (ac *AuthController) resetPassword(c *gin.Context) {
 	err = ac.ServicesGroup.AuthService.SendPasswordResetCode(resetRequest.Email)
 	if err != nil {
 		log.Printf("Error sending reset email: %s", err.Error())
-		errors.Response(c, http.StatusInternalServerError, errors.ApiError_Server, err)
-		return
+		//return nothing for security.
 	}
 
 	// respond as everything after this doesn't matter to the requester
@@ -79,6 +78,12 @@ func (ac *AuthController) setPassword(c *gin.Context) {
 	err := c.BindJSON(&resetPassword) // update any changes from request
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		return
+	}
+
+	// verify password complexity
+	if !ac.ServicesGroup.AuthService.PasswordIsComplex(resetPassword.Password) {
+		errors.Response(c, http.StatusBadRequest, "Password is not complex enough.", err)
 		return
 	}
 

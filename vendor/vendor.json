@@ -57,6 +57,60 @@
 			"revisionTime": "2016-01-26T18:01:36Z"
 		},
 		{
+			"checksumSHA1": "DP8R0Q7TDlHbhz9Livyj8RkRKvU=",
+			"path": "github.com/nbutton23/zxcvbn-go",
+			"revision": "a22cb81b2ecdde8b68e9ffb8824731cbf88e1de4",
+			"revisionTime": "2016-06-27T00:44:24Z"
+		},
+		{
+			"checksumSHA1": "HEqKoRuKJ86gic8DPZqtDKZNo7E=",
+			"path": "github.com/nbutton23/zxcvbn-go/adjacency",
+			"revision": "a22cb81b2ecdde8b68e9ffb8824731cbf88e1de4",
+			"revisionTime": "2016-06-27T00:44:24Z"
+		},
+		{
+			"checksumSHA1": "etc47rBuvFfzUZ7n8EDLQiDQeXU=",
+			"path": "github.com/nbutton23/zxcvbn-go/data",
+			"revision": "a22cb81b2ecdde8b68e9ffb8824731cbf88e1de4",
+			"revisionTime": "2016-06-27T00:44:24Z"
+		},
+		{
+			"checksumSHA1": "/NSHii4ih+43IBnoXrjAtIzTtPI=",
+			"path": "github.com/nbutton23/zxcvbn-go/entropy",
+			"revision": "a22cb81b2ecdde8b68e9ffb8824731cbf88e1de4",
+			"revisionTime": "2016-06-27T00:44:24Z"
+		},
+		{
+			"checksumSHA1": "VyH3r1FJcSB13wj0T812EMASq1Q=",
+			"path": "github.com/nbutton23/zxcvbn-go/frequency",
+			"revision": "a22cb81b2ecdde8b68e9ffb8824731cbf88e1de4",
+			"revisionTime": "2016-06-27T00:44:24Z"
+		},
+		{
+			"checksumSHA1": "U6O/H84jE24jhCSOgi+IsjSPomM=",
+			"path": "github.com/nbutton23/zxcvbn-go/match",
+			"revision": "a22cb81b2ecdde8b68e9ffb8824731cbf88e1de4",
+			"revisionTime": "2016-06-27T00:44:24Z"
+		},
+		{
+			"checksumSHA1": "BHO5wnIg2NQTYSILHmpezEJFv4E=",
+			"path": "github.com/nbutton23/zxcvbn-go/matching",
+			"revision": "a22cb81b2ecdde8b68e9ffb8824731cbf88e1de4",
+			"revisionTime": "2016-06-27T00:44:24Z"
+		},
+		{
+			"checksumSHA1": "vRXGbBJSonwD03A/WAkhNkYNY38=",
+			"path": "github.com/nbutton23/zxcvbn-go/scoring",
+			"revision": "a22cb81b2ecdde8b68e9ffb8824731cbf88e1de4",
+			"revisionTime": "2016-06-27T00:44:24Z"
+		},
+		{
+			"checksumSHA1": "cEdCjSL9cNJm5o+nGwPM3WgloyM=",
+			"path": "github.com/nbutton23/zxcvbn-go/utils/math",
+			"revision": "a22cb81b2ecdde8b68e9ffb8824731cbf88e1de4",
+			"revisionTime": "2016-06-27T00:44:24Z"
+		},
+		{
 			"checksumSHA1": "Y1gIGoR8z/lDf2j+vcH1eKZGDSk=",
 			"path": "github.com/rubenv/sql-migrate",
 			"revision": "6f4757563362064790a6687a6b60f182062c8634",

@@ -18,8 +18,6 @@ type LoginDisplay struct {
 * @apiName Login
 * @apiGroup Authentication
 *
-* @apiUse UserAuthHeader
-*
 * @apiParam {string} email
 * @apiParam {string} password
 *

@@ -8,6 +8,7 @@ import (
 	"github.com/menklab/goCMS/utility"
 	"github.com/menklab/goCMS/config"
 	"log"
+	"github.com/nbutton23/zxcvbn-go"
 )
 
 type IAuthService interface {
@@ -18,6 +19,7 @@ type IAuthService interface {
 	VerifyPasswordResetCode(int, string) bool
         SendTwoFactorCode(*models.User) error
 	VerifyTwoFactorCode(id int, code string) bool
+	PasswordIsComplex(password string) bool
 }
 
 
@@ -89,7 +91,7 @@ func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
 
 	// at this point the code is good and we must respond this way... yet we want to null out the code so it can't be used again
 	// create code
-	_, hashedCode, err := as.getRandomCode(6)
+	_, hashedCode, err := as.getRandomCode(32)
 	if err != nil {
 		return false
 	}
@@ -115,7 +117,7 @@ func (as *AuthService) SendPasswordResetCode(email string) error {
 	}
 
 	// create reset code
-	code, hashedCode, err := as.getRandomCode(32)
+	code, hashedCode, err := as.getRandomCode(6)
 	if err != nil {
 		return err
 	}
@@ -238,4 +240,14 @@ func (as *AuthService) getRandomCode(length int) (string, string, error) {
 	}
 
 	return code, hashedCode, nil
+}
+
+func (as *AuthService) PasswordIsComplex(password string) bool {
+	userInputs := []string{}
+	score := zxcvbn.PasswordStrength(password, userInputs)
+	log.Printf("Password Complexity: %v", score.Score)
+	if score.Score < int(config.PasswordComplexity) {
+		return false
+	}
+	return true
 }
