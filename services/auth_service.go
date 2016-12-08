@@ -23,7 +23,6 @@ type IAuthService interface {
 
 type AuthService struct {
 	MailService       IMailService
-	SecureCodeRepo    repositories.ISecureCodeRepository
 	RepositoriesGroup *repositories.RepositoriesGroup
 }
 
@@ -71,7 +70,7 @@ func (as *AuthService) VerifyPassword(passwordHash string, password string) bool
 func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
 
 	// get code
-	secureCode, err := as.SecureCodeRepo.GetLatestForUserByType(id, models.Code_ResetPassword)
+	secureCode, err := as.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, models.Code_ResetPassword)
 	if err != nil {
 		return false
 	}
@@ -93,7 +92,7 @@ func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
 		return false
 	}
 
-	err = as.SecureCodeRepo.Add(&models.SecureCode{
+	err = as.RepositoriesGroup.SecureCodeRepository.Add(&models.SecureCode{
 		UserId: id,
 		Type:   models.Code_ResetPassword,
 		Code:   hashedCode,
@@ -120,7 +119,7 @@ func (as *AuthService) SendPasswordResetCode(email string) error {
 	}
 
 	// update user with new code
-	err = as.SecureCodeRepo.Add(&models.SecureCode{
+	err = as.RepositoriesGroup.SecureCodeRepository.Add(&models.SecureCode{
 		UserId: user.Id,
 		Type:   models.Code_ResetPassword,
 		Code:   hashedCode,
@@ -128,6 +127,8 @@ func (as *AuthService) SendPasswordResetCode(email string) error {
 	if err != nil {
 		return err
 	}
+
+	log.Printf("sending password reset: %s", hashedCode)
 
 	// send email
 	as.MailService.Send(&Mail{
@@ -154,7 +155,7 @@ func (as *AuthService) SendTwoFactorCode(user *models.User) error {
 
 
 	// update user with new code
-	err = as.SecureCodeRepo.Add(&models.SecureCode{
+	err = as.RepositoriesGroup.SecureCodeRepository.Add(&models.SecureCode{
 		UserId: user.Id,
 		Type:   models.Code_VerifyDevice,
 		Code:   hashedCode,
@@ -179,7 +180,7 @@ func (as *AuthService) SendTwoFactorCode(user *models.User) error {
 func (as *AuthService) VerifyTwoFactorCode(id int, code string) bool {
 
 	// get code from db
-	secureCode, err := as.SecureCodeRepo.GetLatestForUserByType(id, models.Code_VerifyDevice)
+	secureCode, err := as.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, models.Code_VerifyDevice)
 	if err != nil {
 		return false
 	}
@@ -201,7 +202,7 @@ func (as *AuthService) VerifyTwoFactorCode(id int, code string) bool {
 		return false
 	}
 
-	err = as.SecureCodeRepo.Add(&models.SecureCode{
+	err = as.RepositoriesGroup.SecureCodeRepository.Add(&models.SecureCode{
 		UserId: id,
 		Type:   models.Code_VerifyDevice,
 		Code:   hashedCode,
