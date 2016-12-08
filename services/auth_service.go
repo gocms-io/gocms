@@ -61,6 +61,7 @@ func (as *AuthService) AuthUser(email string, password string) (*models.User, bo
 func (as *AuthService) VerifyPassword(passwordHash string, password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(password))
 	if err != nil {
+		log.Printf("Error comparing hashes: %s", err.Error())
 		return false
 	}
 
@@ -72,6 +73,7 @@ func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
 	// get code
 	secureCode, err := as.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, models.Code_ResetPassword)
 	if err != nil {
+		log.Printf("error getting latest password reset code: %s", err.Error())
 		return false
 	}
 
@@ -87,7 +89,7 @@ func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
 
 	// at this point the code is good and we must respond this way... yet we want to null out the code so it can't be used again
 	// create code
-	_, hashedCode, err := as.getRandomCode(32)
+	_, hashedCode, err := as.getRandomCode(6)
 	if err != nil {
 		return false
 	}
@@ -127,8 +129,6 @@ func (as *AuthService) SendPasswordResetCode(email string) error {
 	if err != nil {
 		return err
 	}
-
-	log.Printf("sending password reset: %s", hashedCode)
 
 	// send email
 	as.MailService.Send(&Mail{
