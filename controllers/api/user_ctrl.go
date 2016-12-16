@@ -2,12 +2,12 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"github.com/menklab/goCMS/services"
-	"github.com/menklab/goCMS/routes"
-	"github.com/menklab/goCMS/utility"
 	"github.com/menklab/goCMS/models"
+	"github.com/menklab/goCMS/routes"
+	"github.com/menklab/goCMS/services"
+	"github.com/menklab/goCMS/utility"
 	"github.com/menklab/goCMS/utility/errors"
+	"net/http"
 )
 
 type UserController struct {
@@ -15,9 +15,9 @@ type UserController struct {
 	ServicesGroup *services.ServicesGroup
 }
 
-func DefaultUserController(routes *routes.ApiRoutes, sg *services.ServicesGroup) *UserController{
+func DefaultUserController(routes *routes.ApiRoutes, sg *services.ServicesGroup) *UserController {
 	userController := &UserController{
-		routes: routes,
+		routes:        routes,
 		ServicesGroup: sg,
 	}
 	userController.Default()
@@ -28,11 +28,12 @@ func (uc *UserController) Default() {
 
 	uc.routes.Auth.GET("/user", uc.get)
 	uc.routes.Auth.PUT("/user", uc.update)
+	uc.routes.Auth.PUT("/user/changePassword", uc.changePassword)
 
 }
 
 /**
-* @api {get} /user User Profile (Get)
+* @api {get} /user Get Profile
 * @apiName GetUser
 * @apiGroup User
 *
@@ -54,7 +55,7 @@ func (uc *UserController) Default() {
 *
 * @apiErrorExample Error-Response:
 *     HTTP/1.1 403 Unauthorized
-*/
+ */
 func (uc *UserController) get(c *gin.Context) {
 
 	authUser, _ := utility.GetUserFromContext(c)
@@ -63,46 +64,48 @@ func (uc *UserController) get(c *gin.Context) {
 }
 
 /**
-* @api {put} /user User Profile (Update)
+* @api {put} /user Update Profile
 * @apiName UpdateUser
 * @apiGroup User
 *
 * @apiUse AuthHeader
 *
 * @apiParam {string} fullName
-* @apiParam {string} email
-* @apiParam {string} newPassword set a new password for the user.
-* @apiParam {string} password (required) the current password must be entered to update profile information
+* @apiParam {int} gender 1=male, 2=female
 *
 * @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK
 *
 * @apiErrorExample Error-Response:
 *     HTTP/1.1 403 Unauthorized
-*/
+ */
 func (uc *UserController) update(c *gin.Context) {
 
 	// get logged in user
 	authUser, _ := utility.GetUserFromContext(c)
 
 	// copy current user info into update user
-	var userForUpdate models.User
+	var userForUpdate models.UserUpdateInput
 	err := c.BindJSON(&userForUpdate) // update any changes from request
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, err.Error(), err)
 		return
 	}
 
-	// verify password
-	if ok := uc.ServicesGroup.AuthService.VerifyPassword(authUser.Password, userForUpdate.ConfirmPassword); !ok {
-		errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
-		return
+	// add acceptable fields to user for update
+	if userForUpdate.FullName != "" {
+		authUser.FullName = userForUpdate.FullName
 	}
 
-	// add acceptable fields to user for update
-	authUser.Email = userForUpdate.Email
-	authUser.FullName = userForUpdate.FullName
-	authUser.NewPassword = userForUpdate.NewPassword
+	// check and set gender
+	switch userForUpdate.Gender {
+	case models.GENDER_MALE:
+		authUser.Gender = models.GENDER_MALE
+		break
+	case models.GENDER_FEMALE:
+		authUser.Gender = models.GENDER_FEMALE
+		break
+	}
 
 	// do update
 	err = uc.ServicesGroup.UserService.Update(authUser.Id, authUser)
@@ -111,6 +114,50 @@ func (uc *UserController) update(c *gin.Context) {
 		return
 	}
 
-	//c.Status(http.StatusOK)
+	c.Status(http.StatusOK)
+}
+
+/**
+* @api {put} /user/changePassword Change Password
+* @apiName ChangePassword
+* @apiGroup User
+*
+* @apiUse AuthHeader
+*
+* @apiParam {string} newPassword set a new password for the user.
+* @apiParam {string} currentPassword (required) the current password must be entered to update profile information
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*
+* @apiErrorExample Error-Response:
+*     HTTP/1.1 403 Unauthorized
+ */
+func (uc *UserController) changePassword(c *gin.Context) {
+
+	// get logged in user
+	authUser, _ := utility.GetUserFromContext(c)
+
+	// copy current user info into update user
+	var changePaswordInput models.UserChangePasswordInput
+	err := c.BindJSON(&changePaswordInput) // update any changes from request
+	if err != nil {
+		errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		return
+	}
+
+	// verify password
+	if ok := uc.ServicesGroup.AuthService.VerifyPassword(authUser.Password, changePaswordInput.CurrentPassword); !ok {
+		errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
+		return
+	}
+
+	// do update
+	err = uc.ServicesGroup.UserService.UpdatePassword(authUser.Id, changePaswordInput.NewPassword)
+	if err != nil {
+		errors.Response(c, http.StatusInternalServerError, "Couldn't update user.", err)
+		return
+	}
+
 	c.Status(http.StatusOK)
 }

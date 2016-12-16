@@ -112,10 +112,10 @@ func (us *UserService) Update(id int, userForUpdate *models.User) error {
 }
 func (us *UserService) UpdatePassword(id int, password string) error {
 
-	// check complexity
-	//if !us.AuthService.(password) {
-	//	return errors.NewToUser("Password is not complex enough.")
-	//}
+	 //check complexity
+	if !us.AuthService.PasswordIsComplex(password) {
+		return errors.NewToUser("Password is not complex enough.")
+	}
 
 	// make hash
 	newHash, err := us.AuthService.HashPassword(password)

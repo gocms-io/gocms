@@ -245,7 +245,6 @@ func (as *AuthService) getRandomCode(length int) (string, string, error) {
 func (as *AuthService) PasswordIsComplex(password string) bool {
 	userInputs := []string{}
 	score := zxcvbn.PasswordStrength(password, userInputs)
-	log.Printf("Password Complexity: %v", score.Score)
 	if score.Score < int(config.PasswordComplexity) {
 		return false
 	}

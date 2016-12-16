@@ -22,13 +22,13 @@ import (
 *	Headers:
 *		x-auth-token: xxx.xxx.xxx
 * 	{
-*		"id": "1234",
+*		"id": 1234,
 *  		"fullName": "John Doe",
 *		"email": "name@email.com",
-*		"gender": "1",
+*		"gender": 1,
 *		"photo": "www.photo.com",
-*		"minAge": "0",
-*		"maxAge": "0",
+*		"minAge": 0,
+*		"maxAge": 0,
 *		"created": "2016-12-02T23:54:59Z",
 *		"isAdmin": false
 * 	}
