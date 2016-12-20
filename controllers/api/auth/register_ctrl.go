@@ -7,49 +7,32 @@ import (
 	"github.com/menklab/goCMS/utility/errors"
 )
 
+
+
 /**
 * @api {post} /register Register
 * @apiName Register
 * @apiGroup Authentication
 *
-* @apiParam {string} fullName
-* @apiParam {string} email
-* @apiParam {string} newPassword
-* @apiParam {string} email2 (optional)
+* @apiUse UserRegisterInput
 *
-* @apiSuccessExample Success-Response:
-*     HTTP/1.1 200 OK
-*	Headers:
-*		x-auth-token: xxx.xxx.xxx
-* 	{
-*		"id": 1234,
-*  		"fullName": "John Doe",
-*		"email": "name@email.com",
-*		"gender": 1,
-*		"photo": "www.photo.com",
-*		"minAge": 0,
-*		"maxAge": 0,
-*		"created": "2016-12-02T23:54:59Z",
-*		"isAdmin": false
-* 	}
-*
-* @apiErrorExample Error-Response:
-*     HTTP/1.1 403 Unauthorized
+* @apiUse UserDisplay
 */
 func (auc *AuthController) register(c *gin.Context) {
 
-	user := &models.User{}
+	userNewInput := &models.UserRegisterInput{}
 	//get user data
-	err := c.BindJSON(user)
+	err := c.BindJSON(userNewInput)
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, err.Error(), err)
 		return
 	}
 
-	// get password
-	if user.NewPassword == "" {
-		errors.Response(c, http.StatusBadRequest, "New Password Field Required.", err)
-		return
+	user := &models.User{
+		Password: userNewInput.Password,
+		Email: userNewInput.Email,
+		Email2: userNewInput.Email2,
+		FullName: userNewInput.FullName,
 	}
 
 	// add user
@@ -59,5 +42,5 @@ func (auc *AuthController) register(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, user)
+	c.JSON(http.StatusOK, user.GetUserDisplay())
 }

@@ -68,17 +68,17 @@ func (us *UserService) GetAll() (*[]models.User, error) {
 func (us *UserService) Add(user *models.User) error {
 
 	// hash password
-	if user.NewPassword == "" {
-		user.NewPassword, _ = utility.GenerateRandomString(32)
+	if user.Password == "" {
+		user.Password, _ = utility.GenerateRandomString(32)
 	} else {
 		// password complexity
-		if !us.AuthService.PasswordIsComplex(user.NewPassword) {
+		if !us.AuthService.PasswordIsComplex(user.Password) {
 			return errors.NewToUser("Password is not complex enough.")
 		}
 	}
 
 
-	hashPassword, err := us.AuthService.HashPassword(user.NewPassword)
+	hashPassword, err := us.AuthService.HashPassword(user.Password)
 	if err != nil {
 		return nil
 	}

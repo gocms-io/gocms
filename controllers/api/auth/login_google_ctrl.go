@@ -38,26 +38,11 @@ type gMe struct {
 * @apiName LoginGoogle
 * @apiGroup Authentication
 *
-* @apiHeader {String} x-google-token Google Authorization Token generated from google sdk in app.
+* @apiParam (Request-Header) {String} x-google-token Google Authorization Token generated from google sdk in app.
 *
-* @apiSuccessExample Success-Response:
-*     HTTP/1.1 200 OK
-*	Headers:
-*		x-auth-token: xxx.xxx.xxx
-* 	{
-*		"id": "1234",
-*  		"fullName": "John Doe",
-*		"email": "name@email.com",
-*		"gender": "1",
-*		"photo": "www.photo.com",
-*		"minAge": "0",
-*		"maxAge": "0",
-*		"created": "2016-12-02T23:54:59Z",
-*		"isAdmin": false
-* 	}
+* @apiUse UserDisplay
 *
-* @apiErrorExample Error-Response:
-*     HTTP/1.1 403 Unauthorized
+* @apiSuccess (Response-Header) {string} x-auth-token
 */
 func (ac *AuthController) loginGoogle(c *gin.Context) {
 	// check for token in header
@@ -140,7 +125,8 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 
 	c.Header("X-AUTH-TOKEN", tokenString)
 
-	c.JSON(http.StatusOK, user)
+
+	c.JSON(http.StatusOK, user.GetUserDisplay())
 	return
 
 }

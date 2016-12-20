@@ -45,7 +45,7 @@ func (auc *AdminUserController) add(c *gin.Context) {
 	}
 
 	// get password
-	if user.NewPassword == "" {
+	if user.Password == "" {
 		errors.Response(c, http.StatusBadRequest, "New Password Field Required.", err)
 		return
 	}

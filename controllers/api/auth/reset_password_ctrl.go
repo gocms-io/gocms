@@ -5,18 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/menklab/goCMS/utility/errors"
 	"log"
+	"github.com/menklab/goCMS/models"
 )
-
-type ResetPasswordRequest struct {
-	Email string `json:"email" binding:"required"`
-}
-
-type ResetPassword struct {
-	Email     string `json:"email" binding:"required"`
-	Password  string `json:"password" binding:"required"`
-	ResetCode string `json:"resetCode" binding:"required"`
-}
-
 
 
 /**
@@ -24,20 +14,12 @@ type ResetPassword struct {
 * @apiName ResetPassword
 * @apiGroup Authentication
 *
-* @apiUse AuthHeader
-*
-* @apiParam {string} email
-*
-* @apiSuccessExample Success-Response:
-*     HTTP/1.1 200 OK
-*
-* @apiErrorExample Error-Response:
-*     HTTP/1.1 403 Unauthorized
+* @apiUse ResetPasswordRequestInput
 */
 func (ac *AuthController) resetPassword(c *gin.Context) {
 
 	// get email for reset
-	var resetRequest ResetPasswordRequest
+	var resetRequest models.ResetPasswordRequestInput
 	err := c.BindJSON(&resetRequest) // update any changes from request
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, "Missing Fields", err)
@@ -60,21 +42,11 @@ func (ac *AuthController) resetPassword(c *gin.Context) {
 * @apiName SetResetPassword
 * @apiGroup Authentication
 *
-* @apiUse AuthHeader
-*
-* @apiParam {string} email
-* @apiParam {string} password
-* @apiParam {string} resetCode
-*
-* @apiSuccessExample Success-Response:
-*     HTTP/1.1 200 OK
-*
-* @apiErrorExample Error-Response:
-*     HTTP/1.1 403 Unauthorized
+* @apiUse ResetPasswordInput
 */
 func (ac *AuthController) setPassword(c *gin.Context) {
 	// get password and code for reset
-	var resetPassword ResetPassword
+	var resetPassword models.ResetPasswordInput
 	err := c.BindJSON(&resetPassword) // update any changes from request
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, err.Error(), err)
