@@ -17,7 +17,7 @@ type AuthMiddleware struct {
 
 func DefaultAuthMiddleware(sg *services.ServicesGroup, routes *routes.ApiRoutes) *AuthMiddleware {
 
-	authMiddleware := &AuthMiddleware {
+	authMiddleware := &AuthMiddleware{
 		ServicesGroup: sg,
 	}
 
@@ -74,10 +74,8 @@ func (am *AuthMiddleware) requireAuthedUser(c *gin.Context) {
 
 	// verify user is enabled
 	if !user.Enabled {
-		if err != nil {
-			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_User_Disabled, REDIRECT_LOGIN)
-			return
-		}
+		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_User_Disabled, REDIRECT_LOGIN)
+		return
 	}
 
 	c.Set("user", *user)
