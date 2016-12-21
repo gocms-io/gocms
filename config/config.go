@@ -22,11 +22,13 @@ var (
 	PublicApiUrl string
 	RedirectRootUrl string
 	CorsHost string
+	OpenRegistration bool
 
 	// Authentication
 	AuthKey string
 	UserAuthTimeout int64
 	PasswordResetTimeout int64
+	EmailActivationTimeout int64
 	DeviceAuthTimeout int64
 	TwoFactorCodeTimeout int64
 	UseTwoFactor bool
@@ -59,7 +61,7 @@ func init() {
 
 	// App Config
 	Port= getStringOrFail("PORT")
-	PublicApiUrl = getStringOrFail("PUBLIC_URL")
+	PublicApiUrl = getStringOrFail("PUBLIC_API_URL")
 	RedirectRootUrl = getStringOrFail("REDIRECT_ROOT_URL")
 	CorsHost = getStringOrFail("CORS_HOST")
 
@@ -69,8 +71,10 @@ func init() {
 	PasswordResetTimeout = getIntOrFail("PASSWORD_RESET_TIMEOUT")
 	DeviceAuthTimeout = getIntOrFail("DEVICE_AUTHENTICATION_TIMEOUT")
 	TwoFactorCodeTimeout = getIntOrFail("TWO_FACTOR_CODE_TIMEOUT")
+	EmailActivationTimeout = getIntOrFail("EMAIL_ACTIVATION_TIMEOUT")
 	UseTwoFactor = getBoolOrFail("USE_TWO_FACTOR")
 	PasswordComplexity = getIntOrFail("PASSWORD_COMPLEXITY")
+	OpenRegistration = getBoolOrFail("OPEN_REGISTRATION")
 
 	// SMTP
 	SMTPServer = getStringOrFail("SMTP_SERVER")

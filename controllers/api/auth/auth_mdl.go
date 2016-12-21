@@ -69,7 +69,17 @@ func (am *AuthMiddleware) requireAuthedUser(c *gin.Context) {
 	user, err := am.ServicesGroup.UserService.Get(int(userId))
 	if err != nil {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_UserToken, REDIRECT_LOGIN)
+		return
 	}
+
+	// verify user is enabled
+	if !user.Enabled {
+		if err != nil {
+			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_User_Disabled, REDIRECT_LOGIN)
+			return
+		}
+	}
+
 	c.Set("user", *user)
 	// continue
 	c.Next()

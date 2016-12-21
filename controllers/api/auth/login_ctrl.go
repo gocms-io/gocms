@@ -15,7 +15,6 @@ import (
 *
 * @apiUse LoginInput
 * @apiUse UserDisplay
-*
 * @apiSuccess (Response-Header) {string} x-auth-token
 */
 func (ac *AuthController) login(c *gin.Context) {
@@ -32,6 +31,19 @@ func (ac *AuthController) login(c *gin.Context) {
 	user, authed := ac.ServicesGroup.AuthService.AuthUser(loginInput.Email, loginInput.Password)
 	if !authed {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Incorrect Email / Password", REDIRECT_LOGIN)
+		return
+	}
+
+	// verify user is enabled
+	if !user.Enabled {
+		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Your account is currently disabled. Have you verified your email address?", REDIRECT_LOGIN)
+		return
+	}
+
+	// verify user has activated email
+	if !user.Verified {
+		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Your primary email has not yet been verified. A new email will be sent.", REDIRECT_LOGIN)
+		ac.ServicesGroup.AuthService.SendEmailActivationCode(user.Id, user.Email)
 		return
 	}
 

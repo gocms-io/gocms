@@ -44,8 +44,8 @@ func (hc *HealthyController) healthy(c *gin.Context) {
 * @apiGroup Authentication
 *
 * @apiUse UserAuthHeader
-*
 * @apiUse UserDisplay
+* @apiPermission Authenticated
 */
 func (hc *HealthyController) user(c *gin.Context) {
 	// get logged in user

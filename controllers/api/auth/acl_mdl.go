@@ -3,9 +3,6 @@ package auth
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"github.com/menklab/goCMS/utility"
-	"github.com/menklab/goCMS/utility/errors"
 	"github.com/menklab/goCMS/routes"
 )
 
@@ -23,7 +20,7 @@ func DefaultAclMiddleware(routes *routes.ApiRoutes) *AclMiddleware {
 }
 
 func (acl *AclMiddleware) Default(routes *routes.ApiRoutes) {
-	routes.Admin.Use(acl.RequireAdmin())
+	//routes.Admin.Use(acl.RequireAdmin())
 }
 
 // middleware
@@ -34,15 +31,15 @@ func (acl *AclMiddleware) RequireAdmin() gin.HandlerFunc {
 
 // requireAdmin middleware
 func (acl *AclMiddleware) requireAdmin(c *gin.Context) {
-
-	//get userId
-	user, _ := utility.GetUserFromContext(c)
-
-	if !user.IsAdmin {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_Permissions, REDIRECT_LOGIN)
-		return
-	}
-
-	// continue
+//
+//	//get userId
+//	user, _ := utility.GetUserFromContext(c)
+//
+//	if !user.IsAdmin {
+//		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_Permissions, REDIRECT_LOGIN)
+//		return
+//	}
+//
+//	// continue
 	c.Next()
 }

@@ -64,7 +64,7 @@ func (database *Database) Migrate(tableName string, migrationSource *migrate.Mem
 }
 
 func (database *Database) MigrateCMS() error {
-	tableName := "goCMS_migrations"
+	tableName := "gocms_migrations"
 	migrate.SetTable(tableName)
 	n, err := migrate.Exec(database.Db, "mysql", database.migrations, migrate.Up)
 	if err != nil {

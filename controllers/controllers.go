@@ -8,6 +8,7 @@ import (
 	"github.com/menklab/goCMS/controllers/api"
 	"github.com/menklab/goCMS/controllers/static"
 	"github.com/menklab/goCMS/controllers/api/auth"
+	"github.com/menklab/goCMS/controllers/api/admin"
 )
 
 type ControllersGroup struct {
@@ -24,7 +25,7 @@ type ApiControllers struct {
 	DocumentationController *static.DocumentationController
 	AuthController          *auth.AuthController
 	HealthyController       *api.HealthyController
-	AdminUserController     *api.AdminUserController
+	AdminUserController     *admin.AdminUserController
 	UserController		*api.UserController
 }
 
@@ -49,7 +50,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 		AuthController: auth.DefaultAuthController(routes, sg),
 		HealthyController: api.DefaultHealthyController(routes),
 		UserController: api.DefaultUserController(routes, sg),
-		AdminUserController: api.DefaultAdminUserController(routes, sg),
+		AdminUserController: admin.DefaultAdminUserController(routes, sg),
 	}
 
 	api := &Api{

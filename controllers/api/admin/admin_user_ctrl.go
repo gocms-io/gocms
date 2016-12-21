@@ -1,4 +1,4 @@
-package api
+package admin
 
 import (
 	"github.com/gin-gonic/gin"
@@ -15,7 +15,7 @@ type AdminUserController struct {
 	ServicesGroup *services.ServicesGroup
 }
 
-func DefaultAdminUserController(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AdminUserController{
+func DefaultAdminUserController(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AdminUserController {
 	adminUserController := &AdminUserController{
 		routes: routes,
 		ServicesGroup: sg,
@@ -25,6 +25,10 @@ func DefaultAdminUserController(routes *routes.ApiRoutes, sg *services.ServicesG
 	return adminUserController
 }
 
+/**
+* @apiDefine Admin Admin User
+* User must be logged in and have the role of Admin.
+*/
 func (auc *AdminUserController) Default() {
 
 	auc.routes.Admin.GET("/user", auc.getAll)
@@ -60,6 +64,16 @@ func (auc *AdminUserController) add(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
+/**
+* @api {get} /admin/user Get All Users
+* @apiDescription Used to get a list of all users.
+* @apiName GetAllUsers
+* @apiGroup Admin
+*
+* @apiUse UserAuthHeader
+* @apiUse UserDisplay
+* @apiPermission Admin
+*/
 func (auc *AdminUserController) get(c *gin.Context) {
 
 	userId, err := strconv.Atoi(c.Param("userId"))
@@ -83,7 +97,14 @@ func (auc *AdminUserController) getAll(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, users)
+	// create list of users to sent out
+	usersAdminDisplays := make([]models.UserAdminDisplay, len(*users))
+	for i, user := range *users {
+		usersAdminDisplays[i] = *user.GetUserAdminDisplay()
+	}
+
+
+	c.JSON(http.StatusOK, usersAdminDisplays)
 }
 
 func (auc *AdminUserController) update(c *gin.Context) {

@@ -9,8 +9,8 @@ import (
 	"encoding/json"
 	"github.com/menklab/goCMS/models"
 	"database/sql"
+	"github.com/menklab/goCMS/config"
 )
-
 
 type fbData struct {
 	Height int `json:"height" binding:"required"`
@@ -101,8 +101,15 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	user.Photo = me.Picture.Data.Url
 	user.FullName = me.Name
 
-	// add user if it doesn't have an id
-	if user.Id == 0 {
+	// if user doesn't exist and registration is closed
+	if user.Id == 0 && !config.OpenRegistration {
+		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Registration Is Closed.", REDIRECT_LOGIN)
+		return
+	} else if user.Id == 0 && config.OpenRegistration {
+		// add user if it doesn't have an id
+		// auto activate user
+		user.Verified = true
+		user.Enabled = true
 		err = ac.ServicesGroup.UserService.Add(user)
 		if err != nil {
 			log.Printf("error adding user from facebook login: %s", err.Error())
@@ -116,6 +123,12 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 			log.Printf("error updating user from facebook login: %s", err.Error())
 			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from facebook.", REDIRECT_LOGIN)
 			return
+		}
+
+		// verify email because it came from facebook
+		err = ac.ServicesGroup.UserService.SetVerified(user.Id, true)
+		if err != nil {
+			log.Printf("error auto verifying email from facebook: %s", err.Error())
 		}
 	}
 

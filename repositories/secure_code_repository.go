@@ -5,10 +5,12 @@ import (
 	"github.com/menklab/goCMS/models"
 	"github.com/menklab/goCMS/database"
 	"github.com/jmoiron/sqlx"
+	"log"
 )
 
 type ISecureCodeRepository interface {
 	Add(*models.SecureCode) error
+	Delete(int) error
 	GetLatestForUserByType(int, models.SecureCodeType) (*models.SecureCode, error)
 }
 
@@ -29,7 +31,7 @@ func (scr *SecureCodeRepository) Add(code *models.SecureCode) error {
 	code.Created = time.Now()
 	// insert row
 	result, err := scr.database.NamedExec(`
-	INSERT INTO secure_codes (userId, type, code, created) VALUES (:userId, :type, :code, :created)
+	INSERT INTO gocms_secure_codes (userId, type, code, created) VALUES (:userId, :type, :code, :created)
 	`, code)
 	if err != nil {
 		return err
@@ -42,11 +44,24 @@ func (scr *SecureCodeRepository) Add(code *models.SecureCode) error {
 	return nil
 }
 
+func (scr *SecureCodeRepository) Delete(id int) error {
+	_, err := scr.database.Exec(`
+	DELETE FROM gocms_secure_codes WHERE id=?
+	`, id)
+	if err != nil {
+
+		log.Println("---ERROR---", err.Error())
+		return err
+	}
+
+	return nil
+}
+
 // get all events
 func (scr *SecureCodeRepository) GetLatestForUserByType(id int, codeType models.SecureCodeType) (*models.SecureCode, error) {
 	var secureCode models.SecureCode
 	err := scr.database.Get(&secureCode, `
-	SELECT * from secure_codes WHERE userId=? AND type=? ORDER BY created DESC LIMIT 1
+	SELECT * from gocms_secure_codes WHERE userId=? AND type=? ORDER BY created DESC LIMIT 1
 	`, id, codeType)
 	if err != nil {
 		return nil, err

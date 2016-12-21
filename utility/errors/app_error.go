@@ -11,6 +11,7 @@ const (
 	ApiError_UserDoesntExist = "User Doesn't Exist."
 	ApiError_UserAlreadyExists = "User Already Exists."
 	ApiError_Permissions = "You do not have access."
+	ApiError_User_Disabled = "Account is currently disabled."
 	ApiError_Server = "Something went wrong. Please try again."
 )
 

@@ -15,6 +15,9 @@ type IUserService interface {
 	Delete(int) error
 	Update(int, *models.User) error
 	UpdatePassword(int, string) error
+	SetEnabled(int, bool) error
+	SetVerified(int, bool) error
+
 }
 
 type UserService struct {
@@ -130,4 +133,11 @@ func (us *UserService) UpdatePassword(id int, password string) error {
 	}
 
 	return nil
+}
+func (us *UserService) SetEnabled (id int, enabled bool) error {
+	return us.RepositoriesGroup.UsersRepository.SetEnabled(id, enabled)
+}
+
+func (us *UserService) SetVerified (id int, enabled bool) error {
+	return us.RepositoriesGroup.UsersRepository.SetVerified(id, enabled)
 }

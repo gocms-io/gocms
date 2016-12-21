@@ -18,14 +18,15 @@ type IUserRepository interface {
 	Update(int, *models.User) error
 	UpdatePassword(int, string) error
 	Delete(int) error
+	SetEnabled(int, bool) error
+	SetVerified(int, bool) error
 }
 
 type UserRepository struct {
 	database *sqlx.DB
 }
 
-
-func DefaultUserRepository(db *database.Database) *UserRepository{
+func DefaultUserRepository(db *database.Database) *UserRepository {
 	userRepository := &UserRepository{
 		database: db.Dbx,
 	}
@@ -36,7 +37,7 @@ func DefaultUserRepository(db *database.Database) *UserRepository{
 // get user by id
 func (ur *UserRepository) Get(id int) (*models.User, error) {
 	var user models.User
-	err := ur.database.Get(&user, "SELECT * FROM users WHERE id=?", id)
+	err := ur.database.Get(&user, "SELECT * FROM gocms_users WHERE id=?", id)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +47,7 @@ func (ur *UserRepository) Get(id int) (*models.User, error) {
 // get user by email
 func (ur *UserRepository) GetByEmail(email string) (*models.User, error) {
 	var user models.User
-	err := ur.database.Get(&user, "SELECT * FROM users WHERE email=? OR email2=?", email, email)
+	err := ur.database.Get(&user, "SELECT * FROM gocms_users WHERE email=?", email)
 	if err != nil {
 		return nil, err
 	}
@@ -77,9 +78,10 @@ func (ur *UserRepository) Add(user *models.User) error {
 
 	// insert user
 	result, err := ur.database.NamedExec(`
-	INSERT INTO users (fullName, email, email2, gender, photo, minAge, maxAge, password, created) VALUES (:fullName, :email, :email2, :gender, :photo, :minAge, :maxAge, :password, :created)
+	INSERT INTO gocms_users (fullName, email, gender, photo, minAge, maxAge, password, enabled, verified, created) VALUES (:fullName, :email, :gender, :photo, :minAge, :maxAge, :password, :enabled, :verified, :created)
 	`, user)
 	if err != nil {
+		log.Printf("Error adding user to db: %s", err.Error())
 		return err
 	}
 	id, _ := result.LastInsertId()
@@ -92,8 +94,32 @@ func (ur *UserRepository) Update(id int, user *models.User) error {
 	// insert row
 	user.Id = id
 	_, err := ur.database.NamedExec(`
-	UPDATE users SET fullName=:fullName, email=:email, email2=:email2, gender=:gender, photo=:photo, maxAge=:maxAge, minAge=:minAge WHERE id=:id
+	UPDATE gocms_users SET fullName=:fullName, email=:email, gender=:gender, photo=:photo, maxAge=:maxAge, minAge=:minAge WHERE id=:id
 	`, user)
+	if err != nil {
+		log.Println("---ERROR---", err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (ur *UserRepository) SetEnabled(id int, enabled bool) error {
+	_, err := ur.database.NamedExec(`
+	UPDATE gocms_users SET enabled=:enabled WHERE id=:id
+	`, map[string]interface{}{"enabled": enabled, "id": id})
+	if err != nil {
+		log.Println("---ERROR---", err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (ur *UserRepository) SetVerified(id int, verified bool) error {
+	_, err := ur.database.NamedExec(`
+	UPDATE gocms_users SET verified=:verified WHERE id=:id
+	`, map[string]interface{}{"verified": verified, "id": id})
 	if err != nil {
 		log.Println("---ERROR---", err.Error())
 		return err
@@ -109,7 +135,7 @@ func (ur *UserRepository) UpdatePassword(id int, hash string) error {
 		Password: hash,
 	}
 	_, err := ur.database.NamedExec(`
-	UPDATE users SET password=:password WHERE id=:id
+	UPDATE gocms_users SET password=:password WHERE id=:id
 	`, user)
 	if err != nil {
 		log.Println("---ERROR---", err.Error())
@@ -126,7 +152,7 @@ func (ur *UserRepository) Delete(id int) error {
 	}
 
 	_, err := ur.database.Exec(`
-	DELETE FROM users WHERE id=?
+	DELETE FROM gocms_users WHERE id=?
 	`, id)
 	if err != nil {
 
@@ -140,8 +166,8 @@ func (ur *UserRepository) Delete(id int) error {
 func (ur *UserRepository) userExistsByEmail(email string) error {
 	user := models.User{}
 	err := ur.database.QueryRow(`
-	SELECT email, email2 FROM users WHERE email = ? OR email2 = ?
-	`, email, email).Scan(&user.Email, &user.Email2)
+	SELECT email FROM gocms_users WHERE email = ?
+	`, email).Scan(&user.Email)
 	if err != nil && err != sql.ErrNoRows {
 		return err
 	}

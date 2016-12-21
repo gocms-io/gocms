@@ -38,8 +38,8 @@ func (uc *UserController) Default() {
 * @apiGroup User
 *
 * @apiUse AuthHeader
-*
 * @apiUse UserDisplay
+* @apiPermission Authenticated
  */
 func (uc *UserController) get(c *gin.Context) {
 
@@ -54,8 +54,8 @@ func (uc *UserController) get(c *gin.Context) {
 * @apiGroup User
 *
 * @apiUse AuthHeader
-*
 * @apiUse UserUpdateInput
+* @apiPermission Authenticated
 */
 func (uc *UserController) update(c *gin.Context) {
 
@@ -101,8 +101,8 @@ func (uc *UserController) update(c *gin.Context) {
 * @apiGroup User
 *
 * @apiUse AuthHeader
-*
 * @apiUse UserUpdateInput
+* @apiPermission Authenticated
 */
 func (uc *UserController) changePassword(c *gin.Context) {
 

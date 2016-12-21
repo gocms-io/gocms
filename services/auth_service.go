@@ -15,10 +15,12 @@ type IAuthService interface {
 	AuthUser(string, string) (*models.User, bool)
 	HashPassword(string) (string, error)
 	SendPasswordResetCode(string) error
+	SendEmailActivationCode(int, string) error
 	VerifyPassword(string, string) bool
 	VerifyPasswordResetCode(int, string) bool
         SendTwoFactorCode(*models.User) error
 	VerifyTwoFactorCode(id int, code string) bool
+	VerifyEmailActivationCode(id int, code string) bool
 	PasswordIsComplex(password string) bool
 }
 
@@ -89,18 +91,33 @@ func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
 		return false
 	}
 
-	// at this point the code is good and we must respond this way... yet we want to null out the code so it can't be used again
-	// create code
-	_, hashedCode, err := as.getRandomCode(32)
+	err = as.RepositoriesGroup.SecureCodeRepository.Delete(secureCode.Id)
 	if err != nil {
 		return false
 	}
 
-	err = as.RepositoriesGroup.SecureCodeRepository.Add(&models.SecureCode{
-		UserId: id,
-		Type:   models.Code_ResetPassword,
-		Code:   hashedCode,
-	})
+	return true
+}
+
+func (as *AuthService) VerifyEmailActivationCode(id int, code string) bool {
+
+	// get code
+	secureCode, err := as.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, models.Code_VerifyEmail)
+	if err != nil {
+		log.Printf("error getting latest password reset code: %s", err.Error())
+		return false
+	}
+
+	if ok := as.VerifyPassword(secureCode.Code, code); !ok {
+		return false
+	}
+
+	// check within time
+	if time.Since(secureCode.Created) > (time.Minute * time.Duration(config.PasswordResetTimeout)) {
+		return false
+	}
+
+	err = as.RepositoriesGroup.SecureCodeRepository.Delete(secureCode.Id)
 	if err != nil {
 		return false
 	}
@@ -138,6 +155,39 @@ func (as *AuthService) SendPasswordResetCode(email string) error {
 		Subject: "Password Reset Requested",
 		Body: "To reset your password enter the code below into the app:\n" +
 			code + "\n\nThe code will expire at: " +
+			time.Now().Add(time.Minute * time.Duration(config.PasswordResetTimeout)).String() + ".",
+	})
+	if err != nil {
+		log.Print("Error sending mail: " + err.Error())
+	}
+
+	return nil
+}
+
+func (as *AuthService) SendEmailActivationCode(userId int, email string) error {
+
+	// create reset code
+	code, hashedCode, err := as.getRandomCode(32)
+	if err != nil {
+		return err
+	}
+
+	// update user with new code
+	err = as.RepositoriesGroup.SecureCodeRepository.Add(&models.SecureCode{
+		UserId: userId,
+		Type:   models.Code_VerifyEmail,
+		Code:   hashedCode,
+	})
+	if err != nil {
+		return err
+	}
+
+	// send email
+	as.MailService.Send(&Mail{
+		To:      email,
+		Subject: "Email Verification Required",
+		Body: "Click on the link below to activate your email:\n" +
+			config.PublicApiUrl + "/activate-email?code=" + code + "&email=" + email + "\n\nThe link will expire at: " +
 			time.Now().Add(time.Minute * time.Duration(config.PasswordResetTimeout)).String() + ".",
 	})
 	if err != nil {
@@ -197,18 +247,7 @@ func (as *AuthService) VerifyTwoFactorCode(id int, code string) bool {
 		return false
 	}
 
-	// at this point the code is good and we must respond this way... yet we want to null out the code so it can't be used again
-	// create code
-	_, hashedCode, err := as.getRandomCode(8)
-	if err != nil {
-		return false
-	}
-
-	err = as.RepositoriesGroup.SecureCodeRepository.Add(&models.SecureCode{
-		UserId: id,
-		Type:   models.Code_VerifyDevice,
-		Code:   hashedCode,
-	})
+	err = as.RepositoriesGroup.SecureCodeRepository.Delete(secureCode.Id)
 	if err != nil {
 		return false
 	}
