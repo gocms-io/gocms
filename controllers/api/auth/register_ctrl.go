@@ -59,9 +59,10 @@ func (auc *AuthController) register(c *gin.Context) {
 }
 
 /**
-* @api {post} /activate-email Register
-* @apiName Activate Email
-* @apiDescription This endpoint requires two url params &email and &code. Links are auto generated for this endpoint by the system. This will likely never be called directly.
+* @api {get} /activate-email Activate Email
+* @apiName ActivateEmail
+* @apiGroup Authentication
+* @apiDescription This endpoint requires two url params &email and &code. Links are auto generated for this endpoint by the system. This will likely never be called directly from an app.
 */
 func (auc *AuthController) activateEmail(c *gin.Context) {
 	code := c.Query("code")
