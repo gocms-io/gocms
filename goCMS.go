@@ -49,8 +49,13 @@ func Default() *Engine{
 	return &engine
 }
 
+func (engine *Engine) StartCache() {
+	// cache permissions
+	engine.ServicesGroup.AclService.RefreshPermissionsCache()
+}
 
 func (engine *Engine) Listen(uri string) {
+
 	err := engine.Gin.Run(uri)
 	log.Println(err.Error())
 }

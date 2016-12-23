@@ -27,8 +27,5 @@ func DefaultServicesGroup(rg *repositories.RepositoriesGroup) *ServicesGroup {
 		AclService: aclService,
 	}
 
-	// cache permissions
-	sg.AclService.RefreshPermissionsCache()
-
 	return sg
 }
