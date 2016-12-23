@@ -7,6 +7,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/menklab/goCMS/config"
 	"github.com/menklab/goCMS/utility"
+	"github.com/menklab/goCMS/controllers/middleware/auth"
 )
 
 const (
@@ -28,13 +29,7 @@ func DefaultAuthController(routes *routes.ApiRoutes, sg *services.ServicesGroup)
 	}
 
 	// apply auth middleware
-	DefaultAuthMiddleware(sg, routes)
-
-	// admin admin route
-	routes.Admin = routes.Auth.Group("/admin")
-
-	//apply acl middleware
-	DefaultAclMiddleware(routes)
+	authMdl.DefaultAuthMiddleware(sg, routes)
 
 	authController.Default()
 

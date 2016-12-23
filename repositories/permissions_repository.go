@@ -4,6 +4,7 @@ import (
 	"github.com/menklab/goCMS/models"
 	"github.com/menklab/goCMS/database"
 	"github.com/jmoiron/sqlx"
+	"log"
 )
 
 type IPermissionsRepository interface {
@@ -28,6 +29,7 @@ func (ur *PermissionsRepository) GetAll() (*[]models.Permission, error) {
 	var permissions []models.Permission
 	err := ur.database.Select(&permissions, "SELECT * FROM gocms_permissions")
 	if err != nil {
+		log.Printf("Error getting permissions from database: %s", err.Error())
 		return nil, err
 	}
 	return &permissions, nil
@@ -38,6 +40,7 @@ func (ur *PermissionsRepository) GetUserPermissions(userId int) (*[]int, error) 
 	var userPermissions []int
 	err := ur.database.Select(&userPermissions, "SELECT permissionsId FROM gocms_users_to_permissions WHERE userId=?", userId)
 	if err != nil {
+		log.Printf("Error getting all permissions for user from database: %s", err.Error())
 		return nil, err
 	}
 	return &userPermissions, nil

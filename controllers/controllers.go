@@ -4,11 +4,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/menklab/goCMS/services"
 	"github.com/menklab/goCMS/routes"
-	"github.com/menklab/goCMS/controllers/middleware/cors"
 	"github.com/menklab/goCMS/controllers/api"
 	"github.com/menklab/goCMS/controllers/static"
 	"github.com/menklab/goCMS/controllers/api/auth"
 	"github.com/menklab/goCMS/controllers/api/admin"
+	"github.com/menklab/goCMS/controllers/middleware/cors"
 )
 
 type ControllersGroup struct {
@@ -36,7 +36,7 @@ var (
 func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *ControllersGroup {
 
 	// top level middleware
-	r.Use(cors.CORS())
+	r.Use(corsMdl.CORS())
 
 	// setup route groups
 	routes := &routes.ApiRoutes{
@@ -45,12 +45,14 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 		Auth: r.Group(defaultRoutePrefix),
 	}
 
+	// define routes and apply middleware
+
 	apiControllers := &ApiControllers{
 		DocumentationController: static.DefaultDocumentationController(routes),
 		AuthController: auth.DefaultAuthController(routes, sg),
+		AdminUserController: admin.DefaultAdminUserController(routes, sg),
 		HealthyController: api.DefaultHealthyController(routes),
 		UserController: api.DefaultUserController(routes, sg),
-		AdminUserController: admin.DefaultAdminUserController(routes, sg),
 	}
 
 	api := &Api{

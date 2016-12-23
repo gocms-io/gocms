@@ -1,4 +1,4 @@
-package cors
+package corsMdl
 
 import (
 	"github.com/menklab/goCMS/config"

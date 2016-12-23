@@ -8,13 +8,13 @@ import (
 
 type IAclService interface {
 	RefreshPermissionsCache() error
-	GetPermissions() *map[string]models.Permission
+	GetPermissions() map[string]models.Permission
 	IsAuthorized(string, int) bool
 }
 
 
 type AclService struct {
-	Permissions *map[string]models.Permission
+	Permissions map[string]models.Permission
 	RepositoriesGroup *repositories.RepositoriesGroup
 }
 
@@ -43,11 +43,11 @@ func (as *AclService) RefreshPermissionsCache() error {
 		permissionsCache[permission.Name] = permission
 	}
 
-	as.Permissions = &permissionsCache
+	as.Permissions = permissionsCache
 	return nil
 }
 
-func (as *AclService) GetPermissions() *map[string]models.Permission {
+func (as *AclService) GetPermissions() map[string]models.Permission {
 	return as.Permissions
 }
 
@@ -61,8 +61,7 @@ func (as *AclService) IsAuthorized(permission string, userId int) bool {
 
 	// loop over permissions and see if they match the request one
 	for _, permId := range *activePermissions {
-		log.Printf("Testing perm %s, against %d\n", as.Permissions[permission],  permId)
-		if permId == as.Permissions[permission] {
+		if permId == as.Permissions[permission].Id {
 			return true
 		}
 	}

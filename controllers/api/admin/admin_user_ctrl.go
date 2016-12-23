@@ -8,6 +8,7 @@ import (
 	"github.com/menklab/goCMS/utility/errors"
 	"github.com/menklab/goCMS/services"
 	"github.com/menklab/goCMS/routes"
+	"github.com/menklab/goCMS/controllers/middleware/acl"
 )
 
 type AdminUserController struct {
@@ -21,8 +22,20 @@ func DefaultAdminUserController(routes *routes.ApiRoutes, sg *services.ServicesG
 		ServicesGroup: sg,
 	}
 
+	 // create acl object
+	acl := aclMdl.AclMiddleware{
+		ServicesGroup: sg,
+	}
+
+	// add acl rules to route
+	routes.Admin = routes.Auth.Group("/admin", acl.RequirePermission("admin"))
+
+	//routes.Admin.Use(acl.RequirePermission("admin"))
+
 	adminUserController.Default()
 	return adminUserController
+
+
 }
 
 /**
@@ -89,6 +102,7 @@ func (auc *AdminUserController) get(c *gin.Context) {
 
 	c.JSON(http.StatusOK, user)
 }
+
 
 func (auc *AdminUserController) getAll(c *gin.Context) {
 	users, err := auc.ServicesGroup.UserService.GetAll()

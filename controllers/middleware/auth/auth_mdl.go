@@ -1,4 +1,4 @@
-package auth
+package authMdl
 
 import (
 	"github.com/dgrijalva/jwt-go"
@@ -48,33 +48,33 @@ func (am *AuthMiddleware) requireAuthedUser(c *gin.Context) {
 	authHeader := c.Request.Header.Get("X-AUTH-TOKEN")
 
 	if authHeader == "" {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_UserToken, REDIRECT_LOGIN)
+		errors.Response(c, http.StatusUnauthorized, errors.ApiError_UserToken, nil)
 		return
 	}
 
 	// parse token
 	token, err := am.verifyToken(authHeader)
 	if err != nil {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_UserToken, REDIRECT_LOGIN)
+		errors.Response(c, http.StatusUnauthorized, errors.ApiError_UserToken, err)
 		return
 	}
 
 	userId, ok := token.Claims["userId"].(float64)
 	if !ok {
 		log.Print("UserId not contained in token.")
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_UserToken, REDIRECT_LOGIN)
+		errors.Response(c, http.StatusUnauthorized, errors.ApiError_UserToken, err)
 		return
 	}
 	// get user
 	user, err := am.ServicesGroup.UserService.Get(int(userId))
 	if err != nil {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_UserToken, REDIRECT_LOGIN)
+		errors.Response(c, http.StatusUnauthorized, errors.ApiError_UserToken, err)
 		return
 	}
 
 	// verify user is enabled
 	if !user.Enabled {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_User_Disabled, REDIRECT_LOGIN)
+		errors.Response(c, http.StatusUnauthorized, errors.ApiError_User_Disabled, err)
 		return
 	}
 
@@ -91,14 +91,14 @@ func (am *AuthMiddleware) requireAuthedDevice(c *gin.Context) {
 
 	// if auth token is empty fail
 	if authDeviceHeader == "" {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_DeviceToken, REDIRECT_VERIFY_DEVICE)
+		errors.Response(c, http.StatusUnauthorized, errors.ApiError_DeviceToken, nil)
 		return
 	}
 
 	// parse token
 	_, err := am.verifyToken(authDeviceHeader)
 	if err != nil {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, errors.ApiError_DeviceToken, REDIRECT_VERIFY_DEVICE)
+		errors.Response(c, http.StatusUnauthorized, errors.ApiError_DeviceToken, err)
 		return
 	}
 
