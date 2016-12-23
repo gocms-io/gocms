@@ -78,9 +78,9 @@ func (auc *AdminUserController) add(c *gin.Context) {
 }
 
 /**
-* @api {get} /admin/user Get All Users
-* @apiDescription Used to get a list of all users.
-* @apiName GetAllUsers
+* @api {get} /admin/user/:userId Get User By Id
+* @apiDescription Get a user by their Id.
+* @apiName GetUserById
 * @apiGroup Admin
 *
 * @apiUse UserAuthHeader
@@ -103,7 +103,16 @@ func (auc *AdminUserController) get(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-
+/**
+* @api {get} /admin/user Get All Users
+* @apiDescription Used to get a list of all users.
+* @apiName GetAllUsers
+* @apiGroup Admin
+*
+* @apiUse UserAuthHeader
+* @apiUse UserDisplay
+* @apiPermission Admin
+*/
 func (auc *AdminUserController) getAll(c *gin.Context) {
 	users, err := auc.ServicesGroup.UserService.GetAll()
 	if err != nil {
