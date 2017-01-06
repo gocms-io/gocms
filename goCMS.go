@@ -26,6 +26,9 @@ func Default() *Engine{
 	// setup database
 	db := database.Default()
 
+	// migrate cms db
+	db.MigrateCMS()
+
 	// start gin with defaults
 	r := gin.Default()
 
@@ -47,11 +50,6 @@ func Default() *Engine{
 		Database: db,
 	}
 	return &engine
-}
-
-func (engine *Engine) StartCache() {
-	// cache permissions
-	engine.ServicesGroup.AclService.RefreshPermissionsCache()
 }
 
 func (engine *Engine) Listen(uri string) {

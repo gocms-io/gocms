@@ -15,9 +15,9 @@ type IUserService interface {
 	Delete(int) error
 	Update(int, *models.User) error
 	UpdatePassword(int, string) error
+	AddEmail(int, string) error
 	SetEnabled(int, bool) error
 	SetVerified(int, bool) error
-
 }
 
 type UserService struct {
@@ -49,6 +49,10 @@ func (us *UserService) Get(id int) (*models.User, error) {
 }
 
 func (us *UserService) GetByEmail(email string) (*models.User, error) {
+	// check emails for userid
+
+
+
 	user, err := us.RepositoriesGroup.UsersRepository.GetByEmail(email)
 
 	if err != nil {
@@ -132,6 +136,12 @@ func (us *UserService) UpdatePassword(id int, password string) error {
 		return err
 	}
 
+	return nil
+}
+func (us *UserService) AddEmail(id int, email string) error{
+	// check to see if email exists
+
+	//
 	return nil
 }
 func (us *UserService) SetEnabled (id int, enabled bool) error {

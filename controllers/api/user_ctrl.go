@@ -101,7 +101,7 @@ func (uc *UserController) update(c *gin.Context) {
 * @apiGroup User
 *
 * @apiUse AuthHeader
-* @apiUse UserUpdateInput
+* @apiUse UserChangePasswordInput
 * @apiPermission Authenticated
 */
 func (uc *UserController) changePassword(c *gin.Context) {
@@ -118,7 +118,7 @@ func (uc *UserController) changePassword(c *gin.Context) {
 	}
 
 	// verify password
-	if ok := uc.ServicesGroup.AuthService.VerifyPassword(authUser.Password, changePaswordInput.CurrentPassword); !ok {
+	if ok := uc.ServicesGroup.AuthService.VerifyPassword(authUser.Password, changePaswordInput.Password); !ok {
 		errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
 		return
 	}
@@ -127,6 +127,44 @@ func (uc *UserController) changePassword(c *gin.Context) {
 	err = uc.ServicesGroup.UserService.UpdatePassword(authUser.Id, changePaswordInput.NewPassword)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, "Couldn't update user.", err)
+		return
+	}
+
+	c.Status(http.StatusOK)
+}
+
+/**
+* @api {put} /user/addEmail Change Password
+* @apiName AddEmail
+* @apiGroup User
+*
+* @apiUse AuthHeader
+* @apiUse UserEmailInput
+* @apiPermission Authenticated
+*/
+func (uc *UserController) addEmail(c *gin.Context) {
+
+	// get logged in user
+	authUser, _ := utility.GetUserFromContext(c)
+
+	// copy current user info into update user
+	var addEmailInput models.UserAddEmailInput
+	err := c.BindJSON(&addEmailInput) // update any changes from request
+	if err != nil {
+		errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		return
+	}
+
+	// verify password
+	if ok := uc.ServicesGroup.AuthService.VerifyPassword(authUser.Password, addEmailInput.Password); !ok {
+		errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
+		return
+	}
+
+	// do update
+	err = uc.ServicesGroup.UserService.AddEmail(authUser.Id, addEmailInput.Email)
+	if err != nil {
+		errors.Response(c, http.StatusInternalServerError, "Couldn't add email to user.", err)
 		return
 	}
 

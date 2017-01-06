@@ -9,17 +9,17 @@ var GENDER_MALE = 1
 var GENDER_FEMALE = 2
 
 type User struct {
-	Id              int       `db:"id"`
-	FullName        string    `db:"fullName"`
-	Email           string    `db:"email"`
-	Password        string    `db:"password"`
-	Gender          int       `db:"gender"`
-	Photo           string    `db:"photo"`
-	MinAge          int       `db:"minAge"`
-	MaxAge          int       `db:"maxAge"`
-	Created         time.Time `db:"created"`
-	Enabled         bool      `db:"enabled"`
-	Verified         bool      `db:"verified"`
+	Id       int       `db:"id"`
+	FullName string    `db:"fullName"`
+	Email    string    `db:"email"`
+	Password string    `db:"password"`
+	Gender   int       `db:"gender"`
+	Photo    string    `db:"photo"`
+	MinAge   int       `db:"minAge"`
+	MaxAge   int       `db:"maxAge"`
+	Created  time.Time `db:"created"`
+	Enabled  bool      `db:"enabled"`
+	Verified bool      `db:"verified"`
 }
 
 /**
@@ -43,19 +43,22 @@ type UserDisplay struct {
 * @apiParam (Request) {number} gender 1=male, 2=female
 */
 type UserUpdateInput struct {
-	FullName string    `json:"fullName,omitempty" db:"fullName"`
-	Gender   int       `json:"gender" db:"gender"`
+	FullName string    `json:"fullName,omitempty"`
+	Gender   int       `json:"gender"`
 }
 
+
+
 /**
-* @apiDefine UserUpdateInput
-* @apiParam (Request) {string} currentPassword
+* @apiDefine UserChangePasswordInput
+* @apiParam (Request) {string} password The current users password.
 * @apiParam (Request) {string} newPassword
 */
 type UserChangePasswordInput struct {
-	CurrentPassword string    `json:"currentPassword,omitempty"`
-	NewPassword     string    `json:"newPassword,omitempty"`
+	Password    string    `json:"password,omitempty"`
+	NewPassword string    `json:"newPassword,omitempty"`
 }
+
 
 // helper function to get userDisplay from user object
 func (user *User) GetUserDisplay() *UserDisplay {
