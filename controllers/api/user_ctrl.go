@@ -148,7 +148,7 @@ func (uc *UserController) addEmail(c *gin.Context) {
 	authUser, _ := utility.GetUserFromContext(c)
 
 	// copy current user info into update user
-	var addEmailInput models.UserAddEmailInput
+	var addEmailInput models.AddEmailInput
 	err := c.BindJSON(&addEmailInput) // update any changes from request
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, err.Error(), err)

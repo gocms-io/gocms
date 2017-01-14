@@ -19,7 +19,6 @@ type IUserRepository interface {
 	UpdatePassword(int, string) error
 	Delete(int) error
 	SetEnabled(int, bool) error
-	SetVerified(int, bool) error
 }
 
 type UserRepository struct {
@@ -45,15 +44,71 @@ func (ur *UserRepository) Get(id int) (*models.User, error) {
 	return &user, nil
 }
 
+type userByEmailResults struct {
+	Id           int    `db:"id"`
+	FullName     string    `db:"fullName"`
+	Password     string    `db:"password"`
+	Gender       int    `db:"gender"`
+	MinAge       int    `db:"minAge"`
+	MaxAge       int    `db:"maxAge"`
+	Photo        string    `db:"photo"`
+	Enabled      bool    `db:"enabled"`
+	Created      time.Time    `db:"created"`
+	EmailId      int    `db:"emailId"`
+	Email        string    `db:"email"`
+	IsVerified   bool    `db:"isVerified"`
+	IsPrimary    bool    `db:"isPrimary"`
+	EmailCreated time.Time    `db:"emailCreated"`
+}
 // get user by email
 func (ur *UserRepository) GetByEmail(email string) (*models.User, error) {
-	var user models.User
-	err := ur.database.Get(&user, "SELECT * FROM gocms_users WHERE email=?", email)
+
+	// first get the user by email
+	var rows []userByEmailResults
+	err := ur.database.Select(&rows, `
+	SELECT 	gocms_users.*,
+		gocms_emails.id as emailId, gocms_emails.email,
+		gocms_emails.isVerified, gocms_emails.isPrimary,
+		gocms_emails.created as emailCreated
+	FROM gocms_users
+	INNER JOIN gocms_emails
+	ON gocms_users.id=gocms_emails.userId
+	WHERE gocms_users.id=(SELECT gocms_emails.userId AS u FROM gocms_emails
+	WHERE gocms_emails.email=? AND gocms_emails.isVerified=1)
+	ORDER BY isPrimary DESC;`, email)
 	if err != nil {
-		log.Printf("Error getting user by email from database: %s", err.Error())
+		log.Printf("Error mapping user by email from database: %s", err.Error())
 		return nil, err
 	}
-	return &user, nil
+
+	// create object for return
+	emails := make([]models.Email, len(rows))
+	for i, e := range rows {
+		email := models.Email{
+			Email: e.Email,
+			Created: e.EmailCreated,
+			Id: e.EmailId,
+			IsPrimary: e.IsPrimary,
+			UserId: e.Id,
+			Verified: e.IsVerified,
+		}
+		emails[i] = email
+	}
+	u := rows[0]
+	user := models.User{
+		Id: u.Id,
+		Created: u.Created,
+		Emails: emails,
+		Enabled: u.Enabled,
+		FullName: u.FullName,
+		Gender: u.Gender,
+		MaxAge: u.MaxAge,
+		MinAge: u.MinAge,
+		Photo: u.Photo,
+	}
+
+	// check to see if email is primary
+	return user, nil
 }
 
 // get a list of all users
@@ -120,18 +175,6 @@ func (ur *UserRepository) SetEnabled(id int, enabled bool) error {
 	return nil
 }
 
-func (ur *UserRepository) SetVerified(id int, verified bool) error {
-	_, err := ur.database.NamedExec(`
-	UPDATE gocms_users SET verified=:verified WHERE id=:id
-	`, map[string]interface{}{"verified": verified, "id": id})
-	if err != nil {
-		log.Printf("Error for setting verified for user in database: %s", err.Error())
-		return err
-	}
-
-	return nil
-}
-
 func (ur *UserRepository) UpdatePassword(id int, hash string) error {
 	// insert row
 	user := models.User{
@@ -168,7 +211,7 @@ func (ur *UserRepository) Delete(id int) error {
 
 func (ur *UserRepository) userExistsByEmail(email string) error {
 	user := models.User{}
-	err := ur.database.QueryRow(`
+	err := ur.database.QueryRowx(`
 	SELECT email FROM gocms_users WHERE email = ?
 	`, email).Scan(&user.Email)
 	if err != nil && err != sql.ErrNoRows {
