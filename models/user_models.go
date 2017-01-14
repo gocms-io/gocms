@@ -11,7 +11,9 @@ var GENDER_FEMALE = 2
 type User struct {
 	Id       int       `db:"id"`
 	FullName string    `db:"fullName"`
-	Emails    []Email
+	Email 	 string	   `db:"email"`
+	Verified bool	   `db:"isVerified"`
+	AltEmails   []Email
 	Password string    `db:"password"`
 	Gender   int       `db:"gender"`
 	Photo    string    `db:"photo"`
@@ -63,7 +65,7 @@ type UserChangePasswordInput struct {
 func (user *User) GetUserDisplay() *UserDisplay {
 	userDisplay := UserDisplay{
 		Id: user.Id,
-		Email: user.Emails[0].Email,
+		Email: user.Email,
 		FullName: user.FullName,
 		Gender: user.Gender,
 		Photo: user.Photo,

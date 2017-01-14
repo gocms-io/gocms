@@ -17,7 +17,6 @@ type IUserService interface {
 	UpdatePassword(int, string) error
 	AddEmail(int, string) error
 	SetEnabled(int, bool) error
-	SetVerified(int, bool) error
 }
 
 type UserService struct {
@@ -146,8 +145,4 @@ func (us *UserService) AddEmail(id int, email string) error{
 }
 func (us *UserService) SetEnabled (id int, enabled bool) error {
 	return us.RepositoriesGroup.UsersRepository.SetEnabled(id, enabled)
-}
-
-func (us *UserService) SetVerified (id int, enabled bool) error {
-	return us.RepositoriesGroup.UsersRepository.SetVerified(id, enabled)
 }

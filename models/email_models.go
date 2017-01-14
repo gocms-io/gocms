@@ -6,7 +6,7 @@ import (
 
 type Email struct {
 	Id        int       `db:"id"`
-	UserId    string    `db:"userId"`
+	UserId    int    `db:"userId"`
 	Email     string    `db:"email"`
 	Verified  bool      `db:"verified"`
 	IsPrimary bool      `db:"isPrimary"`

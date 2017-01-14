@@ -21,10 +21,10 @@ type UserAdminDisplay struct {
 	Id              int       `json:"id,omitempty"`
 	FullName        string    `json:"fullName,omitempty"`
 	Email           string    `json:"email,omitempty"`
+	Verified 	bool	  `json:"verified,omitempty"`
 	Gender          int       `json:"gender,omitempty"`
 	Photo           string    `json:"photo,string,omitempty"`
 	Enabled         bool      `json:"enabled,omitempty"`
-	Verified         bool      `json:"verified,omitempty"`
 	MinAge          int       `json:"minAge,omitempty"`
 	MaxAge          int       `json:"maxAge,omitempty"`
 	Created         time.Time `json:"created,omitempty"`
