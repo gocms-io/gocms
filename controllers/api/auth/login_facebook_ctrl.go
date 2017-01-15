@@ -114,6 +114,10 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	}
 
 	// merge facebook data into account
+	user.MaxAge = me.AgeRange.Max
+	user.MinAge = me.AgeRange.Min
+	user.Photo = me.Picture.Data.Url
+	user.FullName = me.Name
 
 	// set gender
 	if me.Gender == "male" {
@@ -123,12 +127,6 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	} else {
 		user.Gender = models.GENDER_UNKNOWN
 	}
-
-	// merge other data
-	user.MaxAge = me.AgeRange.Max
-	user.MinAge = me.AgeRange.Min
-	user.Photo = me.Picture.Data.Url
-	user.FullName = me.Name
 
 	// update user with merged data
 	err = ac.ServicesGroup.UserService.Update(user.Id, user)

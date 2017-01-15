@@ -44,7 +44,7 @@ func (ac *AuthController) Default() {
 	ac.routes.Public.POST("/register", ac.register)
 	ac.routes.Public.POST("/login", ac.login)
 	ac.routes.Public.POST("/login/facebook", ac.loginFacebook)
-	//ac.routes.Public.POST("/login/google", ac.loginGoogle)
+	ac.routes.Public.POST("/login/google", ac.loginGoogle)
 	ac.routes.Public.POST("/reset-password", ac.resetPassword)
 	ac.routes.Public.PUT("/reset-password", ac.setPassword)
 
