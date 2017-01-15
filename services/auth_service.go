@@ -10,7 +10,7 @@ import (
 	"log"
 	"github.com/nbutton23/zxcvbn-go"
 	"fmt"
-	"stash.cqlcorp.net/mp/moja-portal/utility/errors"
+	"github.com/menklab/goCMS/utility/errors"
 )
 
 type IAuthService interface {
