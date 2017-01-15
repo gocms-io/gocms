@@ -30,6 +30,14 @@ type AddEmailInput struct {
 	Email    string       `json:"email"`
 }
 
+/**
+* @apiDefine RequestEmailActivationLink
+* @apiParam (Request) {string} email The email to send the activation link to.
+*/
+type RequestEmailActivationLinkInput struct {
+	Email    string       `json:"email"`
+}
+
 func (e *Email) GetEmailDisplay() *EmailDisplay {
 	em := EmailDisplay{
 		Email: e.Email,

@@ -34,17 +34,17 @@ package auth
 //	AgeRange gAgeRange `json:"ageRange" binding:"required"`
 //}
 //
-///**
-//* @api {post} /login/google Login - Google
-//* @apiName LoginGoogle
-//* @apiGroup Authentication
-//*
-//* @apiParam (Request-Header) {String} x-google-token Google Authorization Token generated from google sdk in app.
-//*
-//* @apiUse UserDisplay
-//*
-//* @apiSuccess (Response-Header) {string} x-auth-token
-//*/
+/**
+* @api {post} /login/google Login - Google
+* @apiName LoginGoogle
+* @apiGroup Authentication
+*
+* @apiParam (Request-Header) {String} x-google-token Google Authorization Token generated from google sdk in app.
+*
+* @apiUse UserDisplay
+*
+* @apiSuccess (Response-Header) {string} x-auth-token
+*/
 //func (ac *AuthController) loginGoogle(c *gin.Context) {
 //	// check for token in header
 //	token := c.Request.Header.Get("X-GOOGLE-TOKEN")

@@ -40,6 +40,9 @@ func (user *User) GetUserAdminDisplay() *UserAdminDisplay {
 		Photo: user.Photo,
 		Enabled: user.Enabled,
 		Verified: user.Verified,
+		Created: user.Created,
+		MaxAge: user.MaxAge,
+		MinAge: user.MinAge,
 	}
 	return &userAdminDisplay
 }

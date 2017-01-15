@@ -27,6 +27,7 @@ type ApiControllers struct {
 	HealthyController       *api.HealthyController
 	AdminUserController     *admin.AdminUserController
 	UserController		*api.UserController
+	EmailController		*api.EmailController
 }
 
 var (
@@ -50,6 +51,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 	apiControllers := &ApiControllers{
 		DocumentationController: static.DefaultDocumentationController(routes),
 		AuthController: auth.DefaultAuthController(routes, sg),
+		EmailController: api.DefaultEmailController(routes, sg),
 		AdminUserController: admin.DefaultAdminUserController(routes, sg),
 		HealthyController: api.DefaultHealthyController(routes),
 		UserController: api.DefaultUserController(routes, sg),

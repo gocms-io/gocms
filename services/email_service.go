@@ -2,10 +2,12 @@ package services
 
 import (
 	"github.com/menklab/goCMS/repositories"
+	"log"
 )
 
 type IEmailService interface {
 	SetVerified(string) error
+	GetVerified(string) bool
 }
 
 type EmailService struct {
@@ -34,4 +36,14 @@ func (es *EmailService) SetVerified (e string) error {
 		return err
 	}
 	return err
+}
+
+func (es *EmailService) GetVerified (e string) bool {
+	email, err := es.RepositoriesGroup.EmailRepository.GetByAddress(e)
+	if err != nil {
+		log.Printf("Email Service, Get Verified, Error getting email by address: %s\n", err.Error())
+		return false
+	}
+
+	return email.IsVerified
 }

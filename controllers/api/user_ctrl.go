@@ -102,7 +102,7 @@ func (uc *UserController) update(c *gin.Context) {
 *
 * @apiUse AuthHeader
 * @apiUse UserChangePasswordInput
-* @apiPermission Authenticated
+* @apiPermission Authenticated`
 */
 func (uc *UserController) changePassword(c *gin.Context) {
 
@@ -110,21 +110,21 @@ func (uc *UserController) changePassword(c *gin.Context) {
 	authUser, _ := utility.GetUserFromContext(c)
 
 	// copy current user info into update user
-	var changePaswordInput models.UserChangePasswordInput
-	err := c.BindJSON(&changePaswordInput) // update any changes from request
+	var changePasswordInput models.UserChangePasswordInput
+	err := c.BindJSON(&changePasswordInput) // update any changes from request
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, err.Error(), err)
 		return
 	}
 
 	// verify password
-	if ok := uc.ServicesGroup.AuthService.VerifyPassword(authUser.Password, changePaswordInput.Password); !ok {
+	if ok := uc.ServicesGroup.AuthService.VerifyPassword(authUser.Password, changePasswordInput.Password); !ok {
 		errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
 		return
 	}
 
 	// do update
-	err = uc.ServicesGroup.UserService.UpdatePassword(authUser.Id, changePaswordInput.NewPassword)
+	err = uc.ServicesGroup.UserService.UpdatePassword(authUser.Id, changePasswordInput.NewPassword)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, "Couldn't update user.", err)
 		return
@@ -139,7 +139,7 @@ func (uc *UserController) changePassword(c *gin.Context) {
 * @apiGroup User
 *
 * @apiUse AuthHeader
-* @apiUse UserEmailInput
+* @apiUse AddEmailInput
 * @apiPermission Authenticated
 */
 func (uc *UserController) addEmail(c *gin.Context) {

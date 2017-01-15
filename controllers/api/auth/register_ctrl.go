@@ -51,50 +51,9 @@ func (auc *AuthController) register(c *gin.Context) {
 	c.JSON(http.StatusOK, user.GetUserDisplay())
 
 	// send activation email
-	err = auc.ServicesGroup.AuthService.SendEmailActivationCode(user.Id, user.Email)
+	err = auc.ServicesGroup.AuthService.SendEmailActivationCode(user.Email)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, errors.ApiError_Server, err)
 		return
 	}
-}
-
-/**
-* @api {get} /activate-email Activate Email
-* @apiName ActivateEmail
-* @apiGroup Authentication
-* @apiDescription This endpoint requires two url params &email and &code. Links are auto generated for this endpoint by the system. This will likely never be called directly from an app.
-*/
-func (auc *AuthController) activateEmail(c *gin.Context) {
-	code := c.Query("code")
-	if code == "" {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error activating email.", REDIRECT_LOGIN)
-		return
-	}
-
-	email := c.Query("email")
-	if email == "" {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error activating email.", REDIRECT_LOGIN)
-		return
-	}
-
-	// get user
-	user, err := auc.ServicesGroup.UserService.GetByEmail(email)
-	if err != nil {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error activating email.", REDIRECT_LOGIN)
-		return
-	}
-
-	if ok := auc.ServicesGroup.AuthService.VerifyEmailActivationCode(user.Id, code); !ok {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error activating email.", REDIRECT_LOGIN)
-		return
-	}
-
-	// set email to verified
-	err = auc.ServicesGroup.EmailService.SetVerified(email)
-	if err != nil {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error activating email.", REDIRECT_LOGIN)
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"message" : "Your email has been verified. You can now log in."})
 }

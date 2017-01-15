@@ -36,14 +36,14 @@ func (ac *AuthController) login(c *gin.Context) {
 
 	// verify user is enabled
 	if !user.Enabled {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Your account is currently disabled. Have you verified your email address?", REDIRECT_LOGIN)
+		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Your account is currently disabled.", REDIRECT_LOGIN)
 		return
 	}
 
 	// verify user has activated email
 	if !user.Verified {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Your primary email has not yet been verified. A new email will be sent.", REDIRECT_LOGIN)
-		ac.ServicesGroup.AuthService.SendEmailActivationCode(user.Id, user.Email)
+		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Your primary email has not yet been verified. A new verification email will be sent.", REDIRECT_LOGIN)
+		ac.ServicesGroup.AuthService.SendEmailActivationCode(user.Email)
 		return
 	}
 

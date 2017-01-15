@@ -65,7 +65,7 @@ func (ur *UserRepository) GetByEmail(email string) (*models.User, error) {
 	ON gocms_users.id=gocms_emails.userId
 	WHERE gocms_users.id=(
 		SELECT gocms_emails.userId AS u FROM gocms_emails
-		WHERE gocms_emails.email=? AND gocms_emails.isVerified=1
+		WHERE gocms_emails.email=?
 	)
 	AND isPrimary=1
 	Limit 1;
@@ -105,7 +105,7 @@ func (ur *UserRepository) Add(user *models.User) error {
 
 	// insert user
 	result, err := ur.database.NamedExec(`
-	INSERT INTO gocms_users (fullName, email, gender, photo, minAge, maxAge, password, enabled, verified, created) VALUES (:fullName, :email, :gender, :photo, :minAge, :maxAge, :password, :enabled, :verified, :created)
+	INSERT INTO gocms_users (fullName, gender, photo, minAge, maxAge, password, enabled, created) VALUES (:fullName, :gender, :photo, :minAge, :maxAge, :password, :enabled, :created)
 	`, user)
 	if err != nil {
 		log.Printf("Error adding user to db: %s", err.Error())
@@ -121,7 +121,7 @@ func (ur *UserRepository) Update(id int, user *models.User) error {
 	// insert row
 	user.Id = id
 	_, err := ur.database.NamedExec(`
-	UPDATE gocms_users SET fullName=:fullName, email=:email, gender=:gender, photo=:photo, maxAge=:maxAge, minAge=:minAge WHERE id=:id
+	UPDATE gocms_users SET fullName=:fullName, gender=:gender, photo=:photo, maxAge=:maxAge, minAge=:minAge WHERE id=:id
 	`, user)
 	if err != nil {
 		log.Printf("Error updating user in database: %s", err.Error())

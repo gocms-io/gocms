@@ -13,6 +13,7 @@ const (
 	ApiError_Permissions = "You do not have access."
 	ApiError_User_Disabled = "Account is currently disabled."
 	ApiError_Server = "Something went wrong. Please try again."
+	ApiError_Activating_Email = "Email couldn't be activate. The activation code has likely expired. Try requesting a new activation code."
 )
 
 type appError interface {

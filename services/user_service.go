@@ -87,8 +87,19 @@ func (us *UserService) Add(user *models.User) error {
 	}
 	user.Password = hashPassword
 
-	// add to db
+	// add user to db
 	err = us.RepositoriesGroup.UsersRepository.Add(user)
+	if err != nil {
+		return err
+	}
+
+	// add email to db and attach to user
+	emailToAdd := models.Email{
+		Email: user.Email,
+		UserId: user.Id,
+		IsPrimary: true,
+	}
+	err = us.RepositoriesGroup.EmailRepository.Add(&emailToAdd)
 	if err != nil {
 		return err
 	}

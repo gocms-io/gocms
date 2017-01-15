@@ -9,13 +9,15 @@ import (
 	"github.com/menklab/goCMS/config"
 	"log"
 	"github.com/nbutton23/zxcvbn-go"
+	"fmt"
+	"stash.cqlcorp.net/mp/moja-portal/utility/errors"
 )
 
 type IAuthService interface {
 	AuthUser(string, string) (*models.User, bool)
 	HashPassword(string) (string, error)
 	SendPasswordResetCode(string) error
-	SendEmailActivationCode(int, string) error
+	SendEmailActivationCode(string) error
 	VerifyPassword(string, string) bool
 	VerifyPasswordResetCode(int, string) bool
         SendTwoFactorCode(*models.User) error
@@ -164,34 +166,49 @@ func (as *AuthService) SendPasswordResetCode(email string) error {
 	return nil
 }
 
-func (as *AuthService) SendEmailActivationCode(userId int, email string) error {
+func (as *AuthService) SendEmailActivationCode(emailAddress string) error {
+
+	// get userId from email
+	email, err := as.RepositoriesGroup.EmailRepository.GetByAddress(emailAddress)
+	if err != nil {
+		fmt.Printf("Error sending email activation code, get email: %s", err.Error())
+		return err
+	}
+
+	if email.IsVerified {
+		err = errors.NewToUser("Email already activated.")
+		fmt.Printf("Error sending email activation code, %s\n", err.Error())
+		return err
+	}
 
 	// create reset code
 	code, hashedCode, err := as.getRandomCode(32)
 	if err != nil {
+		fmt.Printf("Error sending email activation code, get random code: %s\n", err.Error())
 		return err
 	}
 
 	// update user with new code
 	err = as.RepositoriesGroup.SecureCodeRepository.Add(&models.SecureCode{
-		UserId: userId,
+		UserId: email.UserId,
 		Type:   models.Code_VerifyEmail,
 		Code:   hashedCode,
 	})
 	if err != nil {
+		fmt.Printf("Error sending email activation code, add secure code: %s\n", err.Error())
 		return err
 	}
 
 	// send email
 	as.MailService.Send(&Mail{
-		To:      email,
+		To:      emailAddress,
 		Subject: "Email Verification Required",
 		Body: "Click on the link below to activate your email:\n" +
-			config.PublicApiUrl + "/activate-email?code=" + code + "&email=" + email + "\n\nThe link will expire at: " +
+			config.PublicApiUrl + "/activate-email?code=" + code + "&email=" + emailAddress + "\n\nThe link will expire at: " +
 			time.Now().Add(time.Minute * time.Duration(config.PasswordResetTimeout)).String() + ".",
 	})
 	if err != nil {
-		log.Print("Error sending mail: " + err.Error())
+		log.Println("Error sending email activation code, sending mail: " + err.Error())
 	}
 
 	return nil

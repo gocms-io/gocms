@@ -33,7 +33,7 @@ func (er *EmailRepository) Add(e *models.Email) error {
 	e.Created = time.Now()
 	// insert row
 	result, err := er.database.NamedExec(`
-	INSERT INTO gocms_emails (userId, email, verified, isPrimary, created) VALUES (:userId, :email, :verified, :isPrimary, :created)
+	INSERT INTO gocms_emails (userId, email, isVerified, isPrimary) VALUES (:userId, :email, :isVerified, :isPrimary)
 	`, e)
 	if err != nil {
 		log.Printf("Error adding email to database: %s", err.Error())
@@ -56,7 +56,7 @@ func (er *EmailRepository) Get(id int) (*models.Email, error) {
 	WHERE gocms_emails.id=?
 	`, id)
 	if err != nil {
-		log.Printf("Error gettings email: %s", err.Error())
+		log.Printf("Error getting email by id: %s", err.Error())
 		return nil, err
 	}
 
@@ -72,7 +72,7 @@ func (er *EmailRepository) GetByAddress(address string) (*models.Email, error) {
 	WHERE gocms_emails.email=?
 	`, address)
 	if err != nil {
-		log.Printf("Error gettings email: %s", err.Error())
+		log.Printf("Error getting email by address: %s", err.Error())
 		return nil, err
 	}
 
@@ -88,7 +88,7 @@ func (er *EmailRepository) GetByUserId(userId int) ([]models.Email, error) {
 	WHERE gocms_emails.userId=?
 	`, userId)
 	if err != nil {
-		log.Printf("Error gettings email: %s", err.Error())
+		log.Printf("Error getting email by userId: %s", err.Error())
 		return nil, err
 	}
 
@@ -98,11 +98,10 @@ func (er *EmailRepository) GetByUserId(userId int) ([]models.Email, error) {
 func (er *EmailRepository) Update(email *models.Email) error {
 	// get email by id
 	_, err := er.database.NamedExec(`
-	UPDATE gocms_emails SET isVerified=:isVerified, isPrimary:isPrimary
-	WHERE id=:id
+	UPDATE gocms_emails SET isVerified=:isVerified, isPrimary=:isPrimary WHERE id=:id
 	`, email)
 	if err != nil {
-		log.Printf("Error gettings email: %s", err.Error())
+		log.Printf("Error updating email: %s", err.Error())
 		return err
 	}
 
