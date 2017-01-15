@@ -49,9 +49,6 @@ func (us *UserService) Get(id int) (*models.User, error) {
 
 func (us *UserService) GetByEmail(email string) (*models.User, error) {
 	// check emails for userid
-
-
-
 	user, err := us.RepositoriesGroup.UsersRepository.GetByEmail(email)
 
 	if err != nil {

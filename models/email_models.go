@@ -5,12 +5,12 @@ import (
 )
 
 type Email struct {
-	Id        int       `db:"id"`
-	UserId    int    `db:"userId"`
-	Email     string    `db:"email"`
-	Verified  bool      `db:"verified"`
-	IsPrimary bool      `db:"isPrimary"`
-	Created   time.Time   `db:"created"`
+	Id         int       `db:"id"`
+	UserId     int    `db:"userId"`
+	Email      string    `db:"email"`
+	IsVerified bool      `db:"isVerified"`
+	IsPrimary  bool      `db:"isPrimary"`
+	Created    time.Time   `db:"created"`
 }
 
 type EmailDisplay struct {
@@ -35,7 +35,7 @@ func (e *Email) GetEmailDisplay() *EmailDisplay {
 		Email: e.Email,
 		Id: e.Id,
 		IsPrimary: e.IsPrimary,
-		Verified: e.Verified,
+		Verified: e.IsVerified,
 	}
 	return &em
 }

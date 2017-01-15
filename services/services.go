@@ -7,10 +7,11 @@ import (
 
 type ServicesGroup struct {
 	SettingsService ISettingsService
-	MailService IMailService
-	AuthService IAuthService
-	UserService IUserService
-	AclService  IAclService
+	MailService     IMailService
+	AuthService     IAuthService
+	UserService     IUserService
+	AclService      IAclService
+	EmailService    IEmailService
 }
 
 func DefaultServicesGroup(rg *repositories.RepositoriesGroup) *ServicesGroup {
@@ -20,8 +21,11 @@ func DefaultServicesGroup(rg *repositories.RepositoriesGroup) *ServicesGroup {
 	settingsService.RefreshSettingsCache()
 	config.SetSettingsFromDb(settingsService.GetSettings())
 
-
+	// mail service
 	mailService := DefaultMailService()
+
+	// email service
+	emailService := DefaultEmailService(rg)
 
 	// start permissions cache
 	aclService := DefaultAclService(rg)
@@ -36,6 +40,7 @@ func DefaultServicesGroup(rg *repositories.RepositoriesGroup) *ServicesGroup {
 		AuthService: authService,
 		UserService: userService,
 		AclService: aclService,
+		EmailService: emailService,
 	}
 
 	return sg

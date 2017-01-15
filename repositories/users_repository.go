@@ -7,6 +7,7 @@ import (
 	"github.com/menklab/goCMS/database"
 	"github.com/jmoiron/sqlx"
 	"github.com/menklab/goCMS/utility/errors"
+	"database/sql"
 )
 
 type IUserRepository interface {
@@ -57,7 +58,7 @@ func (ur *UserRepository) GetByEmail(email string) (*models.User, error) {
 
 	// first get the user by email
 	var user models.User
-	err := ur.database.Select(&user, `
+	err := ur.database.Get(&user, `
 	SELECT gocms_users.*, gocms_emails.email, gocms_emails.isVerified
 	FROM gocms_users
 	INNER JOIN gocms_emails
@@ -180,9 +181,9 @@ func (ur *UserRepository) Delete(id int) error {
 func (ur *UserRepository) userExistsByEmail(email string) bool {
 	user := models.User{}
 	err := ur.database.QueryRowx(`
-	SELECT email FROM gocms_users WHERE email = ?
+	SELECT email FROM gocms_emails WHERE email = ?
 	`, email).Scan(&user.Email)
-	if err != nil {
+	if err != nil && err != sql.ErrNoRows {
 		log.Printf("Error checking if user exists by email in database: %s", err.Error())
 		return true
 	}

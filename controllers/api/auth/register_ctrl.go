@@ -89,8 +89,8 @@ func (auc *AuthController) activateEmail(c *gin.Context) {
 		return
 	}
 
-	// verify the user
-	err = auc.ServicesGroup.UserService.SetVerified(user.Id, true)
+	// set email to verified
+	err = auc.ServicesGroup.EmailService.SetVerified(email)
 	if err != nil {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error activating email.", REDIRECT_LOGIN)
 		return
