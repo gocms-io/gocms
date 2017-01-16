@@ -1,4 +1,4 @@
-package api
+package user_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
@@ -29,6 +29,9 @@ func (uc *UserController) Default() {
 	uc.routes.Auth.GET("/user", uc.get)
 	uc.routes.Auth.PUT("/user", uc.update)
 	uc.routes.Auth.PUT("/user/changePassword", uc.changePassword)
+	uc.routes.Auth.POST("/user/addEmail", uc.addEmail)
+	uc.routes.Public.GET("/user/activate-email", uc.activateEmail)
+	uc.routes.Public.POST("/user/activate-email/request-activation-link", uc.requestActivationLink)
 
 }
 
@@ -127,44 +130,6 @@ func (uc *UserController) changePassword(c *gin.Context) {
 	err = uc.ServicesGroup.UserService.UpdatePassword(authUser.Id, changePasswordInput.NewPassword)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, "Couldn't update user.", err)
-		return
-	}
-
-	c.Status(http.StatusOK)
-}
-
-/**
-* @api {put} /user/addEmail Change Password
-* @apiName AddEmail
-* @apiGroup User
-*
-* @apiUse AuthHeader
-* @apiUse AddEmailInput
-* @apiPermission Authenticated
-*/
-func (uc *UserController) addEmail(c *gin.Context) {
-
-	// get logged in user
-	authUser, _ := utility.GetUserFromContext(c)
-
-	// copy current user info into update user
-	var addEmailInput models.AddEmailInput
-	err := c.BindJSON(&addEmailInput) // update any changes from request
-	if err != nil {
-		errors.Response(c, http.StatusBadRequest, err.Error(), err)
-		return
-	}
-
-	// verify password
-	if ok := uc.ServicesGroup.AuthService.VerifyPassword(authUser.Password, addEmailInput.Password); !ok {
-		errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
-		return
-	}
-
-	// do update
-	err = uc.ServicesGroup.UserService.AddEmail(authUser.Id, addEmailInput.Email)
-	if err != nil {
-		errors.Response(c, http.StatusInternalServerError, "Couldn't add email to user.", err)
 		return
 	}
 

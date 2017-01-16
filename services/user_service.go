@@ -15,7 +15,6 @@ type IUserService interface {
 	Delete(int) error
 	Update(int, *models.User) error
 	UpdatePassword(int, string) error
-	AddEmail(int, string) error
 	SetEnabled(int, bool) error
 }
 
@@ -145,12 +144,7 @@ func (us *UserService) UpdatePassword(id int, password string) error {
 
 	return nil
 }
-func (us *UserService) AddEmail(id int, email string) error{
-	// check to see if email exists
 
-	//
-	return nil
-}
 func (us *UserService) SetEnabled (id int, enabled bool) error {
 	return us.RepositoriesGroup.UsersRepository.SetEnabled(id, enabled)
 }

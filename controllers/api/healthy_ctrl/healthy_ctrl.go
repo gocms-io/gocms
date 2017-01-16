@@ -1,5 +1,5 @@
 
-package api
+package healthy_ctrl
 
 import (
 	"github.com/gin-gonic/gin"

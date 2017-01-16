@@ -1,4 +1,4 @@
-package auth
+package auth_ctrl
 
 import (
 	"github.com/menklab/goCMS/services"

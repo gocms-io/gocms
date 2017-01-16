@@ -1,5 +1,4 @@
-
-package static
+package static_ctrl
 
 import (
 	"github.com/menklab/goCMS/routes"

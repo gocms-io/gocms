@@ -1,4 +1,4 @@
-package admin
+package admin_ctrl
 
 import (
 	"github.com/gin-gonic/gin"

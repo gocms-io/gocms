@@ -4,11 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/menklab/goCMS/services"
 	"github.com/menklab/goCMS/routes"
-	"github.com/menklab/goCMS/controllers/api"
 	"github.com/menklab/goCMS/controllers/static"
-	"github.com/menklab/goCMS/controllers/api/auth"
-	"github.com/menklab/goCMS/controllers/api/admin"
 	"github.com/menklab/goCMS/controllers/middleware/cors"
+	"github.com/menklab/goCMS/controllers/api/auth_ctrl"
+	"github.com/menklab/goCMS/controllers/api/healthy_ctrl"
+	"github.com/menklab/goCMS/controllers/api/admin_ctrl"
+	"github.com/menklab/goCMS/controllers/api/user"
 )
 
 type ControllersGroup struct {
@@ -22,12 +23,11 @@ type Api struct {
 }
 
 type ApiControllers struct {
-	DocumentationController *static.DocumentationController
-	AuthController          *auth.AuthController
-	HealthyController       *api.HealthyController
-	AdminUserController     *admin.AdminUserController
-	UserController		*api.UserController
-	EmailController		*api.EmailController
+	DocumentationController *static_ctrl.DocumentationController
+	AuthController          *auth_ctrl.AuthController
+	HealthyController       *healthy_ctrl.HealthyController
+	AdminUserController     *admin_ctrl.AdminUserController
+	UserController		*user_ctrl.UserController
 }
 
 var (
@@ -49,12 +49,11 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 	// define routes and apply middleware
 
 	apiControllers := &ApiControllers{
-		DocumentationController: static.DefaultDocumentationController(routes),
-		AuthController: auth.DefaultAuthController(routes, sg),
-		EmailController: api.DefaultEmailController(routes, sg),
-		AdminUserController: admin.DefaultAdminUserController(routes, sg),
-		HealthyController: api.DefaultHealthyController(routes),
-		UserController: api.DefaultUserController(routes, sg),
+		DocumentationController: static_ctrl.DefaultDocumentationController(routes),
+		AuthController: auth_ctrl.DefaultAuthController(routes, sg),
+		AdminUserController: admin_ctrl.DefaultAdminUserController(routes, sg),
+		HealthyController: healthy_ctrl.DefaultHealthyController(routes),
+		UserController: user_ctrl.DefaultUserController(routes, sg),
 	}
 
 	api := &Api{

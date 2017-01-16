@@ -1,4 +1,4 @@
-package auth
+package auth_ctrl
 
 import (
 	"net/http"

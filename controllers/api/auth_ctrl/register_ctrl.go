@@ -1,4 +1,4 @@
-package auth
+package auth_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
