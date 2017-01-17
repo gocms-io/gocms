@@ -76,7 +76,7 @@ func (uc *UserController) activateEmail(c *gin.Context) {
 }
 
 /**
-* @api {put} /user/addEmail Add Email
+* @api {post} /user/addEmail Add Email
 * @apiName AddEmail
 * @apiGroup User
 *
@@ -126,7 +126,7 @@ func (uc *UserController) addEmail(c *gin.Context) {
 		return
 	}
 
-	// send email to primary account about additional email
+	// todo send email to primary account about additional email
 
 	// create email display and send
 	emailDisplay := models.EmailDisplay{
