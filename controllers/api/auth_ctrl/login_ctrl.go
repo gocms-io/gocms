@@ -43,7 +43,7 @@ func (ac *AuthController) login(c *gin.Context) {
 	// verify user has activated email
 	if !user.Verified {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Your primary email has not yet been verified. A new verification email will be sent.", REDIRECT_LOGIN)
-		ac.ServicesGroup.AuthService.SendEmailActivationCode(user.Email)
+		ac.ServicesGroup.EmailService.SendEmailActivationCode(user.Email)
 		return
 	}
 

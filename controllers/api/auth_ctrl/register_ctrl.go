@@ -51,7 +51,7 @@ func (auc *AuthController) register(c *gin.Context) {
 	c.JSON(http.StatusOK, user.GetUserDisplay())
 
 	// send activation email
-	err = auc.ServicesGroup.AuthService.SendEmailActivationCode(user.Email)
+	err = auc.ServicesGroup.EmailService.SendEmailActivationCode(user.Email)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, errors.ApiError_Server, err)
 		return

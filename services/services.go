@@ -24,15 +24,15 @@ func DefaultServicesGroup(rg *repositories.RepositoriesGroup) *ServicesGroup {
 	// mail service
 	mailService := DefaultMailService()
 
-	// email service
-	emailService := DefaultEmailService(rg)
-
 	// start permissions cache
 	aclService := DefaultAclService(rg)
 	aclService.RefreshPermissionsCache()
 
 	authService := DefaultAuthService(rg, mailService)
 	userService := DefaultUserService(rg, authService, mailService)
+
+	// email service
+	emailService := DefaultEmailService(rg, mailService, authService)
 
 	sg := &ServicesGroup{
 		SettingsService: settingsService,

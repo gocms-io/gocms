@@ -39,7 +39,6 @@ func (er *EmailRepository) Add(e *models.Email) error {
 		log.Printf("Error adding email to database: %s", err.Error())
 		return err
 	}
-
 	// add id to user object
 	id, _ := result.LastInsertId()
 	e.Id = int(id)

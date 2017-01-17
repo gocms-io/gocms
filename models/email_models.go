@@ -13,11 +13,18 @@ type Email struct {
 	Created    time.Time   `db:"created"`
 }
 
+/**
+* @apiDefine EmailDisplay
+* @apiSuccess (Response) {number} id
+* @apiSuccess (Response) {string} email
+* @apiSuccess (Response) {number} verified
+* @apiSuccess (Response) {number} isPrimary
+*/
 type EmailDisplay struct {
 	Id        int       `json:"id,omitempty"`
 	Email     string    `json:"email,omitempty"`
-	Verified  bool      `json:"verified,omitempty"`
-	IsPrimary bool      `json:"isPrimary,omitempty"`
+	Verified  bool      `json:"verified"`
+	IsPrimary bool      `json:"isPrimary"`
 }
 
 /**

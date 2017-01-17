@@ -9,9 +9,9 @@ import (
 )
 
 /**
-* @api {post} /activate-email/request-activation-link Request New Email Activation Link
+* @api {post} /user/activate-email/request-activation-link Request New Email Activation Link
 * @apiName ActivateEmail
-* @apiGroup Email
+* @apiGroup User
 * @apiUse RequestEmailActivationLink
 * @apiDescription Request a new activation link for a registered email.
 */
@@ -24,7 +24,7 @@ func (uc *UserController) requestActivationLink(c *gin.Context) {
 		errors.Response(c, http.StatusBadRequest, err.Error(), err)
 	}
 
-	err = uc.ServicesGroup.AuthService.SendEmailActivationCode(requestEmailActivationLinkInput.Email)
+	err = uc.ServicesGroup.EmailService.SendEmailActivationCode(requestEmailActivationLinkInput.Email)
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, "Error sending activation code.", err)
 	}
@@ -33,9 +33,9 @@ func (uc *UserController) requestActivationLink(c *gin.Context) {
 }
 
 /**
-* @api {get} /activate-email Activate Email
+* @api {get} /user/activate-email Activate Email
 * @apiName ActivateEmail
-* @apiGroup Email
+* @apiGroup User
 * @apiDescription This endpoint requires two url params &email and &code. Links are auto generated for this endpoint by the system. This will likely never be called diructly from an app.
 */
 func (uc *UserController) activateEmail(c *gin.Context) {
@@ -59,7 +59,7 @@ func (uc *UserController) activateEmail(c *gin.Context) {
 		return
 	}
 
-	if ok := uc.ServicesGroup.AuthService.VerifyEmailActivationCode(user.Id, code); !ok {
+	if ok := uc.ServicesGroup.EmailService.VerifyEmailActivationCode(user.Id, code); !ok {
 		err = errors.New(errors.ApiError_Activating_Email)
 		errors.Response(c, http.StatusBadRequest, err.Error(), err)
 		return
@@ -82,6 +82,7 @@ func (uc *UserController) activateEmail(c *gin.Context) {
 *
 * @apiUse AuthHeader
 * @apiUse AddEmailInput
+* @apiUse EmailDisplay
 * @apiPermission Authenticated
 */
 func (uc *UserController) addEmail(c *gin.Context) {
@@ -103,12 +104,39 @@ func (uc *UserController) addEmail(c *gin.Context) {
 		return
 	}
 
-	// add email
-	//err = uc.ServicesGroup.UserService.AddEmail(authUser.Id, addEmailInput.Email)
-	//if err != nil {
-	//	errors.Response(c, http.StatusInternalServerError, "Couldn't add email to user.", err)
-	//	return
-	//}
+	// convert input to model
+	emailToAdd := models.Email{
+		Email: addEmailInput.Email,
+		IsVerified: false,
+		IsPrimary: false,
+		UserId: authUser.Id,
+	}
 
-	c.Status(http.StatusOK)
+	// add email
+	err = uc.ServicesGroup.EmailService.AddEmail(&emailToAdd)
+	if err != nil {
+		errors.Response(c, http.StatusInternalServerError, "Couldn't add email to user.", err)
+		return
+	}
+
+	// send verification email
+	err = uc.ServicesGroup.EmailService.SendEmailActivationCode(emailToAdd.Email)
+	if err != nil {
+		errors.Response(c, http.StatusInternalServerError, "Couldn't add email to user.", err)
+		return
+	}
+
+	// send email to primary account about additional email
+
+	// create email display and send
+	emailDisplay := models.EmailDisplay{
+		Email: emailToAdd.Email,
+		Id: emailToAdd.Id,
+		IsPrimary: emailToAdd.IsPrimary,
+		Verified: emailToAdd.IsVerified,
+	}
+
+
+
+	c.JSON(http.StatusOK, emailDisplay)
 }

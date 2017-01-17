@@ -9,21 +9,18 @@ import (
 	"github.com/menklab/goCMS/config"
 	"log"
 	"github.com/nbutton23/zxcvbn-go"
-	"fmt"
-	"github.com/menklab/goCMS/utility/errors"
 )
 
 type IAuthService interface {
 	AuthUser(string, string) (*models.User, bool)
 	HashPassword(string) (string, error)
 	SendPasswordResetCode(string) error
-	SendEmailActivationCode(string) error
 	VerifyPassword(string, string) bool
 	VerifyPasswordResetCode(int, string) bool
         SendTwoFactorCode(*models.User) error
-	VerifyTwoFactorCode(id int, code string) bool
-	VerifyEmailActivationCode(id int, code string) bool
-	PasswordIsComplex(password string) bool
+	VerifyTwoFactorCode(int, string) bool
+	PasswordIsComplex(string) bool
+	GetRandomCode(int) (string, string, error)
 }
 
 
@@ -101,31 +98,7 @@ func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
 	return true
 }
 
-func (as *AuthService) VerifyEmailActivationCode(id int, code string) bool {
 
-	// get code
-	secureCode, err := as.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, models.Code_VerifyEmail)
-	if err != nil {
-		log.Printf("error getting latest password reset code: %s", err.Error())
-		return false
-	}
-
-	if ok := as.VerifyPassword(secureCode.Code, code); !ok {
-		return false
-	}
-
-	// check within time
-	if time.Since(secureCode.Created) > (time.Minute * time.Duration(config.PasswordResetTimeout)) {
-		return false
-	}
-
-	err = as.RepositoriesGroup.SecureCodeRepository.Delete(secureCode.Id)
-	if err != nil {
-		return false
-	}
-
-	return true
-}
 
 func (as *AuthService) SendPasswordResetCode(email string) error {
 
@@ -136,7 +109,7 @@ func (as *AuthService) SendPasswordResetCode(email string) error {
 	}
 
 	// create reset code
-	code, hashedCode, err := as.getRandomCode(6)
+	code, hashedCode, err := as.GetRandomCode(6)
 	if err != nil {
 		return err
 	}
@@ -166,58 +139,12 @@ func (as *AuthService) SendPasswordResetCode(email string) error {
 	return nil
 }
 
-func (as *AuthService) SendEmailActivationCode(emailAddress string) error {
 
-	// get userId from email
-	email, err := as.RepositoriesGroup.EmailRepository.GetByAddress(emailAddress)
-	if err != nil {
-		fmt.Printf("Error sending email activation code, get email: %s", err.Error())
-		return err
-	}
-
-	if email.IsVerified {
-		err = errors.NewToUser("Email already activated.")
-		fmt.Printf("Error sending email activation code, %s\n", err.Error())
-		return err
-	}
-
-	// create reset code
-	code, hashedCode, err := as.getRandomCode(32)
-	if err != nil {
-		fmt.Printf("Error sending email activation code, get random code: %s\n", err.Error())
-		return err
-	}
-
-	// update user with new code
-	err = as.RepositoriesGroup.SecureCodeRepository.Add(&models.SecureCode{
-		UserId: email.UserId,
-		Type:   models.Code_VerifyEmail,
-		Code:   hashedCode,
-	})
-	if err != nil {
-		fmt.Printf("Error sending email activation code, add secure code: %s\n", err.Error())
-		return err
-	}
-
-	// send email
-	as.MailService.Send(&Mail{
-		To:      emailAddress,
-		Subject: "Email Verification Required",
-		Body: "Click on the link below to activate your email:\n" +
-			config.PublicApiUrl + "/activate-email?code=" + code + "&email=" + emailAddress + "\n\nThe link will expire at: " +
-			time.Now().Add(time.Minute * time.Duration(config.PasswordResetTimeout)).String() + ".",
-	})
-	if err != nil {
-		log.Println("Error sending email activation code, sending mail: " + err.Error())
-	}
-
-	return nil
-}
 
 func (as *AuthService) SendTwoFactorCode(user *models.User) error {
 
 	// create code
-	code, hashedCode, err := as.getRandomCode(8)
+	code, hashedCode, err := as.GetRandomCode(8)
 	if err != nil {
 		return err
 	}
@@ -282,7 +209,7 @@ func (as *AuthService) HashPassword(password string) (string, error) {
 	return string(hashedPassword), nil
 }
 
-func (as *AuthService) getRandomCode(length int) (string, string, error) {
+func (as *AuthService) GetRandomCode(length int) (string, string, error) {
 	// create code
 	code, err := utility.GenerateRandomString(length)
 	if err != nil {
