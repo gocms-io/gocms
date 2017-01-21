@@ -193,9 +193,10 @@ func (es *EmailService) PromoteEmail(email *models.Email) error {
 	}
 
 	// promote email
-	err = es.RepositoriesGroup.EmailRepository.PromoteEmail(email.Id, email.UserId)
+	err = es.RepositoriesGroup.EmailRepository.PromoteEmail(dbEmail.Id, dbEmail.UserId)
 	if err != nil {
 		log.Printf("email service, promote email, promoting email, errors:%s", err.Error())
+		return err
 	}
 
 	// send notification

@@ -128,7 +128,7 @@ func (er *EmailRepository) Update(email *models.Email) error {
 func (er *EmailRepository) PromoteEmail(emailId int, userId int) error {
 	// set all emails to not be primary
 	_, err := er.database.Exec(`
-	UPDATE gocms_emails SET isPrimary=:isPrimary WHERE userId=?
+	UPDATE gocms_emails SET isPrimary=? WHERE userId=?
 	`, false, userId)
 	if err != nil {
 		log.Printf("Error bulk setting email to non-primary: %s", err.Error())
@@ -137,7 +137,7 @@ func (er *EmailRepository) PromoteEmail(emailId int, userId int) error {
 
 	// set new primary email
 	_, err = er.database.Exec(`
-	UPDATE gocms_emails SET isPrimary=:isPrimary WHERE id=?
+	UPDATE gocms_emails SET isPrimary=? WHERE id=?
 	`, true, emailId)
 	if err != nil {
 		log.Printf("Error setting new primary email: %s", err.Error())
