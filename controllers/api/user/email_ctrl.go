@@ -138,3 +138,45 @@ func (uc *UserController) addEmail(c *gin.Context) {
 
 	c.JSON(http.StatusOK, emailDisplay)
 }
+
+/**
+* @api {put} /user/promoteEmail/:emailId Promote Email
+* @apiName PromoteEmail
+* @apiGroup User
+* @apiUse AddEmailInput
+* @apiUse AuthHeader
+* @apiPermission Authenticated
+*/
+func (uc *UserController) promoteEmail(c *gin.Context) {
+
+	// get logged in user
+	authUser, _ := utility.GetUserFromContext(c)
+
+	// get reqeust data
+	var promoteEmailInput models.AddEmailInput
+	err := c.BindJSON(&promoteEmailInput) // update any changes from request
+	if err != nil {
+		errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		return
+	}
+
+	// verify password
+	if ok := uc.ServicesGroup.AuthService.VerifyPassword(authUser.Password, promoteEmailInput.Password); !ok {
+		errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
+		return
+	}
+
+	email := models.Email{
+		Email: promoteEmailInput.Email,
+		UserId: authUser.Id,
+	}
+
+	// promote email
+	err = uc.ServicesGroup.EmailService.PromoteEmail(&email)
+	if err != nil {
+		errors.Response(c, http.StatusBadRequest, "Error promoting email.", err)
+		return
+	}
+
+	c.Status(http.StatusOK)
+}

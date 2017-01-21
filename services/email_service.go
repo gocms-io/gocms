@@ -16,7 +16,7 @@ type IEmailService interface {
 	AddEmail(email *models.Email) error
 	SendEmailActivationCode(email string) error
 	VerifyEmailActivationCode(id int, code string) bool
-	// Promote Email
+	PromoteEmail(email *models.Email) error
 }
 
 type EmailService struct {
@@ -126,7 +126,7 @@ func (es *EmailService) SendEmailActivationCode(emailAddress string) error {
 		To:      emailAddress,
 		Subject: "Email Verification Required",
 		Body: "Click on the link below to activate your email:\n" +
-			config.PublicApiUrl + "/activate-email?code=" + code + "&email=" + emailAddress + "\n\nThe link will expire at: " +
+			config.PublicApiUrl + "/user/activate-email?code=" + code + "&email=" + emailAddress + "\n\nThe link will expire at: " +
 			time.Now().Add(time.Minute * time.Duration(config.PasswordResetTimeout)).String() + ".",
 	})
 	if err != nil {
@@ -160,4 +160,52 @@ func (es *EmailService) VerifyEmailActivationCode(id int, code string) bool {
 	}
 
 	return true
+}
+
+func (es *EmailService) PromoteEmail(email *models.Email) error {
+
+	// get email for verification
+	dbEmail, err := es.RepositoriesGroup.EmailRepository.GetByAddress(email.Email)
+	if err != nil {
+		log.Printf("email service, promote email, get by address, error: %s", err.Error())
+		return err
+	}
+
+	// email must be verified
+	if !dbEmail.IsVerified {
+		err = errors.NewToUser("You can only promote an email address after it has been validated.")
+		log.Printf("email service, promote email, get by address, error: %s", err.Error())
+		return err
+	}
+
+	// verify email owner
+	if email.UserId != dbEmail.UserId {
+		err = errors.NewToUser("You can only promote email address owned by you.")
+		log.Printf("email service, promote email, get by address, error: %s", err.Error())
+		return err
+	}
+
+	// get user primary email to send notification too first
+	oldPrimaryEmail, err := es.RepositoriesGroup.EmailRepository.GetPrimaryByUserId(email.UserId)
+	if err != nil {
+		log.Printf("email service, promote email, get primary by userId, error: %s", err.Error())
+		return err
+	}
+
+	// promote email
+	err = es.RepositoriesGroup.EmailRepository.PromoteEmail(email.Id, email.UserId)
+	if err != nil {
+		log.Printf("email service, promote email, promoting email, errors:%s", err.Error())
+	}
+
+	// send notification
+	// send email to primary email about addition of email
+	mail := Mail{
+		To: oldPrimaryEmail.Email,
+		Subject: "A New Primary Email Has Been Set",
+		Body: "A new primary email address, " + email.Email + ", has been set on your account.\n\n If you believe this to be a mistake please contact support.",
+	}
+	es.MailService.Send(&mail)
+
+	return nil
 }

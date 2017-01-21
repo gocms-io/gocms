@@ -30,6 +30,7 @@ func (uc *UserController) Default() {
 	uc.routes.Auth.PUT("/user", uc.update)
 	uc.routes.Auth.PUT("/user/changePassword", uc.changePassword)
 	uc.routes.Auth.POST("/user/addEmail", uc.addEmail)
+	uc.routes.Auth.POST("/user/promoteEmail", uc.promoteEmail)
 	uc.routes.Public.GET("/user/activate-email", uc.activateEmail)
 	uc.routes.Public.POST("/user/activate-email/request-activation-link", uc.requestActivationLink)
 

@@ -14,7 +14,8 @@ type IEmailRepository interface {
 	GetByAddress(string) (*models.Email, error)
 	GetByUserId(int) ([]models.Email, error)
 	GetPrimaryByUserId(int) (*models.Email, error)
-	Update(*models.Email) error
+	PromoteEmail(emailId int, userId int) error
+	Update(email *models.Email) error
 	Delete(int) error
 }
 
@@ -118,6 +119,28 @@ func (er *EmailRepository) Update(email *models.Email) error {
 	`, email)
 	if err != nil {
 		log.Printf("Error updating email: %s", err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (er *EmailRepository) PromoteEmail(emailId int, userId int) error {
+	// set all emails to not be primary
+	_, err := er.database.Exec(`
+	UPDATE gocms_emails SET isPrimary=:isPrimary WHERE userId=?
+	`, false, userId)
+	if err != nil {
+		log.Printf("Error bulk setting email to non-primary: %s", err.Error())
+		return err
+	}
+
+	// set new primary email
+	_, err = er.database.Exec(`
+	UPDATE gocms_emails SET isPrimary=:isPrimary WHERE id=?
+	`, true, emailId)
+	if err != nil {
+		log.Printf("Error setting new primary email: %s", err.Error())
 		return err
 	}
 

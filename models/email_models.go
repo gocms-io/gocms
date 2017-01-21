@@ -30,7 +30,7 @@ type EmailDisplay struct {
 /**
 * @apiDefine AddEmailInput
 * @apiParam (Request) {string} password The current users password.
-* @apiParam (Request) {string} email The new email to add.
+* @apiParam (Request) {string} email The new email to add (or promote).
 */
 type AddEmailInput struct {
 	Password string    `json:"password,omitempty"`
