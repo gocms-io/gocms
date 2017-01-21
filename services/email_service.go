@@ -13,18 +13,17 @@ import (
 type IEmailService interface {
 	SetVerified(email string) error
 	GetVerified(email string) bool
-	AddEmail(*models.Email) error
+	AddEmail(email *models.Email) error
 	SendEmailActivationCode(email string) error
 	VerifyEmailActivationCode(id int, code string) bool
 	// Promote Email
 }
 
 type EmailService struct {
-	MailService IMailService
-	AuthService IAuthService
+	MailService       IMailService
+	AuthService       IAuthService
 	RepositoriesGroup *repositories.RepositoriesGroup
 }
-
 
 func DefaultEmailService(rg *repositories.RepositoriesGroup, ms *MailService, as *AuthService) *EmailService {
 	emailService := &EmailService{
@@ -35,7 +34,7 @@ func DefaultEmailService(rg *repositories.RepositoriesGroup, ms *MailService, as
 	return emailService
 }
 
-func (es *EmailService) SetVerified (e string) error {
+func (es *EmailService) SetVerified(e string) error {
 	// get email
 	email, err := es.RepositoriesGroup.EmailRepository.GetByAddress(e)
 	if err != nil {
@@ -51,7 +50,7 @@ func (es *EmailService) SetVerified (e string) error {
 	return err
 }
 
-func (es *EmailService) GetVerified (e string) bool {
+func (es *EmailService) GetVerified(e string) bool {
 	email, err := es.RepositoriesGroup.EmailRepository.GetByAddress(e)
 	if err != nil {
 		log.Printf("Email Service, Get Verified, Error getting email by address: %s\n", err.Error())
@@ -61,7 +60,7 @@ func (es *EmailService) GetVerified (e string) bool {
 	return email.IsVerified
 }
 
-func (es *EmailService) AddEmail (e *models.Email) error {
+func (es *EmailService) AddEmail(e *models.Email) error {
 
 	// check to see if email exist
 	emailExists, _ := es.RepositoriesGroup.EmailRepository.GetByAddress(e.Email)
@@ -74,6 +73,16 @@ func (es *EmailService) AddEmail (e *models.Email) error {
 	if err != nil {
 		log.Printf("Email Service, error adding email: %s", err.Error())
 		return err
+	}
+
+	// send email to primary email about addition of email
+	if primaryEmail, err := es.RepositoriesGroup.EmailRepository.GetPrimaryByUserId(e.UserId); err == nil {
+		mail := Mail{
+			To: primaryEmail.Email,
+			Subject: "New Email Added To Your Account",
+			Body: "A new alternative email address, " + e.Email + ", was added to your account.\n\n If you believe this to be a mistake please contact support.",
+		}
+		es.MailService.Send(&mail)
 	}
 
 	return nil

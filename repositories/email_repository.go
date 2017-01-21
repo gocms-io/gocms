@@ -13,6 +13,7 @@ type IEmailRepository interface {
 	Get(int) (*models.Email, error)
 	GetByAddress(string) (*models.Email, error)
 	GetByUserId(int) ([]models.Email, error)
+	GetPrimaryByUserId(int) (*models.Email, error)
 	Update(*models.Email) error
 	Delete(int) error
 }
@@ -21,8 +22,7 @@ type EmailRepository struct {
 	database *sqlx.DB
 }
 
-
-func DefaultEmailRepository(db *database.Database) *EmailRepository{
+func DefaultEmailRepository(db *database.Database) *EmailRepository {
 	emailRepository := &EmailRepository{
 		database: db.Dbx,
 	}
@@ -49,7 +49,7 @@ func (er *EmailRepository) Add(e *models.Email) error {
 func (er *EmailRepository) Get(id int) (*models.Email, error) {
 	// get email by id
 	var email models.Email
-	err := er.database.Get(&email,`
+	err := er.database.Get(&email, `
 	SELECT gocms_emails.*
 	FROM gocms_emails
 	WHERE gocms_emails.id=?
@@ -65,7 +65,7 @@ func (er *EmailRepository) Get(id int) (*models.Email, error) {
 func (er *EmailRepository) GetByAddress(address string) (*models.Email, error) {
 	// get email by id
 	var email models.Email
-	err := er.database.Get(&email,`
+	err := er.database.Get(&email, `
 	SELECT gocms_emails.*
 	FROM gocms_emails
 	WHERE gocms_emails.email=?
@@ -81,7 +81,7 @@ func (er *EmailRepository) GetByAddress(address string) (*models.Email, error) {
 func (er *EmailRepository) GetByUserId(userId int) ([]models.Email, error) {
 	// get email by id
 	var emails []models.Email
-	err := er.database.Select(&emails,`
+	err := er.database.Select(&emails, `
 	SELECT gocms_emails.*
 	FROM gocms_emails
 	WHERE gocms_emails.userId=?
@@ -92,6 +92,23 @@ func (er *EmailRepository) GetByUserId(userId int) ([]models.Email, error) {
 	}
 
 	return emails, nil
+}
+
+func (er *EmailRepository) GetPrimaryByUserId(userId int) (*models.Email, error) {
+	// get email by id
+	var email models.Email
+	err := er.database.Get(&email, `
+	SELECT gocms_emails.*
+	FROM gocms_emails
+	WHERE gocms_emails.userId=?
+	AND gocms_emails.isPrimary=?
+	`, userId, 1)
+	if err != nil {
+		log.Printf("Error getting primary email by userId: %s", err.Error())
+		return nil, err
+	}
+
+	return &email, nil
 }
 
 func (er *EmailRepository) Update(email *models.Email) error {

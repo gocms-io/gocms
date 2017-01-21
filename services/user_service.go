@@ -19,8 +19,8 @@ type IUserService interface {
 }
 
 type UserService struct {
-	AuthService IAuthService
-	MailService IMailService
+	AuthService       IAuthService
+	MailService       IMailService
 	RepositoriesGroup *repositories.RepositoriesGroup
 }
 

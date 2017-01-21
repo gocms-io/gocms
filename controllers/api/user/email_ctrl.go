@@ -126,8 +126,6 @@ func (uc *UserController) addEmail(c *gin.Context) {
 		return
 	}
 
-	// todo send email to primary account about additional email
-
 	// create email display and send
 	emailDisplay := models.EmailDisplay{
 		Email: emailToAdd.Email,
