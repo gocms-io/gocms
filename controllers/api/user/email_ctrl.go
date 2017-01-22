@@ -226,12 +226,12 @@ func (uc *UserController) deleteEmail(c *gin.Context) {
 }
 
 /**
-* @api {post} /user/email Get Emails
+* @api {get} /user/email Get Emails
 * @apiName GetEmails
 * @apiGroup User
 *
 * @apiUse AuthHeader
-* @apiUse EmailDisplay An array of of email object will be returned.
+* @apiUse EmailDisplay
 * @apiPermission Authenticated
 */
 func (uc *UserController) getEmails(c *gin.Context) {
