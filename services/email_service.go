@@ -14,6 +14,7 @@ type IEmailService interface {
 	SetVerified(email string) error
 	GetVerified(email string) bool
 	AddEmail(email *models.Email) error
+	GetEmailsByUserId(userId int) ([]models.Email, error)
 	SendEmailActivationCode(email string) error
 	VerifyEmailActivationCode(id int, code string) bool
 	PromoteEmail(email *models.Email) error
@@ -211,6 +212,19 @@ func (es *EmailService) PromoteEmail(email *models.Email) error {
 
 	return nil
 }
+
+func (es *EmailService) GetEmailsByUserId(userId int) ([]models.Email, error) {
+
+	// get all emails
+	emails, err := es.RepositoriesGroup.EmailRepository.GetByUserId(userId)
+	if err != nil {
+		log.Printf("email service, get emails by user id, error: %s", err.Error())
+		return nil, err
+	}
+
+	return emails, nil
+}
+
 
 func (es *EmailService) DeleteEmail(email *models.Email) error {
 

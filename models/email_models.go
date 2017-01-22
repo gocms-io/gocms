@@ -54,4 +54,3 @@ func (e *Email) GetEmailDisplay() *EmailDisplay {
 	}
 	return &em
 }
-

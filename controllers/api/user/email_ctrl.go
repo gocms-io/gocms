@@ -224,3 +224,34 @@ func (uc *UserController) deleteEmail(c *gin.Context) {
 
 	c.Status(http.StatusOK)
 }
+
+/**
+* @api {post} /user/email Get Emails
+* @apiName GetEmails
+* @apiGroup User
+*
+* @apiUse AuthHeader
+* @apiUse EmailDisplay An array of of email object will be returned.
+* @apiPermission Authenticated
+*/
+func (uc *UserController) getEmails(c *gin.Context) {
+
+	// get logged in user
+	authUser, _ := utility.GetUserFromContext(c)
+
+	// get all emails
+	emails, err := uc.ServicesGroup.EmailService.GetEmailsByUserId(authUser.Id)
+	if err != nil {
+		errors.Response(c, http.StatusInternalServerError, "Couldn't add email to user.", err)
+		return
+	}
+
+	emailDisplays := make([]*models.EmailDisplay, len(emails))
+
+	for i , ed := range emails {
+		emailDisplays[i] = ed.GetEmailDisplay()
+	}
+
+
+	c.JSON(http.StatusOK,emailDisplays)
+}
