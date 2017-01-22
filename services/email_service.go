@@ -17,6 +17,7 @@ type IEmailService interface {
 	SendEmailActivationCode(email string) error
 	VerifyEmailActivationCode(id int, code string) bool
 	PromoteEmail(email *models.Email) error
+	DeleteEmail(email *models.Email) error
 }
 
 type EmailService struct {
@@ -126,7 +127,7 @@ func (es *EmailService) SendEmailActivationCode(emailAddress string) error {
 		To:      emailAddress,
 		Subject: "Email Verification Required",
 		Body: "Click on the link below to activate your email:\n" +
-			config.PublicApiUrl + "/user/activate-email?code=" + code + "&email=" + emailAddress + "\n\nThe link will expire at: " +
+			config.PublicApiUrl + "/user/email/activate?code=" + code + "&email=" + emailAddress + "\n\nThe link will expire at: " +
 			time.Now().Add(time.Minute * time.Duration(config.PasswordResetTimeout)).String() + ".",
 	})
 	if err != nil {
@@ -171,16 +172,16 @@ func (es *EmailService) PromoteEmail(email *models.Email) error {
 		return err
 	}
 
-	// email must be verified
-	if !dbEmail.IsVerified {
-		err = errors.NewToUser("You can only promote an email address after it has been validated.")
+	// verify email owner
+	if email.UserId != dbEmail.UserId {
+		err = errors.NewToUser("You can only promote email address owned by you.")
 		log.Printf("email service, promote email, get by address, error: %s", err.Error())
 		return err
 	}
 
-	// verify email owner
-	if email.UserId != dbEmail.UserId {
-		err = errors.NewToUser("You can only promote email address owned by you.")
+	// email must be verified
+	if !dbEmail.IsVerified {
+		err = errors.NewToUser("You can only promote an email address after it has been validated.")
 		log.Printf("email service, promote email, get by address, error: %s", err.Error())
 		return err
 	}
@@ -210,3 +211,53 @@ func (es *EmailService) PromoteEmail(email *models.Email) error {
 
 	return nil
 }
+
+func (es *EmailService) DeleteEmail(email *models.Email) error {
+
+	// get email for verification
+	dbEmail, err := es.RepositoriesGroup.EmailRepository.GetByAddress(email.Email)
+	if err != nil {
+		log.Printf("email service, promote email, get by address, error: %s", err.Error())
+		return err
+	}
+
+	// verify email owner
+	if email.UserId != dbEmail.UserId {
+		err = errors.NewToUser("You can only delete email address owned by you.")
+		log.Printf("email service, delete email, get by address, error: %s", err.Error())
+		return err
+	}
+
+	// email cannot be primary
+	if dbEmail.IsPrimary {
+		err = errors.NewToUser("You can't delete the primary email address from an account.")
+		log.Printf("email service, delete email, get by address, error: %s", err.Error())
+		return err
+	}
+
+	// delete email
+	err = es.RepositoriesGroup.EmailRepository.Delete(dbEmail.Id)
+	if err != nil {
+		log.Printf("email service, delete email, deleting email, errors:%s", err.Error())
+		return err
+	}
+
+	// get user primary email to send notification too
+	primaryEmail, err := es.RepositoriesGroup.EmailRepository.GetPrimaryByUserId(email.UserId)
+	if err != nil {
+		log.Printf("email service, delete email, get primary by userId, error: %s", err.Error())
+		return err
+	}
+
+	// send notification
+	// send email to primary email about addition of email
+	mail := Mail{
+		To: primaryEmail.Email,
+		Subject: "Alternative Email Delete From Account",
+		Body: "An alternative email, " + email.Email + ", has been deleted from your account.\n\n If you believe this to be a mistake please contact support.",
+	}
+	es.MailService.Send(&mail)
+
+	return nil
+}
+

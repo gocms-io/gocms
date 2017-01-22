@@ -9,7 +9,7 @@ import (
 )
 
 /**
-* @api {post} /user/activate-email/request-activation-link Request New Email Activation Link
+* @api {post} /user/email/activate Request New Email Activation Link
 * @apiName ActivateEmail
 * @apiGroup User
 * @apiUse RequestEmailActivationLink
@@ -33,7 +33,7 @@ func (uc *UserController) requestActivationLink(c *gin.Context) {
 }
 
 /**
-* @api {get} /user/activate-email Activate Email
+* @api {get} /user/email/activate Activate Email
 * @apiName ActivateEmail
 * @apiGroup User
 * @apiDescription This endpoint requires two url params &email and &code. Links are auto generated for this endpoint by the system. This will likely never be called diructly from an app.
@@ -76,12 +76,12 @@ func (uc *UserController) activateEmail(c *gin.Context) {
 }
 
 /**
-* @api {post} /user/addEmail Add Email
+* @api {post} /user/email Add Email
 * @apiName AddEmail
 * @apiGroup User
 *
 * @apiUse AuthHeader
-* @apiUse AddEmailInput
+* @apiUse EmailInput
 * @apiUse EmailDisplay
 * @apiPermission Authenticated
 */
@@ -91,7 +91,7 @@ func (uc *UserController) addEmail(c *gin.Context) {
 	authUser, _ := utility.GetUserFromContext(c)
 
 	// get reqeust data
-	var addEmailInput models.AddEmailInput
+	var addEmailInput models.EmailInput
 	err := c.BindJSON(&addEmailInput) // update any changes from request
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, err.Error(), err)
@@ -140,10 +140,10 @@ func (uc *UserController) addEmail(c *gin.Context) {
 }
 
 /**
-* @api {put} /user/promoteEmail/:emailId Promote Email
+* @api {put} /user/email/promote Promote Email
 * @apiName PromoteEmail
 * @apiGroup User
-* @apiUse AddEmailInput
+* @apiUse EmailInput
 * @apiUse AuthHeader
 * @apiPermission Authenticated
 */
@@ -153,7 +153,7 @@ func (uc *UserController) promoteEmail(c *gin.Context) {
 	authUser, _ := utility.GetUserFromContext(c)
 
 	// get reqeust data
-	var promoteEmailInput models.AddEmailInput
+	var promoteEmailInput models.EmailInput
 	err := c.BindJSON(&promoteEmailInput) // update any changes from request
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, err.Error(), err)
@@ -175,6 +175,50 @@ func (uc *UserController) promoteEmail(c *gin.Context) {
 	err = uc.ServicesGroup.EmailService.PromoteEmail(&email)
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, "Error promoting email.", err)
+		return
+	}
+
+	c.Status(http.StatusOK)
+}
+
+/**
+* @api {delete} /user/email Delete Email
+* @apiName DeleteEmail
+* @apiGroup User
+*
+* @apiUse AuthHeader
+* @apiUse EmailInput
+* @apiPermission Authenticated
+*/
+func (uc *UserController) deleteEmail(c *gin.Context) {
+
+	// get logged in user
+	authUser, _ := utility.GetUserFromContext(c)
+
+	// get reqeust data
+	var addEmailInput models.EmailInput
+	err := c.BindJSON(&addEmailInput) // update any changes from request
+	if err != nil {
+		errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		return
+	}
+
+	// verify password
+	if ok := uc.ServicesGroup.AuthService.VerifyPassword(authUser.Password, addEmailInput.Password); !ok {
+		errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
+		return
+	}
+
+	// convert input to model
+	emailToDelete := models.Email{
+		Email: addEmailInput.Email,
+		UserId: authUser.Id,
+	}
+
+	// add email
+	err = uc.ServicesGroup.EmailService.DeleteEmail(&emailToDelete)
+	if err != nil {
+		errors.Response(c, http.StatusInternalServerError, "Couldn't delete email.", err)
 		return
 	}
 

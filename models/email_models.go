@@ -28,11 +28,11 @@ type EmailDisplay struct {
 }
 
 /**
-* @apiDefine AddEmailInput
+* @apiDefine EmailInput
 * @apiParam (Request) {string} password The current users password.
-* @apiParam (Request) {string} email The new email to add (or promote).
+* @apiParam (Request) {string} email The new email to add, promote, or delete.
 */
-type AddEmailInput struct {
+type EmailInput struct {
 	Password string    `json:"password,omitempty"`
 	Email    string       `json:"email"`
 }

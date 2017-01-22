@@ -149,7 +149,7 @@ func (er *EmailRepository) PromoteEmail(emailId int, userId int) error {
 
 func (er *EmailRepository) Delete(id int) error {
 	_, err := er.database.Exec(`
-	DELETE FROM gocms_email WHERE id=?
+	DELETE FROM gocms_emails WHERE id=?
 	`, id)
 	if err != nil {
 		log.Printf("Error deleting email from database: %s", err.Error())
