@@ -2,7 +2,8 @@ package services
 
 import (
 	"github.com/menklab/goCMS/repositories"
-	"github.com/menklab/goCMS/config"
+
+	"github.com/menklab/goCMS/context"
 )
 
 type ServicesGroup struct {
@@ -18,8 +19,7 @@ func DefaultServicesGroup(rg *repositories.RepositoriesGroup) *ServicesGroup {
 
 	// setup settings
 	settingsService := DefaultSettingsService(rg)
-	settingsService.RefreshSettingsCache()
-	config.SetSettingsFromDb(settingsService.GetSettings())
+	context.Config.ApplySettingsToConfig(settingsService.GetSettings())
 
 	// mail service
 	mailService := DefaultMailService()

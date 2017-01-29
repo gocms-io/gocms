@@ -9,7 +9,8 @@ import (
 	"encoding/json"
 	"github.com/menklab/goCMS/models"
 	"database/sql"
-	"github.com/menklab/goCMS/config"
+
+	"github.com/menklab/goCMS/context"
 )
 
 type fbData struct {
@@ -80,7 +81,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	}
 
 	// if user doesn't exist and registration is closed reject
-	if user == nil && !config.OpenRegistration {
+	if user == nil && !context.Config.OpenRegistration {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Registration Is Closed.", REDIRECT_LOGIN)
 		return
 

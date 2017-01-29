@@ -11,7 +11,8 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
-	"github.com/menklab/goCMS/config"
+
+	"github.com/menklab/goCMS/context"
 )
 
 type gImage struct {
@@ -46,6 +47,9 @@ type gMe struct {
 * @apiSuccess (Response-Header) {string} x-auth-token
 */
 func (ac *AuthController) loginGoogle(c *gin.Context) {
+
+
+
 	// check for token in header
 	token := c.Request.Header.Get("X-GOOGLE-TOKEN")
 	if token == "" {
@@ -86,7 +90,7 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 	}
 
 	// if user doesn't exist and registration is closed reject
-	if user == nil && !config.OpenRegistration {
+	if user == nil && !context.Config.OpenRegistration {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Registration Is Closed.", REDIRECT_LOGIN)
 		return
 

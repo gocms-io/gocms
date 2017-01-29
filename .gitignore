@@ -4,3 +4,4 @@ vendor/*
 !vendor/vendor.json
 dist
 docs
+clientSecret.json

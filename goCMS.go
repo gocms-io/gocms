@@ -7,21 +7,21 @@ import (
 	"github.com/menklab/goCMS/controllers"
 	"github.com/menklab/goCMS/repositories"
 	"github.com/menklab/goCMS/database"
-
+	"github.com/menklab/goCMS/context"
 )
 
 type Engine struct {
-	Gin *gin.Engine
-	ControllersGroup *controllers.ControllersGroup
-	ServicesGroup *services.ServicesGroup
+	Gin               *gin.Engine
+	ControllersGroup  *controllers.ControllersGroup
+	ServicesGroup     *services.ServicesGroup
 	RepositoriesGroup *repositories.RepositoriesGroup
-	Database *database.Database
+	Database          *database.Database
 }
 
+func Default() *Engine {
 
-func Default() *Engine{
-
-	// setup docs
+	// init config environment vars
+	context.Init()
 
 	// setup database
 	db := database.Default()

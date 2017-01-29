@@ -12,8 +12,10 @@ type ISettingsService interface {
 }
 
 
+
+
 type SettingsService struct {
-	Settings map[string]models.Setting
+	SettingsCache     map[string]models.Setting
 	RepositoriesGroup *repositories.RepositoriesGroup
 }
 
@@ -22,7 +24,7 @@ func DefaultSettingsService(rg *repositories.RepositoriesGroup) *SettingsService
 	settingsService := &SettingsService{
 		RepositoriesGroup: rg,
 	}
-	
+
 	return settingsService
 
 }
@@ -42,10 +44,10 @@ func (ss *SettingsService) RefreshSettingsCache() error {
 		settingsCache[setting.Name] = setting
 	}
 
-	ss.Settings = settingsCache
+	ss.SettingsCache = settingsCache
 	return nil
 }
 
 func (ss *SettingsService) GetSettings() map[string]models.Setting {
-	return ss.Settings
+	return ss.SettingsCache
 }

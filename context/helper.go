@@ -1,13 +1,12 @@
-package config
+package context
 
 import (
 	"os"
-	"strconv"
 	"fmt"
+	"strconv"
 )
 
-
-func getEnvVarOrFail(envVar string) string {
+func GetEnvVarOrFail(envVar string) string {
 	is := os.Getenv(envVar)
 	if is == "" {
 		fmt.Println("Error retrieving envVar: " + envVar)
@@ -16,7 +15,7 @@ func getEnvVarOrFail(envVar string) string {
 	return is
 }
 
-func getIntOrFail(is string) int64 {
+func GetIntOrFail(is string) int64 {
 	i, err := strconv.ParseInt(is, 10, 34)
 	if err != nil {
 		fmt.Println("Error parsing string: " + is + " into int: " + err.Error())
@@ -25,14 +24,14 @@ func getIntOrFail(is string) int64 {
 	return i
 }
 
-func getStringOrFail(s string) string {
+func GetStringOrFail(s string) string {
 	if s == "" {
 		fmt.Println("Error retrieving string: " + s)
 		os.Exit(1)
 	}
 	return s
 }
-func getBoolOrFail(bs string) bool {
+func GetBoolOrFail(bs string) bool {
 	b, err := strconv.ParseBool(bs)
 	if err != nil {
 		fmt.Println("Error parsing bool: " + bs + " into bool: " + err.Error())

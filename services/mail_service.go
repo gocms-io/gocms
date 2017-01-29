@@ -2,8 +2,8 @@ package services
 
 import (
 	"gopkg.in/gomail.v2"
-	"github.com/menklab/goCMS/config"
 	"log"
+	"github.com/menklab/goCMS/context"
 )
 
 type IMailService interface {
@@ -24,8 +24,8 @@ type Mail struct {
 
 func DefaultMailService() *MailService {
 	mailService := &MailService{
-		Dialer: gomail.NewDialer(config.SMTPServer, int(config.SMTPPort), config.SMTPUser, config.SMTPPassword),
-		From: config.SMTPFromAddress,
+		Dialer: gomail.NewDialer(context.Config.SMTPServer, int(context.Config.SMTPPort), context.Config.SMTPUser, context.Config.SMTPPassword),
+		From: context.Config.SMTPFromAddress,
 	}
 
 	return mailService
@@ -41,7 +41,7 @@ func (ms *MailService) Send(mail *Mail) error {
 	m.SetBody("text/plain", mail.Body)
 
 	// Send the email
-	if !config.SMTPSimulate {
+	if !context.Config.SMTPSimulate {
 		err := ms.Dialer.DialAndSend(m)
 		if err != nil {
 			log.Print("Error sending mail: " + err.Error())

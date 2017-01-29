@@ -5,9 +5,10 @@ import (
 	"github.com/menklab/goCMS/services"
 	"time"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/menklab/goCMS/config"
+
 	"github.com/menklab/goCMS/utility"
 	"github.com/menklab/goCMS/controllers/middleware/auth"
+	"github.com/menklab/goCMS/context"
 )
 
 const (
@@ -48,7 +49,7 @@ func (ac *AuthController) Default() {
 	ac.routes.Public.POST("/reset-password", ac.resetPassword)
 	ac.routes.Public.PUT("/reset-password", ac.setPassword)
 
-	if config.UseTwoFactor {
+	if context.Config.UseTwoFactor {
 		ac.routes.PreTwofactor.GET("/verify-device", ac.getDeviceCode)
 		ac.routes.PreTwofactor.POST("/verify-device", ac.verifyDevice)
 	}
@@ -56,9 +57,9 @@ func (ac *AuthController) Default() {
 
 
 func (ac *AuthController) createToken(userId int) (string, error) {
-	expire := time.Now().Add(time.Minute * utility.GetTimeout(config.UserAuthTimeout))
+	expire := time.Now().Add(time.Minute * utility.GetTimeout(context.Config.UserAuthTimeout))
 	userToken := jwt.New(jwt.SigningMethodHS256)
 	userToken.Claims["userId"] = userId
 	userToken.Claims["exp"] = expire.Unix()
-	return userToken.SignedString([]byte(config.AuthKey))
+	return userToken.SignedString([]byte(context.Config.AuthKey))
 }

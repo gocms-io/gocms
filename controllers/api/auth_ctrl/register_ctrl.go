@@ -5,7 +5,8 @@ import (
 	"net/http"
 	"github.com/menklab/goCMS/models"
 	"github.com/menklab/goCMS/utility/errors"
-	"github.com/menklab/goCMS/config"
+
+	"github.com/menklab/goCMS/context"
 )
 
 
@@ -21,7 +22,7 @@ import (
 */
 func (auc *AuthController) register(c *gin.Context) {
 
-	if !config.OpenRegistration {
+	if !context.Config.OpenRegistration {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Registration Is Closed.", REDIRECT_LOGIN)
 		return
 	}

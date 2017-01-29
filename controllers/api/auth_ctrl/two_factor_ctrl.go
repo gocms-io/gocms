@@ -5,9 +5,10 @@ import (
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/menklab/goCMS/config"
+
 	"github.com/menklab/goCMS/utility/errors"
 	"github.com/menklab/goCMS/utility"
+	"github.com/menklab/goCMS/context"
 )
 
 // Verify device form structure
@@ -54,10 +55,10 @@ func (ac *AuthController) verifyDevice(c *gin.Context) {
 	}
 
 	// generate device token
-	expire := time.Now().Add(time.Minute * utility.GetTimeout(config.DeviceAuthTimeout))
+	expire := time.Now().Add(time.Minute * utility.GetTimeout(context.Config.DeviceAuthTimeout))
 	deviceToken := jwt.New(jwt.SigningMethodHS256)
 	deviceToken.Claims["exp"] = expire.Unix()
-	deviceTokenString, err := deviceToken.SignedString([]byte(config.AuthKey))
+	deviceTokenString, err := deviceToken.SignedString([]byte(context.Config.AuthKey))
 
 	if err != nil {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error generating device token.", REDIRECT_LOGIN)

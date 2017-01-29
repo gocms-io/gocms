@@ -5,9 +5,9 @@ import (
 	"log"
 	"github.com/menklab/goCMS/models"
 	"time"
-	"github.com/menklab/goCMS/config"
 	"fmt"
 	"github.com/menklab/goCMS/utility/errors"
+	"github.com/menklab/goCMS/context"
 )
 
 type IEmailService interface {
@@ -128,8 +128,8 @@ func (es *EmailService) SendEmailActivationCode(emailAddress string) error {
 		To:      emailAddress,
 		Subject: "Email Verification Required",
 		Body: "Click on the link below to activate your email:\n" +
-			config.PublicApiUrl + "/user/email/activate?code=" + code + "&email=" + emailAddress + "\n\nThe link will expire at: " +
-			time.Now().Add(time.Minute * time.Duration(config.PasswordResetTimeout)).String() + ".",
+			context.Config.PublicApiUrl + "/user/email/activate?code=" + code + "&email=" + emailAddress + "\n\nThe link will expire at: " +
+			time.Now().Add(time.Minute * time.Duration(context.Config.PasswordResetTimeout)).String() + ".",
 	})
 	if err != nil {
 		log.Println("Error sending email activation code, sending mail: " + err.Error())
@@ -152,7 +152,7 @@ func (es *EmailService) VerifyEmailActivationCode(id int, code string) bool {
 	}
 
 	// check within time
-	if time.Since(secureCode.Created) > (time.Minute * time.Duration(config.PasswordResetTimeout)) {
+	if time.Since(secureCode.Created) > (time.Minute * time.Duration(context.Config.PasswordResetTimeout)) {
 		return false
 	}
 

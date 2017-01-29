@@ -6,9 +6,10 @@ import (
 	"net/http"
 	"github.com/menklab/goCMS/services"
 	"github.com/menklab/goCMS/utility/errors"
-	"github.com/menklab/goCMS/config"
+
 	"log"
 	"github.com/menklab/goCMS/routes"
+	"github.com/menklab/goCMS/context"
 )
 
 type AuthMiddleware struct {
@@ -28,7 +29,7 @@ func DefaultAuthMiddleware(sg *services.ServicesGroup, routes *routes.ApiRoutes)
 func (am *AuthMiddleware) Default(routes *routes.ApiRoutes) {
 	routes.Auth.Use(am.RequireAuthenticatedUser())
 	routes.PreTwofactor = routes.Auth
-	if config.UseTwoFactor {
+	if context.Config.UseTwoFactor {
 		routes.Auth.Use(am.RequireAuthenticatedDevice())
 	}
 }
@@ -114,7 +115,7 @@ func (am *AuthMiddleware) verifyToken(authHeader string) (*jwt.Token, error) {
 			return nil, errors.New("Token signing method does not match.")
 		}
 
-		return []byte(config.AuthKey), nil
+		return []byte(context.Config.AuthKey), nil
 	})
 
 	// check for parsing erorr

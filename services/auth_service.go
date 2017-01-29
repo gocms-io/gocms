@@ -6,9 +6,9 @@ import (
 	"github.com/menklab/goCMS/models"
 	"github.com/menklab/goCMS/repositories"
 	"github.com/menklab/goCMS/utility"
-	"github.com/menklab/goCMS/config"
 	"log"
 	"github.com/nbutton23/zxcvbn-go"
+	"github.com/menklab/goCMS/context"
 )
 
 type IAuthService interface {
@@ -86,7 +86,7 @@ func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
 
 
 	// check within time
-	if time.Since(secureCode.Created) > (time.Minute * time.Duration(config.PasswordResetTimeout)) {
+	if time.Since(secureCode.Created) > (time.Minute * time.Duration(context.Config.PasswordResetTimeout)) {
 		return false
 	}
 
@@ -130,7 +130,7 @@ func (as *AuthService) SendPasswordResetCode(email string) error {
 		Subject: "Password Reset Requested",
 		Body: "To reset your password enter the code below into the app:\n" +
 			code + "\n\nThe code will expire at: " +
-			time.Now().Add(time.Minute * time.Duration(config.PasswordResetTimeout)).String() + ".",
+			time.Now().Add(time.Minute * time.Duration(context.Config.PasswordResetTimeout)).String() + ".",
 	})
 	if err != nil {
 		log.Print("Error sending mail: " + err.Error())
@@ -164,7 +164,7 @@ func (as *AuthService) SendTwoFactorCode(user *models.User) error {
 	as.MailService.Send(&Mail{
 		To:      user.Email,
 		Subject: "Device Verification",
-		Body:    "Your verification code is: " + code + "\n\nThe code will expire at: " + time.Now().Add(time.Minute * time.Duration(config.TwoFactorCodeTimeout)).String() + ".",
+		Body:    "Your verification code is: " + code + "\n\nThe code will expire at: " + time.Now().Add(time.Minute * time.Duration(context.Config.TwoFactorCodeTimeout)).String() + ".",
 	})
 	if err != nil {
 		log.Print("Error sending mail: " + err.Error())
@@ -187,7 +187,7 @@ func (as *AuthService) VerifyTwoFactorCode(id int, code string) bool {
 	}
 
 	// check within time
-	if time.Since(secureCode.Created) > (time.Minute * time.Duration(config.TwoFactorCodeTimeout)) {
+	if time.Since(secureCode.Created) > (time.Minute * time.Duration(context.Config.TwoFactorCodeTimeout)) {
 		return false
 	}
 
@@ -228,7 +228,7 @@ func (as *AuthService) GetRandomCode(length int) (string, string, error) {
 func (as *AuthService) PasswordIsComplex(password string) bool {
 	userInputs := []string{}
 	score := zxcvbn.PasswordStrength(password, userInputs)
-	if score.Score < int(config.PasswordComplexity) {
+	if score.Score < int(context.Config.PasswordComplexity) {
 		return false
 	}
 	return true

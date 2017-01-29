@@ -4,10 +4,10 @@ import (
 	_"github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"log"
-	"github.com/menklab/goCMS/config"
 	"github.com/menklab/goCMS/database/migrations"
 	"github.com/rubenv/sql-migrate"
 	"database/sql"
+	"github.com/menklab/goCMS/context"
 )
 
 type Database struct {
@@ -19,7 +19,7 @@ type Database struct {
 
 func Default() *Database {
 	// create db connection
-	connectionString := config.DbUser + ":" + config.DbPassword + "@" + config.DbServer + "/" + config.DbName + "?parseTime=true"
+	connectionString := context.Config.DbUser + ":" + context.Config.DbPassword + "@" + context.Config.DbServer + "/" + context.Config.DbName + "?parseTime=true"
 	dbHandle, err := sql.Open("mysql", connectionString)
 	if err != nil {
 		log.Fatal("Database Error: ", err.Error())

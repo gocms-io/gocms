@@ -9,3 +9,6 @@ type Setting struct {
 	Description string `db:"description"`
 	Created     time.Time      `db:"created"`
 }
+
+
+

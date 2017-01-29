@@ -1,9 +1,10 @@
 package corsMdl
 
 import (
-	"github.com/menklab/goCMS/config"
+
 	"github.com/gin-gonic/gin"
 	"fmt"
+	"github.com/menklab/goCMS/context"
 )
 
 func CORS() gin.HandlerFunc {
@@ -11,7 +12,7 @@ func CORS() gin.HandlerFunc {
 }
 
 func corsMiddleware(c *gin.Context) {
-	c.Writer.Header().Set("Access-Control-Allow-Origin", config.CorsHost)
+	c.Writer.Header().Set("Access-Control-Allow-Origin", context.Config.CorsHost)
 	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
 	c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Auth-Token, X-Device-Token")
