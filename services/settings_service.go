@@ -4,6 +4,7 @@ import (
 	"github.com/menklab/goCMS/repositories"
 	"github.com/menklab/goCMS/models"
 	"log"
+	"time"
 )
 
 type ISettingsService interface {
@@ -11,20 +12,20 @@ type ISettingsService interface {
 	GetSettings() map[string]models.Setting
 }
 
-
-
-
 type SettingsService struct {
+	LastRefresh       time.Time
 	SettingsCache     map[string]models.Setting
 	RepositoriesGroup *repositories.RepositoriesGroup
 }
 
-
-func DefaultSettingsService(rg *repositories.RepositoriesGroup) *SettingsService{
+func DefaultSettingsService(rg *repositories.RepositoriesGroup) *SettingsService {
 	settingsService := &SettingsService{
 		RepositoriesGroup: rg,
 	}
 
+	if err := settingsService.RefreshSettingsCache(); err != nil {
+		log.Fatalf("Error getting db settings: %s\n", err.Error())
+	}
 	return settingsService
 
 }

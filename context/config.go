@@ -1,6 +1,9 @@
 package context
 
-import "github.com/menklab/goCMS/models"
+import (
+	"github.com/menklab/goCMS/models"
+	"fmt"
+)
 
 var Config *GoCMSConfig
 
@@ -54,6 +57,8 @@ func Init() {
 }
 
 func (c *GoCMSConfig) ApplySettingsToConfig(settings map[string]models.Setting) {
+	fmt.Print("APplySettingsToConfig")
+
 	// Debug
 	c.Debug = GetBoolOrFail(settings["DEBUG"].Value)
 	c.DebugSecurity = GetBoolOrFail(settings["DEBUG_SECURITY"].Value)
