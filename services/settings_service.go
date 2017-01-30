@@ -10,7 +10,7 @@ import (
 type ISettingsService interface {
 	RefreshSettingsCache() error
 	GetSettings() map[string]models.Setting
-	RegisterRefreshCallback(func(map[string]models.Setting)) error
+	RegisterRefreshCallback(func(map[string]models.Setting))
 }
 
 type SettingsService struct {
@@ -20,27 +20,25 @@ type SettingsService struct {
 	OnRefreshCallbacks []func(map[string]models.Setting)
 }
 
-func DefaultSettingsService(rg *repositories.RepositoriesGroup, refreshCb func(map[string]models.Setting)) *SettingsService {
+func DefaultSettingsService(rg *repositories.RepositoriesGroup) *SettingsService {
 
 	settingsService := &SettingsService{
 		RepositoriesGroup: rg,
 	}
 
-	// add initial callback
-	settingsService.RegisterRefreshCallback(refreshCb)
-
-	if err := settingsService.RefreshSettingsCache(); err != nil {
-		log.Fatalf("Error getting db settings: %s\n", err.Error())
-	}
 	return settingsService
 
 }
 
-func (ss *SettingsService) RegisterRefreshCallback(cb func(map[string]models.Setting)) error {
+func (ss *SettingsService) RegisterRefreshCallback(cb func(map[string]models.Setting)) {
 
 	cbs := append(ss.OnRefreshCallbacks, cb)
 	ss.OnRefreshCallbacks = cbs
-	return nil
+
+	if err := ss.RefreshSettingsCache(); err != nil {
+		log.Fatalf("Error getting db settings: %s\n", err.Error())
+	}
+
 }
 
 
