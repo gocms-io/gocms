@@ -2,6 +2,7 @@ package context
 
 import (
 	"github.com/menklab/goCMS/models"
+	"log"
 )
 
 var Config *GoCMSConfig
@@ -43,12 +44,15 @@ type GoCMSConfig struct {
 	SMTPPassword           string
 	SMTPFromAddress        string
 	SMTPSimulate           bool
-	
+
 }
 
 
 
 func (c *GoCMSConfig) ApplySettingsToConfig(settings map[string]models.Setting) {
+
+	log.Println("Refreshed GoCMS Settings")
+
 
 	// Debug
 	c.Debug = GetBoolOrFail(settings["DEBUG"].Value)
