@@ -123,6 +123,8 @@ func CreateInitial() *migrate.Migration {
 			`, `
 			INSERT INTO gocms_settings (name, value, description) VALUES('SMTP_FROM_ADDRESS', 'FROM NAME HERE <email@address.com>', 'FROM Name and email address for outgoing email. ');
 			`, `
+			INSERT INTO gocms_settings (name, value, description) VALUES('SETTINGS_REFRESH_RATE', '60', 'Minutes between each settings refresh from the database to memory.');
+			`, `
 			INSERT INTO gocms_settings (name, value, description) VALUES('SMTP_SIMULATE', 'true', 'Simulate SMTP email and print to console instead of sending to server.');
 			`,
 

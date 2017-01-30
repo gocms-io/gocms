@@ -10,18 +10,24 @@ import (
 type ISettingsService interface {
 	RefreshSettingsCache() error
 	GetSettings() map[string]models.Setting
+	RegisterRefreshCallback(func(map[string]models.Setting)) error
 }
 
 type SettingsService struct {
-	LastRefresh       time.Time
-	SettingsCache     map[string]models.Setting
-	RepositoriesGroup *repositories.RepositoriesGroup
+	LastRefresh        time.Time
+	SettingsCache      map[string]models.Setting
+	RepositoriesGroup  *repositories.RepositoriesGroup
+	OnRefreshCallbacks []func(map[string]models.Setting)
 }
 
-func DefaultSettingsService(rg *repositories.RepositoriesGroup) *SettingsService {
+func DefaultSettingsService(rg *repositories.RepositoriesGroup, refreshCb func(map[string]models.Setting)) *SettingsService {
+
 	settingsService := &SettingsService{
 		RepositoriesGroup: rg,
 	}
+
+	// add initial callback
+	settingsService.RegisterRefreshCallback(refreshCb)
 
 	if err := settingsService.RefreshSettingsCache(); err != nil {
 		log.Fatalf("Error getting db settings: %s\n", err.Error())
@@ -29,6 +35,14 @@ func DefaultSettingsService(rg *repositories.RepositoriesGroup) *SettingsService
 	return settingsService
 
 }
+
+func (ss *SettingsService) RegisterRefreshCallback(cb func(map[string]models.Setting)) error {
+
+	cbs := append(ss.OnRefreshCallbacks, cb)
+	ss.OnRefreshCallbacks = cbs
+	return nil
+}
+
 
 func (ss *SettingsService) RefreshSettingsCache() error {
 
@@ -46,6 +60,10 @@ func (ss *SettingsService) RefreshSettingsCache() error {
 	}
 
 	ss.SettingsCache = settingsCache
+
+	for _, refreshCallback := range ss.OnRefreshCallbacks {
+		refreshCallback(ss.SettingsCache)
+	}
 	return nil
 }
 

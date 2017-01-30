@@ -2,7 +2,6 @@ package context
 
 import (
 	"github.com/menklab/goCMS/models"
-	"fmt"
 )
 
 var Config *GoCMSConfig
@@ -24,6 +23,7 @@ type GoCMSConfig struct {
 	RedirectRootUrl        string
 	CorsHost               string
 	OpenRegistration       bool
+	SettingsRefreshRate    int64
 
 	// Authentication
 	AuthKey                string
@@ -43,21 +43,12 @@ type GoCMSConfig struct {
 	SMTPPassword           string
 	SMTPFromAddress        string
 	SMTPSimulate           bool
+	
 }
 
-func Init() {
-	config := GoCMSConfig{
-		DbName: GetEnvVarOrFail("DB_NAME"),
-		DbUser: GetEnvVarOrFail("DB_USER"),
-		DbPassword: GetEnvVarOrFail("DB_PASSWORD"),
-		DbServer: GetEnvVarOrFail("DB_SERVER"),
-	}
 
-	Config = &config
-}
 
 func (c *GoCMSConfig) ApplySettingsToConfig(settings map[string]models.Setting) {
-	fmt.Print("APplySettingsToConfig")
 
 	// Debug
 	c.Debug = GetBoolOrFail(settings["DEBUG"].Value)
@@ -69,6 +60,7 @@ func (c *GoCMSConfig) ApplySettingsToConfig(settings map[string]models.Setting) 
 	c.PublicApiUrl = GetStringOrFail(settings["PUBLIC_API_URL"].Value)
 	c.RedirectRootUrl = GetStringOrFail(settings["REDIRECT_ROOT_URL"].Value)
 	c.CorsHost = GetStringOrFail(settings["CORS_HOST"].Value)
+	c.SettingsRefreshRate = GetIntOrFail(settings["SETTINGS_REFRESH_RATE"].Value)
 
 	// Authentication
 	c.AuthKey = GetStringOrFail(settings["AUTHENTICATION_KEY"].Value)
