@@ -1,7 +1,5 @@
 .env
 .idea
-vendor/*
-!vendor/vendor.json
+vendor/*/**
 dist
-docs
 clientSecret.json
