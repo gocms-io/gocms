@@ -5,7 +5,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"log"
-	"github.com/menklab/goCMS-BoilerPlate/config"
+	"github.com/menklab/goCMS/config"
 )
 
 var (
