@@ -62,6 +62,15 @@ func CreateInitial() *migrate.Migration {
 			PRIMARY KEY (id)
 			) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 			`, `
+			CREATE TABLE gocms_runtime (
+			id int(11) NOT NULL AUTO_INCREMENT,
+			name varchar(30) NOT NULL UNIQUE,
+			value varchar(255) NOT NULL,
+			description varchar(255) NOT NULL,
+			created datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			PRIMARY KEY (id)
+			) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+			`, `
 			CREATE TABLE gocms_users_to_permissions (
 			userId int(11) NOT NULL,
 			permissionsId int(11) NOT NULL,
