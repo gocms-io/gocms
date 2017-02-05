@@ -1,29 +1,29 @@
-package admin_ctrl
+package goCMS_admin_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
-	"github.com/menklab/goCMS/models"
-	"github.com/menklab/goCMS/utility/errors"
 	"github.com/menklab/goCMS/services"
 	"github.com/menklab/goCMS/routes"
+	"github.com/menklab/goCMS/models"
+	"github.com/menklab/goCMS/utility/errors"
 	"github.com/menklab/goCMS/controllers/middleware/acl"
 )
 
 type AdminUserController struct {
-	routes        *routes.ApiRoutes
-	ServicesGroup *services.ServicesGroup
+	routes        *goCMS_routes.ApiRoutes
+	ServicesGroup *goCMS_services.ServicesGroup
 }
 
-func DefaultAdminUserController(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AdminUserController {
+func DefaultAdminUserController(routes *goCMS_routes.ApiRoutes, sg *goCMS_services.ServicesGroup) *AdminUserController {
 	adminUserController := &AdminUserController{
 		routes: routes,
 		ServicesGroup: sg,
 	}
 
 	 // create acl object
-	acl := aclMdl.AclMiddleware{
+	acl := goCMS_aclMdl.AclMiddleware{
 		ServicesGroup: sg,
 	}
 
@@ -53,24 +53,24 @@ func (auc *AdminUserController) Default() {
 
 func (auc *AdminUserController) add(c *gin.Context) {
 
-	user := &models.User{}
+	user := &goCMS_models.User{}
 	//get user data
 	err := c.BindJSON(user)
 	if err != nil {
-		errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		goCMS_errors.Response(c, http.StatusBadRequest, err.Error(), err)
 		return
 	}
 
 	// get password
 	if user.Password == "" {
-		errors.Response(c, http.StatusBadRequest, "New Password Field Required.", err)
+		goCMS_errors.Response(c, http.StatusBadRequest, "New Password Field Required.", err)
 		return
 	}
 
 	// add user
 	err = auc.ServicesGroup.UserService.Add(user)
 	if err != nil {
-		errors.Response(c, http.StatusInternalServerError, err.Error(), err)
+		goCMS_errors.Response(c, http.StatusInternalServerError, err.Error(), err)
 		return
 	}
 
@@ -91,12 +91,12 @@ func (auc *AdminUserController) get(c *gin.Context) {
 
 	userId, err := strconv.Atoi(c.Param("userId"))
 	if err != nil {
-		errors.Response(c, http.StatusInternalServerError, err.Error(), err)
+		goCMS_errors.Response(c, http.StatusInternalServerError, err.Error(), err)
 	}
 
 	user, err := auc.ServicesGroup.UserService.Get(userId)
 	if err != nil {
-		errors.Response(c, http.StatusInternalServerError, "Couldn't find user.", err)
+		goCMS_errors.Response(c, http.StatusInternalServerError, "Couldn't find user.", err)
 		return
 	}
 
@@ -118,12 +118,12 @@ func (auc *AdminUserController) get(c *gin.Context) {
 func (auc *AdminUserController) getAll(c *gin.Context) {
 	users, err := auc.ServicesGroup.UserService.GetAll()
 	if err != nil {
-		errors.Response(c, http.StatusInternalServerError, "Couldn't get users", err)
+		goCMS_errors.Response(c, http.StatusInternalServerError, "Couldn't get users", err)
 		return
 	}
 
 	// create list of users to sent out
-	usersAdminDisplays := make([]models.UserAdminDisplay, len(*users))
+	usersAdminDisplays := make([]goCMS_models.UserAdminDisplay, len(*users))
 	for i, user := range *users {
 		usersAdminDisplays[i] = *user.GetUserAdminDisplay()
 	}
@@ -136,23 +136,23 @@ func (auc *AdminUserController) update(c *gin.Context) {
 	// get user to update
 	userId, err := strconv.Atoi(c.Param("userId"))
 	if err != nil {
-		errors.Response(c, http.StatusBadRequest, "Missing Id Field", err)
+		goCMS_errors.Response(c, http.StatusBadRequest, "Missing Id Field", err)
 		return
 	}
 
 	// get update info
-	user := &models.User{}
+	user := &goCMS_models.User{}
 	// get user data
 	err = c.BindJSON(user)
 	if err != nil {
-		errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		goCMS_errors.Response(c, http.StatusBadRequest, err.Error(), err)
 		return
 	}
 
 	// do update
 	err = auc.ServicesGroup.UserService.Update(userId, user)
 	if err != nil {
-		errors.Response(c, http.StatusInternalServerError, "Couldn't update user.", err)
+		goCMS_errors.Response(c, http.StatusInternalServerError, "Couldn't update user.", err)
 		return
 	}
 
@@ -162,14 +162,14 @@ func (auc *AdminUserController) update(c *gin.Context) {
 func (auc *AdminUserController) delete(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Param("userId"))
 	if err != nil {
-		errors.Response(c, http.StatusBadRequest, "Missing Id Field", err)
+		goCMS_errors.Response(c, http.StatusBadRequest, "Missing Id Field", err)
 		return
 	}
 
 	// delete user
 	err = auc.ServicesGroup.UserService.Delete(userId)
 	if err != nil {
-		errors.Response(c, http.StatusInternalServerError, "Couldn't delete user.", err)
+		goCMS_errors.Response(c, http.StatusInternalServerError, "Couldn't delete user.", err)
 		return
 	}
 

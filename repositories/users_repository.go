@@ -1,21 +1,20 @@
-package repositories
+package goCMS_repositories
 
 import (
 	"log"
 	"time"
 	"github.com/menklab/goCMS/models"
-	"github.com/menklab/goCMS/database"
 	"github.com/jmoiron/sqlx"
 	"github.com/menklab/goCMS/utility/errors"
 	"database/sql"
 )
 
 type IUserRepository interface {
-	Get(int) (*models.User, error)
-	GetByEmail(string) (*models.User, error)
-	GetAll() (*[]models.User, error)
-	Add(*models.User) error
-	Update(int, *models.User) error
+	Get(int) (*goCMS_models.User, error)
+	GetByEmail(string) (*goCMS_models.User, error)
+	GetAll() (*[]goCMS_models.User, error)
+	Add(*goCMS_models.User) error
+	Update(int, *goCMS_models.User) error
 	UpdatePassword(int, string) error
 	Delete(int) error
 	SetEnabled(int, bool) error
@@ -25,17 +24,21 @@ type UserRepository struct {
 	database *sqlx.DB
 }
 
-func DefaultUserRepository(db *database.Database) *UserRepository {
+func DefaultUserRepository(db interface{}) *UserRepository {
+	d, ok := db.(*sqlx.DB)
+	if !ok {
+		log.Fatalf("User Repo expected *sqlx.DB but got %T.\n", db)
+	}
 	userRepository := &UserRepository{
-		database: db.Dbx,
+		database: d,
 	}
 
 	return userRepository
 }
 
 // get user by id
-func (ur *UserRepository) Get(id int) (*models.User, error) {
-	var user models.User
+func (ur *UserRepository) Get(id int) (*goCMS_models.User, error) {
+	var user goCMS_models.User
 	err := ur.database.Get(&user, `
 	SELECT gocms_users.*, gocms_emails.email, gocms_emails.isVerified
 	FROM gocms_users
@@ -54,10 +57,10 @@ func (ur *UserRepository) Get(id int) (*models.User, error) {
 }
 
 // get user by email
-func (ur *UserRepository) GetByEmail(email string) (*models.User, error) {
+func (ur *UserRepository) GetByEmail(email string) (*goCMS_models.User, error) {
 
 	// first get the user by email
-	var user models.User
+	var user goCMS_models.User
 	err := ur.database.Get(&user, `
 	SELECT gocms_users.*, gocms_emails.email, gocms_emails.isVerified
 	FROM gocms_users
@@ -79,8 +82,8 @@ func (ur *UserRepository) GetByEmail(email string) (*models.User, error) {
 }
 
 // get a list of all users
-func (ur *UserRepository) GetAll() (*[]models.User, error) {
-	var users []models.User
+func (ur *UserRepository) GetAll() (*[]goCMS_models.User, error) {
+	var users []goCMS_models.User
 	err := ur.database.Select(&users, `
 	SELECT gocms_users.*, gocms_emails.email, gocms_emails.isVerified
 	FROM gocms_users
@@ -94,11 +97,11 @@ func (ur *UserRepository) GetAll() (*[]models.User, error) {
 	return &users, nil
 }
 
-func (ur *UserRepository) Add(user *models.User) error {
+func (ur *UserRepository) Add(user *goCMS_models.User) error {
 
 	// check if user exists
 	if ur.userExistsByEmail(user.Email) {
-		return errors.NewToUser(errors.ApiError_UserAlreadyExists)
+		return goCMS_errors.NewToUser(goCMS_errors.ApiError_UserAlreadyExists)
 	}
 
 	user.Created = time.Now()
@@ -117,7 +120,7 @@ func (ur *UserRepository) Add(user *models.User) error {
 	return nil
 }
 
-func (ur *UserRepository) Update(id int, user *models.User) error {
+func (ur *UserRepository) Update(id int, user *goCMS_models.User) error {
 	// insert row
 	user.Id = id
 	_, err := ur.database.NamedExec(`
@@ -146,7 +149,7 @@ func (ur *UserRepository) SetEnabled(id int, enabled bool) error {
 
 func (ur *UserRepository) UpdatePassword(id int, hash string) error {
 	// insert row
-	user := models.User{
+	user := goCMS_models.User{
 		Id: id,
 		Password: hash,
 	}
@@ -164,7 +167,7 @@ func (ur *UserRepository) UpdatePassword(id int, hash string) error {
 func (ur *UserRepository) Delete(id int) error {
 
 	if id == 0 {
-		return errors.New("Missing user id. Can't delete user from database")
+		return goCMS_errors.New("Missing user id. Can't delete user from database")
 	}
 
 	_, err := ur.database.Exec(`
@@ -179,7 +182,7 @@ func (ur *UserRepository) Delete(id int) error {
 }
 
 func (ur *UserRepository) userExistsByEmail(email string) bool {
-	user := models.User{}
+	user := goCMS_models.User{}
 	err := ur.database.QueryRowx(`
 	SELECT email FROM gocms_emails WHERE email = ?
 	`, email).Scan(&user.Email)

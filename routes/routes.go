@@ -1,4 +1,4 @@
-package routes
+package goCMS_routes
 
 import "github.com/gin-gonic/gin"
 

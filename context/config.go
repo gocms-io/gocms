@@ -1,8 +1,8 @@
-package context
+package goCMS_context
 
 import (
-	"github.com/menklab/goCMS/models"
 	"log"
+	"github.com/menklab/goCMS/models"
 )
 
 var Config *GoCMSConfig
@@ -49,7 +49,7 @@ type GoCMSConfig struct {
 
 
 
-func (c *GoCMSConfig) ApplySettingsToConfig(settings map[string]models.Setting) {
+func (c *GoCMSConfig) ApplySettingsToConfig(settings map[string]goCMS_models.Setting) {
 
 	log.Println("Refreshed GoCMS Settings")
 

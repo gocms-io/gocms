@@ -1,21 +1,20 @@
-package repositories
+package goCMS_repositories
 
 import (
 	"time"
-	"github.com/menklab/goCMS/models"
-	"github.com/menklab/goCMS/database"
 	"github.com/jmoiron/sqlx"
 	"log"
+	"github.com/menklab/goCMS/models"
 )
 
 type IEmailRepository interface {
-	Add(*models.Email) error
-	Get(int) (*models.Email, error)
-	GetByAddress(string) (*models.Email, error)
-	GetByUserId(int) ([]models.Email, error)
-	GetPrimaryByUserId(int) (*models.Email, error)
+	Add(*goCMS_models.Email) error
+	Get(int) (*goCMS_models.Email, error)
+	GetByAddress(string) (*goCMS_models.Email, error)
+	GetByUserId(int) ([]goCMS_models.Email, error)
+	GetPrimaryByUserId(int) (*goCMS_models.Email, error)
 	PromoteEmail(emailId int, userId int) error
-	Update(email *models.Email) error
+	Update(email *goCMS_models.Email) error
 	Delete(int) error
 }
 
@@ -23,14 +22,18 @@ type EmailRepository struct {
 	database *sqlx.DB
 }
 
-func DefaultEmailRepository(db *database.Database) *EmailRepository {
+func DefaultEmailRepository(db interface{}) *EmailRepository {
+	d, ok := db.(*sqlx.DB)
+	if !ok {
+		log.Fatalf("Email Repo expected *sqlx.DB but got %T.\n", db)
+	}
 	emailRepository := &EmailRepository{
-		database: db.Dbx,
+		database: d,
 	}
 	return emailRepository
 }
 
-func (er *EmailRepository) Add(e *models.Email) error {
+func (er *EmailRepository) Add(e *goCMS_models.Email) error {
 	e.Created = time.Now()
 	// insert row
 	result, err := er.database.NamedExec(`
@@ -47,9 +50,9 @@ func (er *EmailRepository) Add(e *models.Email) error {
 	return nil
 }
 
-func (er *EmailRepository) Get(id int) (*models.Email, error) {
+func (er *EmailRepository) Get(id int) (*goCMS_models.Email, error) {
 	// get email by id
-	var email models.Email
+	var email goCMS_models.Email
 	err := er.database.Get(&email, `
 	SELECT gocms_emails.*
 	FROM gocms_emails
@@ -63,9 +66,9 @@ func (er *EmailRepository) Get(id int) (*models.Email, error) {
 	return &email, nil
 }
 
-func (er *EmailRepository) GetByAddress(address string) (*models.Email, error) {
+func (er *EmailRepository) GetByAddress(address string) (*goCMS_models.Email, error) {
 	// get email by id
-	var email models.Email
+	var email goCMS_models.Email
 	err := er.database.Get(&email, `
 	SELECT gocms_emails.*
 	FROM gocms_emails
@@ -79,9 +82,9 @@ func (er *EmailRepository) GetByAddress(address string) (*models.Email, error) {
 	return &email, nil
 }
 
-func (er *EmailRepository) GetByUserId(userId int) ([]models.Email, error) {
+func (er *EmailRepository) GetByUserId(userId int) ([]goCMS_models.Email, error) {
 	// get email by id
-	var emails []models.Email
+	var emails []goCMS_models.Email
 	err := er.database.Select(&emails, `
 	SELECT gocms_emails.*
 	FROM gocms_emails
@@ -95,9 +98,9 @@ func (er *EmailRepository) GetByUserId(userId int) ([]models.Email, error) {
 	return emails, nil
 }
 
-func (er *EmailRepository) GetPrimaryByUserId(userId int) (*models.Email, error) {
+func (er *EmailRepository) GetPrimaryByUserId(userId int) (*goCMS_models.Email, error) {
 	// get email by id
-	var email models.Email
+	var email goCMS_models.Email
 	err := er.database.Get(&email, `
 	SELECT gocms_emails.*
 	FROM gocms_emails
@@ -112,7 +115,7 @@ func (er *EmailRepository) GetPrimaryByUserId(userId int) (*models.Email, error)
 	return &email, nil
 }
 
-func (er *EmailRepository) Update(email *models.Email) error {
+func (er *EmailRepository) Update(email *goCMS_models.Email) error {
 	// get email by id
 	_, err := er.database.NamedExec(`
 	UPDATE gocms_emails SET isVerified=:isVerified, isPrimary=:isPrimary WHERE id=:id

@@ -1,17 +1,16 @@
-package repositories
+package goCMS_repositories
 
 import (
 	"time"
 	"github.com/menklab/goCMS/models"
-	"github.com/menklab/goCMS/database"
 	"github.com/jmoiron/sqlx"
 	"log"
 )
 
 type ISecureCodeRepository interface {
-	Add(*models.SecureCode) error
+	Add(*goCMS_models.SecureCode) error
 	Delete(int) error
-	GetLatestForUserByType(int, models.SecureCodeType) (*models.SecureCode, error)
+	GetLatestForUserByType(int, goCMS_models.SecureCodeType) (*goCMS_models.SecureCode, error)
 }
 
 type SecureCodeRepository struct {
@@ -19,15 +18,19 @@ type SecureCodeRepository struct {
 }
 
 
-func DefaultSecureCodeRepository(db *database.Database) *SecureCodeRepository{
+func DefaultSecureCodeRepository(db interface{}) *SecureCodeRepository{
+	d, ok := db.(*sqlx.DB)
+	if !ok {
+		log.Fatalf("Secure Code Repo expected *sqlx.DB but got %T.\n", db)
+	}
 	secureCodeRepository := &SecureCodeRepository{
-		database: db.Dbx,
+		database: d,
 	}
 
 	return secureCodeRepository
 }
 
-func (scr *SecureCodeRepository) Add(code *models.SecureCode) error {
+func (scr *SecureCodeRepository) Add(code *goCMS_models.SecureCode) error {
 	code.Created = time.Now()
 	// insert row
 	result, err := scr.database.NamedExec(`
@@ -58,8 +61,8 @@ func (scr *SecureCodeRepository) Delete(id int) error {
 }
 
 // get all events
-func (scr *SecureCodeRepository) GetLatestForUserByType(id int, codeType models.SecureCodeType) (*models.SecureCode, error) {
-	var secureCode models.SecureCode
+func (scr *SecureCodeRepository) GetLatestForUserByType(id int, codeType goCMS_models.SecureCodeType) (*goCMS_models.SecureCode, error) {
+	var secureCode goCMS_models.SecureCode
 	err := scr.database.Get(&secureCode, `
 	SELECT * from gocms_secure_codes WHERE userId=? AND type=? ORDER BY created DESC LIMIT 1
 	`, id, codeType)

@@ -1,26 +1,26 @@
-package services
+package goCMS_services
 
 import (
-	"github.com/menklab/goCMS/repositories"
 	"github.com/menklab/goCMS/models"
 	"log"
 	"time"
+	"github.com/menklab/goCMS/repositories"
 )
 
 type ISettingsService interface {
 	RefreshSettingsCache() error
-	GetSettings() map[string]models.Setting
-	RegisterRefreshCallback(func(map[string]models.Setting))
+	GetSettings() map[string]goCMS_models.Setting
+	RegisterRefreshCallback(func(map[string]goCMS_models.Setting))
 }
 
 type SettingsService struct {
 	LastRefresh        time.Time
-	SettingsCache      map[string]models.Setting
-	RepositoriesGroup  *repositories.RepositoriesGroup
-	OnRefreshCallbacks []func(map[string]models.Setting)
+	SettingsCache      map[string]goCMS_models.Setting
+	RepositoriesGroup  *goCMS_repositories.RepositoriesGroup
+	OnRefreshCallbacks []func(map[string]goCMS_models.Setting)
 }
 
-func DefaultSettingsService(rg *repositories.RepositoriesGroup) *SettingsService {
+func DefaultSettingsService(rg *goCMS_repositories.RepositoriesGroup) *SettingsService {
 
 	settingsService := &SettingsService{
 		RepositoriesGroup: rg,
@@ -30,7 +30,7 @@ func DefaultSettingsService(rg *repositories.RepositoriesGroup) *SettingsService
 
 }
 
-func (ss *SettingsService) RegisterRefreshCallback(cb func(map[string]models.Setting)) {
+func (ss *SettingsService) RegisterRefreshCallback(cb func(map[string]goCMS_models.Setting)) {
 
 	cbs := append(ss.OnRefreshCallbacks, cb)
 	ss.OnRefreshCallbacks = cbs
@@ -51,7 +51,7 @@ func (ss *SettingsService) RefreshSettingsCache() error {
 		return err
 	}
 
-	settingsCache := make(map[string]models.Setting, len(*settings))
+	settingsCache := make(map[string]goCMS_models.Setting, len(*settings))
 	// cache permissions
 	for _, setting := range *settings {
 		settingsCache[setting.Name] = setting
@@ -65,6 +65,6 @@ func (ss *SettingsService) RefreshSettingsCache() error {
 	return nil
 }
 
-func (ss *SettingsService) GetSettings() map[string]models.Setting {
+func (ss *SettingsService) GetSettings() map[string]goCMS_models.Setting {
 	return ss.SettingsCache
 }

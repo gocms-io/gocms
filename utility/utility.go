@@ -1,4 +1,4 @@
-package utility
+package goCMS_utility
 
 import (
 	"crypto/rand"
@@ -30,10 +30,10 @@ func GenerateRandomString(s int) (string, error) {
 	return code[0:s], nil
 }
 
-func GetUserFromContext(c *gin.Context) (*models.User, bool) {
+func GetUserFromContext(c *gin.Context) (*goCMS_models.User, bool) {
 	// get user from context
 	if userContext, ok := c.Get("user"); ok {
-		if userDisplay, ok := userContext.(models.User); ok {
+		if userDisplay, ok := userContext.(goCMS_models.User); ok {
 			return &userDisplay, true
 		}
 	}

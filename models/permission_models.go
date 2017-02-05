@@ -1,4 +1,4 @@
-package models
+package goCMS_models
 
 import "time"
 

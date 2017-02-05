@@ -1,4 +1,4 @@
-package config
+package goCMS_config
 
 import (
 	"os"

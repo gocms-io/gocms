@@ -1,4 +1,4 @@
-package aclMdl
+package goCMS_aclMdl
 
 
 import (
@@ -11,15 +11,15 @@ import (
 )
 
 type AclMiddleware struct {
-	ServicesGroup *services.ServicesGroup
+	ServicesGroup *goCMS_services.ServicesGroup
 }
 
 // middleware
 func (acl *AclMiddleware) RequirePermission(permission string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		authUser, _ := utility.GetUserFromContext(c)
+		authUser, _ := goCMS_utility.GetUserFromContext(c)
 		if !acl.ServicesGroup.AclService.IsAuthorized(permission, authUser.Id) {
-			errors.Response(c, http.StatusForbidden, fmt.Sprintf("You must have the \"%s\" permission to access this resource.", permission), nil)
+			goCMS_errors.Response(c, http.StatusForbidden, fmt.Sprintf("You must have the \"%s\" permission to access this resource.", permission), nil)
 			return
 		}
 		c.Next()

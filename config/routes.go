@@ -1,4 +1,4 @@
-package config
+package goCMS_config
 
 import "github.com/gin-gonic/gin"
 

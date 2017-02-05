@@ -1,15 +1,12 @@
-package static_ctrl
+package goCMS_static_ctrl
 
-import (
-	"github.com/menklab/goCMS/routes"
-)
-
+import "github.com/menklab/goCMS/routes"
 
 type DocumentationController struct {
-	routes *routes.ApiRoutes
+	routes *goCMS_routes.ApiRoutes
 }
 
-func DefaultDocumentationController(routes *routes.ApiRoutes) *DocumentationController{
+func DefaultDocumentationController(routes *goCMS_routes.ApiRoutes) *DocumentationController{
 	dc := &DocumentationController{
 		routes: routes,
 	}

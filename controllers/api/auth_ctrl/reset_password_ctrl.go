@@ -1,4 +1,4 @@
-package auth_ctrl
+package goCMS_auth_ctrl
 
 import (
 	"net/http"
@@ -19,10 +19,10 @@ import (
 func (ac *AuthController) resetPassword(c *gin.Context) {
 
 	// get email for reset
-	var resetRequest models.ResetPasswordRequestInput
+	var resetRequest goCMS_models.ResetPasswordRequestInput
 	err := c.BindJSON(&resetRequest) // update any changes from request
 	if err != nil {
-		errors.Response(c, http.StatusBadRequest, "Missing Fields", err)
+		goCMS_errors.Response(c, http.StatusBadRequest, "Missing Fields", err)
 		return
 	}
 
@@ -46,36 +46,36 @@ func (ac *AuthController) resetPassword(c *gin.Context) {
 */
 func (ac *AuthController) setPassword(c *gin.Context) {
 	// get password and code for reset
-	var resetPassword models.ResetPasswordInput
+	var resetPassword goCMS_models.ResetPasswordInput
 	err := c.BindJSON(&resetPassword) // update any changes from request
 	if err != nil {
-		errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		goCMS_errors.Response(c, http.StatusBadRequest, err.Error(), err)
 		return
 	}
 
 	// verify password complexity
 	if !ac.ServicesGroup.AuthService.PasswordIsComplex(resetPassword.Password) {
-		errors.Response(c, http.StatusBadRequest, "Password is not complex enough.", err)
+		goCMS_errors.Response(c, http.StatusBadRequest, "Password is not complex enough.", err)
 		return
 	}
 
 	// get user
 	user, err := ac.ServicesGroup.UserService.GetByEmail(resetPassword.Email)
 	if err != nil {
-		errors.Response(c, http.StatusBadRequest, "Couldn't reset password.", err)
+		goCMS_errors.Response(c, http.StatusBadRequest, "Couldn't reset password.", err)
 		return
 	}
 
 	// verify code
 	if ok := ac.ServicesGroup.AuthService.VerifyPasswordResetCode(user.Id, resetPassword.ResetCode); !ok {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error resetting password.", REDIRECT_LOGIN)
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error resetting password.", REDIRECT_LOGIN)
 		return
 	}
 
 	// reset password
 	err = ac.ServicesGroup.UserService.UpdatePassword(user.Id, resetPassword.Password)
 	if err != nil {
-		errors.Response(c, http.StatusBadRequest, "Couldn't reset password.", err)
+		goCMS_errors.Response(c, http.StatusBadRequest, "Couldn't reset password.", err)
 		return
 	}
 

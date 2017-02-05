@@ -1,30 +1,31 @@
 package goCMS
 
+
 import (
 	"github.com/gin-gonic/gin"
 	"log"
-	"github.com/menklab/goCMS/services"
 	"github.com/menklab/goCMS/controllers"
-	"github.com/menklab/goCMS/repositories"
+	"github.com/menklab/goCMS/services"
 	"github.com/menklab/goCMS/database"
 	"github.com/menklab/goCMS/context"
+	"github.com/menklab/goCMS/repositories"
 )
 
 type Engine struct {
 	Gin               *gin.Engine
-	ControllersGroup  *controllers.ControllersGroup
-	ServicesGroup     *services.ServicesGroup
-	RepositoriesGroup *repositories.RepositoriesGroup
-	Database          *database.Database
+	ControllersGroup  *goCMS_controllers.ControllersGroup
+	ServicesGroup     *goCMS_services.ServicesGroup
+	RepositoriesGroup *goCMS_repositories.RepositoriesGroup
+	Database          *goCMS_database.Database
 }
 
 func Default() *Engine {
 
 	// init config environment vars
-	context.Init()
+	goCMS_context.Init()
 
 	// setup database
-	db := database.Default()
+	db := goCMS_database.Default()
 
 	// migrate cms db
 	db.MigrateCMS()
@@ -33,13 +34,13 @@ func Default() *Engine {
 	r := gin.Default()
 
 	// setup repositories
-	rg := repositories.DefaultRepositoriesGroup(db)
+	rg := goCMS_repositories.DefaultRepositoriesGroup(db)
 
 	// setup services
-	sg := services.DefaultServicesGroup(rg)
+	sg := goCMS_services.DefaultServicesGroup(rg)
 
 	// setup controllers
-	cg := controllers.DefaultControllerGroup(r, sg)
+	cg := goCMS_controllers.DefaultControllerGroup(r, sg)
 
 	// create engine
 	engine := Engine{

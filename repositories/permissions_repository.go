@@ -1,14 +1,13 @@
-package repositories
+package goCMS_repositories
 
 import (
-	"github.com/menklab/goCMS/models"
-	"github.com/menklab/goCMS/database"
 	"github.com/jmoiron/sqlx"
 	"log"
+	"github.com/menklab/goCMS/models"
 )
 
 type IPermissionsRepository interface {
-	GetAll()(*[]models.Permission, error)
+	GetAll()(*[]goCMS_models.Permission, error)
 	GetUserPermissions(int) (*[]int, error)
 }
 
@@ -16,17 +15,21 @@ type PermissionsRepository struct {
 	database *sqlx.DB
 }
 
-func DefaultPermissionsRepository(db *database.Database) *PermissionsRepository {
+func DefaultPermissionsRepository(db interface{}) *PermissionsRepository {
+	d, ok := db.(*sqlx.DB)
+	if !ok {
+		log.Fatalf("Permissions Repo expected *sqlx.DB but got %T.\n", db)
+	}
 	permissionsRepository := &PermissionsRepository{
-		database: db.Dbx,
+		database: d,
 	}
 
 	return permissionsRepository
 }
 
 // get all permissions
-func (ur *PermissionsRepository) GetAll() (*[]models.Permission, error) {
-	var permissions []models.Permission
+func (ur *PermissionsRepository) GetAll() (*[]goCMS_models.Permission, error) {
+	var permissions []goCMS_models.Permission
 	err := ur.database.Select(&permissions, "SELECT * FROM gocms_permissions")
 	if err != nil {
 		log.Printf("Error getting permissions from database: %s", err.Error())

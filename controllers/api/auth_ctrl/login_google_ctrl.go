@@ -1,4 +1,4 @@
-package auth_ctrl
+package goCMS_auth_ctrl
 
 import (
 	"github.com/menklab/goCMS/services"
@@ -7,12 +7,12 @@ import (
 	"github.com/menklab/goCMS/utility/errors"
 	"log"
 	"encoding/json"
-	"github.com/menklab/goCMS/models"
 	"database/sql"
 	"fmt"
 	"strings"
 
 	"github.com/menklab/goCMS/context"
+	"github.com/menklab/goCMS/models"
 )
 
 type gImage struct {
@@ -53,21 +53,21 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 	// check for token in header
 	token := c.Request.Header.Get("X-GOOGLE-TOKEN")
 	if token == "" {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Missing Token in header X-GOOGLE-TOKEN", REDIRECT_LOGIN)
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Missing Token in header X-GOOGLE-TOKEN", REDIRECT_LOGIN)
 		return
 	}
 	var headers map[string]string
 	headers = make(map[string]string)
 	headers["Authorization"] = fmt.Sprintf("Bearer %s", token)
 	// use token to verify user on google and get id
-	req := services.RestRequest{
+	req := goCMS_services.RestRequest{
 		Url: "https://www.googleapis.com/plus/v1/people/me",
 		Headers: headers,
 
 	}
 	res, err := req.Get()
 	if err != nil {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Validate With Google", REDIRECT_LOGIN)
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Validate With Google", REDIRECT_LOGIN)
 		return
 	}
 	// get google user object back
@@ -75,7 +75,7 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 	err = json.Unmarshal(res.Body, &me)
 	if err != nil {
 		log.Printf("Error marshaling response from Google /me: %s", err.Error())
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Parse Google Response", REDIRECT_LOGIN)
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Parse Google Response", REDIRECT_LOGIN)
 		return
 	}
 
@@ -85,26 +85,26 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 	if err != nil && err != sql.ErrNoRows {
 		// other error
 		log.Printf("error looking up user: %s", err.Error())
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error Validating User", REDIRECT_LOGIN)
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error Validating User", REDIRECT_LOGIN)
 		return
 	}
 
 	// if user doesn't exist and registration is closed reject
-	if user == nil && !context.Config.OpenRegistration {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Registration Is Closed.", REDIRECT_LOGIN)
+	if user == nil && !goCMS_context.Config.OpenRegistration {
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Registration Is Closed.", REDIRECT_LOGIN)
 		return
 
 	}
 
 	// if user exists ensure that their google email address is verified
 	if user != nil && !ac.ServicesGroup.EmailService.GetVerified(me.EmailList[0].Email) {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "The email addressed used by Google is attached to your account but has not yet been verified. Please verify the email address first by requesting a verification link.", REDIRECT_LOGIN)
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "The email addressed used by Google is attached to your account but has not yet been verified. Please verify the email address first by requesting a verification link.", REDIRECT_LOGIN)
 		return
 	}
 
 	// if user doesn't exist create them already enabled with google email as primary
 	if user == nil {
-		user = &models.User{
+		user = &goCMS_models.User{
 			Email: me.EmailList[0].Email,
 			Enabled: true,
 		}
@@ -113,7 +113,7 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 		err = ac.ServicesGroup.UserService.Add(user)
 		if err != nil {
 			log.Printf("error adding user from google login: %s\n", err.Error())
-			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from google.", REDIRECT_LOGIN)
+			goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from google.", REDIRECT_LOGIN)
 			return
 		}
 		// make sure we auto verify the email address
@@ -134,14 +134,14 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 	err = ac.ServicesGroup.UserService.Update(user.Id, user)
 	if err != nil {
 		log.Printf("error updating user from google login: %s", err.Error())
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from google.", REDIRECT_LOGIN)
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from google.", REDIRECT_LOGIN)
 		return
 	}
 
 	// create token
 	tokenString, err := ac.createToken(user.Id)
 	if err != nil {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error generating token.", REDIRECT_LOGIN)
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error generating token.", REDIRECT_LOGIN)
 		return
 	}
 

@@ -1,14 +1,13 @@
-package repositories
+package goCMS_repositories
 
 import (
 	"github.com/menklab/goCMS/models"
-	"github.com/menklab/goCMS/database"
 	"github.com/jmoiron/sqlx"
 	"log"
 )
 
 type IRuntimeRepository interface {
-	GetByName(name string)(*models.Runtime, error)
+	GetByName(name string)(*goCMS_models.Runtime, error)
 	UpdateValue(id int, value string) error
 }
 
@@ -16,17 +15,21 @@ type RuntimeRepository struct {
 	database *sqlx.DB
 }
 
-func DefaultRuntimeRepository(db *database.Database) *RuntimeRepository {
+func DefaultRuntimeRepository(db interface{}) *RuntimeRepository {
+	d, ok := db.(*sqlx.DB)
+	if !ok {
+		log.Fatalf("Runtime Repo expected *sqlx.DB but got %T.\n", db)
+	}
 	runtimeRepository := &RuntimeRepository{
-		database: db.Dbx,
+		database: d,
 	}
 
 	return runtimeRepository
 }
 
 // get all settings
-func (ur *RuntimeRepository) GetByName(name string) (*models.Runtime, error) {
-	var runtime models.Runtime
+func (ur *RuntimeRepository) GetByName(name string) (*goCMS_models.Runtime, error) {
+	var runtime goCMS_models.Runtime
 	err := ur.database.Get(&runtime, "SELECT * FROM gocms_runtime WHERE name = ?", name)
 	if err != nil {
 		log.Printf("Error getting runtime from database: %s", err.Error())

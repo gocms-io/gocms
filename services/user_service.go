@@ -1,19 +1,19 @@
-package services
+package goCMS_services
 
 import (
 	"github.com/menklab/goCMS/models"
+	"github.com/menklab/goCMS/utility/errors"
 	"github.com/menklab/goCMS/repositories"
 	"github.com/menklab/goCMS/utility"
-	"github.com/menklab/goCMS/utility/errors"
 )
 
 type IUserService interface {
-	Add(*models.User) error
-	Get(int) (*models.User, error)
-	GetByEmail(string) (*models.User, error)
-	GetAll() (*[]models.User, error)
+	Add(*goCMS_models.User) error
+	Get(int) (*goCMS_models.User, error)
+	GetByEmail(string) (*goCMS_models.User, error)
+	GetAll() (*[]goCMS_models.User, error)
 	Delete(int) error
-	Update(int, *models.User) error
+	Update(int, *goCMS_models.User) error
 	UpdatePassword(int, string) error
 	SetEnabled(int, bool) error
 }
@@ -21,11 +21,11 @@ type IUserService interface {
 type UserService struct {
 	AuthService       IAuthService
 	MailService       IMailService
-	RepositoriesGroup *repositories.RepositoriesGroup
+	RepositoriesGroup *goCMS_repositories.RepositoriesGroup
 }
 
 
-func DefaultUserService(rg *repositories.RepositoriesGroup, authService *AuthService, mailService *MailService) *UserService {
+func DefaultUserService(rg *goCMS_repositories.RepositoriesGroup, authService *AuthService, mailService *MailService) *UserService {
 	userService := &UserService{
 		AuthService: authService,
 		MailService: mailService,
@@ -35,7 +35,7 @@ func DefaultUserService(rg *repositories.RepositoriesGroup, authService *AuthSer
 	return userService
 }
 
-func (us *UserService) Get(id int) (*models.User, error) {
+func (us *UserService) Get(id int) (*goCMS_models.User, error) {
 
 	user, err := us.RepositoriesGroup.UsersRepository.Get(id)
 
@@ -46,7 +46,7 @@ func (us *UserService) Get(id int) (*models.User, error) {
 	return user, nil
 }
 
-func (us *UserService) GetByEmail(email string) (*models.User, error) {
+func (us *UserService) GetByEmail(email string) (*goCMS_models.User, error) {
 	// check emails for userid
 	user, err := us.RepositoriesGroup.UsersRepository.GetByEmail(email)
 
@@ -57,7 +57,7 @@ func (us *UserService) GetByEmail(email string) (*models.User, error) {
 	return user, nil
 }
 
-func (us *UserService) GetAll() (*[]models.User, error) {
+func (us *UserService) GetAll() (*[]goCMS_models.User, error) {
 
 	users, err := us.RepositoriesGroup.UsersRepository.GetAll()
 	if err != nil {
@@ -67,15 +67,15 @@ func (us *UserService) GetAll() (*[]models.User, error) {
 	return users, nil
 }
 
-func (us *UserService) Add(user *models.User) error {
+func (us *UserService) Add(user *goCMS_models.User) error {
 
 	// hash password
 	if user.Password == "" {
-		user.Password, _ = utility.GenerateRandomString(32)
+		user.Password, _ = goCMS_utility.GenerateRandomString(32)
 	} else {
 		// password complexity
 		if !us.AuthService.PasswordIsComplex(user.Password) {
-			return errors.NewToUser("Password is not complex enough.")
+			return goCMS_errors.NewToUser("Password is not complex enough.")
 		}
 	}
 
@@ -93,7 +93,7 @@ func (us *UserService) Add(user *models.User) error {
 	}
 
 	// add email to db and attach to user
-	emailToAdd := models.Email{
+	emailToAdd := goCMS_models.Email{
 		Email: user.Email,
 		UserId: user.Id,
 		IsPrimary: true,
@@ -115,7 +115,7 @@ func (us *UserService) Delete(id int) error {
 	return nil
 }
 
-func (us *UserService) Update(id int, userForUpdate *models.User) error {
+func (us *UserService) Update(id int, userForUpdate *goCMS_models.User) error {
 	err := us.RepositoriesGroup.UsersRepository.Update(id, userForUpdate)
 	if err != nil {
 		return err
@@ -127,7 +127,7 @@ func (us *UserService) UpdatePassword(id int, password string) error {
 
 	 //check complexity
 	if !us.AuthService.PasswordIsComplex(password) {
-		return errors.NewToUser("Password is not complex enough.")
+		return goCMS_errors.NewToUser("Password is not complex enough.")
 	}
 
 	// make hash

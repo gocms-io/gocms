@@ -1,16 +1,15 @@
-package auth_ctrl
+package goCMS_auth_ctrl
 
 import (
-	"github.com/menklab/goCMS/services"
-	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/menklab/goCMS/utility/errors"
-	"log"
+	"net/http"
+	"github.com/menklab/goCMS/services"
 	"encoding/json"
-	"github.com/menklab/goCMS/models"
-	"database/sql"
-
+	"log"
 	"github.com/menklab/goCMS/context"
+	"database/sql"
+	"github.com/menklab/goCMS/models"
 )
 
 type fbData struct {
@@ -49,17 +48,17 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	// check for token in header
 	fToken := c.Request.Header.Get("X-FACEBOOK-TOKEN")
 	if fToken == "" {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Missing Token in header X-FACEBOOK-TOKEN", REDIRECT_LOGIN)
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Missing Token in header X-FACEBOOK-TOKEN", REDIRECT_LOGIN)
 		return
 	}
 
 	// use token to verify user on facebook and get id
-	req := services.RestRequest{
+	req := goCMS_services.RestRequest{
 		Url: "https://graph.facebook.com/v2.8/me?fields=id,name,email,picture.width(800).height(800),gender,age_range&access_token=" + fToken,
 	}
 	res, err := req.Get()
 	if err != nil {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Validate With Facebook", REDIRECT_LOGIN)
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Validate With Facebook", REDIRECT_LOGIN)
 		return
 	}
 	// get facebook user object back
@@ -67,7 +66,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	err = json.Unmarshal(res.Body, &me)
 	if err != nil {
 		log.Printf("Error marshaling response from facebook /me: %s", err.Error())
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Parse Facebook Response", REDIRECT_LOGIN)
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Parse Facebook Response", REDIRECT_LOGIN)
 		return
 	}
 
@@ -76,26 +75,26 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	if err != nil && err != sql.ErrNoRows {
 		// other error
 		log.Printf("error looking up user: %s", err.Error())
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error Validating User", REDIRECT_LOGIN)
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error Validating User", REDIRECT_LOGIN)
 		return
 	}
 
 	// if user doesn't exist and registration is closed reject
-	if user == nil && !context.Config.OpenRegistration {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Registration Is Closed.", REDIRECT_LOGIN)
+	if user == nil && !goCMS_context.Config.OpenRegistration {
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Registration Is Closed.", REDIRECT_LOGIN)
 		return
 
 	}
 
 	// if user exists ensure that their facebook email address is verified
 	if user != nil && !ac.ServicesGroup.EmailService.GetVerified(me.Email) {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "The email addressed used by Facebook is attached to your account but has not yet been verified. Please verify the email address first by requesting a verification link.", REDIRECT_LOGIN)
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "The email addressed used by Facebook is attached to your account but has not yet been verified. Please verify the email address first by requesting a verification link.", REDIRECT_LOGIN)
 		return
 	}
 
 	// if user doesn't exist create them already enabled with facebook email as primary
 	if user == nil {
-		user = &models.User{
+		user = &goCMS_models.User{
 			Email: me.Email,
 			Enabled: true,
 		}
@@ -104,7 +103,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 		err = ac.ServicesGroup.UserService.Add(user)
 		if err != nil {
 			log.Printf("error adding user from facebook login: %s\n", err.Error())
-			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from facebook.", REDIRECT_LOGIN)
+			goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from facebook.", REDIRECT_LOGIN)
 			return
 		}
 		// make sure we auto verify the email address
@@ -122,18 +121,18 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 
 	// set gender
 	if me.Gender == "male" {
-		user.Gender = models.GENDER_MALE
+		user.Gender = goCMS_models.GENDER_MALE
 	} else if me.Gender == "female" {
-		user.Gender = models.GENDER_FEMALE
+		user.Gender = goCMS_models.GENDER_FEMALE
 	} else {
-		user.Gender = models.GENDER_UNKNOWN
+		user.Gender = goCMS_models.GENDER_UNKNOWN
 	}
 
 	// update user with merged data
 	err = ac.ServicesGroup.UserService.Update(user.Id, user)
 	if err != nil {
 		log.Printf("error updating user from facebook login: %s", err.Error())
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from facebook.", REDIRECT_LOGIN)
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from facebook.", REDIRECT_LOGIN)
 		return
 	}
 
@@ -141,7 +140,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	// create token
 	tokenString, err := ac.createToken(user.Id)
 	if err != nil {
-		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error generating token.", REDIRECT_LOGIN)
+		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error generating token.", REDIRECT_LOGIN)
 		return
 	}
 
