@@ -5,15 +5,15 @@ import (
 )
 
 const (
-	ApiError_UserToken = "Your user token is not valid or has expired."
-	ApiError_DeviceToken = "Your device token is not valid or has expired."
-	ApiError_Json = "Could not parse request. Some fields may be missing."
-	ApiError_UserDoesntExist = "User Doesn't Exist."
+	ApiError_UserToken         = "Your user token is not valid or has expired."
+	ApiError_DeviceToken       = "Your device token is not valid or has expired."
+	ApiError_Json              = "Could not parse request. Some fields may be missing."
+	ApiError_UserDoesntExist   = "User Doesn't Exist."
 	ApiError_UserAlreadyExists = "User Already Exists."
-	ApiError_Permissions = "You do not have access."
-	ApiError_User_Disabled = "Account is currently disabled."
-	ApiError_Server = "Something went wrong. Please try again."
-	ApiError_Activating_Email = "Email couldn't be activate. The activation code has likely expired. Try requesting a new activation code."
+	ApiError_Permissions       = "You do not have access."
+	ApiError_User_Disabled     = "Account is currently disabled."
+	ApiError_Server            = "Something went wrong. Please try again."
+	ApiError_Activating_Email  = "Email couldn't be activate. The activation code has likely expired. Try requesting a new activation code."
 )
 
 type appError interface {
@@ -42,14 +42,13 @@ func (e *apiError) Include() bool {
 	return e.include
 }
 
-
 // An Error Response is the default error that is used for api responses.
 //
 // swagger:model error
 type ErrorResponse struct {
-	Code     int  `json:"code,string"`
-	Message  string `json:"message,string"`
-	Redirect string `json:"redirect,string"`
+	Code     int         `json:"code,string"`
+	Message  string      `json:"message,string"`
+	Redirect string      `json:"redirect,string"`
 	Data     interface{} `json:"data,string"`
 }
 
@@ -66,7 +65,7 @@ func Response(c *gin.Context, code int, message string, err interface{}, a ...in
 	c.JSON(code, gin.H{
 		"code":    code,
 		"message": message,
-		"data": a,
+		"data":    a,
 	})
 
 	return
@@ -78,7 +77,6 @@ func ResponseWithSoftRedirect(c *gin.Context, code int, message string, redirect
 		"code":     code,
 		"message":  message,
 		"redirect": redirect,
-		"data": a,
+		"data":     a,
 	})
 }
-

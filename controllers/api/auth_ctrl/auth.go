@@ -1,18 +1,18 @@
 package goCMS_auth_ctrl
 
 import (
+	"github.com/dgrijalva/jwt-go"
 	"github.com/menklab/goCMS/routes"
 	"github.com/menklab/goCMS/services"
 	"time"
-	"github.com/dgrijalva/jwt-go"
 
-	"github.com/menklab/goCMS/utility"
-	"github.com/menklab/goCMS/controllers/middleware/auth"
 	"github.com/menklab/goCMS/context"
+	"github.com/menklab/goCMS/controllers/middleware/auth"
+	"github.com/menklab/goCMS/utility"
 )
 
 const (
-	REDIRECT_LOGIN = "login"
+	REDIRECT_LOGIN         = "login"
 	REDIRECT_VERIFY_DEVICE = "verifyDevice"
 )
 
@@ -25,7 +25,7 @@ func DefaultAuthController(routes *goCMS_routes.ApiRoutes, sg *goCMS_services.Se
 
 	// create controller
 	authController := &AuthController{
-		routes: routes,
+		routes:        routes,
 		ServicesGroup: sg,
 	}
 
@@ -36,10 +36,11 @@ func DefaultAuthController(routes *goCMS_routes.ApiRoutes, sg *goCMS_services.Se
 
 	return authController
 }
+
 /**
 * @apiDefine Authenticated Authenticated User
 * User must be logged in and authenticated.
-*/
+ */
 
 func (ac *AuthController) Default() {
 	ac.routes.Public.POST("/register", ac.register)
@@ -54,7 +55,6 @@ func (ac *AuthController) Default() {
 		ac.routes.PreTwofactor.POST("/verify-device", ac.verifyDevice)
 	}
 }
-
 
 func (ac *AuthController) createToken(userId int) (string, error) {
 	expire := time.Now().Add(time.Minute * goCMS_utility.GetTimeout(goCMS_context.Config.UserAuthTimeout))

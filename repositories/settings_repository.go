@@ -1,13 +1,13 @@
 package goCMS_repositories
 
 import (
-	"github.com/menklab/goCMS/models"
 	"github.com/jmoiron/sqlx"
+	"github.com/menklab/goCMS/models"
 	"log"
 )
 
 type ISettingsRepository interface {
-	GetAll()(*[]goCMS_models.Setting, error)
+	GetAll() (*[]goCMS_models.Setting, error)
 }
 
 type SettingsRepository struct {

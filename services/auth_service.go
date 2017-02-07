@@ -1,14 +1,14 @@
 package goCMS_services
 
 import (
-	"golang.org/x/crypto/bcrypt"
-	"time"
+	"github.com/menklab/goCMS/context"
 	"github.com/menklab/goCMS/models"
 	"github.com/menklab/goCMS/repositories"
 	"github.com/menklab/goCMS/utility"
-	"log"
 	"github.com/nbutton23/zxcvbn-go"
-	"github.com/menklab/goCMS/context"
+	"golang.org/x/crypto/bcrypt"
+	"log"
+	"time"
 )
 
 type IAuthService interface {
@@ -17,25 +17,23 @@ type IAuthService interface {
 	SendPasswordResetCode(string) error
 	VerifyPassword(string, string) bool
 	VerifyPasswordResetCode(int, string) bool
-        SendTwoFactorCode(*goCMS_models.User) error
+	SendTwoFactorCode(*goCMS_models.User) error
 	VerifyTwoFactorCode(int, string) bool
 	PasswordIsComplex(string) bool
 	GetRandomCode(int) (string, string, error)
 }
-
 
 type AuthService struct {
 	MailService       IMailService
 	RepositoriesGroup *goCMS_repositories.RepositoriesGroup
 }
 
-
-func DefaultAuthService(rg *goCMS_repositories.RepositoriesGroup, mailService *MailService) *AuthService{
+func DefaultAuthService(rg *goCMS_repositories.RepositoriesGroup, mailService *MailService) *AuthService {
 	authService := &AuthService{
-		MailService: mailService,
+		MailService:       mailService,
 		RepositoriesGroup: rg,
 	}
-	
+
 	return authService
 
 }
@@ -44,14 +42,12 @@ func (as *AuthService) AuthUser(email string, password string) (*goCMS_models.Us
 
 	var dbUser *goCMS_models.User
 	var err error
-		dbUser, err = as.RepositoriesGroup.UsersRepository.GetByEmail(email)
+	dbUser, err = as.RepositoriesGroup.UsersRepository.GetByEmail(email)
 
 	if err != nil {
 		log.Print("Error authing user: " + err.Error())
 		return nil, false
 	}
-
-
 
 	// check password
 	if ok := as.VerifyPassword(dbUser.Password, password); !ok {
@@ -84,7 +80,6 @@ func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
 		return false
 	}
 
-
 	// check within time
 	if time.Since(secureCode.Created) > (time.Minute * time.Duration(goCMS_context.Config.PasswordResetTimeout)) {
 		return false
@@ -97,8 +92,6 @@ func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
 
 	return true
 }
-
-
 
 func (as *AuthService) SendPasswordResetCode(email string) error {
 
@@ -130,7 +123,7 @@ func (as *AuthService) SendPasswordResetCode(email string) error {
 		Subject: "Password Reset Requested",
 		Body: "To reset your password enter the code below into the app:\n" +
 			code + "\n\nThe code will expire at: " +
-			time.Now().Add(time.Minute * time.Duration(goCMS_context.Config.PasswordResetTimeout)).String() + ".",
+			time.Now().Add(time.Minute*time.Duration(goCMS_context.Config.PasswordResetTimeout)).String() + ".",
 	})
 	if err != nil {
 		log.Print("Error sending mail: " + err.Error())
@@ -139,8 +132,6 @@ func (as *AuthService) SendPasswordResetCode(email string) error {
 	return nil
 }
 
-
-
 func (as *AuthService) SendTwoFactorCode(user *goCMS_models.User) error {
 
 	// create code
@@ -148,7 +139,6 @@ func (as *AuthService) SendTwoFactorCode(user *goCMS_models.User) error {
 	if err != nil {
 		return err
 	}
-
 
 	// update user with new code
 	err = as.RepositoriesGroup.SecureCodeRepository.Add(&goCMS_models.SecureCode{
@@ -164,7 +154,7 @@ func (as *AuthService) SendTwoFactorCode(user *goCMS_models.User) error {
 	as.MailService.Send(&Mail{
 		To:      user.Email,
 		Subject: "Device Verification",
-		Body:    "Your verification code is: " + code + "\n\nThe code will expire at: " + time.Now().Add(time.Minute * time.Duration(goCMS_context.Config.TwoFactorCodeTimeout)).String() + ".",
+		Body:    "Your verification code is: " + code + "\n\nThe code will expire at: " + time.Now().Add(time.Minute*time.Duration(goCMS_context.Config.TwoFactorCodeTimeout)).String() + ".",
 	})
 	if err != nil {
 		log.Print("Error sending mail: " + err.Error())

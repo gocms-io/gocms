@@ -1,13 +1,13 @@
 package goCMS_services
 
 import (
-	"github.com/menklab/goCMS/repositories"
-	"log"
-	"github.com/menklab/goCMS/models"
-	"time"
 	"fmt"
-	"github.com/menklab/goCMS/utility/errors"
 	"github.com/menklab/goCMS/context"
+	"github.com/menklab/goCMS/models"
+	"github.com/menklab/goCMS/repositories"
+	"github.com/menklab/goCMS/utility/errors"
+	"log"
+	"time"
 )
 
 type IEmailService interface {
@@ -30,8 +30,8 @@ type EmailService struct {
 func DefaultEmailService(rg *goCMS_repositories.RepositoriesGroup, ms *MailService, as *AuthService) *EmailService {
 	emailService := &EmailService{
 		RepositoriesGroup: rg,
-		AuthService: as,
-		MailService: ms,
+		AuthService:       as,
+		MailService:       ms,
 	}
 	return emailService
 }
@@ -80,9 +80,9 @@ func (es *EmailService) AddEmail(e *goCMS_models.Email) error {
 	// send email to primary email about addition of email
 	if primaryEmail, err := es.RepositoriesGroup.EmailRepository.GetPrimaryByUserId(e.UserId); err == nil {
 		mail := Mail{
-			To: primaryEmail.Email,
+			To:      primaryEmail.Email,
 			Subject: "New Email Added To Your Account",
-			Body: "A new alternative email address, " + e.Email + ", was added to your account.\n\n If you believe this to be a mistake please contact support.",
+			Body:    "A new alternative email address, " + e.Email + ", was added to your account.\n\n If you believe this to be a mistake please contact support.",
 		}
 		es.MailService.Send(&mail)
 	}
@@ -129,7 +129,7 @@ func (es *EmailService) SendEmailActivationCode(emailAddress string) error {
 		Subject: "Email Verification Required",
 		Body: "Click on the link below to activate your email:\n" +
 			goCMS_context.Config.PublicApiUrl + "/user/email/activate?code=" + code + "&email=" + emailAddress + "\n\nThe link will expire at: " +
-			time.Now().Add(time.Minute * time.Duration(goCMS_context.Config.PasswordResetTimeout)).String() + ".",
+			time.Now().Add(time.Minute*time.Duration(goCMS_context.Config.PasswordResetTimeout)).String() + ".",
 	})
 	if err != nil {
 		log.Println("Error sending email activation code, sending mail: " + err.Error())
@@ -204,9 +204,9 @@ func (es *EmailService) PromoteEmail(email *goCMS_models.Email) error {
 	// send notification
 	// send email to primary email about addition of email
 	mail := Mail{
-		To: oldPrimaryEmail.Email,
+		To:      oldPrimaryEmail.Email,
 		Subject: "A New Primary Email Has Been Set",
-		Body: "A new primary email address, " + email.Email + ", has been set on your account.\n\n If you believe this to be a mistake please contact support.",
+		Body:    "A new primary email address, " + email.Email + ", has been set on your account.\n\n If you believe this to be a mistake please contact support.",
 	}
 	es.MailService.Send(&mail)
 
@@ -224,7 +224,6 @@ func (es *EmailService) GetEmailsByUserId(userId int) ([]goCMS_models.Email, err
 
 	return emails, nil
 }
-
 
 func (es *EmailService) DeleteEmail(email *goCMS_models.Email) error {
 
@@ -266,12 +265,11 @@ func (es *EmailService) DeleteEmail(email *goCMS_models.Email) error {
 	// send notification
 	// send email to primary email about addition of email
 	mail := Mail{
-		To: primaryEmail.Email,
+		To:      primaryEmail.Email,
 		Subject: "Alternative Email Delete From Account",
-		Body: "An alternative email, " + email.Email + ", has been deleted from your account.\n\n If you believe this to be a mistake please contact support.",
+		Body:    "An alternative email, " + email.Email + ", has been deleted from your account.\n\n If you believe this to be a mistake please contact support.",
 	}
 	es.MailService.Send(&mail)
 
 	return nil
 }
-

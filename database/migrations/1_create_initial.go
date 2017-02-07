@@ -135,8 +135,9 @@ func CreateInitial() *migrate.Migration {
 			INSERT INTO gocms_settings (name, value, description) VALUES('SETTINGS_REFRESH_RATE', '60', 'Minutes between each settings refresh from the database to memory.');
 			`, `
 			INSERT INTO gocms_settings (name, value, description) VALUES('SMTP_SIMULATE', 'true', 'Simulate SMTP email and print to console instead of sending to server.');
+			`, `
+			INSERT INTO gocms_settings (name, value, description) VALUES('ELASTIC_SEARCH_CONNECTION_URL', 'http://127.0.0.1:9200', 'Elastic Search server to connect to.');
 			`,
-
 		},
 		Down: []string{
 			"DROP TABLE gocms_users;",

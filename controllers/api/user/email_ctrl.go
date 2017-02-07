@@ -2,10 +2,10 @@ package goCMS_user_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"github.com/menklab/goCMS/utility/errors"
 	"github.com/menklab/goCMS/models"
 	"github.com/menklab/goCMS/utility"
+	"github.com/menklab/goCMS/utility/errors"
+	"net/http"
 )
 
 /**
@@ -14,11 +14,11 @@ import (
 * @apiGroup User
 * @apiUse RequestEmailActivationLink
 * @apiDescription Request a new activation link for a registered email.
-*/
+ */
 func (uc *UserController) requestActivationLink(c *gin.Context) {
 
 	// get email
-	var  requestEmailActivationLinkInput goCMS_models.RequestEmailActivationLinkInput
+	var requestEmailActivationLinkInput goCMS_models.RequestEmailActivationLinkInput
 	err := c.BindJSON(&requestEmailActivationLinkInput)
 	if err != nil {
 		goCMS_errors.Response(c, http.StatusBadRequest, err.Error(), err)
@@ -28,7 +28,6 @@ func (uc *UserController) requestActivationLink(c *gin.Context) {
 		goCMS_errors.Response(c, http.StatusBadRequest, "Error sending activation code.", err)
 	}
 
-
 }
 
 /**
@@ -36,7 +35,7 @@ func (uc *UserController) requestActivationLink(c *gin.Context) {
 * @apiName ActivateEmail
 * @apiGroup User
 * @apiDescription This endpoint requires two url params &email and &code. Links are auto generated for this endpoint by the system. This will likely never be called diructly from an app.
-*/
+ */
 func (uc *UserController) activateEmail(c *gin.Context) {
 	code := c.Query("code")
 	if code == "" {
@@ -71,7 +70,7 @@ func (uc *UserController) activateEmail(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message" : "Your email has been verified. You can now log in."})
+	c.JSON(http.StatusOK, gin.H{"message": "Your email has been verified. You can now log in."})
 }
 
 /**
@@ -83,7 +82,7 @@ func (uc *UserController) activateEmail(c *gin.Context) {
 * @apiUse EmailInput
 * @apiUse EmailDisplay
 * @apiPermission Authenticated
-*/
+ */
 func (uc *UserController) addEmail(c *gin.Context) {
 
 	// get logged in user
@@ -105,10 +104,10 @@ func (uc *UserController) addEmail(c *gin.Context) {
 
 	// convert input to model
 	emailToAdd := goCMS_models.Email{
-		Email: addEmailInput.Email,
+		Email:      addEmailInput.Email,
 		IsVerified: false,
-		IsPrimary: false,
-		UserId: authUser.Id,
+		IsPrimary:  false,
+		UserId:     authUser.Id,
 	}
 
 	// add email
@@ -127,13 +126,11 @@ func (uc *UserController) addEmail(c *gin.Context) {
 
 	// create email display and send
 	emailDisplay := goCMS_models.EmailDisplay{
-		Email: emailToAdd.Email,
-		Id: emailToAdd.Id,
+		Email:     emailToAdd.Email,
+		Id:        emailToAdd.Id,
 		IsPrimary: emailToAdd.IsPrimary,
-		Verified: emailToAdd.IsVerified,
+		Verified:  emailToAdd.IsVerified,
 	}
-
-
 
 	c.JSON(http.StatusOK, emailDisplay)
 }
@@ -145,7 +142,7 @@ func (uc *UserController) addEmail(c *gin.Context) {
 * @apiUse EmailInput
 * @apiUse AuthHeader
 * @apiPermission Authenticated
-*/
+ */
 func (uc *UserController) promoteEmail(c *gin.Context) {
 
 	// get logged in user
@@ -166,7 +163,7 @@ func (uc *UserController) promoteEmail(c *gin.Context) {
 	}
 
 	email := goCMS_models.Email{
-		Email: promoteEmailInput.Email,
+		Email:  promoteEmailInput.Email,
 		UserId: authUser.Id,
 	}
 
@@ -188,7 +185,7 @@ func (uc *UserController) promoteEmail(c *gin.Context) {
 * @apiUse AuthHeader
 * @apiUse EmailInput
 * @apiPermission Authenticated
-*/
+ */
 func (uc *UserController) deleteEmail(c *gin.Context) {
 
 	// get logged in user
@@ -210,7 +207,7 @@ func (uc *UserController) deleteEmail(c *gin.Context) {
 
 	// convert input to model
 	emailToDelete := goCMS_models.Email{
-		Email: addEmailInput.Email,
+		Email:  addEmailInput.Email,
 		UserId: authUser.Id,
 	}
 
@@ -232,7 +229,7 @@ func (uc *UserController) deleteEmail(c *gin.Context) {
 * @apiUse AuthHeader
 * @apiUse EmailDisplay
 * @apiPermission Authenticated
-*/
+ */
 func (uc *UserController) getEmails(c *gin.Context) {
 
 	// get logged in user
@@ -247,10 +244,9 @@ func (uc *UserController) getEmails(c *gin.Context) {
 
 	emailDisplays := make([]*goCMS_models.EmailDisplay, len(emails))
 
-	for i , ed := range emails {
+	for i, ed := range emails {
 		emailDisplays[i] = ed.GetEmailDisplay()
 	}
 
-
-	c.JSON(http.StatusOK,emailDisplays)
+	c.JSON(http.StatusOK, emailDisplays)
 }

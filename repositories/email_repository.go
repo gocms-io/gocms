@@ -1,10 +1,10 @@
 package goCMS_repositories
 
 import (
-	"time"
 	"github.com/jmoiron/sqlx"
-	"log"
 	"github.com/menklab/goCMS/models"
+	"log"
+	"time"
 )
 
 type IEmailRepository interface {

@@ -1,13 +1,12 @@
 package goCMS_auth_ctrl
 
 import (
-	"net/http"
 	"github.com/gin-gonic/gin"
+	"github.com/menklab/goCMS/models"
 	"github.com/menklab/goCMS/utility/errors"
 	"log"
-	"github.com/menklab/goCMS/models"
+	"net/http"
 )
-
 
 /**
 * @api {post} /reset-password Reset Password (Request)
@@ -15,7 +14,7 @@ import (
 * @apiGroup Authentication
 *
 * @apiUse ResetPasswordRequestInput
-*/
+ */
 func (ac *AuthController) resetPassword(c *gin.Context) {
 
 	// get email for reset
@@ -43,7 +42,7 @@ func (ac *AuthController) resetPassword(c *gin.Context) {
 * @apiGroup Authentication
 *
 * @apiUse ResetPasswordInput
-*/
+ */
 func (ac *AuthController) setPassword(c *gin.Context) {
 	// get password and code for reset
 	var resetPassword goCMS_models.ResetPasswordInput

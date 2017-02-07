@@ -1,8 +1,8 @@
 package goCMS_services
 
 import (
-	"github.com/menklab/goCMS/repositories"
 	"github.com/menklab/goCMS/models"
+	"github.com/menklab/goCMS/repositories"
 	"log"
 )
 
@@ -12,18 +12,16 @@ type IAclService interface {
 	IsAuthorized(string, int) bool
 }
 
-
 type AclService struct {
-	Permissions map[string]goCMS_models.Permission
+	Permissions       map[string]goCMS_models.Permission
 	RepositoriesGroup *goCMS_repositories.RepositoriesGroup
 }
 
-
-func DefaultAclService(rg *goCMS_repositories.RepositoriesGroup) *AclService{
+func DefaultAclService(rg *goCMS_repositories.RepositoriesGroup) *AclService {
 	aclService := &AclService{
 		RepositoriesGroup: rg,
 	}
-	
+
 	return aclService
 
 }

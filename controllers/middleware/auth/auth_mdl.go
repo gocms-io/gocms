@@ -3,13 +3,13 @@ package goCMS_authMdl
 import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"github.com/menklab/goCMS/services"
 	"github.com/menklab/goCMS/utility/errors"
+	"net/http"
 
-	"log"
-	"github.com/menklab/goCMS/routes"
 	"github.com/menklab/goCMS/context"
+	"github.com/menklab/goCMS/routes"
+	"log"
 )
 
 type AuthMiddleware struct {

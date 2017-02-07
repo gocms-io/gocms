@@ -1,11 +1,11 @@
 package goCMS_services
 
 import (
-	"net/http"
 	"bytes"
-	"log"
-	"io/ioutil"
 	"github.com/menklab/goCMS/utility/errors"
+	"io/ioutil"
+	"log"
+	"net/http"
 )
 
 var GET string = "GET"
@@ -73,8 +73,8 @@ func (rr *RestRequest) do() (*RestResponse, error) {
 
 	restResponse := RestResponse{
 		StatusCode: res.StatusCode,
-		Headers: res.Header,
-		Body: body,
+		Headers:    res.Header,
+		Body:       body,
 	}
 
 	return &restResponse, nil

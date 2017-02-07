@@ -30,6 +30,3 @@ func (s *Scheduler) AddTicker(d time.Duration, f func()) int {
 
 	return id
 }
-
-
-

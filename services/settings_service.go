@@ -2,9 +2,9 @@ package goCMS_services
 
 import (
 	"github.com/menklab/goCMS/models"
+	"github.com/menklab/goCMS/repositories"
 	"log"
 	"time"
-	"github.com/menklab/goCMS/repositories"
 )
 
 type ISettingsService interface {
@@ -40,7 +40,6 @@ func (ss *SettingsService) RegisterRefreshCallback(cb func(map[string]goCMS_mode
 	}
 
 }
-
 
 func (ss *SettingsService) RefreshSettingsCache() error {
 

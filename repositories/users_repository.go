@@ -1,12 +1,12 @@
 package goCMS_repositories
 
 import (
+	"database/sql"
+	"github.com/jmoiron/sqlx"
+	"github.com/menklab/goCMS/models"
+	"github.com/menklab/goCMS/utility/errors"
 	"log"
 	"time"
-	"github.com/menklab/goCMS/models"
-	"github.com/jmoiron/sqlx"
-	"github.com/menklab/goCMS/utility/errors"
-	"database/sql"
 )
 
 type IUserRepository interface {
@@ -150,7 +150,7 @@ func (ur *UserRepository) SetEnabled(id int, enabled bool) error {
 func (ur *UserRepository) UpdatePassword(id int, hash string) error {
 	// insert row
 	user := goCMS_models.User{
-		Id: id,
+		Id:       id,
 		Password: hash,
 	}
 	_, err := ur.database.NamedExec(`
@@ -192,5 +192,3 @@ func (ur *UserRepository) userExistsByEmail(email string) bool {
 	}
 	return false
 }
-
-

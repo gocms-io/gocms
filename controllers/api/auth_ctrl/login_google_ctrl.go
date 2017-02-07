@@ -1,14 +1,14 @@
 package goCMS_auth_ctrl
 
 import (
-	"github.com/menklab/goCMS/services"
-	"net/http"
+	"database/sql"
+	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/menklab/goCMS/services"
 	"github.com/menklab/goCMS/utility/errors"
 	"log"
-	"encoding/json"
-	"database/sql"
-	"fmt"
+	"net/http"
 	"strings"
 
 	"github.com/menklab/goCMS/context"
@@ -28,11 +28,11 @@ type gAgeRange struct {
 }
 
 type gMe struct {
-	Id       string `json:"id" binding:"required"`
-	Name     string `json:"displayName" binding:"required"`
-	EmailList    []gEmail `json:"emails" binding:"required"`
-	Picture  gImage `json:"image" binding:"required"`
-	AgeRange gAgeRange `json:"ageRange" binding:"required"`
+	Id        string    `json:"id" binding:"required"`
+	Name      string    `json:"displayName" binding:"required"`
+	EmailList []gEmail  `json:"emails" binding:"required"`
+	Picture   gImage    `json:"image" binding:"required"`
+	AgeRange  gAgeRange `json:"ageRange" binding:"required"`
 }
 
 /**
@@ -45,10 +45,8 @@ type gMe struct {
 * @apiUse UserDisplay
 *
 * @apiSuccess (Response-Header) {string} x-auth-token
-*/
+ */
 func (ac *AuthController) loginGoogle(c *gin.Context) {
-
-
 
 	// check for token in header
 	token := c.Request.Header.Get("X-GOOGLE-TOKEN")
@@ -61,9 +59,8 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 	headers["Authorization"] = fmt.Sprintf("Bearer %s", token)
 	// use token to verify user on google and get id
 	req := goCMS_services.RestRequest{
-		Url: "https://www.googleapis.com/plus/v1/people/me",
+		Url:     "https://www.googleapis.com/plus/v1/people/me",
 		Headers: headers,
-
 	}
 	res, err := req.Get()
 	if err != nil {
@@ -78,7 +75,6 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Parse Google Response", REDIRECT_LOGIN)
 		return
 	}
-
 
 	// check if user exists
 	user, err := ac.ServicesGroup.UserService.GetByEmail(me.EmailList[0].Email)
@@ -105,7 +101,7 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 	// if user doesn't exist create them already enabled with google email as primary
 	if user == nil {
 		user = &goCMS_models.User{
-			Email: me.EmailList[0].Email,
+			Email:   me.EmailList[0].Email,
 			Enabled: true,
 		}
 
@@ -129,7 +125,6 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 	user.Photo = strings.Replace(me.Picture.Url, "?sz=50", "", -1)
 	user.FullName = me.Name
 
-
 	// update user with merged data
 	err = ac.ServicesGroup.UserService.Update(user.Id, user)
 	if err != nil {
@@ -146,7 +141,6 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 	}
 
 	c.Header("X-AUTH-TOKEN", tokenString)
-
 
 	c.JSON(http.StatusOK, user.GetUserDisplay())
 	return

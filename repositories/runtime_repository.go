@@ -1,13 +1,13 @@
 package goCMS_repositories
 
 import (
-	"github.com/menklab/goCMS/models"
 	"github.com/jmoiron/sqlx"
+	"github.com/menklab/goCMS/models"
 	"log"
 )
 
 type IRuntimeRepository interface {
-	GetByName(name string)(*goCMS_models.Runtime, error)
+	GetByName(name string) (*goCMS_models.Runtime, error)
 	UpdateValue(id int, value string) error
 }
 

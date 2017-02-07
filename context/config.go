@@ -1,30 +1,33 @@
 package goCMS_context
 
 import (
-	"log"
 	"github.com/menklab/goCMS/models"
+	"log"
 )
 
 var Config *GoCMSConfig
 
 type GoCMSConfig struct {
 	// DB (GET FROM ENV)
-	DbName                 string
-	DbUser                 string
-	DbPassword             string
-	DbServer               string
+	DbName     string
+	DbUser     string
+	DbPassword string
+	DbServer   string
+
+	// Elastic Search
+	ElasticSearchConnectionUrl string
 
 	// Debug
-	Debug                  bool
-	DebugSecurity          bool
+	Debug         bool
+	DebugSecurity bool
 
 	// App Config
-	Port                   string
-	PublicApiUrl           string
-	RedirectRootUrl        string
-	CorsHost               string
-	OpenRegistration       bool
-	SettingsRefreshRate    int64
+	Port                string
+	PublicApiUrl        string
+	RedirectRootUrl     string
+	CorsHost            string
+	OpenRegistration    bool
+	SettingsRefreshRate int64
 
 	// Authentication
 	AuthKey                string
@@ -36,28 +39,25 @@ type GoCMSConfig struct {
 	UseTwoFactor           bool
 	PasswordComplexity     int64
 
-
 	// SMTP
-	SMTPServer             string
-	SMTPPort               int64
-	SMTPUser               string
-	SMTPPassword           string
-	SMTPFromAddress        string
-	SMTPSimulate           bool
-
+	SMTPServer      string
+	SMTPPort        int64
+	SMTPUser        string
+	SMTPPassword    string
+	SMTPFromAddress string
+	SMTPSimulate    bool
 }
-
-
 
 func (c *GoCMSConfig) ApplySettingsToConfig(settings map[string]goCMS_models.Setting) {
 
 	log.Println("Refreshed GoCMS Settings")
 
+	// Elastic Search
+	c.ElasticSearchConnectionUrl = GetStringOrFail(settings["ELASTIC_SEARCH_CONNECTION_URL"].Value)
 
 	// Debug
 	c.Debug = GetBoolOrFail(settings["DEBUG"].Value)
 	c.DebugSecurity = GetBoolOrFail(settings["DEBUG_SECURITY"].Value)
-
 
 	// App Config
 	c.Port = GetStringOrFail(settings["PORT"].Value)

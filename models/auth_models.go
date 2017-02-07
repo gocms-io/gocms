@@ -20,7 +20,7 @@ package goCMS_models
 * @apiDefine LoginInput
 * @apiParam (Request) {string} email
 * @apiParam (Request) {string} password
-*/
+ */
 type LoginInput struct {
 	Email    string `json:"email" binding:"required"`
 	Password string `json:"password" binding:"required"`
@@ -32,18 +32,18 @@ type LoginInput struct {
 * @apiParam (Request) {string} email
 * @apiParam (Request) {string} password
 * @apiParam (Request) {string} [email2]
-*/
+ */
 type UserRegisterInput struct {
-	FullName    string    `json:"fullName,omitempty" binding:"required" `
-	Email       string    `json:"email,omitempty" binding:"required"`
-	Password string    `json:"password,omitempty" binding:"required"`
-	Email2      string    `json:"email2,omitempty"`
+	FullName string `json:"fullName,omitempty" binding:"required" `
+	Email    string `json:"email,omitempty" binding:"required"`
+	Password string `json:"password,omitempty" binding:"required"`
+	Email2   string `json:"email2,omitempty"`
 }
 
 /**
 * @apiDefine ResetPasswordRequestInput
 * @apiParam (Request) {string} email
-*/
+ */
 type ResetPasswordRequestInput struct {
 	Email string `json:"email" binding:"required"`
 }
@@ -53,7 +53,7 @@ type ResetPasswordRequestInput struct {
 * @apiParam (Request) {string} email
 * @apiParam (Request) {string} password
 * @apiParam (Request) {string} resetCode
-*/
+ */
 type ResetPasswordInput struct {
 	Email     string `json:"email" binding:"required"`
 	Password  string `json:"password" binding:"required"`

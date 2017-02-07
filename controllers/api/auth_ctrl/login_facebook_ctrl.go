@@ -1,20 +1,20 @@
 package goCMS_auth_ctrl
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/menklab/goCMS/utility/errors"
-	"net/http"
-	"github.com/menklab/goCMS/services"
-	"encoding/json"
-	"log"
-	"github.com/menklab/goCMS/context"
 	"database/sql"
+	"encoding/json"
+	"github.com/gin-gonic/gin"
+	"github.com/menklab/goCMS/context"
 	"github.com/menklab/goCMS/models"
+	"github.com/menklab/goCMS/services"
+	"github.com/menklab/goCMS/utility/errors"
+	"log"
+	"net/http"
 )
 
 type fbData struct {
-	Height int `json:"height" binding:"required"`
-	Width  int `json:"width" binding:"required"`
+	Height int    `json:"height" binding:"required"`
+	Width  int    `json:"width" binding:"required"`
 	Url    string `json:"url" binding:"required"`
 }
 type fbPicture struct {
@@ -25,11 +25,11 @@ type fbAgeRange struct {
 	Max int `json:"max" binding:"required"`
 }
 type fbMe struct {
-	Id       string `json:"id" binding:"required"`
-	Name     string `json:"name" binding:"required"`
-	Email    string `json:"email" binding:"required"`
-	Picture  fbPicture `json:"picture" binding:"required"`
-	Gender   string `json:"gender" binding:"required"`
+	Id       string     `json:"id" binding:"required"`
+	Name     string     `json:"name" binding:"required"`
+	Email    string     `json:"email" binding:"required"`
+	Picture  fbPicture  `json:"picture" binding:"required"`
+	Gender   string     `json:"gender" binding:"required"`
 	AgeRange fbAgeRange `json:"age_range" binding:"required"`
 }
 
@@ -43,7 +43,7 @@ type fbMe struct {
 * @apiUse UserDisplay
 *
 * @apiSuccess (Response-Header) {string} x-auth-token
-*/
+ */
 func (ac *AuthController) loginFacebook(c *gin.Context) {
 	// check for token in header
 	fToken := c.Request.Header.Get("X-FACEBOOK-TOKEN")
@@ -95,7 +95,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	// if user doesn't exist create them already enabled with facebook email as primary
 	if user == nil {
 		user = &goCMS_models.User{
-			Email: me.Email,
+			Email:   me.Email,
 			Enabled: true,
 		}
 
@@ -136,7 +136,6 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 		return
 	}
 
-
 	// create token
 	tokenString, err := ac.createToken(user.Id)
 	if err != nil {
@@ -150,4 +149,3 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	return
 
 }
-

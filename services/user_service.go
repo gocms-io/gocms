@@ -2,9 +2,9 @@ package goCMS_services
 
 import (
 	"github.com/menklab/goCMS/models"
-	"github.com/menklab/goCMS/utility/errors"
 	"github.com/menklab/goCMS/repositories"
 	"github.com/menklab/goCMS/utility"
+	"github.com/menklab/goCMS/utility/errors"
 )
 
 type IUserService interface {
@@ -24,11 +24,10 @@ type UserService struct {
 	RepositoriesGroup *goCMS_repositories.RepositoriesGroup
 }
 
-
 func DefaultUserService(rg *goCMS_repositories.RepositoriesGroup, authService *AuthService, mailService *MailService) *UserService {
 	userService := &UserService{
-		AuthService: authService,
-		MailService: mailService,
+		AuthService:       authService,
+		MailService:       mailService,
 		RepositoriesGroup: rg,
 	}
 
@@ -79,7 +78,6 @@ func (us *UserService) Add(user *goCMS_models.User) error {
 		}
 	}
 
-
 	hashPassword, err := us.AuthService.HashPassword(user.Password)
 	if err != nil {
 		return nil
@@ -94,8 +92,8 @@ func (us *UserService) Add(user *goCMS_models.User) error {
 
 	// add email to db and attach to user
 	emailToAdd := goCMS_models.Email{
-		Email: user.Email,
-		UserId: user.Id,
+		Email:     user.Email,
+		UserId:    user.Id,
 		IsPrimary: true,
 	}
 	err = us.RepositoriesGroup.EmailRepository.Add(&emailToAdd)
@@ -125,7 +123,7 @@ func (us *UserService) Update(id int, userForUpdate *goCMS_models.User) error {
 }
 func (us *UserService) UpdatePassword(id int, password string) error {
 
-	 //check complexity
+	//check complexity
 	if !us.AuthService.PasswordIsComplex(password) {
 		return goCMS_errors.NewToUser("Password is not complex enough.")
 	}
@@ -145,6 +143,6 @@ func (us *UserService) UpdatePassword(id int, password string) error {
 	return nil
 }
 
-func (us *UserService) SetEnabled (id int, enabled bool) error {
+func (us *UserService) SetEnabled(id int, enabled bool) error {
 	return us.RepositoriesGroup.UsersRepository.SetEnabled(id, enabled)
 }

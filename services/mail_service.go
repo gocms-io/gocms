@@ -1,9 +1,9 @@
 package goCMS_services
 
 import (
+	"github.com/menklab/goCMS/context"
 	"gopkg.in/gomail.v2"
 	"log"
-	"github.com/menklab/goCMS/context"
 )
 
 type IMailService interface {
@@ -21,11 +21,10 @@ type Mail struct {
 	Body    string
 }
 
-
 func DefaultMailService() *MailService {
 	mailService := &MailService{
 		Dialer: gomail.NewDialer(goCMS_context.Config.SMTPServer, int(goCMS_context.Config.SMTPPort), goCMS_context.Config.SMTPUser, goCMS_context.Config.SMTPPassword),
-		From: goCMS_context.Config.SMTPFromAddress,
+		From:   goCMS_context.Config.SMTPFromAddress,
 	}
 
 	return mailService

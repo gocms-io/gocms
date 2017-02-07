@@ -1,14 +1,13 @@
 package goCMS
 
-
 import (
 	"github.com/gin-gonic/gin"
-	"log"
-	"github.com/menklab/goCMS/controllers"
-	"github.com/menklab/goCMS/services"
-	"github.com/menklab/goCMS/database"
 	"github.com/menklab/goCMS/context"
+	"github.com/menklab/goCMS/controllers"
+	"github.com/menklab/goCMS/database"
 	"github.com/menklab/goCMS/repositories"
+	"github.com/menklab/goCMS/services"
+	"log"
 )
 
 type Engine struct {
@@ -44,13 +43,17 @@ func Default() *Engine {
 
 	// create engine
 	engine := Engine{
-		Gin: r,
-		ControllersGroup: cg,
-		ServicesGroup: sg,
+		Gin:               r,
+		ControllersGroup:  cg,
+		ServicesGroup:     sg,
 		RepositoriesGroup: rg,
-		Database: db,
+		Database:          db,
 	}
 	return &engine
+}
+
+func (e *Engine) EnableElasticSearch() {
+	e.Database.ElasticSearch = goCMS_database.DefaultElasticSearch()
 }
 
 func (engine *Engine) Listen(uri string) {

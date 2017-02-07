@@ -1,12 +1,11 @@
 package goCMS_auth_ctrl
 
 import (
-	"net/http"
 	"github.com/gin-gonic/gin"
-	"github.com/menklab/goCMS/utility/errors"
 	"github.com/menklab/goCMS/models"
+	"github.com/menklab/goCMS/utility/errors"
+	"net/http"
 )
-
 
 /**
 * @api {post} /login Login
@@ -16,7 +15,7 @@ import (
 * @apiUse LoginInput
 * @apiUse UserDisplay
 * @apiSuccess (Response-Header) {string} x-auth-token
-*/
+ */
 func (ac *AuthController) login(c *gin.Context) {
 
 	var loginInput goCMS_models.LoginInput
@@ -46,7 +45,6 @@ func (ac *AuthController) login(c *gin.Context) {
 		ac.ServicesGroup.EmailService.SendEmailActivationCode(user.Email)
 		return
 	}
-
 
 	// create token
 	tokenString, err := ac.createToken(user.Id)

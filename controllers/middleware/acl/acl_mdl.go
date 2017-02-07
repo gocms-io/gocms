@@ -1,13 +1,12 @@
 package goCMS_aclMdl
 
-
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/menklab/goCMS/services"
-	"net/http"
 	"github.com/menklab/goCMS/utility"
 	"github.com/menklab/goCMS/utility/errors"
-	"fmt"
+	"net/http"
 )
 
 type AclMiddleware struct {

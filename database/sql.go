@@ -1,12 +1,12 @@
 package goCMS_database
 
 import (
-	"log"
+	"database/sql"
+	"github.com/jmoiron/sqlx"
+	"github.com/menklab/goCMS/context"
 	"github.com/menklab/goCMS/database/migrations"
 	"github.com/rubenv/sql-migrate"
-	"database/sql"
-	"github.com/menklab/goCMS/context"
-	"github.com/jmoiron/sqlx"
+	"log"
 )
 
 type SQL struct {

@@ -2,17 +2,16 @@ package goCMS_healthy_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"github.com/menklab/goCMS/utility"
 	"github.com/menklab/goCMS/routes"
+	"github.com/menklab/goCMS/utility"
+	"net/http"
 )
-
 
 type HealthyController struct {
 	routes *goCMS_routes.ApiRoutes
 }
 
-func DefaultHealthyController(routes *goCMS_routes.ApiRoutes) *HealthyController{
+func DefaultHealthyController(routes *goCMS_routes.ApiRoutes) *HealthyController {
 	hc := &HealthyController{
 		routes: routes,
 	}
@@ -31,7 +30,7 @@ func (hc *HealthyController) Default() {
 * @apiDescription Used to verify that the services are up and running.
 * @apiName GetHealthy
 * @apiGroup Utility
-*/
+ */
 func (hc *HealthyController) healthy(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
@@ -45,7 +44,7 @@ func (hc *HealthyController) healthy(c *gin.Context) {
 * @apiUse UserAuthHeader
 * @apiUse UserDisplay
 * @apiPermission Authenticated
-*/
+ */
 func (hc *HealthyController) user(c *gin.Context) {
 	// get logged in user
 	authUser, _ := goCMS_utility.GetUserFromContext(c)

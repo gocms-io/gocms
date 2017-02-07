@@ -5,13 +5,12 @@ import (
 )
 
 type Migration struct {
-	Id string
-	Up []string
+	Id   string
+	Up   []string
 	Down []string
 }
 
 type MigrationList []*Migration
-
 
 func GoCMSMigrations() []*migrate.Migration {
 	migrationsList := []*migrate.Migration{
@@ -24,9 +23,9 @@ func (migrationsList *MigrationList) ConvertMemoryMigrationsToSource() *migrate.
 
 	memoryMigrations := make([]*migrate.Migration, len(*migrationsList))
 	for i, migration := range *migrationsList {
-		memoryMigration := migrate.Migration {
-			Id: migration.Id,
-			Up: migration.Up,
+		memoryMigration := migrate.Migration{
+			Id:   migration.Id,
+			Up:   migration.Up,
 			Down: migration.Down,
 		}
 		memoryMigrations[i] = &memoryMigration
@@ -37,5 +36,3 @@ func (migrationsList *MigrationList) ConvertMemoryMigrationsToSource() *migrate.
 
 	return memoryMigrationSource
 }
-
-

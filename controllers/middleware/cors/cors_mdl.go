@@ -1,9 +1,8 @@
 package goCMS_corsMdl
 
 import (
-
-	"github.com/gin-gonic/gin"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/menklab/goCMS/context"
 )
 

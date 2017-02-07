@@ -1,30 +1,19 @@
 package goCMS_database
 
 import (
-	_"github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql"
 )
 
-
-
 type Database struct {
-	SQL *SQL
+	SQL           *SQL
 	ElasticSearch *ElasticSearch
 }
 
-func Default() *Database{
+func Default() *Database {
 
 	database := Database{
-		SQL: DefaultSQL(),
-		ElasticSearch: DefaultElasticSearch(),
+		SQL:           DefaultSQL(),
 	}
 
 	return &database
 }
-
-
-
-
-
-
-
-

@@ -62,7 +62,7 @@ func (uc *UserController) get(c *gin.Context) {
 * @apiUse AuthHeader
 * @apiUse UserUpdateInput
 * @apiPermission Authenticated
-*/
+ */
 func (uc *UserController) update(c *gin.Context) {
 
 	// get logged in user
@@ -109,7 +109,7 @@ func (uc *UserController) update(c *gin.Context) {
 * @apiUse AuthHeader
 * @apiUse UserChangePasswordInput
 * @apiPermission Authenticated`
-*/
+ */
 func (uc *UserController) changePassword(c *gin.Context) {
 
 	// get logged in user

@@ -2,14 +2,12 @@ package goCMS_auth_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"github.com/menklab/goCMS/models"
 	"github.com/menklab/goCMS/utility/errors"
+	"net/http"
 
 	"github.com/menklab/goCMS/context"
 )
-
-
 
 /**
 * @api {post} /register Register
@@ -19,7 +17,7 @@ import (
 * @apiUse UserRegisterInput
 *
 * @apiUse UserDisplay
-*/
+ */
 func (auc *AuthController) register(c *gin.Context) {
 
 	if !goCMS_context.Config.OpenRegistration {
@@ -37,9 +35,9 @@ func (auc *AuthController) register(c *gin.Context) {
 
 	user := &goCMS_models.User{
 		Password: userNewInput.Password,
-		Email: userNewInput.Email,
+		Email:    userNewInput.Email,
 		FullName: userNewInput.FullName,
-		Enabled: true, // if registration is open users should be auto enabled
+		Enabled:  true, // if registration is open users should be auto enabled
 	}
 
 	// add user

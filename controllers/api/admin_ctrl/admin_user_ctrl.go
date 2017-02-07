@@ -2,13 +2,13 @@ package goCMS_admin_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/menklab/goCMS/controllers/middleware/acl"
+	"github.com/menklab/goCMS/models"
+	"github.com/menklab/goCMS/routes"
+	"github.com/menklab/goCMS/services"
+	"github.com/menklab/goCMS/utility/errors"
 	"net/http"
 	"strconv"
-	"github.com/menklab/goCMS/services"
-	"github.com/menklab/goCMS/routes"
-	"github.com/menklab/goCMS/models"
-	"github.com/menklab/goCMS/utility/errors"
-	"github.com/menklab/goCMS/controllers/middleware/acl"
 )
 
 type AdminUserController struct {
@@ -18,11 +18,11 @@ type AdminUserController struct {
 
 func DefaultAdminUserController(routes *goCMS_routes.ApiRoutes, sg *goCMS_services.ServicesGroup) *AdminUserController {
 	adminUserController := &AdminUserController{
-		routes: routes,
+		routes:        routes,
 		ServicesGroup: sg,
 	}
 
-	 // create acl object
+	// create acl object
 	acl := goCMS_aclMdl.AclMiddleware{
 		ServicesGroup: sg,
 	}
@@ -35,13 +35,12 @@ func DefaultAdminUserController(routes *goCMS_routes.ApiRoutes, sg *goCMS_servic
 	adminUserController.Default()
 	return adminUserController
 
-
 }
 
 /**
 * @apiDefine Admin Admin User
 * User must be logged in and have the role of Admin.
-*/
+ */
 func (auc *AdminUserController) Default() {
 
 	auc.routes.Admin.GET("/user", auc.getAll)
@@ -86,7 +85,7 @@ func (auc *AdminUserController) add(c *gin.Context) {
 * @apiUse UserAuthHeader
 * @apiUse UserDisplay
 * @apiPermission Admin
-*/
+ */
 func (auc *AdminUserController) get(c *gin.Context) {
 
 	userId, err := strconv.Atoi(c.Param("userId"))
@@ -100,8 +99,6 @@ func (auc *AdminUserController) get(c *gin.Context) {
 		return
 	}
 
-
-
 	c.JSON(http.StatusOK, user.GetUserAdminDisplay())
 }
 
@@ -114,7 +111,7 @@ func (auc *AdminUserController) get(c *gin.Context) {
 * @apiUse UserAuthHeader
 * @apiUse UserDisplay
 * @apiPermission Admin
-*/
+ */
 func (auc *AdminUserController) getAll(c *gin.Context) {
 	users, err := auc.ServicesGroup.UserService.GetAll()
 	if err != nil {
@@ -127,7 +124,6 @@ func (auc *AdminUserController) getAll(c *gin.Context) {
 	for i, user := range *users {
 		usersAdminDisplays[i] = *user.GetUserAdminDisplay()
 	}
-
 
 	c.JSON(http.StatusOK, usersAdminDisplays)
 }

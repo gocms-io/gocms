@@ -6,7 +6,7 @@ type DocumentationController struct {
 	routes *goCMS_routes.ApiRoutes
 }
 
-func DefaultDocumentationController(routes *goCMS_routes.ApiRoutes) *DocumentationController{
+func DefaultDocumentationController(routes *goCMS_routes.ApiRoutes) *DocumentationController {
 	dc := &DocumentationController{
 		routes: routes,
 	}

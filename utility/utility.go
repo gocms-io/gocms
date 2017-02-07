@@ -5,9 +5,9 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"time"
 	"github.com/menklab/goCMS/models"
 	"io/ioutil"
+	"time"
 )
 
 func GenerateRandomBytes(n int) ([]byte, error) {

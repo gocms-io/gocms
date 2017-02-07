@@ -2,12 +2,12 @@ package goCMS_repositories
 
 import (
 	"github.com/jmoiron/sqlx"
-	"log"
 	"github.com/menklab/goCMS/models"
+	"log"
 )
 
 type IPermissionsRepository interface {
-	GetAll()(*[]goCMS_models.Permission, error)
+	GetAll() (*[]goCMS_models.Permission, error)
 	GetUserPermissions(int) (*[]int, error)
 }
 

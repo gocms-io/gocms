@@ -1,22 +1,20 @@
 package goCMS_auth_ctrl
 
 import (
-	"time"
-	"net/http"
-	"github.com/gin-gonic/gin"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
+	"net/http"
+	"time"
 
-	"github.com/menklab/goCMS/utility/errors"
-	"github.com/menklab/goCMS/utility"
 	"github.com/menklab/goCMS/context"
+	"github.com/menklab/goCMS/utility"
+	"github.com/menklab/goCMS/utility/errors"
 )
 
 // Verify device form structure
 type VerifyDeviceDisplay struct {
 	DeviceCode string `json:"deviceCode" binding:"required"`
 }
-
-
 
 // getDeviceToken
 func (ac *AuthController) getDeviceCode(c *gin.Context) {

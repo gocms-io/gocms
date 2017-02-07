@@ -1,10 +1,10 @@
 package goCMS_repositories
 
 import (
-	"time"
-	"github.com/menklab/goCMS/models"
 	"github.com/jmoiron/sqlx"
+	"github.com/menklab/goCMS/models"
 	"log"
+	"time"
 )
 
 type ISecureCodeRepository interface {
@@ -17,8 +17,7 @@ type SecureCodeRepository struct {
 	database *sqlx.DB
 }
 
-
-func DefaultSecureCodeRepository(db interface{}) *SecureCodeRepository{
+func DefaultSecureCodeRepository(db interface{}) *SecureCodeRepository {
 	d, ok := db.(*sqlx.DB)
 	if !ok {
 		log.Fatalf("Secure Code Repo expected *sqlx.DB but got %T.\n", db)

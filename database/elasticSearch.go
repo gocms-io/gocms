@@ -1,15 +1,15 @@
 package goCMS_database
 
 import (
-	"log"
 	"gopkg.in/olivere/elastic.v5"
+	"log"
 )
 
 type ElasticSearch struct {
 	Client *elastic.Client
 }
 
-func DefaultElasticSearch() *ElasticSearch{
+func DefaultElasticSearch() *ElasticSearch {
 	// Create a client
 	client, err := elastic.NewClient()
 	if err != nil {

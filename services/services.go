@@ -1,8 +1,8 @@
 package goCMS_services
 
 import (
-	"github.com/menklab/goCMS/repositories"
 	"github.com/menklab/goCMS/context"
+	"github.com/menklab/goCMS/repositories"
 	"time"
 )
 
@@ -42,11 +42,11 @@ func DefaultServicesGroup(rg *goCMS_repositories.RepositoriesGroup) *ServicesGro
 
 	sg := &ServicesGroup{
 		SettingsService: settingsService,
-		MailService: mailService,
-		AuthService: authService,
-		UserService: userService,
-		AclService: aclService,
-		EmailService: emailService,
+		MailService:     mailService,
+		AuthService:     authService,
+		UserService:     userService,
+		AclService:      aclService,
+		EmailService:    emailService,
 	}
 	return sg
 }
