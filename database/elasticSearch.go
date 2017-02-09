@@ -42,7 +42,7 @@ func (database *Database) MigrateElasticSearch(migrations goCMS_elasticSearch_mi
 			if !createIndex.Acknowledged {
 				log.Fatalf("Error creating index %v in elastic search: not acknowledged.\n", migration.Index)
 			}
-			log.Printf("Created Index %s.\n", migration.Index)
+			log.Printf("Elastic search created index %s.\n", migration.Index)
 		}
 	}
 }
