@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"github.com/jmoiron/sqlx"
 	"github.com/menklab/goCMS/context"
-	"github.com/menklab/goCMS/database/migrations"
 	"github.com/rubenv/sql-migrate"
 	"log"
+	"github.com/menklab/goCMS/database/migrations/sql"
 )
 
 type SQL struct {
@@ -26,7 +26,7 @@ func DefaultSQL() *SQL {
 	sql := &SQL{
 		Dbx: dbx,
 		migrations: &migrate.MemoryMigrationSource{
-			Migrations: goCMS_migrations.GoCMSMigrations(),
+			Migrations: goCMS_sql_migrations.GoCMSSqlMigrations(),
 		},
 	}
 
@@ -34,7 +34,7 @@ func DefaultSQL() *SQL {
 	return sql
 }
 
-func (database *Database) Migrate(tableName string, migrationSource *migrate.MemoryMigrationSource) error {
+func (database *Database) MigrateSql(tableName string, migrationSource *migrate.MemoryMigrationSource) error {
 	migrate.SetTable(tableName)
 	n, err := migrate.Exec(database.SQL.Dbx.DB, "mysql", migrationSource, migrate.Up)
 	if err != nil {
@@ -48,7 +48,7 @@ func (database *Database) Migrate(tableName string, migrationSource *migrate.Mem
 			log.Printf("Rolled back %d migrations.\n", rn)
 			return err
 		} else {
-			log.Println("No rollback required.\n")
+			log.Println("No rollback required.")
 			return err
 		}
 	}
@@ -58,7 +58,7 @@ func (database *Database) Migrate(tableName string, migrationSource *migrate.Mem
 	return nil
 }
 
-func (database *Database) MigrateCMS() error {
+func (database *Database) MigrateCMSSql() error {
 	tableName := "gocms_migrations"
 	migrate.SetTable(tableName)
 	n, err := migrate.Exec(database.SQL.Dbx.DB, "mysql", database.SQL.migrations, migrate.Up)
@@ -73,7 +73,7 @@ func (database *Database) MigrateCMS() error {
 			log.Printf("Rolled back %d migrations.\n", rn)
 			return err
 		} else {
-			log.Println("No rollback required.\n")
+			log.Println("No rollback required.")
 			return err
 		}
 	}

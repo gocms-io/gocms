@@ -27,7 +27,7 @@ func Default() *Engine {
 	db := goCMS_database.Default()
 
 	// migrate cms db
-	db.MigrateCMS()
+	db.MigrateCMSSql()
 
 	// start gin with defaults
 	r := gin.Default()

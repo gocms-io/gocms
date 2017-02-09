@@ -1,25 +1,25 @@
-package goCMS_migrations
+package goCMS_sql_migrations
 
 import (
 	"github.com/rubenv/sql-migrate"
 )
 
-type Migration struct {
+type SqlMigration struct {
 	Id   string
 	Up   []string
 	Down []string
 }
 
-type MigrationList []*Migration
+type SqlMigrationList []*SqlMigration
 
-func GoCMSMigrations() []*migrate.Migration {
+func GoCMSSqlMigrations() []*migrate.Migration {
 	migrationsList := []*migrate.Migration{
 		CreateInitial(),
 	}
 	return migrationsList
 }
 
-func (migrationsList *MigrationList) ConvertMemoryMigrationsToSource() *migrate.MemoryMigrationSource {
+func (migrationsList *SqlMigrationList) ConvertMemoryMigrationsToSource() *migrate.MemoryMigrationSource {
 
 	memoryMigrations := make([]*migrate.Migration, len(*migrationsList))
 	for i, migration := range *migrationsList {

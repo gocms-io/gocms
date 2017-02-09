@@ -1,4 +1,4 @@
-package goCMS_migrations
+package goCMS_sql_migrations
 
 import "github.com/rubenv/sql-migrate"
 
