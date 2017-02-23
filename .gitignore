@@ -1,5 +1,1 @@
-.env
 .idea
-vendor/*/**
-dist
-clientSecret.json
