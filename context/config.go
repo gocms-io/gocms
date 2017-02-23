@@ -16,6 +16,9 @@ type GoCMSConfig struct {
 
 	// Elastic Search
 	ElasticSearchConnectionUrl string
+	ElasticSearchUseAwsSignedClient bool
+	ElasticSearchAwsUser string
+	ElasticSearchAwsSecret string
 
 	// Debug
 	Debug         bool
@@ -53,7 +56,10 @@ func (c *GoCMSConfig) ApplySettingsToConfig(settings map[string]goCMS_models.Set
 	log.Println("Refreshed GoCMS Settings")
 
 	// Elastic Search
-	c.ElasticSearchConnectionUrl = GetStringOrFail(settings["ELASTIC_SEARCH_CONNECTION_URL"].Value)
+	c.ElasticSearchConnectionUrl = GetStringOrFail(settings["ES_CONNECTION_URL"].Value)
+	c.ElasticSearchUseAwsSignedClient = GetBoolOrFail(settings["ES_USE_AWS_SIGNED_CLIENT"].Value)
+	c.ElasticSearchAwsUser = GetStringOrFail(settings["ES_AWS_USER"].Value)
+	c.ElasticSearchAwsSecret = GetStringOrFail(settings["ES_AWS_SECRET"].Value)
 
 	// Debug
 	c.Debug = GetBoolOrFail(settings["DEBUG"].Value)

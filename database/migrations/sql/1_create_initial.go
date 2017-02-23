@@ -136,7 +136,13 @@ func CreateInitial() *migrate.Migration {
 			`, `
 			INSERT INTO gocms_settings (name, value, description) VALUES('SMTP_SIMULATE', 'true', 'Simulate SMTP email and print to console instead of sending to server.');
 			`, `
-			INSERT INTO gocms_settings (name, value, description) VALUES('ELASTIC_SEARCH_CONNECTION_URL', 'http://127.0.0.1:9200', 'Elastic Search server to connect to.');
+			INSERT INTO gocms_settings (name, value, description) VALUES('ES_USE_AWS_SIGNED_CLIENT', 'false', 'Use aws signed user to access elastic beanstalk.');
+			`, `
+			INSERT INTO gocms_settings (name, value, description) VALUES('ES_AWS_USER', 'AWS USER ID', 'AWS aim user id.');
+			`, `
+			INSERT INTO gocms_settings (name, value, description) VALUES('ES_AWS_SECRET', 'AWS USER SECRET', 'AWS aim user secret.');
+			`, `
+			INSERT INTO gocms_settings (name, value, description) VALUES('ES_CONNECTION_URL', 'http://127.0.0.1:9200', 'Elastic Search server to connect to.');
 			`,
 		},
 		Down: []string{

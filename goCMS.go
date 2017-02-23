@@ -53,7 +53,11 @@ func Default() *Engine {
 }
 
 func (e *Engine) EnableElasticSearch() {
-	e.Database.ElasticSearch = goCMS_database.DefaultElasticSearch()
+	if goCMS_context.Config.ElasticSearchUseAwsSignedClient {
+		e.Database.ElasticSearch = goCMS_database.DefaultAWSElasticSearch()
+	} else {
+		e.Database.ElasticSearch = goCMS_database.DefaultElasticSearch()
+	}
 }
 
 func (engine *Engine) Listen(uri string) {

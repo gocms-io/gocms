@@ -3,6 +3,10 @@
 	"ignore": "test",
 	"package": [
 		{
+			"path": "awsauth",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "21P4H3RI7HJ8AfDfXrCuWzUyrSg=",
 			"path": "github.com/DavidHuie/gomigrate",
 			"revision": "1b90a570dc6b7aaaefa233eacf304be363a89603",
@@ -69,6 +73,10 @@
 			"revisionTime": "2016-01-26T18:01:36Z"
 		},
 		{
+			"path": "github.com/smartystreets/go-aws-auth",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "9jjO5GjLa0XF/nfWihF02RoH4qc=",
 			"path": "golang.org/x/net/context",
 			"revision": "ef00b378c73f107bf44d5c9b69875255ce89b79a",
@@ -87,5 +95,5 @@
 			"revisionTime": "2016-03-01T20:40:22Z"
 		}
 	],
-	"rootPath": "github.com/menklab/goCMS"
+	"rootPath": "bitbucket.org/menklab/grnow-services/vendor/github.com/menklab/goCMS"
 }
