@@ -6,9 +6,9 @@ import (
 	"github.com/menklab/goCMS/database/migrations/elasticSearch"
 	"context"
 	"github.com/menklab/goCMS/context"
-	"github.com/sha1sum/aws_signing_client"
 	"github.com/aws/aws-sdk-go/aws/signer/v4"
 	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/deoxxa/aws_signing_client"
 )
 
 type ElasticSearch struct {
