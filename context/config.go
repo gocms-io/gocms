@@ -19,6 +19,7 @@ type GoCMSConfig struct {
 	ElasticSearchUseAwsSignedClient bool
 	ElasticSearchAwsUser string
 	ElasticSearchAwsSecret string
+	ElasticSearchAwsRegion string
 
 	// Debug
 	Debug         bool
@@ -60,6 +61,7 @@ func (c *GoCMSConfig) ApplySettingsToConfig(settings map[string]goCMS_models.Set
 	c.ElasticSearchUseAwsSignedClient = GetBoolOrFail(settings["ES_USE_AWS_SIGNED_CLIENT"].Value)
 	c.ElasticSearchAwsUser = GetStringOrFail(settings["ES_AWS_USER"].Value)
 	c.ElasticSearchAwsSecret = GetStringOrFail(settings["ES_AWS_SECRET"].Value)
+	c.ElasticSearchAwsRegion = GetStringOrFail(settings["ES_AWS_REGION"].Value)
 
 	// Debug
 	c.Debug = GetBoolOrFail(settings["DEBUG"].Value)
