@@ -52,6 +52,7 @@ func Default() *Engine {
 	return &engine
 }
 
+// this must be started manually
 func (e *Engine) EnableElasticSearch() {
 	if goCMS_context.Config.ElasticSearchUseAwsSignedClient {
 		e.Database.ElasticSearch = goCMS_database.DefaultAWSElasticSearch()
