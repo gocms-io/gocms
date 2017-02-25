@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"github.com/menklab/goCMS/models"
 )
 
 func GetEnvVarOrFail(envVar string) string {
@@ -15,7 +16,8 @@ func GetEnvVarOrFail(envVar string) string {
 	return is
 }
 
-func GetIntOrFail(is string) int64 {
+func GetIntOrFail(s string, settings map[string]goCMS_models.Setting) int64 {
+	is := settings[s].Value
 	i, err := strconv.ParseInt(is, 10, 34)
 	if err != nil {
 		fmt.Println("Error parsing string: " + is + " into int: " + err.Error())
@@ -24,14 +26,17 @@ func GetIntOrFail(is string) int64 {
 	return i
 }
 
-func GetStringOrFail(s string) string {
+func GetStringOrFail(s string, settings map[string]goCMS_models.Setting) string {
+
+	s = settings[s].Value
 	if s == "" {
 		fmt.Println("Error retrieving string: " + s)
 		os.Exit(1)
 	}
 	return s
 }
-func GetBoolOrFail(bs string) bool {
+func GetBoolOrFail(s string, settings map[string]goCMS_models.Setting) bool {
+	bs := settings[s].Value
 	b, err := strconv.ParseBool(bs)
 	if err != nil {
 		fmt.Println("Error parsing bool: " + bs + " into bool: " + err.Error())
