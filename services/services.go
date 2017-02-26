@@ -4,6 +4,7 @@ import (
 	"github.com/menklab/goCMS/context"
 	"github.com/menklab/goCMS/repositories"
 	"time"
+	"github.com/menklab/goCMS/services/plugin_services"
 )
 
 type ServicesGroup struct {
@@ -13,6 +14,7 @@ type ServicesGroup struct {
 	UserService     IUserService
 	AclService      IAclService
 	EmailService    IEmailService
+	PluginsService	plugin_services.IPluginsService
 }
 
 func DefaultServicesGroup(rg *repositories.RepositoriesGroup) *ServicesGroup {
@@ -40,6 +42,9 @@ func DefaultServicesGroup(rg *repositories.RepositoriesGroup) *ServicesGroup {
 	// email service
 	emailService := DefaultEmailService(rg, mailService, authService)
 
+	// plugins service
+	pluginsService := plugin_services.DefaultPluginsService(rg)
+
 	sg := &ServicesGroup{
 		SettingsService: settingsService,
 		MailService:     mailService,
@@ -47,6 +52,9 @@ func DefaultServicesGroup(rg *repositories.RepositoriesGroup) *ServicesGroup {
 		UserService:     userService,
 		AclService:      aclService,
 		EmailService:    emailService,
+		PluginsService: pluginsService,
 	}
+
+
 	return sg
 }

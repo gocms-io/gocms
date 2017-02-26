@@ -1,4 +1,4 @@
-package goCMS_context
+package context
 
 import (
 	"time"

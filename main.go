@@ -34,7 +34,6 @@ func Default() *Engine {
 
 	// start gin with defaults
 	r := gin.Default()
-
 	// setup repositories
 	rg := repositories.DefaultRepositoriesGroup(db)
 
@@ -64,6 +63,7 @@ func (engine *Engine) Listen(uri string) {
 
 func main() {
 	app = Default()
+	app.ServicesGroup.PluginsService.RegisterPlugins()
 
 	// start server and listen
 	port := context.Config.Port
