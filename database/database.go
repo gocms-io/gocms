@@ -6,7 +6,6 @@ import (
 
 type Database struct {
 	SQL           *SQL
-	ElasticSearch *ElasticSearch
 }
 
 func Default() *Database {

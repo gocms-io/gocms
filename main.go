@@ -1,6 +1,7 @@
-package goCMS
+package main
 
 import (
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/gin-gonic/gin"
 	"github.com/menklab/goCMS/context"
 	"github.com/menklab/goCMS/controllers"
@@ -9,6 +10,8 @@ import (
 	"github.com/menklab/goCMS/services"
 	"log"
 )
+
+var app *Engine
 
 type Engine struct {
 	Gin               *gin.Engine
@@ -52,18 +55,24 @@ func Default() *Engine {
 	return &engine
 }
 
-// this must be started manually
-func (e *Engine) EnableElasticSearch() {
-	if goCMS_context.Config.ElasticSearchUseAwsSignedClient {
-		e.Database.ElasticSearch = goCMS_database.DefaultAWSElasticSearch()
-	} else {
-		e.Database.ElasticSearch = goCMS_database.DefaultElasticSearch()
-	}
-}
-
 func (engine *Engine) Listen(uri string) {
 
 	err := engine.Gin.Run(uri)
 	log.Println(err.Error())
 
 }
+
+func main() {
+	app = Default()
+
+	// start server and listen
+	port := goCMS_context.Config.Port
+
+	if port == "" {
+		port = "8080"
+	}
+
+	app.Listen(":" + port)
+}
+
+

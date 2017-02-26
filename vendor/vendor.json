@@ -139,6 +139,18 @@
 			"revisionTime": "2017-02-21T04:34:47Z"
 		},
 		{
+			"checksumSHA1": "dzqJ/1M1bbBMOElZ912QHeYQngQ=",
+			"path": "github.com/joho/godotenv",
+			"revision": "d10b3fbe007de7a25e086524ad17597afa3d238b",
+			"revisionTime": "2017-02-21T21:49:41Z"
+		},
+		{
+			"checksumSHA1": "UE4lhbPYYWEhqHXQk24OA73m5+8=",
+			"path": "github.com/joho/godotenv/autoload",
+			"revision": "d10b3fbe007de7a25e086524ad17597afa3d238b",
+			"revisionTime": "2017-02-21T21:49:41Z"
+		},
+		{
 			"checksumSHA1": "b0T0Hzd+zYk+OCDTFMps+jwa/nY=",
 			"path": "github.com/manucorporat/sse",
 			"revision": "ee05b128a739a0fb76c7ebd3ae4810c1de808d6d",
