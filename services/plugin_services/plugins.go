@@ -12,6 +12,8 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/menklab/goCMS/controllers/middleware/plugins/proxy"
+	"os/exec"
+	"bufio"
 )
 
 type Plugin struct {
@@ -20,13 +22,14 @@ type Plugin struct {
 	Port       int64
 	Schema     string
 	Manifest   *models.PluginManifest
-	Proxy	   *plugin_proxy_mdl.PluginProxyMiddleware
+	Proxy      *plugin_proxy_mdl.PluginProxyMiddleware
+	cmd        *exec.Cmd
 }
 
 type ProxyRoute struct {
 	Schema string
-	Host string
-	Port string
+	Host   string
+	Port   string
 }
 
 type IPluginsService interface {
@@ -36,7 +39,7 @@ type IPluginsService interface {
 }
 
 type PluginsService struct {
-	Plugins           []*Plugin
+	Plugins []*Plugin
 }
 
 func DefaultPluginsService() *PluginsService {
@@ -49,8 +52,46 @@ func DefaultPluginsService() *PluginsService {
 
 func (ps *PluginsService) StartPlugins() error {
 
-	if len(ps.Plugins) < 1 {
-		return errors.New("Error starting plugins. Nothing to start.")
+	var port int64 = 30002
+	for _, plugin := range ps.Plugins {
+		cmd := exec.Command(plugin.BinaryPath, "-port", "9091")
+
+
+		cmdReader, err := cmd.StdoutPipe()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
+			return err
+		}
+
+		scanner := bufio.NewScanner(cmdReader)
+		go func() {
+			for scanner.Scan() {
+				fmt.Printf("\t > %s - %s\n", plugin.Manifest.Name, scanner.Text())
+			}
+		}()
+
+		log.Printf("Starting microservice: %s\n", plugin.Manifest.Name)
+		err = cmd.Start()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "Error starting Cmd", err)
+			return err
+		}
+
+		//err = cmd.Wait()
+		//if err != nil {
+		//	fmt.Fprintln(os.Stderr, "Error waiting for Cmd", err)
+		//	return err
+		//}
+
+		plugin.cmd = cmd
+		port++
+
+		// if success create proxy
+		plugin.Proxy = &plugin_proxy_mdl.PluginProxyMiddleware{
+			Port: port,
+			Schema: "http",
+			Host: "localhost",
+		}
 	}
 
 	return nil
@@ -59,13 +100,6 @@ func (ps *PluginsService) StartPlugins() error {
 
 func (ps *PluginsService) RegisterPluginRoutes(routes *routes.Routes) error {
 	for _, plugin := range ps.Plugins {
-
-		// create proxy for plugin
-		//plugin.Proxy = &plugin_proxy_mdl.PluginProxyMiddleware{
-		//	Host: plugin.Host,
-		//	Schema: plugin.Schema,
-		//	Port: plugin.Port,
-		//}
 
 		// loop through each manifest and apply each route to the middleware proxy
 		for _, routeManifest := range plugin.Manifest.Routes {
@@ -86,7 +120,7 @@ func (ps *PluginsService) registerPluginProxyOnRoute(route *gin.RouterGroup, met
 	route.Handle(method, url, pluginProxy.ReverseProxy())
 }
 
-func (ps *PluginsService) getRouteGroup(pluginRoute string, routes *routes.Routes) (*gin.RouterGroup, error){
+func (ps *PluginsService) getRouteGroup(pluginRoute string, routes *routes.Routes) (*gin.RouterGroup, error) {
 	switch pluginRoute {
 	case "Public":
 		return routes.Public, nil
@@ -102,7 +136,6 @@ func (ps *PluginsService) getRouteGroup(pluginRoute string, routes *routes.Route
 		return nil, errors.New(fmt.Sprintf("Route %s doesn't exist.\n", pluginRoute))
 	}
 }
-
 
 func (ps *PluginsService) FindPlugins() error {
 
@@ -130,7 +163,8 @@ func (ps *PluginsService) visitPlugin(path string, f os.FileInfo, err error) (er
 
 		// verify that there is a main.go file
 		mainPath, _ := filepath.Split(path)
-		mainFile, err := os.Stat(filepath.Join(mainPath, "main.go"))
+		mainFilePath := filepath.Join(mainPath, "main.go")
+		mainFile, err := os.Stat(mainFilePath)
 		if err != nil {
 			log.Printf("No main file for plugin %s: %s\n", manifest.Name, err.Error())
 			return err
@@ -142,7 +176,7 @@ func (ps *PluginsService) visitPlugin(path string, f os.FileInfo, err error) (er
 		}
 
 		plugin := Plugin{
-			BinaryPath: path,
+			BinaryPath: mainFilePath,
 			Manifest: manifest,
 		}
 

@@ -5,6 +5,7 @@ import (
 	"github.com/menklab/goCMS/repositories"
 	"time"
 	"github.com/menklab/goCMS/services/plugin_services"
+	"log"
 )
 
 type ServicesGroup struct {
@@ -44,7 +45,12 @@ func DefaultServicesGroup(rg *repositories.RepositoriesGroup) *ServicesGroup {
 
 	// plugins service
 	pluginsService := plugin_services.DefaultPluginsService()
-	pluginsService.FindPlugins()
+	err := pluginsService.FindPlugins()
+	if err != nil {
+		log.Printf("Error finding plugins. Can't start plugin microservice: %s\n", err.Error())
+	} else {
+		pluginsService.StartPlugins()
+	}
 
 	sg := &ServicesGroup{
 		SettingsService: settingsService,
