@@ -43,7 +43,8 @@ func DefaultServicesGroup(rg *repositories.RepositoriesGroup) *ServicesGroup {
 	emailService := DefaultEmailService(rg, mailService, authService)
 
 	// plugins service
-	pluginsService := plugin_services.DefaultPluginsService(rg)
+	pluginsService := plugin_services.DefaultPluginsService()
+	pluginsService.FindPlugins()
 
 	sg := &ServicesGroup{
 		SettingsService: settingsService,

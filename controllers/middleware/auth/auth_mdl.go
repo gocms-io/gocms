@@ -16,7 +16,7 @@ type AuthMiddleware struct {
 	ServicesGroup *services.ServicesGroup
 }
 
-func DefaultAuthMiddleware(sg *services.ServicesGroup, routes *routes.ApiRoutes) *AuthMiddleware {
+func DefaultAuthMiddleware(sg *services.ServicesGroup, routes *routes.Routes) *AuthMiddleware {
 
 	authMiddleware := &AuthMiddleware{
 		ServicesGroup: sg,
@@ -26,7 +26,7 @@ func DefaultAuthMiddleware(sg *services.ServicesGroup, routes *routes.ApiRoutes)
 	return authMiddleware
 }
 
-func (am *AuthMiddleware) Default(routes *routes.ApiRoutes) {
+func (am *AuthMiddleware) Default(routes *routes.Routes) {
 	routes.Auth.Use(am.RequireAuthenticatedUser())
 	routes.PreTwofactor = routes.Auth
 	if context.Config.UseTwoFactor {

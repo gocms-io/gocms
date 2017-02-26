@@ -1,9 +1,6 @@
 package models
 
-type Plugin struct {
-	Path     string
-	Manifest *PluginManifest
-}
+
 
 type PluginManifest struct {
 	Id          string `json:"id"`
@@ -14,10 +11,10 @@ type PluginManifest struct {
 	Author      string `json:"author"`
 	AuthorUrl   string `json:"authorUrl"`
 	AuthorEmail string `json:"authorEmail"`
-	Routes      []*PluginRoute `json:"routes"`
+	Routes      []*ManifestRoute `json:"routes"`
 }
 
-type PluginRoute struct {
+type ManifestRoute struct {
 	Name   string `json:"name"`
 	Route  string `json:"route"`
 	Method string `json:"method"`

@@ -3,10 +3,10 @@ package static_ctrl
 import "github.com/menklab/goCMS/routes"
 
 type DocumentationController struct {
-	routes *routes.ApiRoutes
+	routes *routes.Routes
 }
 
-func DefaultDocumentationController(routes *routes.ApiRoutes) *DocumentationController {
+func DefaultDocumentationController(routes *routes.Routes) *DocumentationController {
 	dc := &DocumentationController{
 		routes: routes,
 	}

@@ -17,11 +17,11 @@ const (
 )
 
 type AuthController struct {
-	routes        *routes.ApiRoutes
+	routes        *routes.Routes
 	ServicesGroup *services.ServicesGroup
 }
 
-func DefaultAuthController(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AuthController {
+func DefaultAuthController(routes *routes.Routes, sg *services.ServicesGroup) *AuthController {
 
 	// create controller
 	authController := &AuthController{

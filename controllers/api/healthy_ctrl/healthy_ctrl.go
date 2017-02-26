@@ -8,10 +8,10 @@ import (
 )
 
 type HealthyController struct {
-	routes *routes.ApiRoutes
+	routes *routes.Routes
 }
 
-func DefaultHealthyController(routes *routes.ApiRoutes) *HealthyController {
+func DefaultHealthyController(routes *routes.Routes) *HealthyController {
 	hc := &HealthyController{
 		routes: routes,
 	}

@@ -11,11 +11,11 @@ import (
 )
 
 type UserController struct {
-	routes        *routes.ApiRoutes
+	routes        *routes.Routes
 	ServicesGroup *services.ServicesGroup
 }
 
-func DefaultUserController(routes *routes.ApiRoutes, sg *services.ServicesGroup) *UserController {
+func DefaultUserController(routes *routes.Routes, sg *services.ServicesGroup) *UserController {
 	userController := &UserController{
 		routes:        routes,
 		ServicesGroup: sg,

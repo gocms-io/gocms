@@ -10,16 +10,14 @@ import (
 	"github.com/menklab/goCMS/controllers/static"
 	"github.com/menklab/goCMS/routes"
 	"github.com/menklab/goCMS/services"
-	"github.com/menklab/goCMS/controllers/middleware/plugins/proxy"
 )
 
 type ControllersGroup struct {
-	Api *Api
+	Routes *routes.Routes
+	Api    *Api
 }
 
 type Api struct {
-	RoutePrefix    string
-	Routes         *routes.ApiRoutes
 	ApiControllers *ApiControllers
 }
 
@@ -41,7 +39,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 	r.Use(aclMdl.CORS())
 
 	// setup route groups
-	routes := &routes.ApiRoutes{
+	routes := &routes.Routes{
 		Root:   r.Group("/"),
 		Public: r.Group(defaultRoutePrefix),
 		Auth:   r.Group(defaultRoutePrefix),
@@ -58,17 +56,20 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 	}
 
 	api := &Api{
-		RoutePrefix:    "/api",
-		Routes:         routes,
 		ApiControllers: apiControllers,
 	}
 
 	controllersGroup := &ControllersGroup{
 		Api: api,
+		Routes:         routes,
 	}
 
+	// register plugin routes
+	sg.PluginsService.RegisterPluginRoutes(routes)
+
 	// add plugin proxy middleware
-	routes.Public.GET("/proxyTest", plugin_proxy_mdl.ReverseProxy())
+	//pluginProxy := plugin_proxy_mdl.DefaultPluginProxyMiddleware(sg)
+	//r.Use(pluginProxy.ReverseProxyFromMap())
 
 	return controllersGroup
 }

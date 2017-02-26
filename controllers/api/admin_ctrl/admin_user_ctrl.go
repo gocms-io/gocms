@@ -12,11 +12,11 @@ import (
 )
 
 type AdminUserController struct {
-	routes        *routes.ApiRoutes
+	routes        *routes.Routes
 	ServicesGroup *services.ServicesGroup
 }
 
-func DefaultAdminUserController(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AdminUserController {
+func DefaultAdminUserController(routes *routes.Routes, sg *services.ServicesGroup) *AdminUserController {
 	adminUserController := &AdminUserController{
 		routes:        routes,
 		ServicesGroup: sg,

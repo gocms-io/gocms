@@ -62,8 +62,9 @@ func (engine *Engine) Listen(uri string) {
 }
 
 func main() {
+
+	// startup defaults
 	app = Default()
-	app.ServicesGroup.PluginsService.RegisterPlugins()
 
 	// start server and listen
 	port := context.Config.Port
