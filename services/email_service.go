@@ -1,4 +1,4 @@
-package goCMS_services
+package services
 
 import (
 	"fmt"
@@ -13,21 +13,21 @@ import (
 type IEmailService interface {
 	SetVerified(email string) error
 	GetVerified(email string) bool
-	AddEmail(email *goCMS_models.Email) error
-	GetEmailsByUserId(userId int) ([]goCMS_models.Email, error)
+	AddEmail(email *models.Email) error
+	GetEmailsByUserId(userId int) ([]models.Email, error)
 	SendEmailActivationCode(email string) error
 	VerifyEmailActivationCode(id int, code string) bool
-	PromoteEmail(email *goCMS_models.Email) error
-	DeleteEmail(email *goCMS_models.Email) error
+	PromoteEmail(email *models.Email) error
+	DeleteEmail(email *models.Email) error
 }
 
 type EmailService struct {
 	MailService       IMailService
 	AuthService       IAuthService
-	RepositoriesGroup *goCMS_repositories.RepositoriesGroup
+	RepositoriesGroup *repositories.RepositoriesGroup
 }
 
-func DefaultEmailService(rg *goCMS_repositories.RepositoriesGroup, ms *MailService, as *AuthService) *EmailService {
+func DefaultEmailService(rg *repositories.RepositoriesGroup, ms *MailService, as *AuthService) *EmailService {
 	emailService := &EmailService{
 		RepositoriesGroup: rg,
 		AuthService:       as,
@@ -62,12 +62,12 @@ func (es *EmailService) GetVerified(e string) bool {
 	return email.IsVerified
 }
 
-func (es *EmailService) AddEmail(e *goCMS_models.Email) error {
+func (es *EmailService) AddEmail(e *models.Email) error {
 
 	// check to see if email exist
 	emailExists, _ := es.RepositoriesGroup.EmailRepository.GetByAddress(e.Email)
 	if emailExists != nil {
-		return goCMS_errors.NewToUser("Email already exists.")
+		return errors.NewToUser("Email already exists.")
 	}
 
 	// add email
@@ -100,7 +100,7 @@ func (es *EmailService) SendEmailActivationCode(emailAddress string) error {
 	}
 
 	if email.IsVerified {
-		err = goCMS_errors.NewToUser("Email already activated.")
+		err = errors.NewToUser("Email already activated.")
 		fmt.Printf("Error sending email activation code, %s\n", err.Error())
 		return err
 	}
@@ -113,9 +113,9 @@ func (es *EmailService) SendEmailActivationCode(emailAddress string) error {
 	}
 
 	// update user with new code
-	err = es.RepositoriesGroup.SecureCodeRepository.Add(&goCMS_models.SecureCode{
+	err = es.RepositoriesGroup.SecureCodeRepository.Add(&models.SecureCode{
 		UserId: email.UserId,
-		Type:   goCMS_models.Code_VerifyEmail,
+		Type:   models.Code_VerifyEmail,
 		Code:   hashedCode,
 	})
 	if err != nil {
@@ -128,8 +128,8 @@ func (es *EmailService) SendEmailActivationCode(emailAddress string) error {
 		To:      emailAddress,
 		Subject: "Email Verification Required",
 		Body: "Click on the link below to activate your email:\n" +
-			goCMS_context.Config.PublicApiUrl + "/user/email/activate?code=" + code + "&email=" + emailAddress + "\n\nThe link will expire at: " +
-			time.Now().Add(time.Minute*time.Duration(goCMS_context.Config.PasswordResetTimeout)).String() + ".",
+			context.Config.PublicApiUrl + "/user/email/activate?code=" + code + "&email=" + emailAddress + "\n\nThe link will expire at: " +
+			time.Now().Add(time.Minute*time.Duration(context.Config.PasswordResetTimeout)).String() + ".",
 	})
 	if err != nil {
 		log.Println("Error sending email activation code, sending mail: " + err.Error())
@@ -141,7 +141,7 @@ func (es *EmailService) SendEmailActivationCode(emailAddress string) error {
 func (es *EmailService) VerifyEmailActivationCode(id int, code string) bool {
 
 	// get code
-	secureCode, err := es.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, goCMS_models.Code_VerifyEmail)
+	secureCode, err := es.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, models.Code_VerifyEmail)
 	if err != nil {
 		log.Printf("error getting latest password reset code: %s", err.Error())
 		return false
@@ -152,7 +152,7 @@ func (es *EmailService) VerifyEmailActivationCode(id int, code string) bool {
 	}
 
 	// check within time
-	if time.Since(secureCode.Created) > (time.Minute * time.Duration(goCMS_context.Config.PasswordResetTimeout)) {
+	if time.Since(secureCode.Created) > (time.Minute * time.Duration(context.Config.PasswordResetTimeout)) {
 		return false
 	}
 
@@ -164,7 +164,7 @@ func (es *EmailService) VerifyEmailActivationCode(id int, code string) bool {
 	return true
 }
 
-func (es *EmailService) PromoteEmail(email *goCMS_models.Email) error {
+func (es *EmailService) PromoteEmail(email *models.Email) error {
 
 	// get email for verification
 	dbEmail, err := es.RepositoriesGroup.EmailRepository.GetByAddress(email.Email)
@@ -175,14 +175,14 @@ func (es *EmailService) PromoteEmail(email *goCMS_models.Email) error {
 
 	// verify email owner
 	if email.UserId != dbEmail.UserId {
-		err = goCMS_errors.NewToUser("You can only promote email address owned by you.")
+		err = errors.NewToUser("You can only promote email address owned by you.")
 		log.Printf("email service, promote email, get by address, error: %s", err.Error())
 		return err
 	}
 
 	// email must be verified
 	if !dbEmail.IsVerified {
-		err = goCMS_errors.NewToUser("You can only promote an email address after it has been validated.")
+		err = errors.NewToUser("You can only promote an email address after it has been validated.")
 		log.Printf("email service, promote email, get by address, error: %s", err.Error())
 		return err
 	}
@@ -213,7 +213,7 @@ func (es *EmailService) PromoteEmail(email *goCMS_models.Email) error {
 	return nil
 }
 
-func (es *EmailService) GetEmailsByUserId(userId int) ([]goCMS_models.Email, error) {
+func (es *EmailService) GetEmailsByUserId(userId int) ([]models.Email, error) {
 
 	// get all emails
 	emails, err := es.RepositoriesGroup.EmailRepository.GetByUserId(userId)
@@ -225,7 +225,7 @@ func (es *EmailService) GetEmailsByUserId(userId int) ([]goCMS_models.Email, err
 	return emails, nil
 }
 
-func (es *EmailService) DeleteEmail(email *goCMS_models.Email) error {
+func (es *EmailService) DeleteEmail(email *models.Email) error {
 
 	// get email for verification
 	dbEmail, err := es.RepositoriesGroup.EmailRepository.GetByAddress(email.Email)
@@ -236,14 +236,14 @@ func (es *EmailService) DeleteEmail(email *goCMS_models.Email) error {
 
 	// verify email owner
 	if email.UserId != dbEmail.UserId {
-		err = goCMS_errors.NewToUser("You can only delete email address owned by you.")
+		err = errors.NewToUser("You can only delete email address owned by you.")
 		log.Printf("email service, delete email, get by address, error: %s", err.Error())
 		return err
 	}
 
 	// email cannot be primary
 	if dbEmail.IsPrimary {
-		err = goCMS_errors.NewToUser("You can't delete the primary email address from an account.")
+		err = errors.NewToUser("You can't delete the primary email address from an account.")
 		log.Printf("email service, delete email, get by address, error: %s", err.Error())
 		return err
 	}

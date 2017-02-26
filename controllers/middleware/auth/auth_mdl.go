@@ -1,4 +1,4 @@
-package goCMS_authMdl
+package aclMdl
 
 import (
 	"github.com/dgrijalva/jwt-go"
@@ -13,10 +13,10 @@ import (
 )
 
 type AuthMiddleware struct {
-	ServicesGroup *goCMS_services.ServicesGroup
+	ServicesGroup *services.ServicesGroup
 }
 
-func DefaultAuthMiddleware(sg *goCMS_services.ServicesGroup, routes *goCMS_routes.ApiRoutes) *AuthMiddleware {
+func DefaultAuthMiddleware(sg *services.ServicesGroup, routes *routes.ApiRoutes) *AuthMiddleware {
 
 	authMiddleware := &AuthMiddleware{
 		ServicesGroup: sg,
@@ -26,10 +26,10 @@ func DefaultAuthMiddleware(sg *goCMS_services.ServicesGroup, routes *goCMS_route
 	return authMiddleware
 }
 
-func (am *AuthMiddleware) Default(routes *goCMS_routes.ApiRoutes) {
+func (am *AuthMiddleware) Default(routes *routes.ApiRoutes) {
 	routes.Auth.Use(am.RequireAuthenticatedUser())
 	routes.PreTwofactor = routes.Auth
-	if goCMS_context.Config.UseTwoFactor {
+	if context.Config.UseTwoFactor {
 		routes.Auth.Use(am.RequireAuthenticatedDevice())
 	}
 }
@@ -49,33 +49,33 @@ func (am *AuthMiddleware) requireAuthedUser(c *gin.Context) {
 	authHeader := c.Request.Header.Get("X-AUTH-TOKEN")
 
 	if authHeader == "" {
-		goCMS_errors.Response(c, http.StatusUnauthorized, goCMS_errors.ApiError_UserToken, nil)
+		errors.Response(c, http.StatusUnauthorized, errors.ApiError_UserToken, nil)
 		return
 	}
 
 	// parse token
 	token, err := am.verifyToken(authHeader)
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusUnauthorized, goCMS_errors.ApiError_UserToken, err)
+		errors.Response(c, http.StatusUnauthorized, errors.ApiError_UserToken, err)
 		return
 	}
 
 	userId, ok := token.Claims["userId"].(float64)
 	if !ok {
 		log.Print("UserId not contained in token.")
-		goCMS_errors.Response(c, http.StatusUnauthorized, goCMS_errors.ApiError_UserToken, err)
+		errors.Response(c, http.StatusUnauthorized, errors.ApiError_UserToken, err)
 		return
 	}
 	// get user
 	user, err := am.ServicesGroup.UserService.Get(int(userId))
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusUnauthorized, goCMS_errors.ApiError_UserToken, err)
+		errors.Response(c, http.StatusUnauthorized, errors.ApiError_UserToken, err)
 		return
 	}
 
 	// verify user is enabled
 	if !user.Enabled {
-		goCMS_errors.Response(c, http.StatusUnauthorized, goCMS_errors.ApiError_User_Disabled, err)
+		errors.Response(c, http.StatusUnauthorized, errors.ApiError_User_Disabled, err)
 		return
 	}
 
@@ -92,14 +92,14 @@ func (am *AuthMiddleware) requireAuthedDevice(c *gin.Context) {
 
 	// if auth token is empty fail
 	if authDeviceHeader == "" {
-		goCMS_errors.Response(c, http.StatusUnauthorized, goCMS_errors.ApiError_DeviceToken, nil)
+		errors.Response(c, http.StatusUnauthorized, errors.ApiError_DeviceToken, nil)
 		return
 	}
 
 	// parse token
 	_, err := am.verifyToken(authDeviceHeader)
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusUnauthorized, goCMS_errors.ApiError_DeviceToken, err)
+		errors.Response(c, http.StatusUnauthorized, errors.ApiError_DeviceToken, err)
 		return
 	}
 
@@ -112,10 +112,10 @@ func (am *AuthMiddleware) requireAuthedDevice(c *gin.Context) {
 func (am *AuthMiddleware) verifyToken(authHeader string) (*jwt.Token, error) {
 	token, err := jwt.Parse(authHeader, func(token *jwt.Token) (interface{}, error) {
 		if jwt.SigningMethodHS256 != token.Method {
-			return nil, goCMS_errors.New("Token signing method does not match.")
+			return nil, errors.New("Token signing method does not match.")
 		}
 
-		return []byte(goCMS_context.Config.AuthKey), nil
+		return []byte(context.Config.AuthKey), nil
 	})
 
 	// check for parsing erorr

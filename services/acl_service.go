@@ -1,4 +1,4 @@
-package goCMS_services
+package services
 
 import (
 	"github.com/menklab/goCMS/models"
@@ -8,16 +8,16 @@ import (
 
 type IAclService interface {
 	RefreshPermissionsCache() error
-	GetPermissions() map[string]goCMS_models.Permission
+	GetPermissions() map[string]models.Permission
 	IsAuthorized(string, int) bool
 }
 
 type AclService struct {
-	Permissions       map[string]goCMS_models.Permission
-	RepositoriesGroup *goCMS_repositories.RepositoriesGroup
+	Permissions       map[string]models.Permission
+	RepositoriesGroup *repositories.RepositoriesGroup
 }
 
-func DefaultAclService(rg *goCMS_repositories.RepositoriesGroup) *AclService {
+func DefaultAclService(rg *repositories.RepositoriesGroup) *AclService {
 	aclService := &AclService{
 		RepositoriesGroup: rg,
 	}
@@ -35,7 +35,7 @@ func (as *AclService) RefreshPermissionsCache() error {
 		return err
 	}
 
-	permissionsCache := make(map[string]goCMS_models.Permission, len(*permissions))
+	permissionsCache := make(map[string]models.Permission, len(*permissions))
 	// cache permissions
 	for _, permission := range *permissions {
 		permissionsCache[permission.Name] = permission
@@ -45,7 +45,7 @@ func (as *AclService) RefreshPermissionsCache() error {
 	return nil
 }
 
-func (as *AclService) GetPermissions() map[string]goCMS_models.Permission {
+func (as *AclService) GetPermissions() map[string]models.Permission {
 	return as.Permissions
 }
 

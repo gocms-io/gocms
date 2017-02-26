@@ -1,4 +1,4 @@
-package goCMS_repositories
+package repositories
 
 import (
 	"github.com/jmoiron/sqlx"
@@ -7,7 +7,7 @@ import (
 )
 
 type IPermissionsRepository interface {
-	GetAll() (*[]goCMS_models.Permission, error)
+	GetAll() (*[]models.Permission, error)
 	GetUserPermissions(int) (*[]int, error)
 }
 
@@ -28,8 +28,8 @@ func DefaultPermissionsRepository(db interface{}) *PermissionsRepository {
 }
 
 // get all permissions
-func (ur *PermissionsRepository) GetAll() (*[]goCMS_models.Permission, error) {
-	var permissions []goCMS_models.Permission
+func (ur *PermissionsRepository) GetAll() (*[]models.Permission, error) {
+	var permissions []models.Permission
 	err := ur.database.Select(&permissions, "SELECT * FROM gocms_permissions")
 	if err != nil {
 		log.Printf("Error getting permissions from database: %s", err.Error())

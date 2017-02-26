@@ -1,4 +1,4 @@
-package goCMS_database
+package database
 
 import (
 	"database/sql"
@@ -16,7 +16,7 @@ type SQL struct {
 
 func DefaultSQL() *SQL {
 	// create db connection
-	connectionString := goCMS_context.Config.DbUser + ":" + goCMS_context.Config.DbPassword + "@" + goCMS_context.Config.DbServer + "/" + goCMS_context.Config.DbName + "?parseTime=true"
+	connectionString := context.Config.DbUser + ":" + context.Config.DbPassword + "@" + context.Config.DbServer + "/" + context.Config.DbName + "?parseTime=true"
 	dbHandle, err := sql.Open("mysql", connectionString)
 	if err != nil {
 		log.Fatal("Database Error: ", err.Error())
@@ -26,7 +26,7 @@ func DefaultSQL() *SQL {
 	sql := &SQL{
 		Dbx: dbx,
 		migrations: &migrate.MemoryMigrationSource{
-			Migrations: goCMS_sql_migrations.GoCMSSqlMigrations(),
+			Migrations: sql_migrations.GoCMSSqlMigrations(),
 		},
 	}
 

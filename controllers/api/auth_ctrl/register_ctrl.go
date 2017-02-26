@@ -1,4 +1,4 @@
-package goCMS_auth_ctrl
+package auth_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
@@ -20,20 +20,20 @@ import (
  */
 func (auc *AuthController) register(c *gin.Context) {
 
-	if !goCMS_context.Config.OpenRegistration {
-		goCMS_errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Registration Is Closed.", REDIRECT_LOGIN)
+	if !context.Config.OpenRegistration {
+		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Registration Is Closed.", REDIRECT_LOGIN)
 		return
 	}
 
-	userNewInput := &goCMS_models.UserRegisterInput{}
+	userNewInput := &models.UserRegisterInput{}
 	//get user data
 	err := c.BindJSON(userNewInput)
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		errors.Response(c, http.StatusBadRequest, err.Error(), err)
 		return
 	}
 
-	user := &goCMS_models.User{
+	user := &models.User{
 		Password: userNewInput.Password,
 		Email:    userNewInput.Email,
 		FullName: userNewInput.FullName,
@@ -43,7 +43,7 @@ func (auc *AuthController) register(c *gin.Context) {
 	// add user
 	err = auc.ServicesGroup.UserService.Add(user)
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusInternalServerError, goCMS_errors.ApiError_Server, err)
+		errors.Response(c, http.StatusInternalServerError, errors.ApiError_Server, err)
 		return
 	}
 
@@ -52,7 +52,7 @@ func (auc *AuthController) register(c *gin.Context) {
 	// send activation email
 	err = auc.ServicesGroup.EmailService.SendEmailActivationCode(user.Email)
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusInternalServerError, goCMS_errors.ApiError_Server, err)
+		errors.Response(c, http.StatusInternalServerError, errors.ApiError_Server, err)
 		return
 	}
 }

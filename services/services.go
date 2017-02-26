@@ -1,4 +1,4 @@
-package goCMS_services
+package services
 
 import (
 	"github.com/menklab/goCMS/context"
@@ -15,15 +15,15 @@ type ServicesGroup struct {
 	EmailService    IEmailService
 }
 
-func DefaultServicesGroup(rg *goCMS_repositories.RepositoriesGroup) *ServicesGroup {
+func DefaultServicesGroup(rg *repositories.RepositoriesGroup) *ServicesGroup {
 
 	// setup settings
 	settingsService := DefaultSettingsService(rg)
-	settingsService.RegisterRefreshCallback(goCMS_context.Config.ApplySettingsToConfig)
+	settingsService.RegisterRefreshCallback(context.Config.ApplySettingsToConfig)
 
 	// refresh settings every x minutes
-	refreshSettings := time.Duration(goCMS_context.Config.SettingsRefreshRate) * time.Minute
-	goCMS_context.Schedule.AddTicker(refreshSettings, func() {
+	refreshSettings := time.Duration(context.Config.SettingsRefreshRate) * time.Minute
+	context.Schedule.AddTicker(refreshSettings, func() {
 		settingsService.RefreshSettingsCache()
 	})
 

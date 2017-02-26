@@ -1,4 +1,4 @@
-package goCMS_user_ctrl
+package user_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
@@ -18,14 +18,14 @@ import (
 func (uc *UserController) requestActivationLink(c *gin.Context) {
 
 	// get email
-	var requestEmailActivationLinkInput goCMS_models.RequestEmailActivationLinkInput
+	var requestEmailActivationLinkInput models.RequestEmailActivationLinkInput
 	err := c.BindJSON(&requestEmailActivationLinkInput)
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		errors.Response(c, http.StatusBadRequest, err.Error(), err)
 	}
 	err = uc.ServicesGroup.EmailService.SendEmailActivationCode(requestEmailActivationLinkInput.Email)
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusBadRequest, "Error sending activation code.", err)
+		errors.Response(c, http.StatusBadRequest, "Error sending activation code.", err)
 	}
 
 }
@@ -39,34 +39,34 @@ func (uc *UserController) requestActivationLink(c *gin.Context) {
 func (uc *UserController) activateEmail(c *gin.Context) {
 	code := c.Query("code")
 	if code == "" {
-		err := goCMS_errors.New(goCMS_errors.ApiError_Activating_Email)
-		goCMS_errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		err := errors.New(errors.ApiError_Activating_Email)
+		errors.Response(c, http.StatusBadRequest, err.Error(), err)
 		return
 	}
 
 	email := c.Query("email")
 	if email == "" {
-		err := goCMS_errors.New(goCMS_errors.ApiError_Activating_Email)
-		goCMS_errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		err := errors.New(errors.ApiError_Activating_Email)
+		errors.Response(c, http.StatusBadRequest, err.Error(), err)
 	}
 
 	// get user
 	user, err := uc.ServicesGroup.UserService.GetByEmail(email)
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusBadRequest, goCMS_errors.ApiError_Activating_Email, err)
+		errors.Response(c, http.StatusBadRequest, errors.ApiError_Activating_Email, err)
 		return
 	}
 
 	if ok := uc.ServicesGroup.EmailService.VerifyEmailActivationCode(user.Id, code); !ok {
-		err = goCMS_errors.New(goCMS_errors.ApiError_Activating_Email)
-		goCMS_errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		err = errors.New(errors.ApiError_Activating_Email)
+		errors.Response(c, http.StatusBadRequest, err.Error(), err)
 		return
 	}
 
 	// set email to verified
 	err = uc.ServicesGroup.EmailService.SetVerified(email)
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusBadRequest, goCMS_errors.ApiError_Activating_Email, err)
+		errors.Response(c, http.StatusBadRequest, errors.ApiError_Activating_Email, err)
 		return
 	}
 
@@ -86,24 +86,24 @@ func (uc *UserController) activateEmail(c *gin.Context) {
 func (uc *UserController) addEmail(c *gin.Context) {
 
 	// get logged in user
-	authUser, _ := goCMS_utility.GetUserFromContext(c)
+	authUser, _ := utility.GetUserFromContext(c)
 
 	// get reqeust data
-	var addEmailInput goCMS_models.EmailInput
+	var addEmailInput models.EmailInput
 	err := c.BindJSON(&addEmailInput) // update any changes from request
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		errors.Response(c, http.StatusBadRequest, err.Error(), err)
 		return
 	}
 
 	// verify password
 	if ok := uc.ServicesGroup.AuthService.VerifyPassword(authUser.Password, addEmailInput.Password); !ok {
-		goCMS_errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
+		errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
 		return
 	}
 
 	// convert input to model
-	emailToAdd := goCMS_models.Email{
+	emailToAdd := models.Email{
 		Email:      addEmailInput.Email,
 		IsVerified: false,
 		IsPrimary:  false,
@@ -113,19 +113,19 @@ func (uc *UserController) addEmail(c *gin.Context) {
 	// add email
 	err = uc.ServicesGroup.EmailService.AddEmail(&emailToAdd)
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusInternalServerError, "Couldn't add email to user.", err)
+		errors.Response(c, http.StatusInternalServerError, "Couldn't add email to user.", err)
 		return
 	}
 
 	// send verification email
 	err = uc.ServicesGroup.EmailService.SendEmailActivationCode(emailToAdd.Email)
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusInternalServerError, "Couldn't add email to user.", err)
+		errors.Response(c, http.StatusInternalServerError, "Couldn't add email to user.", err)
 		return
 	}
 
 	// create email display and send
-	emailDisplay := goCMS_models.EmailDisplay{
+	emailDisplay := models.EmailDisplay{
 		Email:     emailToAdd.Email,
 		Id:        emailToAdd.Id,
 		IsPrimary: emailToAdd.IsPrimary,
@@ -146,23 +146,23 @@ func (uc *UserController) addEmail(c *gin.Context) {
 func (uc *UserController) promoteEmail(c *gin.Context) {
 
 	// get logged in user
-	authUser, _ := goCMS_utility.GetUserFromContext(c)
+	authUser, _ := utility.GetUserFromContext(c)
 
 	// get reqeust data
-	var promoteEmailInput goCMS_models.EmailInput
+	var promoteEmailInput models.EmailInput
 	err := c.BindJSON(&promoteEmailInput) // update any changes from request
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		errors.Response(c, http.StatusBadRequest, err.Error(), err)
 		return
 	}
 
 	// verify password
 	if ok := uc.ServicesGroup.AuthService.VerifyPassword(authUser.Password, promoteEmailInput.Password); !ok {
-		goCMS_errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
+		errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
 		return
 	}
 
-	email := goCMS_models.Email{
+	email := models.Email{
 		Email:  promoteEmailInput.Email,
 		UserId: authUser.Id,
 	}
@@ -170,7 +170,7 @@ func (uc *UserController) promoteEmail(c *gin.Context) {
 	// promote email
 	err = uc.ServicesGroup.EmailService.PromoteEmail(&email)
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusBadRequest, "Error promoting email.", err)
+		errors.Response(c, http.StatusBadRequest, "Error promoting email.", err)
 		return
 	}
 
@@ -189,24 +189,24 @@ func (uc *UserController) promoteEmail(c *gin.Context) {
 func (uc *UserController) deleteEmail(c *gin.Context) {
 
 	// get logged in user
-	authUser, _ := goCMS_utility.GetUserFromContext(c)
+	authUser, _ := utility.GetUserFromContext(c)
 
 	// get reqeust data
-	var addEmailInput goCMS_models.EmailInput
+	var addEmailInput models.EmailInput
 	err := c.BindJSON(&addEmailInput) // update any changes from request
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		errors.Response(c, http.StatusBadRequest, err.Error(), err)
 		return
 	}
 
 	// verify password
 	if ok := uc.ServicesGroup.AuthService.VerifyPassword(authUser.Password, addEmailInput.Password); !ok {
-		goCMS_errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
+		errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
 		return
 	}
 
 	// convert input to model
-	emailToDelete := goCMS_models.Email{
+	emailToDelete := models.Email{
 		Email:  addEmailInput.Email,
 		UserId: authUser.Id,
 	}
@@ -214,7 +214,7 @@ func (uc *UserController) deleteEmail(c *gin.Context) {
 	// add email
 	err = uc.ServicesGroup.EmailService.DeleteEmail(&emailToDelete)
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusInternalServerError, "Couldn't delete email.", err)
+		errors.Response(c, http.StatusInternalServerError, "Couldn't delete email.", err)
 		return
 	}
 
@@ -233,16 +233,16 @@ func (uc *UserController) deleteEmail(c *gin.Context) {
 func (uc *UserController) getEmails(c *gin.Context) {
 
 	// get logged in user
-	authUser, _ := goCMS_utility.GetUserFromContext(c)
+	authUser, _ := utility.GetUserFromContext(c)
 
 	// get all emails
 	emails, err := uc.ServicesGroup.EmailService.GetEmailsByUserId(authUser.Id)
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusInternalServerError, "Couldn't add email to user.", err)
+		errors.Response(c, http.StatusInternalServerError, "Couldn't add email to user.", err)
 		return
 	}
 
-	emailDisplays := make([]*goCMS_models.EmailDisplay, len(emails))
+	emailDisplays := make([]*models.EmailDisplay, len(emails))
 
 	for i, ed := range emails {
 		emailDisplays[i] = ed.GetEmailDisplay()

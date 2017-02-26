@@ -1,4 +1,4 @@
-package goCMS_healthy_ctrl
+package healthy_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
@@ -8,10 +8,10 @@ import (
 )
 
 type HealthyController struct {
-	routes *goCMS_routes.ApiRoutes
+	routes *routes.ApiRoutes
 }
 
-func DefaultHealthyController(routes *goCMS_routes.ApiRoutes) *HealthyController {
+func DefaultHealthyController(routes *routes.ApiRoutes) *HealthyController {
 	hc := &HealthyController{
 		routes: routes,
 	}
@@ -47,6 +47,6 @@ func (hc *HealthyController) healthy(c *gin.Context) {
  */
 func (hc *HealthyController) user(c *gin.Context) {
 	// get logged in user
-	authUser, _ := goCMS_utility.GetUserFromContext(c)
+	authUser, _ := utility.GetUserFromContext(c)
 	c.JSON(http.StatusOK, authUser.GetUserDisplay())
 }

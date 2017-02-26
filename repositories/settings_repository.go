@@ -1,4 +1,4 @@
-package goCMS_repositories
+package repositories
 
 import (
 	"github.com/jmoiron/sqlx"
@@ -7,7 +7,7 @@ import (
 )
 
 type ISettingsRepository interface {
-	GetAll() (*[]goCMS_models.Setting, error)
+	GetAll() (*[]models.Setting, error)
 }
 
 type SettingsRepository struct {
@@ -27,8 +27,8 @@ func DefaultSettingsRepository(db interface{}) *SettingsRepository {
 }
 
 // get all settings
-func (ur *SettingsRepository) GetAll() (*[]goCMS_models.Setting, error) {
-	var settings []goCMS_models.Setting
+func (ur *SettingsRepository) GetAll() (*[]models.Setting, error) {
+	var settings []models.Setting
 	err := ur.database.Select(&settings, "SELECT * FROM gocms_settings")
 	if err != nil {
 		log.Printf("Error getting settings from database: %s", err.Error())

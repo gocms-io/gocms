@@ -15,19 +15,19 @@ var app *Engine
 
 type Engine struct {
 	Gin               *gin.Engine
-	ControllersGroup  *goCMS_controllers.ControllersGroup
-	ServicesGroup     *goCMS_services.ServicesGroup
-	RepositoriesGroup *goCMS_repositories.RepositoriesGroup
-	Database          *goCMS_database.Database
+	ControllersGroup  *controllers.ControllersGroup
+	ServicesGroup     *services.ServicesGroup
+	RepositoriesGroup *repositories.RepositoriesGroup
+	Database          *database.Database
 }
 
 func Default() *Engine {
 
 	// init config environment vars
-	goCMS_context.Init()
+	context.Init()
 
 	// setup database
-	db := goCMS_database.Default()
+	db := database.Default()
 
 	// migrate cms db
 	db.MigrateCMSSql()
@@ -36,13 +36,13 @@ func Default() *Engine {
 	r := gin.Default()
 
 	// setup repositories
-	rg := goCMS_repositories.DefaultRepositoriesGroup(db)
+	rg := repositories.DefaultRepositoriesGroup(db)
 
 	// setup services
-	sg := goCMS_services.DefaultServicesGroup(rg)
+	sg := services.DefaultServicesGroup(rg)
 
 	// setup controllers
-	cg := goCMS_controllers.DefaultControllerGroup(r, sg)
+	cg := controllers.DefaultControllerGroup(r, sg)
 
 	// create engine
 	engine := Engine{
@@ -66,7 +66,7 @@ func main() {
 	app = Default()
 
 	// start server and listen
-	port := goCMS_context.Config.Port
+	port := context.Config.Port
 
 	if port == "" {
 		port = "8080"

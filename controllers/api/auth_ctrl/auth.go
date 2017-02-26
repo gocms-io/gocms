@@ -1,4 +1,4 @@
-package goCMS_auth_ctrl
+package auth_ctrl
 
 import (
 	"github.com/dgrijalva/jwt-go"
@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/menklab/goCMS/context"
-	"github.com/menklab/goCMS/controllers/middleware/auth"
 	"github.com/menklab/goCMS/utility"
+	"github.com/menklab/goCMS/controllers/middleware/auth"
 )
 
 const (
@@ -17,11 +17,11 @@ const (
 )
 
 type AuthController struct {
-	routes        *goCMS_routes.ApiRoutes
-	ServicesGroup *goCMS_services.ServicesGroup
+	routes        *routes.ApiRoutes
+	ServicesGroup *services.ServicesGroup
 }
 
-func DefaultAuthController(routes *goCMS_routes.ApiRoutes, sg *goCMS_services.ServicesGroup) *AuthController {
+func DefaultAuthController(routes *routes.ApiRoutes, sg *services.ServicesGroup) *AuthController {
 
 	// create controller
 	authController := &AuthController{
@@ -30,7 +30,7 @@ func DefaultAuthController(routes *goCMS_routes.ApiRoutes, sg *goCMS_services.Se
 	}
 
 	// apply auth middleware
-	goCMS_authMdl.DefaultAuthMiddleware(sg, routes)
+	aclMdl.DefaultAuthMiddleware(sg, routes)
 
 	authController.Default()
 
@@ -50,16 +50,16 @@ func (ac *AuthController) Default() {
 	ac.routes.Public.POST("/reset-password", ac.resetPassword)
 	ac.routes.Public.PUT("/reset-password", ac.setPassword)
 
-	if goCMS_context.Config.UseTwoFactor {
+	if context.Config.UseTwoFactor {
 		ac.routes.PreTwofactor.GET("/verify-device", ac.getDeviceCode)
 		ac.routes.PreTwofactor.POST("/verify-device", ac.verifyDevice)
 	}
 }
 
 func (ac *AuthController) createToken(userId int) (string, error) {
-	expire := time.Now().Add(time.Minute * goCMS_utility.GetTimeout(goCMS_context.Config.UserAuthTimeout))
+	expire := time.Now().Add(time.Minute * utility.GetTimeout(context.Config.UserAuthTimeout))
 	userToken := jwt.New(jwt.SigningMethodHS256)
 	userToken.Claims["userId"] = userId
 	userToken.Claims["exp"] = expire.Unix()
-	return userToken.SignedString([]byte(goCMS_context.Config.AuthKey))
+	return userToken.SignedString([]byte(context.Config.AuthKey))
 }

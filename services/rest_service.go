@@ -1,4 +1,4 @@
-package goCMS_services
+package services
 
 import (
 	"bytes"
@@ -68,7 +68,7 @@ func (rr *RestRequest) do() (*RestResponse, error) {
 	// check status code
 	if res.StatusCode != 200 && res.StatusCode != 203 {
 		log.Printf("Request was not ok: %s", body)
-		return nil, goCMS_errors.New(string(body))
+		return nil, errors.New(string(body))
 	}
 
 	restResponse := RestResponse{

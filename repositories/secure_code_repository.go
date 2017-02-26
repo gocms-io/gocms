@@ -1,4 +1,4 @@
-package goCMS_repositories
+package repositories
 
 import (
 	"github.com/jmoiron/sqlx"
@@ -8,9 +8,9 @@ import (
 )
 
 type ISecureCodeRepository interface {
-	Add(*goCMS_models.SecureCode) error
+	Add(*models.SecureCode) error
 	Delete(int) error
-	GetLatestForUserByType(int, goCMS_models.SecureCodeType) (*goCMS_models.SecureCode, error)
+	GetLatestForUserByType(int, models.SecureCodeType) (*models.SecureCode, error)
 }
 
 type SecureCodeRepository struct {
@@ -29,7 +29,7 @@ func DefaultSecureCodeRepository(db interface{}) *SecureCodeRepository {
 	return secureCodeRepository
 }
 
-func (scr *SecureCodeRepository) Add(code *goCMS_models.SecureCode) error {
+func (scr *SecureCodeRepository) Add(code *models.SecureCode) error {
 	code.Created = time.Now()
 	// insert row
 	result, err := scr.database.NamedExec(`
@@ -60,8 +60,8 @@ func (scr *SecureCodeRepository) Delete(id int) error {
 }
 
 // get all events
-func (scr *SecureCodeRepository) GetLatestForUserByType(id int, codeType goCMS_models.SecureCodeType) (*goCMS_models.SecureCode, error) {
-	var secureCode goCMS_models.SecureCode
+func (scr *SecureCodeRepository) GetLatestForUserByType(id int, codeType models.SecureCodeType) (*models.SecureCode, error) {
+	var secureCode models.SecureCode
 	err := scr.database.Get(&secureCode, `
 	SELECT * from gocms_secure_codes WHERE userId=? AND type=? ORDER BY created DESC LIMIT 1
 	`, id, codeType)

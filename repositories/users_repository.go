@@ -1,4 +1,4 @@
-package goCMS_repositories
+package repositories
 
 import (
 	"database/sql"
@@ -10,11 +10,11 @@ import (
 )
 
 type IUserRepository interface {
-	Get(int) (*goCMS_models.User, error)
-	GetByEmail(string) (*goCMS_models.User, error)
-	GetAll() (*[]goCMS_models.User, error)
-	Add(*goCMS_models.User) error
-	Update(int, *goCMS_models.User) error
+	Get(int) (*models.User, error)
+	GetByEmail(string) (*models.User, error)
+	GetAll() (*[]models.User, error)
+	Add(*models.User) error
+	Update(int, *models.User) error
 	UpdatePassword(int, string) error
 	Delete(int) error
 	SetEnabled(int, bool) error
@@ -37,8 +37,8 @@ func DefaultUserRepository(db interface{}) *UserRepository {
 }
 
 // get user by id
-func (ur *UserRepository) Get(id int) (*goCMS_models.User, error) {
-	var user goCMS_models.User
+func (ur *UserRepository) Get(id int) (*models.User, error) {
+	var user models.User
 	err := ur.database.Get(&user, `
 	SELECT gocms_users.*, gocms_emails.email, gocms_emails.isVerified
 	FROM gocms_users
@@ -57,10 +57,10 @@ func (ur *UserRepository) Get(id int) (*goCMS_models.User, error) {
 }
 
 // get user by email
-func (ur *UserRepository) GetByEmail(email string) (*goCMS_models.User, error) {
+func (ur *UserRepository) GetByEmail(email string) (*models.User, error) {
 
 	// first get the user by email
-	var user goCMS_models.User
+	var user models.User
 	err := ur.database.Get(&user, `
 	SELECT gocms_users.*, gocms_emails.email, gocms_emails.isVerified
 	FROM gocms_users
@@ -82,8 +82,8 @@ func (ur *UserRepository) GetByEmail(email string) (*goCMS_models.User, error) {
 }
 
 // get a list of all users
-func (ur *UserRepository) GetAll() (*[]goCMS_models.User, error) {
-	var users []goCMS_models.User
+func (ur *UserRepository) GetAll() (*[]models.User, error) {
+	var users []models.User
 	err := ur.database.Select(&users, `
 	SELECT gocms_users.*, gocms_emails.email, gocms_emails.isVerified
 	FROM gocms_users
@@ -97,11 +97,11 @@ func (ur *UserRepository) GetAll() (*[]goCMS_models.User, error) {
 	return &users, nil
 }
 
-func (ur *UserRepository) Add(user *goCMS_models.User) error {
+func (ur *UserRepository) Add(user *models.User) error {
 
 	// check if user exists
 	if ur.userExistsByEmail(user.Email) {
-		return goCMS_errors.NewToUser(goCMS_errors.ApiError_UserAlreadyExists)
+		return errors.NewToUser(errors.ApiError_UserAlreadyExists)
 	}
 
 	user.Created = time.Now()
@@ -120,7 +120,7 @@ func (ur *UserRepository) Add(user *goCMS_models.User) error {
 	return nil
 }
 
-func (ur *UserRepository) Update(id int, user *goCMS_models.User) error {
+func (ur *UserRepository) Update(id int, user *models.User) error {
 	// insert row
 	user.Id = id
 	_, err := ur.database.NamedExec(`
@@ -149,7 +149,7 @@ func (ur *UserRepository) SetEnabled(id int, enabled bool) error {
 
 func (ur *UserRepository) UpdatePassword(id int, hash string) error {
 	// insert row
-	user := goCMS_models.User{
+	user := models.User{
 		Id:       id,
 		Password: hash,
 	}
@@ -167,7 +167,7 @@ func (ur *UserRepository) UpdatePassword(id int, hash string) error {
 func (ur *UserRepository) Delete(id int) error {
 
 	if id == 0 {
-		return goCMS_errors.New("Missing user id. Can't delete user from database")
+		return errors.New("Missing user id. Can't delete user from database")
 	}
 
 	_, err := ur.database.Exec(`
@@ -182,7 +182,7 @@ func (ur *UserRepository) Delete(id int) error {
 }
 
 func (ur *UserRepository) userExistsByEmail(email string) bool {
-	user := goCMS_models.User{}
+	user := models.User{}
 	err := ur.database.QueryRowx(`
 	SELECT email FROM gocms_emails WHERE email = ?
 	`, email).Scan(&user.Email)

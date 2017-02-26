@@ -1,4 +1,4 @@
-package goCMS_errors
+package errors
 
 import (
 	"github.com/gin-gonic/gin"

@@ -1,4 +1,4 @@
-package goCMS_user_ctrl
+package user_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
@@ -11,11 +11,11 @@ import (
 )
 
 type UserController struct {
-	routes        *goCMS_routes.ApiRoutes
-	ServicesGroup *goCMS_services.ServicesGroup
+	routes        *routes.ApiRoutes
+	ServicesGroup *services.ServicesGroup
 }
 
-func DefaultUserController(routes *goCMS_routes.ApiRoutes, sg *goCMS_services.ServicesGroup) *UserController {
+func DefaultUserController(routes *routes.ApiRoutes, sg *services.ServicesGroup) *UserController {
 	userController := &UserController{
 		routes:        routes,
 		ServicesGroup: sg,
@@ -49,7 +49,7 @@ func (uc *UserController) Default() {
  */
 func (uc *UserController) get(c *gin.Context) {
 
-	authUser, _ := goCMS_utility.GetUserFromContext(c)
+	authUser, _ := utility.GetUserFromContext(c)
 
 	c.JSON(http.StatusOK, authUser.GetUserDisplay())
 }
@@ -66,13 +66,13 @@ func (uc *UserController) get(c *gin.Context) {
 func (uc *UserController) update(c *gin.Context) {
 
 	// get logged in user
-	authUser, _ := goCMS_utility.GetUserFromContext(c)
+	authUser, _ := utility.GetUserFromContext(c)
 
 	// copy current user info into update user
-	var userForUpdate goCMS_models.UserUpdateInput
+	var userForUpdate models.UserUpdateInput
 	err := c.BindJSON(&userForUpdate) // update any changes from request
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		errors.Response(c, http.StatusBadRequest, err.Error(), err)
 		return
 	}
 
@@ -83,18 +83,18 @@ func (uc *UserController) update(c *gin.Context) {
 
 	// check and set gender
 	switch userForUpdate.Gender {
-	case goCMS_models.GENDER_MALE:
-		authUser.Gender = goCMS_models.GENDER_MALE
+	case models.GENDER_MALE:
+		authUser.Gender = models.GENDER_MALE
 		break
-	case goCMS_models.GENDER_FEMALE:
-		authUser.Gender = goCMS_models.GENDER_FEMALE
+	case models.GENDER_FEMALE:
+		authUser.Gender = models.GENDER_FEMALE
 		break
 	}
 
 	// do update
 	err = uc.ServicesGroup.UserService.Update(authUser.Id, authUser)
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusInternalServerError, "Couldn't update user.", err)
+		errors.Response(c, http.StatusInternalServerError, "Couldn't update user.", err)
 		return
 	}
 
@@ -113,26 +113,26 @@ func (uc *UserController) update(c *gin.Context) {
 func (uc *UserController) changePassword(c *gin.Context) {
 
 	// get logged in user
-	authUser, _ := goCMS_utility.GetUserFromContext(c)
+	authUser, _ := utility.GetUserFromContext(c)
 
 	// copy current user info into update user
-	var changePasswordInput goCMS_models.UserChangePasswordInput
+	var changePasswordInput models.UserChangePasswordInput
 	err := c.BindJSON(&changePasswordInput) // update any changes from request
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		errors.Response(c, http.StatusBadRequest, err.Error(), err)
 		return
 	}
 
 	// verify password
 	if ok := uc.ServicesGroup.AuthService.VerifyPassword(authUser.Password, changePasswordInput.Password); !ok {
-		goCMS_errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
+		errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
 		return
 	}
 
 	// do update
 	err = uc.ServicesGroup.UserService.UpdatePassword(authUser.Id, changePasswordInput.NewPassword)
 	if err != nil {
-		goCMS_errors.Response(c, http.StatusInternalServerError, "Couldn't update user.", err)
+		errors.Response(c, http.StatusInternalServerError, "Couldn't update user.", err)
 		return
 	}
 

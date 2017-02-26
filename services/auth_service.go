@@ -1,4 +1,4 @@
-package goCMS_services
+package services
 
 import (
 	"github.com/menklab/goCMS/context"
@@ -12,12 +12,12 @@ import (
 )
 
 type IAuthService interface {
-	AuthUser(string, string) (*goCMS_models.User, bool)
+	AuthUser(string, string) (*models.User, bool)
 	HashPassword(string) (string, error)
 	SendPasswordResetCode(string) error
 	VerifyPassword(string, string) bool
 	VerifyPasswordResetCode(int, string) bool
-	SendTwoFactorCode(*goCMS_models.User) error
+	SendTwoFactorCode(*models.User) error
 	VerifyTwoFactorCode(int, string) bool
 	PasswordIsComplex(string) bool
 	GetRandomCode(int) (string, string, error)
@@ -25,10 +25,10 @@ type IAuthService interface {
 
 type AuthService struct {
 	MailService       IMailService
-	RepositoriesGroup *goCMS_repositories.RepositoriesGroup
+	RepositoriesGroup *repositories.RepositoriesGroup
 }
 
-func DefaultAuthService(rg *goCMS_repositories.RepositoriesGroup, mailService *MailService) *AuthService {
+func DefaultAuthService(rg *repositories.RepositoriesGroup, mailService *MailService) *AuthService {
 	authService := &AuthService{
 		MailService:       mailService,
 		RepositoriesGroup: rg,
@@ -38,9 +38,9 @@ func DefaultAuthService(rg *goCMS_repositories.RepositoriesGroup, mailService *M
 
 }
 
-func (as *AuthService) AuthUser(email string, password string) (*goCMS_models.User, bool) {
+func (as *AuthService) AuthUser(email string, password string) (*models.User, bool) {
 
-	var dbUser *goCMS_models.User
+	var dbUser *models.User
 	var err error
 	dbUser, err = as.RepositoriesGroup.UsersRepository.GetByEmail(email)
 
@@ -70,7 +70,7 @@ func (as *AuthService) VerifyPassword(passwordHash string, password string) bool
 func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
 
 	// get code
-	secureCode, err := as.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, goCMS_models.Code_ResetPassword)
+	secureCode, err := as.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, models.Code_ResetPassword)
 	if err != nil {
 		log.Printf("error getting latest password reset code: %s", err.Error())
 		return false
@@ -81,7 +81,7 @@ func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
 	}
 
 	// check within time
-	if time.Since(secureCode.Created) > (time.Minute * time.Duration(goCMS_context.Config.PasswordResetTimeout)) {
+	if time.Since(secureCode.Created) > (time.Minute * time.Duration(context.Config.PasswordResetTimeout)) {
 		return false
 	}
 
@@ -108,9 +108,9 @@ func (as *AuthService) SendPasswordResetCode(email string) error {
 	}
 
 	// update user with new code
-	err = as.RepositoriesGroup.SecureCodeRepository.Add(&goCMS_models.SecureCode{
+	err = as.RepositoriesGroup.SecureCodeRepository.Add(&models.SecureCode{
 		UserId: user.Id,
-		Type:   goCMS_models.Code_ResetPassword,
+		Type:   models.Code_ResetPassword,
 		Code:   hashedCode,
 	})
 	if err != nil {
@@ -123,7 +123,7 @@ func (as *AuthService) SendPasswordResetCode(email string) error {
 		Subject: "Password Reset Requested",
 		Body: "To reset your password enter the code below into the app:\n" +
 			code + "\n\nThe code will expire at: " +
-			time.Now().Add(time.Minute*time.Duration(goCMS_context.Config.PasswordResetTimeout)).String() + ".",
+			time.Now().Add(time.Minute*time.Duration(context.Config.PasswordResetTimeout)).String() + ".",
 	})
 	if err != nil {
 		log.Print("Error sending mail: " + err.Error())
@@ -132,7 +132,7 @@ func (as *AuthService) SendPasswordResetCode(email string) error {
 	return nil
 }
 
-func (as *AuthService) SendTwoFactorCode(user *goCMS_models.User) error {
+func (as *AuthService) SendTwoFactorCode(user *models.User) error {
 
 	// create code
 	code, hashedCode, err := as.GetRandomCode(8)
@@ -141,9 +141,9 @@ func (as *AuthService) SendTwoFactorCode(user *goCMS_models.User) error {
 	}
 
 	// update user with new code
-	err = as.RepositoriesGroup.SecureCodeRepository.Add(&goCMS_models.SecureCode{
+	err = as.RepositoriesGroup.SecureCodeRepository.Add(&models.SecureCode{
 		UserId: user.Id,
-		Type:   goCMS_models.Code_VerifyDevice,
+		Type:   models.Code_VerifyDevice,
 		Code:   hashedCode,
 	})
 	if err != nil {
@@ -154,7 +154,7 @@ func (as *AuthService) SendTwoFactorCode(user *goCMS_models.User) error {
 	as.MailService.Send(&Mail{
 		To:      user.Email,
 		Subject: "Device Verification",
-		Body:    "Your verification code is: " + code + "\n\nThe code will expire at: " + time.Now().Add(time.Minute*time.Duration(goCMS_context.Config.TwoFactorCodeTimeout)).String() + ".",
+		Body:    "Your verification code is: " + code + "\n\nThe code will expire at: " + time.Now().Add(time.Minute*time.Duration(context.Config.TwoFactorCodeTimeout)).String() + ".",
 	})
 	if err != nil {
 		log.Print("Error sending mail: " + err.Error())
@@ -166,7 +166,7 @@ func (as *AuthService) SendTwoFactorCode(user *goCMS_models.User) error {
 func (as *AuthService) VerifyTwoFactorCode(id int, code string) bool {
 
 	// get code from db
-	secureCode, err := as.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, goCMS_models.Code_VerifyDevice)
+	secureCode, err := as.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, models.Code_VerifyDevice)
 	if err != nil {
 		return false
 	}
@@ -177,7 +177,7 @@ func (as *AuthService) VerifyTwoFactorCode(id int, code string) bool {
 	}
 
 	// check within time
-	if time.Since(secureCode.Created) > (time.Minute * time.Duration(goCMS_context.Config.TwoFactorCodeTimeout)) {
+	if time.Since(secureCode.Created) > (time.Minute * time.Duration(context.Config.TwoFactorCodeTimeout)) {
 		return false
 	}
 
@@ -201,7 +201,7 @@ func (as *AuthService) HashPassword(password string) (string, error) {
 
 func (as *AuthService) GetRandomCode(length int) (string, string, error) {
 	// create code
-	code, err := goCMS_utility.GenerateRandomString(length)
+	code, err := utility.GenerateRandomString(length)
 	if err != nil {
 		return "", "", err
 	}
@@ -218,7 +218,7 @@ func (as *AuthService) GetRandomCode(length int) (string, string, error) {
 func (as *AuthService) PasswordIsComplex(password string) bool {
 	userInputs := []string{}
 	score := zxcvbn.PasswordStrength(password, userInputs)
-	if score.Score < int(goCMS_context.Config.PasswordComplexity) {
+	if score.Score < int(context.Config.PasswordComplexity) {
 		return false
 	}
 	return true

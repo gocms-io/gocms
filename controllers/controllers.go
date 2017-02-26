@@ -1,4 +1,4 @@
-package goCMS_controllers
+package controllers
 
 import (
 	"github.com/gin-gonic/gin"
@@ -10,6 +10,7 @@ import (
 	"github.com/menklab/goCMS/controllers/static"
 	"github.com/menklab/goCMS/routes"
 	"github.com/menklab/goCMS/services"
+	"github.com/menklab/goCMS/controllers/middleware/plugins/proxy"
 )
 
 type ControllersGroup struct {
@@ -18,29 +19,29 @@ type ControllersGroup struct {
 
 type Api struct {
 	RoutePrefix    string
-	Routes         *goCMS_routes.ApiRoutes
+	Routes         *routes.ApiRoutes
 	ApiControllers *ApiControllers
 }
 
 type ApiControllers struct {
-	DocumentationController *goCMS_static_ctrl.DocumentationController
-	AuthController          *goCMS_auth_ctrl.AuthController
-	HealthyController       *goCMS_healthy_ctrl.HealthyController
-	AdminUserController     *goCMS_admin_ctrl.AdminUserController
-	UserController          *goCMS_user_ctrl.UserController
+	DocumentationController *static_ctrl.DocumentationController
+	AuthController          *auth_ctrl.AuthController
+	HealthyController       *healthy_ctrl.HealthyController
+	AdminUserController     *admin_ctrl.AdminUserController
+	UserController          *user_ctrl.UserController
 }
 
 var (
 	defaultRoutePrefix = "/api"
 )
 
-func DefaultControllerGroup(r *gin.Engine, sg *goCMS_services.ServicesGroup) *ControllersGroup {
+func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *ControllersGroup {
 
 	// top level middleware
-	r.Use(goCMS_corsMdl.CORS())
+	r.Use(aclMdl.CORS())
 
 	// setup route groups
-	routes := &goCMS_routes.ApiRoutes{
+	routes := &routes.ApiRoutes{
 		Root:   r.Group("/"),
 		Public: r.Group(defaultRoutePrefix),
 		Auth:   r.Group(defaultRoutePrefix),
@@ -49,11 +50,11 @@ func DefaultControllerGroup(r *gin.Engine, sg *goCMS_services.ServicesGroup) *Co
 	// define routes and apply middleware
 
 	apiControllers := &ApiControllers{
-		DocumentationController: goCMS_static_ctrl.DefaultDocumentationController(routes),
-		AuthController:          goCMS_auth_ctrl.DefaultAuthController(routes, sg),
-		AdminUserController:     goCMS_admin_ctrl.DefaultAdminUserController(routes, sg),
-		HealthyController:       goCMS_healthy_ctrl.DefaultHealthyController(routes),
-		UserController:          goCMS_user_ctrl.DefaultUserController(routes, sg),
+		DocumentationController: static_ctrl.DefaultDocumentationController(routes),
+		AuthController:          auth_ctrl.DefaultAuthController(routes, sg),
+		AdminUserController:     admin_ctrl.DefaultAdminUserController(routes, sg),
+		HealthyController:       healthy_ctrl.DefaultHealthyController(routes),
+		UserController:          user_ctrl.DefaultUserController(routes, sg),
 	}
 
 	api := &Api{
@@ -65,6 +66,9 @@ func DefaultControllerGroup(r *gin.Engine, sg *goCMS_services.ServicesGroup) *Co
 	controllersGroup := &ControllersGroup{
 		Api: api,
 	}
+
+	// add plugin proxy middleware
+	routes.Public.GET("/proxyTest", plugin_proxy_mdl.ReverseProxy())
 
 	return controllersGroup
 }

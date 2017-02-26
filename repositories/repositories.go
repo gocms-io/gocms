@@ -1,4 +1,4 @@
-package goCMS_repositories
+package repositories
 
 import "github.com/menklab/goCMS/database"
 
@@ -11,7 +11,7 @@ type RepositoriesGroup struct {
 	PermissionsRepository IPermissionsRepository
 }
 
-func DefaultRepositoriesGroup(db *goCMS_database.Database) *RepositoriesGroup {
+func DefaultRepositoriesGroup(db *database.Database) *RepositoriesGroup {
 
 	// setup repositories
 	rg := &RepositoriesGroup{

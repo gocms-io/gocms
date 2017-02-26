@@ -1,4 +1,4 @@
-package goCMS_repositories
+package repositories
 
 import (
 	"github.com/jmoiron/sqlx"
@@ -7,7 +7,7 @@ import (
 )
 
 type IRuntimeRepository interface {
-	GetByName(name string) (*goCMS_models.Runtime, error)
+	GetByName(name string) (*models.Runtime, error)
 	UpdateValue(id int, value string) error
 }
 
@@ -28,8 +28,8 @@ func DefaultRuntimeRepository(db interface{}) *RuntimeRepository {
 }
 
 // get all settings
-func (ur *RuntimeRepository) GetByName(name string) (*goCMS_models.Runtime, error) {
-	var runtime goCMS_models.Runtime
+func (ur *RuntimeRepository) GetByName(name string) (*models.Runtime, error) {
+	var runtime models.Runtime
 	err := ur.database.Get(&runtime, "SELECT * FROM gocms_runtime WHERE name = ?", name)
 	if err != nil {
 		log.Printf("Error getting runtime from database: %s", err.Error())

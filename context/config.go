@@ -1,8 +1,8 @@
-package goCMS_context
+package context
 
 import (
-	"github.com/menklab/goCMS/models"
 	"log"
+	"github.com/menklab/goCMS/models"
 )
 
 var Config *GoCMSConfig
@@ -52,7 +52,7 @@ type GoCMSConfig struct {
 	SMTPSimulate    bool
 }
 
-func (c *GoCMSConfig) ApplySettingsToConfig(settings map[string]goCMS_models.Setting) {
+func (c *GoCMSConfig) ApplySettingsToConfig(settings map[string]models.Setting) {
 
 	log.Println("Refreshed GoCMS Settings")
 
