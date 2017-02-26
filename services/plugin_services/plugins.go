@@ -48,7 +48,26 @@ func (ps *PluginsService) visitPlugin(path string, f os.FileInfo, err error) err
 			return err
 		}
 
-		
+		// verify that there is a main.go file
+		mainPath, _ := filepath.Split(path)
+		mainFile, err := os.Stat(filepath.Join(mainPath, "main.go"))
+		log.Println("Checking for: " + mainFile.Name())
+		if err != nil {
+			log.Printf("No main file for plugin %s: %s\n", manifest.Name, err.Error())
+			return err
+		}
+
+		if !mainFile.Mode().IsRegular() {
+			log.Printf("Main file for plugin %s, apprears to be corrupted: %s\n", manifest.Name, err.Error())
+			return err
+		}
+
+		plugin := models.Plugin{
+			Path: path,
+			Manifest: manifest,
+		}
+
+		ps.Plugins = append(ps.Plugins, &plugin)
 	}
 
 	return nil
