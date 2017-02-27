@@ -96,9 +96,8 @@ func (ps *PluginsService) StartPlugins() error {
 			return err
 		}
 
-		// add handle to command and increase port for next service
+		// add handle to command
 		plugin.cmd = cmd
-		port++
 
 		// create proxy for use during registration
 		plugin.Proxy = &plugin_proxy_mdl.PluginProxyMiddleware{
@@ -106,6 +105,9 @@ func (ps *PluginsService) StartPlugins() error {
 			Schema: "http",
 			Host: "localhost",
 		}
+
+		// bump port for next micro service
+		port++
 	}
 
 	return nil
