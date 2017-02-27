@@ -5,7 +5,7 @@ import "time"
 func Init() {
 
 	// set config
-	config := GoCMSConfig{
+	config := RuntimeConfig{
 		DbName:     GetEnvVarOrFail("DB_NAME"),
 		DbUser:     GetEnvVarOrFail("DB_USER"),
 		DbPassword: GetEnvVarOrFail("DB_PASSWORD"),

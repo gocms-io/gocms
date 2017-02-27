@@ -5,9 +5,9 @@ import (
 	"github.com/menklab/goCMS/models"
 )
 
-var Config *GoCMSConfig
+var Config *RuntimeConfig
 
-type GoCMSConfig struct {
+type RuntimeConfig struct {
 	// DB (GET FROM ENV)
 	DbName     string
 	DbUser     string
@@ -52,7 +52,7 @@ type GoCMSConfig struct {
 	SMTPSimulate    bool
 }
 
-func (c *GoCMSConfig) ApplySettingsToConfig(settings map[string]models.Setting) {
+func (c *RuntimeConfig) ApplySettingsToConfig(settings map[string]models.Setting) {
 
 	log.Println("Refreshed GoCMS Settings")
 
