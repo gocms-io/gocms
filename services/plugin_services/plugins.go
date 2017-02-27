@@ -54,22 +54,41 @@ func (ps *PluginsService) StartPlugins() error {
 
 	var port int64 = 30002
 	for _, plugin := range ps.Plugins {
-		cmd := exec.Command(plugin.BinaryPath, "-port", "9091")
 
+		// build command
+		cmd := exec.Command(plugin.BinaryPath, fmt.Sprintf("-port=%d", port))
 
-		cmdReader, err := cmd.StdoutPipe()
+		// set stdout to pipe
+		cmdStdoutReader, err := cmd.StdoutPipe()
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
 			return err
 		}
 
-		scanner := bufio.NewScanner(cmdReader)
+		// setup stdout to scan continuously
+		stdOutScanner := bufio.NewScanner(cmdStdoutReader)
 		go func() {
-			for scanner.Scan() {
-				fmt.Printf("\t > %s - %s\n", plugin.Manifest.Name, scanner.Text())
+			for stdOutScanner.Scan() {
+				fmt.Printf("\t > %s - %s\n", plugin.Manifest.Name, stdOutScanner.Text())
 			}
 		}()
 
+		// set stderr to pipe
+		cmdStderrReader, err := cmd.StderrPipe()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
+			return err
+		}
+
+		// setup stderr to scan continuously
+		stdErrScanner := bufio.NewScanner(cmdStderrReader)
+		go func() {
+			for stdErrScanner.Scan() {
+				fmt.Printf("\t > %s - %s\n", plugin.Manifest.Name, stdErrScanner.Text())
+			}
+		}()
+
+		// start microservice
 		log.Printf("Starting microservice: %s\n", plugin.Manifest.Name)
 		err = cmd.Start()
 		if err != nil {
@@ -77,16 +96,11 @@ func (ps *PluginsService) StartPlugins() error {
 			return err
 		}
 
-		//err = cmd.Wait()
-		//if err != nil {
-		//	fmt.Fprintln(os.Stderr, "Error waiting for Cmd", err)
-		//	return err
-		//}
-
+		// add handle to command and increase port for next service
 		plugin.cmd = cmd
 		port++
 
-		// if success create proxy
+		// create proxy for use during registration
 		plugin.Proxy = &plugin_proxy_mdl.PluginProxyMiddleware{
 			Port: port,
 			Schema: "http",
