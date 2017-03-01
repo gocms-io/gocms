@@ -1,1 +1,0 @@
-define({  "name": "goCMS API",  "version": "0.0.1",  "description": "Core API functionality for goCM0S",  "title": "GoCMS",  "url": "http://gocms.io",  "sampleUrl": false,  "apidoc": "0.2.0",  "generator": {    "name": "apidoc",    "time": "2017-03-01T17:13:54.452Z",    "url": "http://apidocjs.com",    "version": "0.16.1"  }});
