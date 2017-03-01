@@ -1,0 +1,10 @@
+<html>
+<h1>
+    Documentation
+</h1>
+
+{{ range $key, $value := . }}
+<h3><a href="{{ $value }}">{{ $key }}</a></h3>
+{{ end }}
+
+</html>

@@ -37,6 +37,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 
 	// top level middleware
 	r.Use(aclMdl.CORS())
+	r.LoadHTMLGlob("templates/*")
 
 	// setup route groups
 	routes := &routes.Routes{
