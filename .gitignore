@@ -1,4 +1,6 @@
 .idea
-vendor
 /plugins
 .env
+vendor/*
+!vendor/vendor.json
+!docs/vendor/*
