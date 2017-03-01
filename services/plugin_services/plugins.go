@@ -179,7 +179,7 @@ func (ps *PluginsService) visitPlugin(path string, f os.FileInfo, err error) (er
 
 		// verify that there is a main.go file
 		mainPath, _ := filepath.Split(path)
-		mainFilePath := filepath.Join(mainPath, "main.go")
+		mainFilePath := filepath.Join(mainPath, manifest.Bin)
 		mainFile, err := os.Stat(mainFilePath)
 		if err != nil {
 			log.Printf("No main file for plugin %s: %s\n", manifest.Name, err.Error())

@@ -12,6 +12,7 @@ type PluginManifest struct {
 	AuthorUrl   string `json:"authorUrl"`
 	AuthorEmail string `json:"authorEmail"`
 	Routes      []*ManifestRoute `json:"routes"`
+	Bin 	    string `json:"bin"`
 }
 
 type ManifestRoute struct {
