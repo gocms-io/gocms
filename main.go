@@ -21,9 +21,7 @@ type Engine struct {
 	Database          *database.Database
 }
 
-//go:generate apidoc -c ./ -i ./models -i ./controllers/ -i ./plugins/ -o ./docs/ -f ".*\\.go$" -f ".*\\.js$"
-//go:generate go run ./utility/gen/gen.docs.go -o ./docs/docs.js ./models ./controllers/
-
+//go:generate apidoc -c ./ -i ./models -i ./controllers/ -o ./docs/ -f ".*\\.go$" -f ".*\\.js$"
 func Default() *Engine {
 
 	// init config environment vars

@@ -36,6 +36,7 @@ type IPluginsService interface {
 	FindPlugins() error
 	StartPlugins() error
 	RegisterPluginRoutes(routes *routes.Routes) error
+	GetActivePlugins() []*Plugin
 }
 
 type PluginsService struct {
@@ -48,6 +49,10 @@ func DefaultPluginsService() *PluginsService {
 
 	return pluginsService
 
+}
+
+func (ps *PluginsService) GetActivePlugins() []*Plugin {
+	return ps.Plugins
 }
 
 func (ps *PluginsService) StartPlugins() error {
@@ -128,6 +133,8 @@ func (ps *PluginsService) RegisterPluginRoutes(routes *routes.Routes) error {
 				ps.registerPluginProxyOnRoute(routerGroup, routeManifest.Method, routeManifest.Url, plugin.Proxy)
 			}
 		}
+
+		// add plugin docs to docs url
 	}
 	return nil
 }

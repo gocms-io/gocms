@@ -48,7 +48,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 	// define routes and apply middleware
 
 	apiControllers := &ApiControllers{
-		DocumentationController: static_ctrl.DefaultDocumentationController(routes),
+		DocumentationController: static_ctrl.DefaultDocumentationController(routes, sg),
 		AuthController:          auth_ctrl.DefaultAuthController(routes, sg),
 		AdminUserController:     admin_ctrl.DefaultAdminUserController(routes, sg),
 		HealthyController:       healthy_ctrl.DefaultHealthyController(routes),
