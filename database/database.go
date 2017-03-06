@@ -5,13 +5,13 @@ import (
 )
 
 type Database struct {
-	SQL           *SQL
+	SQL *SQL
 }
 
 func Default() *Database {
 
 	database := Database{
-		SQL:           DefaultSQL(),
+		SQL: DefaultSQL(),
 	}
 
 	return &database

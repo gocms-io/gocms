@@ -1,19 +1,19 @@
 package plugin_services
 
 import (
-	"github.com/menklab/goCMS/models"
-	"path/filepath"
-	"os"
-	"log"
-	"io/ioutil"
+	"bufio"
 	"encoding/json"
-	"github.com/menklab/goCMS/utility/errors"
-	"github.com/menklab/goCMS/routes"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/menklab/goCMS/controllers/middleware/plugins/proxy"
+	"github.com/menklab/goCMS/models"
+	"github.com/menklab/goCMS/routes"
+	"github.com/menklab/goCMS/utility/errors"
+	"io/ioutil"
+	"log"
+	"os"
 	"os/exec"
-	"bufio"
+	"path/filepath"
 )
 
 type Plugin struct {
@@ -106,9 +106,9 @@ func (ps *PluginsService) StartPlugins() error {
 
 		// create proxy for use during registration
 		plugin.Proxy = &plugin_proxy_mdl.PluginProxyMiddleware{
-			Port: port,
+			Port:   port,
 			Schema: "http",
-			Host: "localhost",
+			Host:   "localhost",
 		}
 
 		// bump port for next micro service
@@ -172,7 +172,7 @@ func (ps *PluginsService) FindPlugins() error {
 	return err
 }
 
-func (ps *PluginsService) visitPlugin(path string, f os.FileInfo, err error) (error) {
+func (ps *PluginsService) visitPlugin(path string, f os.FileInfo, err error) error {
 	if err != nil {
 		log.Printf("Error traversing %s, %s\n", path, err.Error())
 	}
@@ -200,7 +200,7 @@ func (ps *PluginsService) visitPlugin(path string, f os.FileInfo, err error) (er
 
 		plugin := Plugin{
 			BinaryPath: mainFilePath,
-			Manifest: manifest,
+			Manifest:   manifest,
 		}
 
 		ps.Plugins = append(ps.Plugins, &plugin)

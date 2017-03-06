@@ -1,10 +1,10 @@
 package static_ctrl
 
 import (
-	"github.com/menklab/goCMS/routes"
-	"github.com/menklab/goCMS/services"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/menklab/goCMS/routes"
+	"github.com/menklab/goCMS/services"
 	"net/http"
 )
 
@@ -16,7 +16,7 @@ type DocumentationController struct {
 func DefaultDocumentationController(routes *routes.Routes, sg *services.ServicesGroup) *DocumentationController {
 	dc := &DocumentationController{
 		serviceGroup: sg,
-		routes: routes,
+		routes:       routes,
 	}
 
 	dc.Default()

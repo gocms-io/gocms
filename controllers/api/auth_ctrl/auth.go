@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/menklab/goCMS/context"
-	"github.com/menklab/goCMS/utility"
 	"github.com/menklab/goCMS/controllers/middleware/auth"
+	"github.com/menklab/goCMS/utility"
 )
 
 const (

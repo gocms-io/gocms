@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"github.com/jmoiron/sqlx"
 	"github.com/menklab/goCMS/context"
+	"github.com/menklab/goCMS/database/migrations/sql"
 	"github.com/rubenv/sql-migrate"
 	"log"
-	"github.com/menklab/goCMS/database/migrations/sql"
 )
 
 type SQL struct {

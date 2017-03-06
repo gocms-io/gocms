@@ -1,14 +1,14 @@
 package plugin_proxy_mdl
 
 import (
-	"net/http/httputil"
-	"github.com/gin-gonic/gin"
-	"net/url"
 	"fmt"
-	"log"
-	"github.com/menklab/goCMS/utility/errors"
-	"net/http"
+	"github.com/gin-gonic/gin"
 	"github.com/menklab/goCMS/utility"
+	"github.com/menklab/goCMS/utility/errors"
+	"log"
+	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"strconv"
 )
 

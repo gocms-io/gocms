@@ -2,9 +2,9 @@ package context
 
 import (
 	"fmt"
+	"github.com/menklab/goCMS/models"
 	"os"
 	"strconv"
-	"github.com/menklab/goCMS/models"
 )
 
 func GetEnvVarOrFail(envVar string) string {

@@ -1,8 +1,8 @@
 package context
 
 import (
-	"log"
 	"github.com/menklab/goCMS/models"
+	"log"
 )
 
 var Config *RuntimeConfig
@@ -15,11 +15,11 @@ type RuntimeConfig struct {
 	DbServer   string
 
 	// Elastic Search
-	ElasticSearchConnectionUrl string
+	ElasticSearchConnectionUrl      string
 	ElasticSearchUseAwsSignedClient bool
-	ElasticSearchAwsUser string
-	ElasticSearchAwsSecret string
-	ElasticSearchAwsRegion string
+	ElasticSearchAwsUser            string
+	ElasticSearchAwsSecret          string
+	ElasticSearchAwsRegion          string
 
 	// Debug
 	Debug         bool

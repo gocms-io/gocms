@@ -61,8 +61,8 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 	}
 
 	controllersGroup := &ControllersGroup{
-		Api: api,
-		Routes:         routes,
+		Api:    api,
+		Routes: routes,
 	}
 
 	// register plugin routes

@@ -1,23 +1,23 @@
 package main
 
 import (
+	"flag"
+	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
-	"flag"
-	"io/ioutil"
 	"regexp"
-	"fmt"
 	"time"
 )
 
 var matchX *regexp.Regexp
 var docParts []string
 var defaultOutPath = "./docs.js"
+
 func main() {
 	//matchX = regexp.MustCompile(``)
 	matchX = regexp.MustCompile(`(?Us)(/\*\*.*\*/)`)
-
 
 	outPath := flag.String("o", defaultOutPath, "Output for documents file.")
 	flag.Parse()
@@ -52,7 +52,7 @@ func walkFiles(dir string) error {
 	// find all files
 	err := filepath.Walk(dir, parseForDocs)
 	if err != nil {
-		log.Printf("Error walking files is %s: %s\n",dir, err.Error())
+		log.Printf("Error walking files is %s: %s\n", dir, err.Error())
 		return err
 	}
 

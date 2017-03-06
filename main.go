@@ -1,8 +1,8 @@
 package main
 
 import (
-	_ "github.com/joho/godotenv/autoload"
 	"github.com/gin-gonic/gin"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/menklab/goCMS/context"
 	"github.com/menklab/goCMS/controllers"
 	"github.com/menklab/goCMS/database"
@@ -76,5 +76,3 @@ func main() {
 
 	app.Listen(":" + port)
 }
-
-

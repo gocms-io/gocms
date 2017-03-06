@@ -2,13 +2,13 @@ package admin_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"strconv"
+	"github.com/menklab/goCMS/controllers/middleware/acl"
+	"github.com/menklab/goCMS/models"
 	"github.com/menklab/goCMS/routes"
 	"github.com/menklab/goCMS/services"
-	"github.com/menklab/goCMS/models"
-	"github.com/menklab/goCMS/controllers/middleware/acl"
 	"github.com/menklab/goCMS/utility/errors"
+	"net/http"
+	"strconv"
 )
 
 type AdminUserController struct {
