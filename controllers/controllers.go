@@ -6,27 +6,29 @@ import (
 	"github.com/menklab/goCMS/controllers/api/auth_ctrl"
 	"github.com/menklab/goCMS/controllers/api/healthy_ctrl"
 	"github.com/menklab/goCMS/controllers/api/user"
+	"github.com/menklab/goCMS/controllers/content"
 	"github.com/menklab/goCMS/controllers/middleware/cors"
-	"github.com/menklab/goCMS/controllers/static"
 	"github.com/menklab/goCMS/routes"
 	"github.com/menklab/goCMS/services"
 )
 
 type ControllersGroup struct {
-	Routes *routes.Routes
-	Api    *Api
+	Routes             *routes.Routes
+	ApiControllers     *ApiControllers
+	ContentControllers *ContentControllers
 }
 
-type Api struct {
-	ApiControllers *ApiControllers
+type ContentControllers struct {
+	DocumentationController *content_ctrl.DocumentationController
+	TemplateControllers     *content_ctrl.TemplatesController
+	ThemesControllers       *content_ctrl.ThemesController
 }
 
 type ApiControllers struct {
-	DocumentationController *static_ctrl.DocumentationController
-	AuthController          *auth_ctrl.AuthController
-	HealthyController       *healthy_ctrl.HealthyController
-	AdminUserController     *admin_ctrl.AdminUserController
-	UserController          *user_ctrl.UserController
+	AuthController      *auth_ctrl.AuthController
+	HealthyController   *healthy_ctrl.HealthyController
+	AdminUserController *admin_ctrl.AdminUserController
+	UserController      *user_ctrl.UserController
 }
 
 var (
@@ -37,7 +39,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 
 	// top level middleware
 	r.Use(aclMdl.CORS())
-	r.LoadHTMLGlob("templates/*")
+	r.LoadHTMLGlob("./content/templates/*.tmpl")
 
 	// setup route groups
 	routes := &routes.Routes{
@@ -47,22 +49,24 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 	}
 
 	// define routes and apply middleware
-
 	apiControllers := &ApiControllers{
-		DocumentationController: static_ctrl.DefaultDocumentationController(routes, sg),
-		AuthController:          auth_ctrl.DefaultAuthController(routes, sg),
-		AdminUserController:     admin_ctrl.DefaultAdminUserController(routes, sg),
-		HealthyController:       healthy_ctrl.DefaultHealthyController(routes),
-		UserController:          user_ctrl.DefaultUserController(routes, sg),
+		AuthController:      auth_ctrl.DefaultAuthController(routes, sg),
+		AdminUserController: admin_ctrl.DefaultAdminUserController(routes, sg),
+		HealthyController:   healthy_ctrl.DefaultHealthyController(routes),
+		UserController:      user_ctrl.DefaultUserController(routes, sg),
 	}
 
-	api := &Api{
-		ApiControllers: apiControllers,
+	// define after for 404 catcher
+	contentControllers := &ContentControllers{
+		DocumentationController: content_ctrl.DefaultDocumentationController(routes, sg),
+		ThemesControllers:       content_ctrl.DefaultThemesController(routes, sg),
+		TemplateControllers:     content_ctrl.DefaultTemplatesController(routes, sg),
 	}
 
 	controllersGroup := &ControllersGroup{
-		Api:    api,
-		Routes: routes,
+		ApiControllers:     apiControllers,
+		ContentControllers: contentControllers,
+		Routes:             routes,
 	}
 
 	// register plugin routes

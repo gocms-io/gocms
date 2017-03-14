@@ -1,4 +1,4 @@
-package static_ctrl
+package content_ctrl
 
 import (
 	"fmt"
@@ -25,7 +25,7 @@ func DefaultDocumentationController(routes *routes.Routes, sg *services.Services
 
 func (dc *DocumentationController) Default() {
 	// register goCMS Docs Route
-	dc.routes.Root.Static("/goCMS/docs", "./docs")
+	dc.routes.Root.Static("/goCMS/docs", "./content/docs")
 	docsMap := make(map[string]string)
 
 	// register plugins route
