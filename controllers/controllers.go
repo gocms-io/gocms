@@ -8,6 +8,7 @@ import (
 	"github.com/menklab/goCMS/controllers/api/user"
 	"github.com/menklab/goCMS/controllers/content"
 	"github.com/menklab/goCMS/controllers/middleware/cors"
+	"github.com/menklab/goCMS/controllers/middleware/uuid"
 	"github.com/menklab/goCMS/routes"
 	"github.com/menklab/goCMS/services"
 )
@@ -22,6 +23,7 @@ type ContentControllers struct {
 	DocumentationController *content_ctrl.DocumentationController
 	TemplateControllers     *content_ctrl.TemplatesController
 	ThemesControllers       *content_ctrl.ThemesController
+	ReactControllers        *content_ctrl.ReactController
 }
 
 type ApiControllers struct {
@@ -38,6 +40,7 @@ var (
 func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *ControllersGroup {
 
 	// top level middleware
+	r.Use(uuidMdl.UUID())
 	r.Use(aclMdl.CORS())
 	r.LoadHTMLGlob("./content/templates/*.tmpl")
 
@@ -56,11 +59,14 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 		UserController:      user_ctrl.DefaultUserController(routes, sg),
 	}
 
+	react := content_ctrl.NewReact(r, "./content/themes/bslf/app.js")
+
 	// define after for 404 catcher
 	contentControllers := &ContentControllers{
 		DocumentationController: content_ctrl.DefaultDocumentationController(routes, sg),
 		ThemesControllers:       content_ctrl.DefaultThemesController(routes, sg),
 		TemplateControllers:     content_ctrl.DefaultTemplatesController(routes, sg),
+		ReactControllers:        content_ctrl.DefaultReactController(r, react),
 	}
 
 	controllersGroup := &ControllersGroup{
@@ -71,10 +77,6 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 
 	// register plugin routes
 	sg.PluginsService.RegisterPluginRoutes(routes)
-
-	// add plugin proxy middleware
-	//pluginProxy := plugin_proxy_mdl.DefaultPluginProxyMiddleware(sg)
-	//r.Use(pluginProxy.ReverseProxyFromMap())
 
 	return controllersGroup
 }

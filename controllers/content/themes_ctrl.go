@@ -23,5 +23,5 @@ func DefaultThemesController(routes *routes.Routes, sg *services.ServicesGroup) 
 func (tc *ThemesController) Default() {
 	// register goCMS Docs Route
 	tc.routes.Root.Static("/themes", "./content/themes")
-
+	tc.routes.Root.StaticFile("/favicon.ico", "./content/themes/bslf/img/favicon.ico")
 }
