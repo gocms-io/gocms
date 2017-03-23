@@ -56,13 +56,6 @@ func (c *RuntimeConfig) ApplySettingsToConfig(settings map[string]models.Setting
 
 	log.Println("Refreshed GoCMS Settings")
 
-	// Elastic Search
-	c.ElasticSearchConnectionUrl = GetStringOrFail("ES_CONNECTION_URL", settings)
-	c.ElasticSearchUseAwsSignedClient = GetBoolOrFail("ES_USE_AWS_SIGNED_CLIENT", settings)
-	c.ElasticSearchAwsUser = GetStringOrFail("ES_AWS_USER", settings)
-	c.ElasticSearchAwsSecret = GetStringOrFail("ES_AWS_SECRET", settings)
-	c.ElasticSearchAwsRegion = GetStringOrFail("ES_AWS_REGION", settings)
-
 	// Debug
 	c.Debug = GetBoolOrFail("DEBUG", settings)
 	c.DebugSecurity = GetBoolOrFail("DEBUG_SECURITY", settings)
