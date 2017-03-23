@@ -3,5 +3,7 @@
 vendor/*
 !vendor/vendor.json
 !docs/vendor/*
-content/themes
-content/plugins
+!content/themes/readme.md
+content/themes/*
+!content/plugins/readme.md
+content/plugins/*
