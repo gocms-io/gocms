@@ -17,12 +17,13 @@
 
     #loader-wrapper {
         opacity: 1;
-        animation: fade 500ms ease-in;
+        animation: fadein 500ms ease-in;
+        transition: opacity 500ms ease-in;
         width: 100%;
         height: 100%;
     }
 
-    @keyframes fade {
+    @keyframes fadein {
         0% { opacity: 0 }
         100% { opacity: 1 }
     }
@@ -69,7 +70,7 @@
     }
 
 </style>
-<div id="loader-wrapper" ref="loader-wrapper">
+<div id="loader-wrapper">
     <div id="loader-text"><h1>Loading...</h1></div>
     <div id="loader-water"></div>
     <div id="loader"></div>
@@ -88,9 +89,10 @@
 </script>
 <!-- end loading screen -->
 
+
 <div id="app"></div>
 </body>
 <link rel="stylesheet" href="../themes/bslf/app.css">
 <script src="/themes/bslf/app.js"></script>
-<script>require('initialize')</script>
+<script>require('initialize')</script>s
 </html>
