@@ -7,3 +7,4 @@ vendor/*
 content/themes/*
 !content/plugins/readme.md
 content/plugins/*
+plugins
