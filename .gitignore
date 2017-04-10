@@ -5,3 +5,6 @@ vendor/*
 !docs/vendor/*
 content/themes
 content/plugins
+npm-debug.log
+content/admin/goCMS_UI/node_modules
+content/admin/goCMS_UI/dist

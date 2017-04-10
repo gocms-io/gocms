@@ -1,0 +1,68 @@
+// phones, up to 480px
+// tablets, 768px and up
+// desktops, 992px and up
+// large desktops, 1200px and up
+
+
+#app {
+  margin-top: 0px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 500ms ease-in;
+}
+
+
+.text-center {
+  text-align: center;
+}
+
+.no-padding {
+  margin: 0;
+  padding: 0;
+}
+
+.container-fluid-no-padding {
+  margin: 0;
+  padding: 0;
+}
+
+.container-no-padding {
+  margin: 0 auto;
+  padding: 0;
+}
+
+.row-no-padding {
+  margin: 0;
+  padding: 0;
+}
+
+.col-no-padding {
+  margin: 0;
+  padding: 0;
+}
+
+.row-centered {
+  text-align: center;
+}
+
+.col-centered {
+  display: inline-block;
+  float: none;
+}
+
+.vertical-center-helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.input,
+.input:focus {
+  border: none;
+  outline: none;
+}

@@ -1,0 +1,35 @@
+.news-event-item-wrapper {
+  height: 200px;
+  width: 355px;
+  margin-right: 30px;
+
+  h2 {
+    font-family: Archer, sans-serif;
+    font-size: 24px;
+    color: $gray;
+    font-weight: 100;
+  }
+
+  h4 {
+    margin-top: 4px;
+    font-family: Lato-Medium-Italic, sans-serif;
+    font-size: 12px;
+    color: $gray;
+  }
+
+  hr {
+    margin: 12px 0 0 0;
+    border-top: solid 1px $teal;
+    width: 100%;
+  }
+
+  p {
+    margin-top: 10px;
+    font-family: Lato, sans-serif;
+    color: $gray;
+    font-size: 12px;
+    overflow: hidden;
+    height: 120px;
+    line-height: 22px;
+  }
+}
