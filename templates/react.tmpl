@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>GoCMS</title>
+    {{template "theme_header.tmpl"}}
+</head>
+<body>
+{{template "theme_body.tmpl"}}
+<div id="admin"></div>
+</body>
+<script src="/admin_content/vendor.js"></script>
+<script src="/admin_content/base.js"></script>
+{{template "theme_footer.tmpl"}}
+<script>require('initialize').run({{.Admin}});</script>

@@ -167,6 +167,12 @@
 			"revisionTime": "2017-01-03T08:10:50Z"
 		},
 		{
+			"checksumSHA1": "a2qvrN7YE4YmOpx+wmxCvCwl4os=",
+			"path": "github.com/gin-contrib/multitemplate",
+			"revision": "7d1ec4f2119934983b106718265783fc48a38b77",
+			"revisionTime": "2017-03-19T07:00:17Z"
+		},
+		{
 			"checksumSHA1": "RsNwOto8G8aXIiRrlFn4dtU9q/g=",
 			"path": "github.com/gin-gonic/gin",
 			"revision": "e2212d40c62a98b388a5eb48ecbdcf88534688ba",

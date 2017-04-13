@@ -50,6 +50,9 @@ type RuntimeConfig struct {
 	SMTPPassword    string
 	SMTPFromAddress string
 	SMTPSimulate    bool
+
+	// GoCMS
+	ActiveTheme string
 }
 
 func (c *RuntimeConfig) ApplySettingsToConfig(settings map[string]models.Setting) {
@@ -92,4 +95,8 @@ func (c *RuntimeConfig) ApplySettingsToConfig(settings map[string]models.Setting
 	c.SMTPPassword = GetStringOrFail("SMTP_PASSWORD", settings)
 	c.SMTPFromAddress = GetStringOrFail("SMTP_FROM_ADDRESS", settings)
 	c.SMTPSimulate = GetBoolOrFail("SMTP_SIMULATE", settings)
+
+	// GoCMS
+	c.ActiveTheme = GetStringOrFail("ACTIVE_THEME", settings)
+
 }

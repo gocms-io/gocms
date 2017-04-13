@@ -135,6 +135,8 @@ func CreateInitial() *migrate.Migration {
 			INSERT INTO gocms_settings (name, value, description) VALUES('SETTINGS_REFRESH_RATE', '60', 'Minutes between each settings refresh from the database to memory.');
 			`, `
 			INSERT INTO gocms_settings (name, value, description) VALUES('SMTP_SIMULATE', 'true', 'Simulate SMTP email and print to console instead of sending to server.');
+			`, `
+			INSERT INTO gocms_settings (name, value, description) VALUES('ACTIVE_THEME', 'default', 'The current active theme that is running on goCMS.');
 			`,
 		},
 		Down: []string{
