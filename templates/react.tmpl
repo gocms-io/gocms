@@ -3,25 +3,19 @@
 <head>
     <meta charset="utf-8">
     <title>GoCMS</title>
-    {{ if not .Admin }}
-        {{template "theme_header.tmpl"}}
-    {{ end }}
+    {{template "theme_header.tmpl"}}
 </head>
 <body>
-{{ if not .Admin }}
-    {{template "theme_body.tmpl"}}
-{{ end }}
+{{template "theme_body.tmpl"}}
 <div id="app"></div>
 </body>
 <script src="/goCMS/vendor.js"></script>
 <script src="/goCMS/base.js"></script>
 {{ if .Admin }}
-    <script src="/goCMS/admin.js"></script>
+<script src="/goCMS/admin.js"></script>
 {{ end }}
-{{ if not .Admin }}
-    {{template "theme_footer.tmpl"}}
-{{ end }}
+{{template "theme_footer.tmpl"}}
 <script>
     let app = require('goCMS/initialize');
-    app.run({{.Admin}});
+    app.run({{.Admin}}, {{.Theme}});
 </script>

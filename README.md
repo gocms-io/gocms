@@ -1,3 +1,6 @@
+// TODO - Write optimizer for plugins and themes. 
+Optimizer should look at vendor.js and theme_vendor.js - remove any repeates in theme-vendor.js and save to a secondary file
+
 GRNow Backend Services
 
 <h3>Generate Docs</h3>
