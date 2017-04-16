@@ -21,8 +21,9 @@ func DefaultReactController(routes *routes.Routes) *ReactController {
 }
 
 func (rc *ReactController) Default() {
-	rc.routes.Root.Static("/admin_content", "./content/admin")
+	rc.routes.Root.Static("/goCMS", "./content/goCMS")
 	rc.routes.Root.GET("/admin", rc.serveReactAdmin)
+	rc.routes.Root.GET("/login", rc.serveReactAdmin)
 	rc.routes.Root.GET("/admin/*adminPath", rc.serveReactAdmin)
 	rc.routes.NoRoute(rc.serveReact)
 }

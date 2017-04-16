@@ -2,9 +2,6 @@
 .env
 vendor/*
 !vendor/vendor.json
-content/admin/goCMS_UI/*
-!content/admin/goCMS_UI/src
+content/goCMS
 content/themes
 content/plugins
-content/admin/goCMS_UI/src/node_modules
-content/admin
