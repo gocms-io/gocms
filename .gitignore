@@ -4,4 +4,6 @@ vendor/*
 !vendor/vendor.json
 content/goCMS
 content/themes
+!content/themes/default
+!content/themes/default/*
 content/plugins
