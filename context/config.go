@@ -52,7 +52,8 @@ type RuntimeConfig struct {
 	SMTPSimulate    bool
 
 	// GoCMS
-	ActiveTheme string
+	ActiveTheme           string
+	ActiveThemeAssetsBase string
 }
 
 func (c *RuntimeConfig) ApplySettingsToConfig(settings map[string]models.Setting) {
@@ -98,5 +99,6 @@ func (c *RuntimeConfig) ApplySettingsToConfig(settings map[string]models.Setting
 
 	// GoCMS
 	c.ActiveTheme = GetStringOrFail("ACTIVE_THEME", settings)
+	c.ActiveThemeAssetsBase = GetStringOrFail("ACTIVE_THEME_ASSETS_BASE", settings)
 
 }

@@ -137,6 +137,8 @@ func CreateInitial() *migrate.Migration {
 			INSERT INTO gocms_settings (name, value, description) VALUES('SMTP_SIMULATE', 'true', 'Simulate SMTP email and print to console instead of sending to server.');
 			`, `
 			INSERT INTO gocms_settings (name, value, description) VALUES('ACTIVE_THEME', 'default', 'The current active theme that is running on goCMS.');
+			`, `
+			INSERT INTO gocms_settings (name, value, description) VALUES('ACTIVE_THEME_ASSETS_BASE', ' ', 'The assets base for the current theme. (Enables use of CDN)');
 			`,
 		},
 		Down: []string{

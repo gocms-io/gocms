@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8">
     <title>GoCMS</title>
-    {{template "theme_header.tmpl"}}
+    {{template "theme_header.tmpl" .}}
 </head>
 <body>
-{{template "theme_body.tmpl"}}
+{{template "theme_body.tmpl" .}}
 <div id="app"></div>
 </body>
 <script src="/goCMS/vendor.js"></script>
@@ -14,8 +14,9 @@
 {{ if .Admin }}
 <script src="/goCMS/admin.js"></script>
 {{ end }}
-{{template "theme_footer.tmpl"}}
+{{template "theme_footer.tmpl" .}}
 <script>
+    const ASSET_BASE = {{.AssetBase}}
     let app = require('goCMS/initialize');
     app.run({{.Admin}}, {{.Theme}});
 </script>

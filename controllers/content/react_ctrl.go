@@ -30,14 +30,16 @@ func (rc *ReactController) Default() {
 
 func (rc *ReactController) serveReact(c *gin.Context) {
 	c.HTML(http.StatusOK, "react.tmpl", gin.H{
-		"Theme": context.Config.ActiveTheme,
-		"Admin": false,
+		"Theme":     context.Config.ActiveTheme,
+		"AssetBase": context.Config.ActiveThemeAssetsBase,
+		"Admin":     false,
 	})
 }
 
 func (rc *ReactController) serveReactAdmin(c *gin.Context) {
 	c.HTML(http.StatusOK, "react.tmpl", gin.H{
-		"Theme": context.Config.ActiveTheme,
-		"Admin": true,
+		"Theme":     context.Config.ActiveTheme,
+		"AssetBase": context.Config.ActiveThemeAssetsBase,
+		"Admin":     true,
 	})
 }
