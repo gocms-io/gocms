@@ -9,6 +9,7 @@ import (
 	"github.com/menklab/goCMS/repositories"
 	"github.com/menklab/goCMS/services"
 	"log"
+	"os"
 )
 
 var app *Engine
@@ -69,6 +70,12 @@ func main() {
 
 	// start server and listen
 	port := context.Config.Port
+
+	// check if env is set and override
+	portEnv := os.Getenv("PORT")
+	if portEnv != "" {
+		port = portEnv
+	}
 
 	if port == "" {
 		port = "8080"

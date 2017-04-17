@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>GoCMS</title>
+</head>
+<body>
+<!-- loading screen -->
+<style>
+    body, html {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0);
+    }
+
+    #loader-page-wrapper {
+        opacity: 1;
+        animation: fadein 500ms ease-in;
+        transition: opacity 500ms ease-out;
+        width: 100%;
+        height: 100%;
+        z-index: 9000;
+        overflow: hidden;
+    }
+
+    @keyframes fadein {
+        0% {
+            opacity: 0
+        }
+        100% {
+            opacity: 1
+        }
+    }
+
+    #loader-water-wrapper {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+        z-index: 9001;
+    }
+
+    #loader-water {
+        width: 100%;
+        height: 300px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 9002;
+        background: url('/themes/bslf/loader/images/water.svg') no-repeat;
+        background-size: 120% auto;
+        background-position: center top;
+    }
+
+    #loader-text {
+        position: relative;
+        top: 12%;
+        font-family: sans-serif !important;
+        font-size: 60px;
+        text-align: center;
+        z-index: 9001;
+    }
+
+    #loader-wrapper {
+        position: absolute;
+        bottom: 100px;
+        width: 100%;
+        height: 300px;
+        z-index: 9000;
+    }
+
+    #loader {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        overflow: hidden;
+        width: 900px;
+        z-index: 9000;
+    }
+
+    @media screen and (max-width: 900px) {
+        #loader-text {
+            /*font-size: 20px;*/
+            /*margin-top: 200px;*/
+        }
+
+        #loader {
+            width: 400px;
+        }ref
+
+        #loader-wrapper {
+            bottom: 200px;
+        }
+    }
+
+</style>
+<div id="loader-page-wrapper">
+    <h1 id="loader-text">Loading...</h1>
+    <div id="loader-water-wrapper">
+        <div id="loader-water"></div>
+    </div>
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+    </div>
+</div>
+<script src="/themes/bslf/loader/bodymovin.js"></script>
+<script>
+    var animData = {
+        container: document.getElementById('loader'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/themes/bslf/loader/data.json'
+    };
+    var anim = bodymovin.loadAnimation(animData);
+    window.onresize = anim.resize.bind(anim);
+</script>
+<!-- end loading screen -->
+
+
+<div id="app"></div>
+</body>
+<link rel="stylesheet" href="../themes/bslf/app.css">
+
+<!--[if IE 11]>
+<link rel="stylesheet" href="../themes/bslf/ie11.css">
+<![endif]-->
+
+<script src="/themes/bslf/app.js"></script>
+<script>require('initialize')</script>
+</html>
