@@ -8,4 +8,5 @@ type Routes struct {
 	Auth         *gin.RouterGroup
 	Admin        *gin.RouterGroup
 	Root         *gin.RouterGroup
+	NoRoute      func(...gin.HandlerFunc)
 }

@@ -1,19 +1,19 @@
 package content_ctrl
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/menklab/goCMS/routes"
-	"github.com/menklab/goCMS/services"
 )
 
 type ThemesController struct {
-	serviceGroup *services.ServicesGroup
-	routes       *routes.Routes
+	r      *gin.Engine
+	routes *routes.Routes
 }
 
-func DefaultThemesController(routes *routes.Routes, sg *services.ServicesGroup) *ThemesController {
+func DefaultThemesController(r *gin.Engine, routes *routes.Routes) *ThemesController {
 	dt := &ThemesController{
-		serviceGroup: sg,
-		routes:       routes,
+		r:      r,
+		routes: routes,
 	}
 
 	dt.Default()

@@ -25,18 +25,18 @@ func DefaultDocumentationController(routes *routes.Routes, sg *services.Services
 
 func (dc *DocumentationController) Default() {
 	// register goCMS Docs Route
-	dc.routes.Root.Static("/goCMS/docs", "./content/docs")
+	dc.routes.Root.Static("/docs/goCMS", "./content/docs")
 	docsMap := make(map[string]string)
 
 	// register plugins route
 	for _, plugin := range dc.serviceGroup.PluginsService.GetActivePlugins() {
 		name := plugin.Manifest.Name
-		link := fmt.Sprintf("%s/docs", plugin.Manifest.Bin)
+		link := fmt.Sprintf("docs/%s", plugin.Manifest.Bin)
 		docsMap[name] = link
-		dc.routes.Root.Static(fmt.Sprintf("%s/docs", plugin.Manifest.Bin), fmt.Sprintf("./plugins/%s/docs", plugin.Manifest.Bin))
+		dc.routes.Root.Static(fmt.Sprintf("docs/%s", plugin.Manifest.Bin), fmt.Sprintf("./plugins/%s/docs", plugin.Manifest.Bin))
 	}
 
-	docsMap["GoCMS"] = "/goCMS/docs"
+	docsMap["GoCMS"] = "/docs/goCMS"
 
 	dc.routes.Root.GET("/docs", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "docs.tmpl", docsMap)
