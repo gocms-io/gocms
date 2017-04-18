@@ -164,8 +164,7 @@ func (ps *PluginsService) getRouteGroup(pluginRoute string, routes *routes.Route
 func (ps *PluginsService) FindPlugins() error {
 
 	// find all plugins
-	//err := filepath.Walk("./content/plugins", ps.visitPlugin)
-	err := filepath.Walk(filepath.FromSlash("./content/plugins"), ps.visitPlugin)
+	err := filepath.Walk("./content/plugins", ps.visitPlugin)
 
 	if err != nil {
 		log.Printf("Error finding plugins while traversing plugin directory: %s\n", err.Error())
