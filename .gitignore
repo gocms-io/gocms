@@ -2,10 +2,9 @@
 .env
 vendor/*
 !vendor/vendor.json
-!docs/vendor/*
+content
+!content/docs/vendor/*
 !content/themes/readme.md
-content/themes/*
 !content/plugins/readme.md
-content/plugins/*
-plugins
-content/goCMS
+!content/themes/default
+!content/themes/default/*
