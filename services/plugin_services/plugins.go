@@ -14,6 +14,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 )
 
 type Plugin struct {
@@ -189,6 +190,13 @@ func (ps *PluginsService) visitPlugin(path string, f os.FileInfo, err error) err
 		// verify that there is a main.go file
 		mainPath, _ := filepath.Split(path)
 		mainFilePath := filepath.Join(mainPath, manifest.Bin)
+
+		// if windows add .exe to the bin
+		// if windows add exe
+		if runtime.GOOS == "windows" {
+			mainFilePath = fmt.Sprintf("%s.exe", mainFilePath)
+		}
+
 		mainFile, err := os.Stat(mainFilePath)
 		if err != nil {
 			log.Printf("No main file for plugin %s: %s\n", manifest.Name, err.Error())
