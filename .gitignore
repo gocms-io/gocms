@@ -1,10 +1,10 @@
 .idea
 .env
-vendor/*
+/vendor/*
 !vendor/vendor.json
-content
-!content/docs/vendor/*
-!content/themes/readme.md
-!content/plugins/readme.md
-!content/themes/default
-!content/themes/default/*
+/content/*
+!/content/templates
+!/content/docs
+!/content/themes/readme.md
+!/content/plugins/readme.md
+!/content/themes/default

@@ -85,8 +85,8 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 
 func createMyRender() multitemplate.Render {
 	r := multitemplate.New()
-	r.AddFromGlob("docs.tmpl", "./templates/docs.tmpl")
-	r.AddFromFiles("react.tmpl", "./templates/react.tmpl",
+	r.AddFromGlob("docs.tmpl", "./content/templates/docs.tmpl")
+	r.AddFromFiles("react.tmpl", "./content/templates/react.tmpl",
 		fmt.Sprintf("./content/themes/%v/theme_header.tmpl", context.Config.ActiveTheme),
 		fmt.Sprintf("./content/themes/%v/theme_body.tmpl", context.Config.ActiveTheme),
 		fmt.Sprintf("./content/themes/%v/theme_footer.tmpl", context.Config.ActiveTheme),
