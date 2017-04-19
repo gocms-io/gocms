@@ -1,10 +1,11 @@
 package auth_ctrl
 
 import (
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 
 	"github.com/menklab/goCMS/context"
 	"github.com/menklab/goCMS/utility"
@@ -55,7 +56,9 @@ func (ac *AuthController) verifyDevice(c *gin.Context) {
 	// generate device token
 	expire := time.Now().Add(time.Minute * utility.GetTimeout(context.Config.DeviceAuthTimeout))
 	deviceToken := jwt.New(jwt.SigningMethodHS256)
-	deviceToken.Claims["exp"] = expire.Unix()
+	deviceToken.Claims = jwt.MapClaims{
+		"exp": expire.Unix(),
+	}
 	deviceTokenString, err := deviceToken.SignedString([]byte(context.Config.AuthKey))
 
 	if err != nil {

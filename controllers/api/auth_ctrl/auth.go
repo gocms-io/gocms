@@ -1,10 +1,11 @@
 package auth_ctrl
 
 import (
+	"time"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/menklab/goCMS/routes"
 	"github.com/menklab/goCMS/services"
-	"time"
 
 	"github.com/menklab/goCMS/context"
 	"github.com/menklab/goCMS/controllers/middleware/auth"
@@ -59,7 +60,9 @@ func (ac *AuthController) Default() {
 func (ac *AuthController) createToken(userId int) (string, error) {
 	expire := time.Now().Add(time.Minute * utility.GetTimeout(context.Config.UserAuthTimeout))
 	userToken := jwt.New(jwt.SigningMethodHS256)
-	userToken.Claims["userId"] = userId
-	userToken.Claims["exp"] = expire.Unix()
+	userToken.Claims = jwt.MapClaims{
+		"userId": userId,
+		"exp":    expire.Unix(),
+	}
 	return userToken.SignedString([]byte(context.Config.AuthKey))
 }
