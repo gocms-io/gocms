@@ -2,6 +2,7 @@ package content_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/menklab/goCMS/context"
 	"github.com/menklab/goCMS/routes"
 )
 
@@ -23,5 +24,5 @@ func DefaultThemesController(r *gin.Engine, routes *routes.Routes) *ThemesContro
 func (tc *ThemesController) Default() {
 	// register goCMS Docs Route
 	tc.routes.Root.Static("/themes", "./content/themes")
-	tc.routes.Root.StaticFile("/favicon.ico", "./content/themes/bslf/img/favicon.ico")
+	tc.routes.Root.StaticFile("/favicon.ico", "./content/themes/"+context.Config.ActiveTheme+"/img/favicon.ico")
 }
