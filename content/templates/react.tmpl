@@ -16,7 +16,7 @@
 {{ end }}
 {{template "theme_footer.tmpl" .}}
 <script>
-    const ASSET_BASE = {{.AssetBase}}
-    let app = require('goCMS/initialize');
-    app.run({{.Admin}}, {{.Theme}});
+    var ASSET_BASE = {{.AssetBase}}
+    var _app = require('goCMS/initialize');
+    _app.run({{.Admin}}, {{.Theme}});
 </script>
