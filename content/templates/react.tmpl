@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script>
+        if (!!window.MSInputMethodContext && !!document.documentMode) {
+            var isIE11 = true;
+            console.log("setting global ie11 var.");
+        }
+    </script>
     <meta charset="utf-8">
     <title>GoCMS</title>
     {{template "theme_header.tmpl" .}}
