@@ -2,8 +2,9 @@
 <html>
 <head>
     <script>
+        var isIE11 = false;
         if (!!window.MSInputMethodContext && !!document.documentMode) {
-            var isIE11 = true;
+            isIE11 = true;
             console.log("setting global ie11 var.");
         }
     </script>
