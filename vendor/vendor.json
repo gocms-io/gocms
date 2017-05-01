@@ -81,12 +81,12 @@
 			"revisionTime": "2016-11-09T13:10:55Z"
 		},
 		{
-			"checksumSHA1": "CMfwCFcZRDJeIVVbIHa6t4Aewl8=",
+			"checksumSHA1": "D37uI+U+FYvTJIdG2TTozXe7i7U=",
 			"path": "github.com/dgrijalva/jwt-go",
-			"revision": "268038b363c7a8d7306b8e35bf77a1fde4b0c402",
-			"revisionTime": "2016-06-16T19:14:24Z",
-			"version": "v2",
-			"versionExact": "v2.7.0"
+			"revision": "d2709f9f1f31ebcda9651b03077758c1f3a0018c",
+			"revisionTime": "2016-06-16T19:15:56Z",
+			"version": "v3",
+			"versionExact": "v3.0.0"
 		},
 		{
 			"checksumSHA1": "f47hKP/6lP8vN9tirOj1O+dHTXQ=",

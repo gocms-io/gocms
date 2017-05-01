@@ -1,15 +1,15 @@
 package aclMdl
 
 import (
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/goCMS/services"
-	"github.com/gocms-io/goCMS/utility/errors"
+	"log"
 	"net/http"
 
+	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/goCMS/context"
 	"github.com/gocms-io/goCMS/routes"
-	"log"
+	"github.com/gocms-io/goCMS/services"
+	"github.com/gocms-io/goCMS/utility/errors"
 )
 
 type AuthMiddleware struct {
@@ -60,7 +60,7 @@ func (am *AuthMiddleware) requireAuthedUser(c *gin.Context) {
 		return
 	}
 
-	userId, ok := token.Claims["userId"].(float64)
+	userId, ok := token.Claims.(jwt.MapClaims)["userId"].(float64)
 	if !ok {
 		log.Print("UserId not contained in token.")
 		errors.Response(c, http.StatusUnauthorized, errors.ApiError_UserToken, err)
