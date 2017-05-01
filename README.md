@@ -1,8 +1,3 @@
-// TODO - Write optimizer for plugins and themes. 
-Optimizer should look at vendor.js and theme_vendor.js - remove any repeates in theme-vendor.js and save to a secondary file
-
-GRNow Backend Services
-
 <h1>GoCMS</h1>
 
 <h3>Generate Docs</h3>
@@ -56,3 +51,8 @@ GRNow Backend Services
     go get -u github.com/kardianos/govendor
     run govendor sync (in project root)
 </pre>
+
+// TODO - Write optimizer for plugins and themes. 
+Optimizer should look at vendor.js and theme_vendor.js - remove any repeates in theme-vendor.js and save to a secondary file
+
+GRNow Backend Services
