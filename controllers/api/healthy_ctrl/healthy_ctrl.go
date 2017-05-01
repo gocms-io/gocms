@@ -2,8 +2,8 @@ package healthy_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/menklab/goCMS/routes"
-	"github.com/menklab/goCMS/utility"
+	"github.com/gocms-io/goCMS/routes"
+	"github.com/gocms-io/goCMS/utility"
 	"net/http"
 )
 

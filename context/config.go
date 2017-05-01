@@ -1,7 +1,7 @@
 package context
 
 import (
-	"github.com/menklab/goCMS/models"
+	"github.com/gocms-io/goCMS/models"
 	"log"
 )
 

@@ -1,10 +1,10 @@
 package services
 
 import (
-	"github.com/menklab/goCMS/context"
-	"github.com/menklab/goCMS/models"
-	"github.com/menklab/goCMS/repositories"
-	"github.com/menklab/goCMS/utility"
+	"github.com/gocms-io/goCMS/context"
+	"github.com/gocms-io/goCMS/models"
+	"github.com/gocms-io/goCMS/repositories"
+	"github.com/gocms-io/goCMS/utility"
 	"github.com/nbutton23/zxcvbn-go"
 	"golang.org/x/crypto/bcrypt"
 	"log"

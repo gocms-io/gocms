@@ -2,8 +2,8 @@ package content_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/menklab/goCMS/context"
-	"github.com/menklab/goCMS/routes"
+	"github.com/gocms-io/goCMS/context"
+	"github.com/gocms-io/goCMS/routes"
 	"net/http"
 )
 

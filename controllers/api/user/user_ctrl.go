@@ -2,11 +2,11 @@ package user_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/menklab/goCMS/models"
-	"github.com/menklab/goCMS/routes"
-	"github.com/menklab/goCMS/services"
-	"github.com/menklab/goCMS/utility"
-	"github.com/menklab/goCMS/utility/errors"
+	"github.com/gocms-io/goCMS/models"
+	"github.com/gocms-io/goCMS/routes"
+	"github.com/gocms-io/goCMS/services"
+	"github.com/gocms-io/goCMS/utility"
+	"github.com/gocms-io/goCMS/utility/errors"
 	"net/http"
 )
 

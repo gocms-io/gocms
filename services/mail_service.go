@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/menklab/goCMS/context"
+	"github.com/gocms-io/goCMS/context"
 	"gopkg.in/gomail.v2"
 	"log"
 )

@@ -3,11 +3,11 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/menklab/goCMS/context"
-	"github.com/menklab/goCMS/controllers"
-	"github.com/menklab/goCMS/database"
-	"github.com/menklab/goCMS/repositories"
-	"github.com/menklab/goCMS/services"
+	"github.com/gocms-io/goCMS/context"
+	"github.com/gocms-io/goCMS/controllers"
+	"github.com/gocms-io/goCMS/database"
+	"github.com/gocms-io/goCMS/repositories"
+	"github.com/gocms-io/goCMS/services"
 	"log"
 	"os"
 )

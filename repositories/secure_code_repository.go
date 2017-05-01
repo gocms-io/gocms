@@ -2,7 +2,7 @@ package repositories
 
 import (
 	"github.com/jmoiron/sqlx"
-	"github.com/menklab/goCMS/models"
+	"github.com/gocms-io/goCMS/models"
 	"log"
 	"time"
 )

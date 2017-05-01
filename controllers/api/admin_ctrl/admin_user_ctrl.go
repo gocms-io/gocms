@@ -2,11 +2,11 @@ package admin_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/menklab/goCMS/controllers/middleware/acl"
-	"github.com/menklab/goCMS/models"
-	"github.com/menklab/goCMS/routes"
-	"github.com/menklab/goCMS/services"
-	"github.com/menklab/goCMS/utility/errors"
+	"github.com/gocms-io/goCMS/controllers/middleware/acl"
+	"github.com/gocms-io/goCMS/models"
+	"github.com/gocms-io/goCMS/routes"
+	"github.com/gocms-io/goCMS/services"
+	"github.com/gocms-io/goCMS/utility/errors"
 	"net/http"
 	"strconv"
 )

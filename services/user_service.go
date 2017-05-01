@@ -1,10 +1,10 @@
 package services
 
 import (
-	"github.com/menklab/goCMS/models"
-	"github.com/menklab/goCMS/repositories"
-	"github.com/menklab/goCMS/utility"
-	"github.com/menklab/goCMS/utility/errors"
+	"github.com/gocms-io/goCMS/models"
+	"github.com/gocms-io/goCMS/repositories"
+	"github.com/gocms-io/goCMS/utility"
+	"github.com/gocms-io/goCMS/utility/errors"
 )
 
 type IUserService interface {

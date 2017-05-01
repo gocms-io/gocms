@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/menklab/goCMS/models"
-	"github.com/menklab/goCMS/repositories"
+	"github.com/gocms-io/goCMS/models"
+	"github.com/gocms-io/goCMS/repositories"
 	"log"
 	"time"
 )

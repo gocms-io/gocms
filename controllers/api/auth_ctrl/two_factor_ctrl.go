@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/menklab/goCMS/context"
-	"github.com/menklab/goCMS/utility"
-	"github.com/menklab/goCMS/utility/errors"
+	"github.com/gocms-io/goCMS/context"
+	"github.com/gocms-io/goCMS/utility"
+	"github.com/gocms-io/goCMS/utility/errors"
 )
 
 // Verify device form structure

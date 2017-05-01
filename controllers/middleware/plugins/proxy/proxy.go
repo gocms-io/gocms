@@ -3,8 +3,8 @@ package plugin_proxy_mdl
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/menklab/goCMS/utility"
-	"github.com/menklab/goCMS/utility/errors"
+	"github.com/gocms-io/goCMS/utility"
+	"github.com/gocms-io/goCMS/utility/errors"
 	"log"
 	"net/http"
 	"net/http/httputil"
