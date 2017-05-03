@@ -1,0 +1,11 @@
+.idea
+.env
+/vendor/*
+!vendor/vendor.json
+/content/*
+!/content/templates
+!/content/docs
+!/content/themes/readme.md
+!/content/plugins/readme.md
+!/content/themes/default
+npm-debug.log
