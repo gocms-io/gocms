@@ -5,7 +5,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/goCMS/models"
+	"github.com/gocms-io/gocms/models"
 	"io/ioutil"
 	"time"
 )

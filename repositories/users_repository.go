@@ -3,8 +3,8 @@ package repositories
 import (
 	"database/sql"
 	"github.com/jmoiron/sqlx"
-	"github.com/gocms-io/goCMS/models"
-	"github.com/gocms-io/goCMS/utility/errors"
+	"github.com/gocms-io/gocms/models"
+	"github.com/gocms-io/gocms/utility/errors"
 	"log"
 	"time"
 )

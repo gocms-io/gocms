@@ -5,14 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/goCMS/services"
-	"github.com/gocms-io/goCMS/utility/errors"
+	"github.com/gocms-io/gocms/services"
+	"github.com/gocms-io/gocms/utility/errors"
 	"log"
 	"net/http"
 	"strings"
 
-	"github.com/gocms-io/goCMS/context"
-	"github.com/gocms-io/goCMS/models"
+	"github.com/gocms-io/gocms/context"
+	"github.com/gocms-io/gocms/models"
 )
 
 type gImage struct {

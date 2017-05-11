@@ -3,12 +3,12 @@ package aclMdl
 import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/goCMS/services"
-	"github.com/gocms-io/goCMS/utility/errors"
+	"github.com/gocms-io/gocms/services"
+	"github.com/gocms-io/gocms/utility/errors"
 	"net/http"
 
-	"github.com/gocms-io/goCMS/context"
-	"github.com/gocms-io/goCMS/routes"
+	"github.com/gocms-io/gocms/context"
+	"github.com/gocms-io/gocms/routes"
 	"log"
 )
 

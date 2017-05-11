@@ -3,8 +3,8 @@ package content_ctrl
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/goCMS/routes"
-	"github.com/gocms-io/goCMS/services"
+	"github.com/gocms-io/gocms/routes"
+	"github.com/gocms-io/gocms/services"
 	"net/http"
 )
 

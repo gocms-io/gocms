@@ -2,7 +2,7 @@ package services
 
 import (
 	"bytes"
-	"github.com/gocms-io/goCMS/utility/errors"
+	"github.com/gocms-io/gocms/utility/errors"
 	"io/ioutil"
 	"log"
 	"net/http"
