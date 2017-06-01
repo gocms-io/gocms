@@ -47,8 +47,7 @@ func (ur *UserRepository) Get(id int) (*models.User, error) {
 	INNER JOIN gocms_emails e
 	ON u.id=e.userId
 	WHERE u.id=?
-	AND e.isPrimary=1
-	Limit 1;
+	AND e.isPrimary=1;
 	`, id)
 	if err != nil {
 		log.Printf("Error getting all user from database: %s", err.Error())
@@ -72,7 +71,7 @@ func (ur *UserRepository) GetByEmail(email string) (*models.User, error) {
 		SELECT userId FROM gocms_emails
 		WHERE email=?
 	)
-	AND isPrimary=1
+	AND e.isPrimary=1
 	Limit 1;
 	`, email)
 	if err != nil {
@@ -91,12 +90,7 @@ func (ur *UserRepository) GetAll() (*[]models.User, error) {
 	FROM gocms_users u
 	INNER JOIN gocms_emails e
 	ON u.id=e.userId
-	WHERE u.id=(
-		SELECT userId FROM gocms_emails
-		WHERE email=?
-	)
-	AND isPrimary=1
-	Limit 1;
+	AND e.isPrimary=1;
 	`)
 	if err != nil {
 		log.Printf("Error getting all users from database: %s", err.Error())
