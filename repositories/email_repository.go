@@ -22,6 +22,8 @@ type EmailRepository struct {
 	database *sqlx.DB
 }
 
+const emailFields = "id, userId, email, isVerified, isPrimary, created"
+
 func DefaultEmailRepository(db interface{}) *EmailRepository {
 	d, ok := db.(*sqlx.DB)
 	if !ok {
@@ -54,7 +56,7 @@ func (er *EmailRepository) Get(id int) (*models.Email, error) {
 	// get email by id
 	var email models.Email
 	err := er.database.Get(&email, `
-	SELECT gocms_emails.*
+	SELECT ` + emailFields + `
 	FROM gocms_emails
 	WHERE gocms_emails.id=?
 	`, id)
@@ -70,7 +72,7 @@ func (er *EmailRepository) GetByAddress(address string) (*models.Email, error) {
 	// get email by id
 	var email models.Email
 	err := er.database.Get(&email, `
-	SELECT gocms_emails.*
+	SELECT ` + emailFields + `
 	FROM gocms_emails
 	WHERE gocms_emails.email=?
 	`, address)
@@ -86,7 +88,7 @@ func (er *EmailRepository) GetByUserId(userId int) ([]models.Email, error) {
 	// get email by id
 	var emails []models.Email
 	err := er.database.Select(&emails, `
-	SELECT gocms_emails.*
+	SELECT ` + emailFields + `
 	FROM gocms_emails
 	WHERE gocms_emails.userId=?
 	`, userId)
@@ -102,7 +104,7 @@ func (er *EmailRepository) GetPrimaryByUserId(userId int) (*models.Email, error)
 	// get email by id
 	var email models.Email
 	err := er.database.Get(&email, `
-	SELECT gocms_emails.*
+	SELECT ` + emailFields + `
 	FROM gocms_emails
 	WHERE gocms_emails.userId=?
 	AND gocms_emails.isPrimary=?

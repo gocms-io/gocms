@@ -50,9 +50,9 @@ func (ss *SettingsService) RefreshSettingsCache() error {
 		return err
 	}
 
-	settingsCache := make(map[string]models.Setting, len(*settings))
+	settingsCache := make(map[string]models.Setting, len(settings))
 	// cache permissions
-	for _, setting := range *settings {
+	for _, setting := range settings {
 		settingsCache[setting.Name] = setting
 	}
 

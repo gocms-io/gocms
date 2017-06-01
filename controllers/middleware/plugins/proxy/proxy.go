@@ -14,7 +14,7 @@ import (
 
 type PluginProxyMiddleware struct {
 	Schema string
-	Port   int64
+	Port   int
 	Host   string
 }
 

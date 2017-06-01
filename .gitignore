@@ -1,5 +1,6 @@
 .idea
 .env
+*.exe
 /vendor/*
 !vendor/vendor.json
 /content/*
