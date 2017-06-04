@@ -12,13 +12,17 @@
     <title>GoCMS</title>
 </head>
 <body>
+<div id="loader-page-wrapper">
+    <h1 id="loader-text">Loading GoCMS...</h1>
+</div>
 {{template "theme_body.tmpl" .}}
 <div id="app"></div>
 </body>
 <script src="/goCMS/vendor.js"></script>
 <script src="/goCMS/base.js"></script>
 {{ if .Admin }}
-<script src="/goCMS/admin.js"></script>
+    <script src="/goCMS/admin.js"></script>
+    <link rel="stylesheet" href="/goCMS/admin.css">
 {{ end }}
 {{template "theme_footer.tmpl" .}}
 <script>
