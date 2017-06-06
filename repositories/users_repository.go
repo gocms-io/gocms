@@ -24,6 +24,8 @@ type UserRepository struct {
 	database *sqlx.DB
 }
 
+const uUserFields = "u.id, u.fullName, u.password, u.gender, u.minAge, u.maxAge, u.photo, u.enabled, u.created"
+
 func DefaultUserRepository(db interface{}) *UserRepository {
 	d, ok := db.(*sqlx.DB)
 	if !ok {
@@ -40,13 +42,12 @@ func DefaultUserRepository(db interface{}) *UserRepository {
 func (ur *UserRepository) Get(id int) (*models.User, error) {
 	var user models.User
 	err := ur.database.Get(&user, `
-	SELECT gocms_users.*, gocms_emails.email, gocms_emails.isVerified
-	FROM gocms_users
-	INNER JOIN gocms_emails
-	ON gocms_users.id=gocms_emails.userId
-	WHERE gocms_users.id=?
-	AND isPrimary=1
-	Limit 1;
+	SELECT ` + uUserFields + `, e.email, e.isVerified
+	FROM gocms_users u
+	INNER JOIN gocms_emails e
+	ON u.id=e.userId
+	WHERE u.id=?
+	AND e.isPrimary=1;
 	`, id)
 	if err != nil {
 		log.Printf("Error getting all user from database: %s", err.Error())
@@ -62,15 +63,15 @@ func (ur *UserRepository) GetByEmail(email string) (*models.User, error) {
 	// first get the user by email
 	var user models.User
 	err := ur.database.Get(&user, `
-	SELECT gocms_users.*, gocms_emails.email, gocms_emails.isVerified
-	FROM gocms_users
-	INNER JOIN gocms_emails
-	ON gocms_users.id=gocms_emails.userId
-	WHERE gocms_users.id=(
-		SELECT gocms_emails.userId AS u FROM gocms_emails
-		WHERE gocms_emails.email=?
+	SELECT ` + uUserFields + `, e.email, e.isVerified
+	FROM gocms_users u
+	INNER JOIN gocms_emails e
+	ON u.id=e.userId
+	WHERE u.id=(
+		SELECT userId FROM gocms_emails
+		WHERE email=?
 	)
-	AND isPrimary=1
+	AND e.isPrimary=1
 	Limit 1;
 	`, email)
 	if err != nil {
@@ -85,10 +86,11 @@ func (ur *UserRepository) GetByEmail(email string) (*models.User, error) {
 func (ur *UserRepository) GetAll() (*[]models.User, error) {
 	var users []models.User
 	err := ur.database.Select(&users, `
-	SELECT gocms_users.*, gocms_emails.email, gocms_emails.isVerified
-	FROM gocms_users
-	INNER JOIN gocms_emails
-	ON gocms_users.id=gocms_emails.userId AND gocms_emails.isPrimary=1;
+	SELECT ` + uUserFields + `, e.email, e.isVerified
+	FROM gocms_users u
+	INNER JOIN gocms_emails e
+	ON u.id=e.userId
+	AND e.isPrimary=1;
 	`)
 	if err != nil {
 		log.Printf("Error getting all users from database: %s", err.Error())

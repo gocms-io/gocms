@@ -30,7 +30,7 @@ func DefaultRuntimeRepository(db interface{}) *RuntimeRepository {
 // get all settings
 func (ur *RuntimeRepository) GetByName(name string) (*models.Runtime, error) {
 	var runtime models.Runtime
-	err := ur.database.Get(&runtime, "SELECT * FROM gocms_runtime WHERE name = ?", name)
+	err := ur.database.Get(&runtime, "SELECT id, name, value, description, created FROM gocms_runtime WHERE name = ?", name)
 	if err != nil {
 		log.Printf("Error getting runtime from database: %s", err.Error())
 		return nil, err

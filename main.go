@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
+	"flag"
+	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/controllers"
 	"github.com/gocms-io/gocms/database"
@@ -68,18 +69,24 @@ func main() {
 	// startup defaults
 	app = Default()
 
-	// start server and listen
-	port := context.Config.Port
+	// establish port
+	var port string
+	portCmd := flag.String("port", "", "port to run on")
+	flag.Parse()
 
-	// check if env is set and override
-	portEnv := os.Getenv("PORT")
-	if portEnv != "" {
-		port = portEnv
+	if *portCmd != "" {
+		port = *portCmd
+	} else {
+		portEnv := os.Getenv("PORT")
+		if portEnv != "" {
+			port = portEnv
+		} else if context.Config.Port != "" {
+			port = context.Config.Port
+		} else {
+			port = "8080"
+		}
 	}
 
-	if port == "" {
-		port = "8080"
-	}
-
-	app.Listen(":" + port)
+	log.Println("GoCMS listening on port", port)
+	app.Listen("localhost:" + port)
 }

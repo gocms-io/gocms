@@ -7,7 +7,7 @@ import (
 )
 
 type ISettingsRepository interface {
-	GetAll() (*[]models.Setting, error)
+	GetAll() ([]models.Setting, error)
 }
 
 type SettingsRepository struct {
@@ -27,12 +27,12 @@ func DefaultSettingsRepository(db interface{}) *SettingsRepository {
 }
 
 // get all settings
-func (ur *SettingsRepository) GetAll() (*[]models.Setting, error) {
+func (ur *SettingsRepository) GetAll() ([]models.Setting, error) {
 	var settings []models.Setting
-	err := ur.database.Select(&settings, "SELECT * FROM gocms_settings")
+	err := ur.database.Select(&settings, "SELECT id, name, value, description, created FROM gocms_settings")
 	if err != nil {
 		log.Printf("Error getting settings from database: %s", err.Error())
 		return nil, err
 	}
-	return &settings, nil
+	return settings, nil
 }

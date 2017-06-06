@@ -3,6 +3,7 @@ package plugin_services
 import (
 	"bufio"
 	"encoding/json"
+	_errors "errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/controllers/middleware/plugins/proxy"
@@ -15,12 +16,13 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strconv"
 )
 
 type Plugin struct {
 	BinaryPath string
 	Host       string
-	Port       int64
+	Port       int
 	Schema     string
 	Manifest   *models.PluginManifest
 	Proxy      *plugin_proxy_mdl.PluginProxyMiddleware
@@ -58,11 +60,11 @@ func (ps *PluginsService) GetActivePlugins() []*Plugin {
 
 func (ps *PluginsService) StartPlugins() error {
 
-	var port int64 = 30002
+	var port int
 	for _, plugin := range ps.Plugins {
 
 		// build command
-		cmd := exec.Command(plugin.BinaryPath, fmt.Sprintf("-port=%d", port))
+		cmd := exec.Command(plugin.BinaryPath, "-port=0")
 
 		// set stdout to pipe
 		cmdStdoutReader, err := cmd.StdoutPipe()
@@ -73,11 +75,6 @@ func (ps *PluginsService) StartPlugins() error {
 
 		// setup stdout to scan continuously
 		stdOutScanner := bufio.NewScanner(cmdStdoutReader)
-		go func() {
-			for stdOutScanner.Scan() {
-				fmt.Printf("\t > %s - %s\n", plugin.Manifest.Name, stdOutScanner.Text())
-			}
-		}()
 
 		// set stderr to pipe
 		cmdStderrReader, err := cmd.StderrPipe()
@@ -88,11 +85,6 @@ func (ps *PluginsService) StartPlugins() error {
 
 		// setup stderr to scan continuously
 		stdErrScanner := bufio.NewScanner(cmdStderrReader)
-		go func() {
-			for stdErrScanner.Scan() {
-				fmt.Printf("\t > %s - %s\n", plugin.Manifest.Name, stdErrScanner.Text())
-			}
-		}()
 
 		// start microservice
 		log.Printf("Starting microservice: %s\n", plugin.Manifest.Name)
@@ -101,6 +93,42 @@ func (ps *PluginsService) StartPlugins() error {
 			fmt.Fprintln(os.Stderr, "Error starting Cmd", err)
 			return err
 		}
+
+		// determine which port the pluging in running on by watching stderr
+		scanLoop:
+		for stdErrScanner.Scan() {
+			text := stdErrScanner.Text()
+			log.Printf("\t > %s - %s\n", plugin.Manifest.Name, text)
+			if len(text) >= 12 && text[:12] == "Listening on" {
+				for i := len(text) - 2; i >= 12; i-- {
+					if text[i] == ':' {
+						port, err = strconv.Atoi(text[i+1:])
+						if err != nil {
+							return err
+						}
+						break scanLoop
+					}
+				}
+			}
+		}
+		if port == 0 {
+			log.Println(plugin.Manifest.Name + " exited without indicating a port")
+			return _errors.New("No port detected")
+		} else {
+			log.Printf("Communicating with %s on port %d\n", plugin.Manifest.Name, port)
+		}
+
+		go func() {
+			for stdOutScanner.Scan() {
+				fmt.Printf("\t > %s - %s\n", plugin.Manifest.Name, stdOutScanner.Text())
+			}
+		}()
+
+		go func() {
+			for stdErrScanner.Scan() {
+				fmt.Printf("\t > %s - %s\n", plugin.Manifest.Name, stdErrScanner.Text())
+			}
+		}()
 
 		// add handle to command
 		plugin.cmd = cmd
@@ -111,9 +139,6 @@ func (ps *PluginsService) StartPlugins() error {
 			Schema: "http",
 			Host:   "localhost",
 		}
-
-		// bump port for next micro service
-		port++
 	}
 
 	return nil
@@ -127,8 +152,7 @@ func (ps *PluginsService) RegisterPluginRoutes(routes *routes.Routes) error {
 		for _, routeManifest := range plugin.Manifest.Routes {
 			routerGroup, err := ps.getRouteGroup(routeManifest.Route, routes)
 			if err != nil {
-				es := fmt.Sprintf("Plugin %s -> Route %s -> Method %s, Url %s, Error: %s\n", plugin.Manifest.Name, routeManifest.Route, routeManifest.Method, routeManifest.Url, err.Error())
-				log.Print(es)
+				log.Printf("Plugin %s -> Route %s -> Method %s, Url %s, Error: %s\n", plugin.Manifest.Name, routeManifest.Route, routeManifest.Method, routeManifest.Url, err.Error())
 				return err
 			} else {
 				ps.registerPluginProxyOnRoute(routerGroup, routeManifest.Method, routeManifest.Url, plugin.Proxy)
@@ -190,10 +214,9 @@ func (ps *PluginsService) visitPlugin(path string, f os.FileInfo, err error) err
 		mainPath, _ := filepath.Split(path)
 		mainFilePath := filepath.Join(mainPath, manifest.Bin)
 
-		// if windows add .exe to the bin
-		// if windows add exe
+		// if windows add .exe to the path
 		if runtime.GOOS == "windows" {
-			mainFilePath = fmt.Sprintf("%s.exe", mainFilePath)
+			mainFilePath += ".exe"
 		}
 
 		mainFile, err := os.Stat(mainFilePath)
@@ -203,7 +226,7 @@ func (ps *PluginsService) visitPlugin(path string, f os.FileInfo, err error) err
 		}
 
 		if !mainFile.Mode().IsRegular() {
-			log.Printf("Main file for plugin %s, apprears to be corrupted: %s\n", manifest.Name, err.Error())
+			log.Printf("Main file for plugin %s, appears to be corrupted: %s\n", manifest.Name, err.Error())
 			return err
 		}
 

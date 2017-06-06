@@ -63,7 +63,7 @@ func (scr *SecureCodeRepository) Delete(id int) error {
 func (scr *SecureCodeRepository) GetLatestForUserByType(id int, codeType models.SecureCodeType) (*models.SecureCode, error) {
 	var secureCode models.SecureCode
 	err := scr.database.Get(&secureCode, `
-	SELECT * from gocms_secure_codes WHERE userId=? AND type=? ORDER BY created DESC LIMIT 1
+	SELECT id, userId, type, code, created FROM gocms_secure_codes WHERE userId=? AND type=? ORDER BY created DESC LIMIT 1
 	`, id, codeType)
 	if err != nil {
 		log.Printf("Error getting getting latest security code for user from database: %s", err.Error())

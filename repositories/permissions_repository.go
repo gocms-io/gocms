@@ -30,7 +30,7 @@ func DefaultPermissionsRepository(db interface{}) *PermissionsRepository {
 // get all permissions
 func (ur *PermissionsRepository) GetAll() (*[]models.Permission, error) {
 	var permissions []models.Permission
-	err := ur.database.Select(&permissions, "SELECT * FROM gocms_permissions")
+	err := ur.database.Select(&permissions, "SELECT id, name, description, created FROM gocms_permissions")
 	if err != nil {
 		log.Printf("Error getting permissions from database: %s", err.Error())
 		return nil, err
