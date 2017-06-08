@@ -1,0 +1,22 @@
+<link rel="stylesheet" href="/themes/default/theme.css">
+<script src="/themes/default/theme_vendor.js"></script>
+<script src="/themes/default/theme.js"></script>
+
+<script>
+    if (isIE11) {
+        function hideIEAlert() {
+            var element = document.getElementById("ieAlert");
+            element.parentNode.removeChild(element);
+        }
+
+        document.body.innerHTML = '' +
+            '<div id="ieAlert">' +
+            '<h1>IE11 Limited Support</h1>' +
+            '<p>You are using an outdated web browser and some content may not display correctly. ' +
+            'Please consider changing to Edge or Chrome. <a href="javascript:void(0)" onclick="hideIEAlert()">Dismiss.</a></p>' +
+            '</div>' +
+            document.body.innerHTML +
+            '<link rel="stylesheet" href="/themes/default/ie11.css">'
+        ;
+    }
+</script>
