@@ -26,7 +26,8 @@
 {{ end }}
 {{template "theme_footer.tmpl" .}}
 <script>
-    var ASSET_BASE = {{.AssetBase}}
+    var ASSET_BASE = {{.AssetBase}};
+    var GOCMS_LOGIN_TITLE = 'GoCMS';
     var _app = require('goCMS/initialize');
     _app.run({{.Admin}}, {{.Theme}});
 </script>
