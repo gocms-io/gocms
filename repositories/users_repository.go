@@ -2,9 +2,9 @@ package repositories
 
 import (
 	"database/sql"
-	"github.com/jmoiron/sqlx"
 	"github.com/gocms-io/gocms/models"
 	"github.com/gocms-io/gocms/utility/errors"
+	"github.com/jmoiron/sqlx"
 	"log"
 	"time"
 )

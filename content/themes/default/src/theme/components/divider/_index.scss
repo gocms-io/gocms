@@ -1,0 +1,37 @@
+.wrapper-divider {
+  width: 100%;
+  margin: 38px auto 0 auto;
+  //height: 12px;
+}
+.divider-circle-wrapper {
+  position: relative;
+  top: -1px;
+  width: 25px;
+  background: #fff;
+  margin: 0 auto;
+}
+
+.divider-circle-overlay {
+  margin: 0 auto;
+  height: 12px;
+  width: 12px;
+  background: $green;
+  border-radius: 6px;
+  z-index: 3;
+}
+.divider-line-break {
+  background: $blue;
+  width: 45%;
+  height: 1px;
+  margin-top: 5px;
+  z-index: 2;
+  padding: 0 1px;
+
+  &-left {
+    float: left;
+  }
+
+  &-right {
+    float: right;
+  }
+}

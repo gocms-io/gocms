@@ -68,6 +68,11 @@ func (us *UserService) GetAll() (*[]models.User, error) {
 
 func (us *UserService) Add(user *models.User) error {
 
+	// email must exist and not be null
+	if user.Email == "" {
+		return errors.New("A valid email address was not provided. The user cannot be created.")
+	}
+
 	// hash password
 	if user.Password == "" {
 		user.Password, _ = utility.GenerateRandomString(32)

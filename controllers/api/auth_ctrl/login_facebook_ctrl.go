@@ -42,7 +42,7 @@ type fbMe struct {
 *
 * @apiUse UserDisplay
 *
-* @apiSuccess (Response-Header) {string} x-auth-token
+* @apiUse AuthHeaderResponse
  */
 func (ac *AuthController) loginFacebook(c *gin.Context) {
 	// check for token in header

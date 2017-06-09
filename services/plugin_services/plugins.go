@@ -8,6 +8,7 @@ import (
 	"github.com/gocms-io/gocms/controllers/middleware/plugins/proxy"
 	"github.com/gocms-io/gocms/models"
 	"github.com/gocms-io/gocms/routes"
+	"github.com/gocms-io/gocms/utility"
 	"github.com/gocms-io/gocms/utility/errors"
 	"io/ioutil"
 	"log"
@@ -58,8 +59,16 @@ func (ps *PluginsService) GetActivePlugins() []*Plugin {
 
 func (ps *PluginsService) StartPlugins() error {
 
-	var port int64 = 30002
+	var startingPort int = 30002
 	for _, plugin := range ps.Plugins {
+
+		// find port to run on
+		port, err := utility.FindPort(startingPort)
+		if err != nil {
+			log.Printf("Couldn't start plugin %v, error: %v", plugin.Manifest.Name, err.Error())
+			return err
+		}
+		startingPort = port + 1
 
 		// build command
 		cmd := exec.Command(plugin.BinaryPath, fmt.Sprintf("-port=%d", port))
@@ -94,7 +103,7 @@ func (ps *PluginsService) StartPlugins() error {
 			}
 		}()
 
-		// start microservice
+		// find port and start microservice
 		log.Printf("Starting microservice: %s\n", plugin.Manifest.Name)
 		err = cmd.Start()
 		if err != nil {
@@ -111,9 +120,6 @@ func (ps *PluginsService) StartPlugins() error {
 			Schema: "http",
 			Host:   "localhost",
 		}
-
-		// bump port for next micro service
-		port++
 	}
 
 	return nil

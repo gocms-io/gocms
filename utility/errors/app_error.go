@@ -5,15 +5,16 @@ import (
 )
 
 const (
-	ApiError_UserToken         = "Your user token is not valid or has expired."
-	ApiError_DeviceToken       = "Your device token is not valid or has expired."
-	ApiError_Json              = "Could not parse request. Some fields may be missing."
-	ApiError_UserDoesntExist   = "User Doesn't Exist."
-	ApiError_UserAlreadyExists = "User Already Exists."
-	ApiError_Permissions       = "You do not have access."
-	ApiError_User_Disabled     = "Account is currently disabled."
-	ApiError_Server            = "Something went wrong. Please try again."
-	ApiError_Activating_Email  = "Email couldn't be activate. The activation code has likely expired. Try requesting a new activation code."
+	ApiError_UserToken          = "Your user token is not valid or has expired."
+	ApiError_DeviceToken        = "Your device token is not valid or has expired."
+	ApiError_Json               = "Could not parse request. Some fields may be missing."
+	ApiError_UserDoesntExist    = "User Doesn't Exist."
+	ApiError_UserAlreadyExists  = "User Already Exists."
+	ApiError_Permissions        = "You do not have access."
+	ApiError_Bad_Email_Password = "You entered an incorrect Email or Password."
+	ApiError_User_Disabled      = "Account is currently deactivated."
+	ApiError_Server             = "Something went wrong. Please try again."
+	ApiError_Activating_Email   = "Email couldn't be activate. The activation code has likely expired. Try requesting a new activation code."
 )
 
 type appError interface {

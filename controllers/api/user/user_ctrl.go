@@ -28,6 +28,7 @@ func (uc *UserController) Default() {
 
 	uc.routes.Auth.GET("/user", uc.get)
 	uc.routes.Auth.PUT("/user", uc.update)
+	uc.routes.Auth.PUT("/user/deactivate", uc.deactivateUser)
 	uc.routes.Auth.PUT("/user/changePassword", uc.changePassword)
 	uc.routes.Auth.POST("/user/email", uc.addEmail)
 	uc.routes.Auth.GET("/user/email", uc.getEmails)
@@ -108,7 +109,7 @@ func (uc *UserController) update(c *gin.Context) {
 *
 * @apiUse AuthHeader
 * @apiUse UserChangePasswordInput
-* @apiPermission Authenticated`
+* @apiPermission Authenticated
  */
 func (uc *UserController) changePassword(c *gin.Context) {
 
@@ -133,6 +134,44 @@ func (uc *UserController) changePassword(c *gin.Context) {
 	err = uc.ServicesGroup.UserService.UpdatePassword(authUser.Id, changePasswordInput.NewPassword)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, "Couldn't update user.", err)
+		return
+	}
+
+	c.Status(http.StatusOK)
+}
+
+/**
+* @api {put} /user/deactivate Deactivate Account
+* @apiName DeactivateUser
+* @apiGroup User
+*
+* @apiUse AuthHeader
+* @apiUse UserPasswordInput
+* @apiPermission Authenticated
+ */
+func (uc *UserController) deactivateUser(c *gin.Context) {
+
+	// get logged in user
+	authUser, _ := utility.GetUserFromContext(c)
+
+	// copy current user info into update user
+	var userPasswordInput models.UserPasswordInput
+	err := c.BindJSON(&userPasswordInput) // update any changes from request
+	if err != nil {
+		errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		return
+	}
+
+	// verify password
+	if ok := uc.ServicesGroup.AuthService.VerifyPassword(authUser.Password, userPasswordInput.Password); !ok {
+		errors.Response(c, http.StatusUnauthorized, "Bad Password.", err)
+		return
+	}
+
+	// deactivate account
+	err = uc.ServicesGroup.UserService.SetEnabled(authUser.Id, false)
+	if err != nil {
+		errors.Response(c, http.StatusInternalServerError, "Couldn't deactivate user.", err)
 		return
 	}
 
