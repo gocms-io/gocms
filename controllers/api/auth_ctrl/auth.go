@@ -49,6 +49,8 @@ func (ac *AuthController) Default() {
 	ac.routes.Public.POST("/login/google", ac.loginGoogle)
 	ac.routes.Public.POST("/reset-password", ac.resetPassword)
 	ac.routes.Public.PUT("/reset-password", ac.setPassword)
+	ac.routes.Auth.GET("/verify", ac.verifyUser)
+
 
 	if context.Config.UseTwoFactor {
 		ac.routes.PreTwofactor.GET("/verify-device", ac.getDeviceCode)

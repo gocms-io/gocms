@@ -44,7 +44,7 @@ type gMe struct {
 *
 * @apiUse UserDisplay
 *
-* @apiSuccess (Response-Header) {string} x-auth-token
+* @apiUse AuthHeaderResponse
  */
 func (ac *AuthController) loginGoogle(c *gin.Context) {
 

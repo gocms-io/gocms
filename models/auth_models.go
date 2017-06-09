@@ -17,6 +17,11 @@ package models
  */
 
 /**
+ * @apiDefine AuthHeaderResponse
+ * @apiSuccess (Response-Header) {string} x-auth-token
+ */
+
+/**
 * @apiDefine LoginInput
 * @apiParam (Request) {string} email
 * @apiParam (Request) {string} password

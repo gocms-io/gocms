@@ -58,6 +58,14 @@ type UserChangePasswordInput struct {
 	NewPassword string `json:"newPassword,omitempty"`
 }
 
+/**
+* @apiDefine UserPasswordInput
+* @apiParam (Request) {string} password The current users password.
+ */
+type UserPasswordInput struct {
+	Password    string `json:"password,omitempty"`
+}
+
 // helper function to get userDisplay from user object
 func (user *User) GetUserDisplay() *UserDisplay {
 	userDisplay := UserDisplay{

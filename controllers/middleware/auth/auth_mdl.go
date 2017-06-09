@@ -75,7 +75,7 @@ func (am *AuthMiddleware) requireAuthedUser(c *gin.Context) {
 
 	// verify user is enabled
 	if !user.Enabled {
-		errors.Response(c, http.StatusUnauthorized, errors.ApiError_User_Disabled, err)
+		errors.Response(c, http.StatusUnauthorized, errors.ApiError_Bad_Email_Password, err)
 		return
 	}
 
