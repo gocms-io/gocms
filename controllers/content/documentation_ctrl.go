@@ -33,7 +33,7 @@ func (dc *DocumentationController) Default() {
 		name := plugin.Manifest.Name
 		link := fmt.Sprintf("docs/%s", plugin.Manifest.Bin)
 		docsMap[name] = link
-		dc.routes.Root.Static(fmt.Sprintf("docs/%s", plugin.Manifest.Bin), fmt.Sprintf("./plugins/%s/docs", plugin.Manifest.Bin))
+		dc.routes.Root.Static(fmt.Sprintf("docs/%s", plugin.Manifest.Bin), fmt.Sprintf("./content/plugins/%s/docs", plugin.Manifest.Bin))
 	}
 
 	docsMap["GoCMS"] = "/docs/goCMS"
