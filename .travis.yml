@@ -1,5 +1,11 @@
 language: go
 go: 1.7
+branches:
+  only:
+  - master
+  - dev
+before_install:
+go get -u github.com/kardianos/govendor
 install:
 before_deploy:
 - GOOS=linux GOARCH=amd64 go build -o govendor_linux_amd64
