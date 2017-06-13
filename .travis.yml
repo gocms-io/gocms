@@ -6,25 +6,11 @@ branches:
   - alpha-release
   - release
 before_install:
-- sudo apt-get install -y python-pip
-- sudo pip install awscli
 - go get -u github.com/kardianos/govendor
 - govendor sync
 install:
 - bash build.sh
-before_deploy:
-- GOOS=linux GOARCH=amd64 go build -o govendor_linux_amd64
-- GOOS=linux GOARCH=386 go build -o govendor_linux_386
-- GOOS=linux GOARCH=arm go build -o govendor_linux_arm
-- GOOS=darwin GOARCH=amd64 go build -o govendor_darwin_amd64
-- GOOS=windows GOARCH=amd64 go build -o govendor_windows_amd64.exe
-- GOOS=windows GOARCH=386 go build -o govendor_windows_386.exe
-deploy:
-  - provider: script
-    script: deploy.sh
-    on:
-      branch: alpha-release
-  - provider: script
-    script: deploy.sh
-    on:
-      branch: alpha-release
+after_success:
+- sudo apt-get install -y python-pip
+- sudo pip install awscli
+- bash deploy.sh
