@@ -2,7 +2,7 @@ package context
 
 import (
 	"fmt"
-	"github.com/gocms-io/gocms/models"
+	"github.com/gocms-io/gocms-services/models"
 	"os"
 	"strconv"
 )

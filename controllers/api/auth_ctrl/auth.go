@@ -2,13 +2,13 @@ package auth_ctrl
 
 import (
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gocms-io/gocms/routes"
-	"github.com/gocms-io/gocms/services"
+	"github.com/gocms-io/gocms-services/routes"
+	"github.com/gocms-io/gocms-services/services"
 	"time"
 
-	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/controllers/middleware/auth"
-	"github.com/gocms-io/gocms/utility"
+	"github.com/gocms-io/gocms-services/context"
+	"github.com/gocms-io/gocms-services/controllers/middleware/auth"
+	"github.com/gocms-io/gocms-services/utility"
 )
 
 const (

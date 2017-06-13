@@ -1,6 +1,6 @@
 package repositories
 
-import "github.com/gocms-io/gocms/database"
+import "github.com/gocms-io/gocms-services/database"
 
 type RepositoriesGroup struct {
 	RuntimeRepository     IRuntimeRepository

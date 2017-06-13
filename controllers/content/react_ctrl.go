@@ -2,8 +2,8 @@ package content_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/routes"
+	"github.com/gocms-io/gocms-services/context"
+	"github.com/gocms-io/gocms-services/routes"
 	"net/http"
 )
 
@@ -21,7 +21,7 @@ func DefaultReactController(routes *routes.Routes) *ReactController {
 }
 
 func (rc *ReactController) Default() {
-	rc.routes.Root.Static("/goCMS", "./content/goCMS")
+	rc.routes.Root.Static("/gocms-services", "./content/gocms-services")
 	rc.routes.Root.GET("/admin", rc.serveReactAdmin)
 	rc.routes.Root.GET("/login", rc.serveReactAdmin)
 	rc.routes.Root.GET("/admin/*adminPath", rc.serveReactAdmin)

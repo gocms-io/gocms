@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/gocms-io/gocms/models"
-	"github.com/gocms-io/gocms/repositories"
+	"github.com/gocms-io/gocms-services/models"
+	"github.com/gocms-io/gocms-services/repositories"
 	"log"
 	"time"
 )

@@ -2,7 +2,7 @@ package healthy_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/routes"
+	"github.com/gocms-io/gocms-services/routes"
 	"net/http"
 )
 

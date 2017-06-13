@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/gocms-io/gocms/context"
+	"github.com/gocms-io/gocms-services/context"
 	"gopkg.in/gomail.v2"
 	"log"
 )

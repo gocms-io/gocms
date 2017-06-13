@@ -1,10 +1,10 @@
 package services
 
 import (
-	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/models"
-	"github.com/gocms-io/gocms/repositories"
-	"github.com/gocms-io/gocms/utility"
+	"github.com/gocms-io/gocms-services/context"
+	"github.com/gocms-io/gocms-services/models"
+	"github.com/gocms-io/gocms-services/repositories"
+	"github.com/gocms-io/gocms-services/utility"
 	"github.com/nbutton23/zxcvbn-go"
 	"golang.org/x/crypto/bcrypt"
 	"log"

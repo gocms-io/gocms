@@ -3,9 +3,9 @@ package aclMdl
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/services"
-	"github.com/gocms-io/gocms/utility"
-	"github.com/gocms-io/gocms/utility/errors"
+	"github.com/gocms-io/gocms-services/services"
+	"github.com/gocms-io/gocms-services/utility"
+	"github.com/gocms-io/gocms-services/utility/errors"
 	"net/http"
 )
 

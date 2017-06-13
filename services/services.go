@@ -1,9 +1,9 @@
 package services
 
 import (
-	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/repositories"
-	"github.com/gocms-io/gocms/services/plugin_services"
+	"github.com/gocms-io/gocms-services/context"
+	"github.com/gocms-io/gocms-services/repositories"
+	"github.com/gocms-io/gocms-services/services/plugin_services"
 	"log"
 	"time"
 )

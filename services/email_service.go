@@ -2,10 +2,10 @@ package services
 
 import (
 	"fmt"
-	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/models"
-	"github.com/gocms-io/gocms/repositories"
-	"github.com/gocms-io/gocms/utility/errors"
+	"github.com/gocms-io/gocms-services/context"
+	"github.com/gocms-io/gocms-services/models"
+	"github.com/gocms-io/gocms-services/repositories"
+	"github.com/gocms-io/gocms-services/utility/errors"
 	"log"
 	"time"
 )

@@ -3,8 +3,8 @@ package database
 import (
 	"database/sql"
 	"github.com/jmoiron/sqlx"
-	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/database/migrations/sql"
+	"github.com/gocms-io/gocms-services/context"
+	"github.com/gocms-io/gocms-services/database/migrations/sql"
 	"github.com/rubenv/sql-migrate"
 	"log"
 )

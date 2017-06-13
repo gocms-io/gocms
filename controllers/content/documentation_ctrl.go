@@ -3,8 +3,8 @@ package content_ctrl
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/routes"
-	"github.com/gocms-io/gocms/services"
+	"github.com/gocms-io/gocms-services/routes"
+	"github.com/gocms-io/gocms-services/services"
 	"net/http"
 )
 
@@ -25,7 +25,7 @@ func DefaultDocumentationController(routes *routes.Routes, sg *services.Services
 
 func (dc *DocumentationController) Default() {
 	// register goCMS Docs Route
-	dc.routes.Root.Static("/docs/goCMS", "./content/docs")
+	dc.routes.Root.Static("/docs/gocms-services", "./content/docs")
 	docsMap := make(map[string]string)
 
 	// register plugins route

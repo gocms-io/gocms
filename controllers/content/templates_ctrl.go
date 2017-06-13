@@ -1,7 +1,7 @@
 package content_ctrl
 
 import (
-	"github.com/gocms-io/gocms/routes"
+	"github.com/gocms-io/gocms-services/routes"
 )
 
 type TemplatesController struct {

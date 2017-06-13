@@ -3,7 +3,7 @@ package aclMdl
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/context"
+	"github.com/gocms-io/gocms-services/context"
 )
 
 func CORS() gin.HandlerFunc {
