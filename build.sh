@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # for testing. comment out for release.
-TRAVIS_BRANCH="dev"
+#TRAVIS_BRANCH="dev"
 
 # grab govendor and sync
 echo install govendor

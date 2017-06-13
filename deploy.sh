@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # vars for testing. comment out for release.
-AWS_SECRET="XiILbK7edn2s7tmN2CuNzhw9NwYU5Yt6r1bdtB5d"
-AWS_BUCKET="release.gocms.io"
-AWS_KEY="AKIAJJOXWVHFZZEJIQRQ"
-TRAVIS_BRANCH="dev"
-TRAVIS_BUILD_NUMBER="1"
-TRAVIS_COMMIT="lkjdaldsfasa"
+#AWS_SECRET="XiILbK7edn2s7tmN2CuNzhw9NwYU5Yt6r1bdtB5d"
+#AWS_BUCKET="release.gocms.io"
+#AWS_KEY="AKIAJJOXWVHFZZEJIQRQ"
+#TRAVIS_BRANCH="dev"
+#TRAVIS_BUILD_NUMBER="1"
+#TRAVIS_COMMIT="lkjdaldsfasa"
 
 # copy files to s3
 echo copy files to current release dir

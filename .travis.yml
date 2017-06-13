@@ -6,7 +6,8 @@ branches:
   - alpha-release
   - release
 before_install:
-- sudo apt-get install awscli
+- sudo apt-get install -y python-pip
+- sudo pip install awscli
 - go get -u github.com/kardianos/govendor
 - govendor sync
 install:
