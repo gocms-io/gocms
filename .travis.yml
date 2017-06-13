@@ -11,7 +11,7 @@ before_install:
 - go get -u github.com/kardianos/govendor
 - govendor sync
 install:
-- build.sh
+- sh build.sh
 before_deploy:
 - GOOS=linux GOARCH=amd64 go build -o govendor_linux_amd64
 - GOOS=linux GOARCH=386 go build -o govendor_linux_386
