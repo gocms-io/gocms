@@ -2,7 +2,6 @@ language: go
 go: 1.7
 branches:
   only:
-  - master
   - dev
 before_install:
 go get -u github.com/kardianos/govendor
