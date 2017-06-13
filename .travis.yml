@@ -4,7 +4,8 @@ branches:
   only:
   - dev
 before_install:
-go get -u github.com/kardianos/govendor
+- go get -u github.com/kardianos/govendor
+- govendor sync
 install:
 before_deploy:
 - GOOS=linux GOARCH=amd64 go build -o govendor_linux_amd64
@@ -19,6 +20,8 @@ deploy:
   secret_access_key: $AWS_SECRET
   bucket: $S3_BUCKET
   skip_cleanup: true
+
+
 #deploy:
 #  skip_cleanup: true
 #  provider: releases
