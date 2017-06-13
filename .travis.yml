@@ -15,11 +15,13 @@ before_deploy:
 - GOOS=windows GOARCH=amd64 go build -o govendor_windows_amd64.exe
 - GOOS=windows GOARCH=386 go build -o govendor_windows_386.exe
 deploy:
-  provider: s3
-  access_key_id: $AWS_KEY
-  secret_access_key: $AWS_SECRET
-  bucket: $S3_BUCKET
-  skip_cleanup: true
+  - provider: s3
+    access_key_id: $AWS_KEY
+    secret_access_key: $AWS_SECRET
+    bucket: $S3_BUCKET
+    skip_cleanup: true
+    on:
+      tags: true
 
 
 #deploy:
