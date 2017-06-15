@@ -10,9 +10,6 @@ GOCMS_VERSION=0.0.$TRAVIS_BUILD_NUMBER
 #TRAVIS_BUILD_NUMBER=
 #TRAVIS_COMMIT=
 
-# add commit tag
-echo $TRAVIS_COMMIT > bin/$TRAVIS_BRANCH/$GOCMS_VERSION
-
 # copy files to s3
 echo copy files to current release dir
 AWS_ACCESS_KEY_ID=$AWS_KEY AWS_SECRET_ACCESS_KEY=$AWS_SECRET aws s3 cp \
