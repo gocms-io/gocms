@@ -1,0 +1,62 @@
+@import './components/index';
+
+#container-login-page {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: $gray-light;
+  justify-content: center;
+  box-sizing: content-box;
+}
+
+.container-login-page-form {
+
+}
+
+.wrapper-login-form {
+  padding: 50px 10px 10px 10px;
+  margin: auto;
+}
+
+.main-login-form {
+  width: 600px;
+}
+
+.error-message-login {
+  height: 50px;
+  width: 100%;
+
+  h3 {
+    color: $orange;
+  }
+}
+
+.g-error-message-box-login-animate {
+}
+
+.g-error-message-box-login-animate-enter {
+  opacity: 0;
+  top: 10px;
+  position: relative;
+}
+
+.g-error-message-box-login-animate-enter.g-error-message-box-login-animate-enter-active {
+  opacity: 1;
+  top: 0;
+  position: relative;
+  transition: all 200ms ease-in;
+
+}
+
+.g-error-message-box-login-animate-leave {
+  opacity: 1;
+  top: 0;
+  position: relative;
+  transition: all 200ms ease-in;
+}
+
+.g-error-message-box-login-animate-leave.g-error-message-box-login-animate-leave-active {
+  opacity: 0;
+  top: 10px;
+  position: relative;
+}

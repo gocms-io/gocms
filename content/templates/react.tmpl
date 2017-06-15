@@ -123,17 +123,18 @@
 {{template "theme_body.tmpl" .}}
 <div id="app"></div>
 </body>
-<script src="/goCMS/vendor.js"></script>
-<script src="/goCMS/base.js"></script>
+<script src="/gocms/vendor.js"></script>
+<script src="/gocms/base.js"></script>
+<link rel="stylesheet" href="/gocms/base.css">
 {{ if .Admin }}
-    <script src="/goCMS/admin.js"></script>
-    <link rel="stylesheet" href="/goCMS/admin.css">
+    <script src="/gocms/admin.js"></script>
+    <link rel="stylesheet" href="/gocms/admin.css">
 {{ end }}
 {{template "theme_footer.tmpl" .}}
 <script>
     var ASSET_BASE = {{.AssetBase}};
     var GOCMS_LOGIN_TITLE = 'GoCMS';
     var GOCMS_LOGIN_SUCCESS_REDIRECT = '/admin';
-    var _app = require('goCMS/initialize');
+    var _app = require('gocms/initialize');
     _app.run({{.Admin}}, {{.Theme}});
 </script>

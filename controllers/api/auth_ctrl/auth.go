@@ -51,7 +51,6 @@ func (ac *AuthController) Default() {
 	ac.routes.Public.PUT("/reset-password", ac.setPassword)
 	ac.routes.Auth.GET("/verify", ac.verifyUser)
 
-
 	if context.Config.UseTwoFactor {
 		ac.routes.PreTwofactor.GET("/verify-device", ac.getDeviceCode)
 		ac.routes.PreTwofactor.POST("/verify-device", ac.verifyDevice)
@@ -62,6 +61,6 @@ func (ac *AuthController) createToken(userId int) (string, error) {
 	expire := time.Now().Add(time.Minute * utility.GetTimeout(context.Config.UserAuthTimeout))
 	userToken := jwt.New(jwt.SigningMethodHS256)
 	userToken.Claims["userId"] = userId
-	userToken.Claims["exp"] = expire.Unix()
+	userToken.Claims["exp"] = expire.Unix() * 1000 // get milliseconds
 	return userToken.SignedString([]byte(context.Config.AuthKey))
 }

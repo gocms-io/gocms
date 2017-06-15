@@ -1,0 +1,38 @@
+.gForm {
+  display: block;
+}
+
+.g-input-error-message {
+  margin-left: 12px;
+  margin-top: 3px;
+  color: $orange;
+  font-size: 13px;
+}
+.g-input-error-message-animate {
+}
+.g-input-error-message-animate-enter {
+  opacity: 0;
+  left: 25px;
+  position: relative;
+}
+
+.g-input-error-message-animate-enter.g-input-error-message-animate-enter-active {
+  opacity: 1;
+  left: 0;
+  position: relative;
+  transition: all 200ms ease-in;
+
+}
+
+.g-input-error-message-animate-leave {
+  opacity: 1;
+  left: 0;
+  position: relative;
+  transition: all 200ms ease-in;
+}
+
+.g-input-error-message-animate-leave.g-input-error-message-animate-leave-active {
+  opacity: 0;
+  left: 25px;
+  position: relative;
+}

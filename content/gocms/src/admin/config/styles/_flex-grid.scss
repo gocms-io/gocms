@@ -1,0 +1,54 @@
+// Small devices (landscape phones, 576px and up)
+$xs-max: 575px;
+$sm-min: 576px;
+$sm-max: 767px;
+$md-min: 768px;
+$md-max: 991px;
+$lg-min: 992px;
+$lg-max: 1199px;
+$xl-min: 1200px;
+
+.flex {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.g-container {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-around;
+
+  input {
+    display: flex;
+  }
+  label {
+    display: flex;
+  }
+
+  &-col {
+    display: flex;
+    flex-flow: column wrap;
+  }
+}
+
+.no-padding {
+  padding: 0;
+}
+.no-margin {
+  margin: 0;
+}
+
+.g-row {
+  flex-direction: row;
+
+  &-reverse {
+    flex-direction: row-reverse;
+  }
+}
+.g-column {
+  flex-direction: column;
+
+  &-reverse {
+    flex-direction: column-reverse;
+  }
+}
