@@ -5,9 +5,6 @@ branches:
   only:
   - alpha-release
   - release
-before_install:
-- go get -u github.com/kardianos/govendor
-- govendor sync
 install:
 - bash build.sh
 after_success:
