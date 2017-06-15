@@ -3,12 +3,9 @@
 # for testing. comment out for release.
 TRAVIS_BRANCH=dev
 
-# install node and npm
 
-# build the frontend src
-pushd content/gocms/src/
-npm install
-popd
+# remove frontend src dir
+rm -rf content/gocms/src
 
 
 # grab govendor and sync

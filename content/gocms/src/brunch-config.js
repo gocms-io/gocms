@@ -64,7 +64,7 @@ module.exports = {
                 }
             },
             paths: {
-                public: "dist/"
+                public: "../gocms_prod"
             }
         }
     }
