@@ -17,7 +17,7 @@ function buildArch() {
     pushd bin/$TRAVIS_BRANCH/$3
     rm -rf content/gocms/src
     zip -r gocms.zip * .env
-    rm -rf gocms content .env
+    rm -rf $4 content .env
     popd
 }
 
