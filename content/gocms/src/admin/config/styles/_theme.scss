@@ -1,0 +1,202 @@
+@font-face {
+  font-family: Lato-Light;
+  src: url('./fonts/lato/Lato-Light.woff') format('woff'); /* Modern Browsers */
+  src: url('./fonts/lato/Lato-Light.ttf') format('truetype'); /* Safari, Android, iOS */
+  src: url('./fonts/lato/Lato-Light.ttf') format('embedded-opentype') /* IE11 */
+
+}
+
+@font-face {
+  font-family: Lato-Medium;
+  src: url('./fonts/lato/Lato-Medium.woff') format('woff'); /* Modern Browsers */
+  src: url('./fonts/lato/Lato-Medium.ttf') format('truetype'); /* Safari, Android, iOS */
+  src: url('./fonts/lato/Lato-Medium.ttf') format('embedded-opentype') /* IE11 */
+
+}
+
+@font-face {
+  font-family: Lato-Medium-Italic;
+  src: url('./fonts/lato/Lato-MediumItalic.woff') format('woff'); /* Modern Browsers */
+  src: url('./fonts/lato/Lato-MediumItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+  src: url('./fonts/lato/Lato-MediumItalic.ttf') format('embedded-opentype') /* IE11 */
+
+}
+
+// phones, up to 480px
+// tablets, 768px and up
+// desktops, 992px and up
+// large desktops, 1200px and up
+
+
+
+$gray-light: #F6F2EF;
+$gray: #5D5C5B;
+$gray-dark: #3E3E3D;
+$blue: #006797;
+$green: #7EB500;
+$yellow: #F1A000;
+$orange: #DB4F20;
+$white: #ffffff;
+
+.text-blue {
+   color: $blue;
+ }
+
+.text-yellow {
+  color: $yellow;
+}
+
+.text-orange {
+  color: $orange;
+}
+
+.text-white {
+  color: $white;
+}
+
+.text-gray {
+  color: $gray;
+}
+
+.text-gray-light {
+  color: $gray-light;
+}
+
+.text-gray-dark {
+  color: $gray-dark;
+}
+
+.text-green {
+  color: $green;
+}
+
+.g-a {
+
+  display: flex;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  p,
+  form {
+    margin: 10px 0;
+    font-family: Lato-Medium, sans-serif;
+  }
+
+  input[type=text],
+  input[type=password] {
+    box-sizing : border-box;
+  }
+
+  input {
+    margin: 10px 0;
+  }
+
+  label {
+    margin: 25px 0 5px 0;
+  }
+
+  button {
+    margin: 10px 0;
+  }
+
+  button:focus {outline:0;}
+
+
+  .btn {
+    padding: 0 24px;
+    height: 50px;
+    width: 100%;
+    color: $white;
+    font-family: Avenir, sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    border: none;
+    outline: none;
+  }
+
+  a.btn {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    padding: 14px 18px;
+    width: 100%;
+  }
+
+  .btn-default {
+    background-color: $blue;
+
+    &:hover,
+    &:focus {
+      background-color: darken($blue, 5%);
+    }
+    &:disabled {
+      background-color: lighten($blue, 5%);
+    }
+  }
+
+  .btn-primary {
+    background-color: $orange;
+
+    &:hover,
+    &:focus {
+      background-color: darken($orange, 5%);
+    }
+    &:disabled {
+      background-color: lighten($orange, 5%);
+    }
+  }
+
+  input,
+  input:focus {
+    outline: none;
+    font-family: Lato, sans-serif;
+    border: 1px $gray-dark solid;
+    border-radius: 4px;
+    color: $gray;
+    margin: 6px 0 14px 0;
+    height: 40px;
+    width: 100%;
+    padding: 4px 15px 4px 15px;
+    font-size: 20px;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .btn-animate-shake {
+    //display: inline-block;
+    animation: shake 1s 1;
+  }
+  @keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+
+    20%, 80% {
+      transform: translate3d(2px, 0, 0);
+    }
+
+    30%, 50%, 70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+
+    40%, 60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }
+
+  .no-padding {
+    padding: 0;
+  }
+  .no-margin {
+    margin: 0;
+  }
+  .no-decoration {
+    text-decoration: none;
+  }
+}
+

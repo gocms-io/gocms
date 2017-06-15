@@ -2,12 +2,8 @@
 .env
 /vendor/*
 /bin
-/content/gocms
 /content/plugins
 !/content/plugins/readme.md
 /content/themes/*
 !/content/themes/default
 !/content/themes/readme.md
-/content/themes/default/src
-npm-debug.log
-.DS_Store

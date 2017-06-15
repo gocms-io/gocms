@@ -1,0 +1,12 @@
+#g-a-main-container {
+  display: flex;
+  margin-left: 50px;
+  flex-flow: row wrap;
+}
+
+#g-a {
+  background: $gray-light;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}

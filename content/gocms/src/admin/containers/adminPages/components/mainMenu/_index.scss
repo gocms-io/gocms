@@ -1,0 +1,124 @@
+.g-a-main-menu-container {
+  position: absolute;
+  height: 100%;
+  background: $gray-light;
+  z-index: 9000;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 1px 26px 0 rgba(0, 0, 0, 0.19);
+  overflow: hidden;
+
+  &-open {
+    transition: width 200ms 200ms ease-in;
+    width: 400px;
+  }
+
+  &-close {
+    transition: width 200ms ease-in;
+    width: 50px;
+  }
+
+}
+
+.g-a-main-menu-title-container {
+  padding: 10px;
+  background: $gray;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  align-items: center;
+  flex-shrink: 0;
+  flex-grow: 0;
+  width: 400px;
+
+  .g-a-main-menu-title {
+    margin: 0 0 0 10px;
+    padding: 0;
+    font-size: 28px;
+    color: $gray-light;
+    display: inline-block;
+  }
+  .g-a-main-menu-sub-title {
+    margin: 0 0 0 10px;
+    padding: 0;
+    font-size: 18px;
+    color: $gray-light;
+    display: inline-block;
+
+    a {
+      text-decoration: none;
+      color: $gray-light;
+    }
+  }
+
+  .g-a-main-menu-sign-out {
+    font-size: 12px;
+    font-weight: 100;
+    margin-left: 25px;
+
+    a {
+      color: $orange;
+      text-decoration: underline;
+    }
+  }
+
+  &-open {
+    transition: height 200ms ease-in,
+    margin-left 200ms 200ms ease-in;
+    height: 85px;
+
+  }
+
+  &-close {
+    transition: margin-left 200ms ease-in,
+    height 200ms 200ms ease-in;
+    margin-left: -350px;
+    height: 60px;
+  }
+}
+
+.g-a-main-menu-profile-img-container {
+  display: inline-block;
+}
+
+.g-a-main-menu-profile-img {
+  width: 60px;
+  height: 60px;
+  border: solid 2px $gray-dark;
+  border-radius: 60px;
+  display: flex;
+  text-decoration: none;
+  overflow: hidden;
+
+  i {
+    display: inline-block;
+    margin: -1px 0 0 -2px;
+    color: $gray-dark;
+    font-size: 65px;
+  }
+}
+
+.g-a-main-menu-btn {
+  font-size: 30px;
+  color: $gray-dark;
+  background: none;
+  position: absolute;
+  z-index: 9001;
+  top: 0;
+  border: none;
+
+  &-open {
+    transition: left 200ms 200ms ease-in,
+    color 500ms 500ms ease-in;
+    left: 350px;
+    //top: 8px;
+  }
+
+  &-close {
+    transition: left 200ms ease-in,
+    color 500ms 500ms ease-in;
+    left: 3px;
+    color: $gray-light;
+  }
+
+  :focus {
+    border: none;
+  }
+}
