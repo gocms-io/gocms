@@ -1,7 +1,15 @@
 #!/bin/bash
 
 # for testing. comment out for release.
-#TRAVIS_BRANCH=
+TRAVIS_BRANCH=dev
+
+# install node and npm
+
+# build the frontend src
+pushd content/gocms/src/
+npm install
+popd
+
 
 # grab govendor and sync
 echo install govendor
@@ -9,8 +17,6 @@ go get -u github.com/kardianos/govendor
 
 echo pulling in deps with govendor
 govendor sync
-
-
 
 # build linux64
 echo build linux64

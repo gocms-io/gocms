@@ -2,11 +2,11 @@ package auth_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms-services/models"
-	"github.com/gocms-io/gocms-services/utility/errors"
+	"github.com/gocms-io/gocms/models"
+	"github.com/gocms-io/gocms/utility/errors"
 	"net/http"
 
-	"github.com/gocms-io/gocms-services/context"
+	"github.com/gocms-io/gocms/context"
 )
 
 /**

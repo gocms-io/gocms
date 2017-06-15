@@ -2,8 +2,8 @@ package auth_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms-services/utility"
-	"github.com/gocms-io/gocms-services/utility/errors"
+	"github.com/gocms-io/gocms/utility"
+	"github.com/gocms-io/gocms/utility/errors"
 	"net/http"
 	"strconv"
 )

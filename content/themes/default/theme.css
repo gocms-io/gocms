@@ -1,9 +1,9 @@
-/* line 1, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/themes/default/src/theme/components/divider/_index.scss */
+/* line 1, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/themes/default/src/theme/components/divider/_index.scss */
 .wrapper-divider {
   width: 100%;
   margin: 38px auto 0 auto; }
 
-/* line 6, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/themes/default/src/theme/components/divider/_index.scss */
+/* line 6, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/themes/default/src/theme/components/divider/_index.scss */
 .divider-circle-wrapper {
   position: relative;
   top: -1px;
@@ -11,7 +11,7 @@
   background: #fff;
   margin: 0 auto; }
 
-/* line 14, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/themes/default/src/theme/components/divider/_index.scss */
+/* line 14, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/themes/default/src/theme/components/divider/_index.scss */
 .divider-circle-overlay {
   margin: 0 auto;
   height: 12px;
@@ -20,7 +20,7 @@
   border-radius: 6px;
   z-index: 3; }
 
-/* line 22, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/themes/default/src/theme/components/divider/_index.scss */
+/* line 22, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/themes/default/src/theme/components/divider/_index.scss */
 .divider-line-break {
   background: #006797;
   width: 45%;
@@ -28,10 +28,10 @@
   margin-top: 5px;
   z-index: 2;
   padding: 0 1px; }
-  /* line 30, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/themes/default/src/theme/components/divider/_index.scss */
+  /* line 30, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/themes/default/src/theme/components/divider/_index.scss */
   .divider-line-break-left {
     float: left; }
-  /* line 34, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/themes/default/src/theme/components/divider/_index.scss */
+  /* line 34, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/themes/default/src/theme/components/divider/_index.scss */
   .divider-line-break-right {
     float: right; }
 

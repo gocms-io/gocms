@@ -1,9 +1,9 @@
-/* line 1, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/base/styles/_base.scss */
+/* line 1, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/base/styles/_base.scss */
 #app {
   width: 100%;
   height: 100%; }
 
-/* line 6, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/base/styles/_base.scss */
+/* line 6, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/base/styles/_base.scss */
 #goCMS {
   width: 100%;
   height: 100%; }
@@ -32,42 +32,42 @@
   /* Safari, Android, iOS */
   src: url("./fonts/lato/Lato-MediumItalic.ttf") format("embedded-opentype"); }
 
-/* line 41, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 41, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .text-blue {
   color: #006797; }
 
-/* line 45, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 45, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .text-yellow {
   color: #F1A000; }
 
-/* line 49, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 49, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .text-orange {
   color: #DB4F20; }
 
-/* line 53, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 53, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .text-white {
   color: #ffffff; }
 
-/* line 57, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 57, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .text-gray {
   color: #5D5C5B; }
 
-/* line 61, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 61, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .text-gray-light {
   color: #F6F2EF; }
 
-/* line 65, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 65, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .text-gray-dark {
   color: #3E3E3D; }
 
-/* line 69, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 69, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .text-green {
   color: #7EB500; }
 
-/* line 73, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 73, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .g-a {
   display: flex; }
-  /* line 77, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 77, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a h1,
   .g-a h2,
   .g-a h3,
@@ -77,23 +77,23 @@
   .g-a form {
     margin: 10px 0;
     font-family: Lato-Medium, sans-serif; }
-  /* line 88, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 88, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a input[type=text],
   .g-a input[type=password] {
     box-sizing: border-box; }
-  /* line 93, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 93, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a input {
     margin: 10px 0; }
-  /* line 97, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 97, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a label {
     margin: 25px 0 5px 0; }
-  /* line 101, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 101, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a button {
     margin: 10px 0; }
-  /* line 105, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 105, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a button:focus {
     outline: 0; }
-  /* line 108, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 108, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a .btn {
     padding: 0 24px;
     height: 50px;
@@ -104,32 +104,32 @@
     font-size: 18px;
     border: none;
     outline: none; }
-  /* line 120, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 120, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a a.btn {
     display: inline-block;
     text-decoration: none;
     text-align: center;
     padding: 14px 18px;
     width: 100%; }
-  /* line 128, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 128, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a .btn-default {
     background-color: #006797; }
-    /* line 131, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+    /* line 131, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
     .g-a .btn-default:hover, .g-a .btn-default:focus {
       background-color: #00567e; }
-    /* line 135, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+    /* line 135, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
     .g-a .btn-default:disabled {
       background-color: #0078b1; }
-  /* line 140, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 140, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a .btn-primary {
     background-color: #DB4F20; }
-    /* line 143, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+    /* line 143, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
     .g-a .btn-primary:hover, .g-a .btn-primary:focus {
       background-color: #c5471d; }
-    /* line 147, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+    /* line 147, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
     .g-a .btn-primary:disabled {
       background-color: #e15f33; }
-  /* line 152, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 152, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a input,
   .g-a input:focus {
     outline: none;
@@ -142,10 +142,10 @@
     width: 100%;
     padding: 4px 15px 4px 15px;
     font-size: 20px; }
-  /* line 166, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 166, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a .text-center {
     text-align: center; }
-  /* line 170, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 170, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a .btn-animate-shake {
     animation: shake 1s 1; }
 
@@ -158,48 +158,48 @@
     transform: translate3d(-4px, 0, 0); }
   40%, 60% {
     transform: translate3d(4px, 0, 0); } }
-  /* line 192, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 192, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a .no-padding {
     padding: 0; }
-  /* line 195, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 195, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a .no-margin {
     margin: 0; }
-  /* line 198, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 198, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a .no-decoration {
     text-decoration: none; }
 
-/* line 1, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/base/components/gForm/_index.scss */
+/* line 1, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/base/components/gForm/_index.scss */
 .gForm {
   display: block; }
 
-/* line 5, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/base/components/gForm/_index.scss */
+/* line 5, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/base/components/gForm/_index.scss */
 .g-input-error-message {
   margin-left: 12px;
   margin-top: 3px;
   color: #DB4F20;
   font-size: 13px; }
 
-/* line 13, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/base/components/gForm/_index.scss */
+/* line 13, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/base/components/gForm/_index.scss */
 .g-input-error-message-animate-enter {
   opacity: 0;
   left: 25px;
   position: relative; }
 
-/* line 19, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/base/components/gForm/_index.scss */
+/* line 19, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/base/components/gForm/_index.scss */
 .g-input-error-message-animate-enter.g-input-error-message-animate-enter-active {
   opacity: 1;
   left: 0;
   position: relative;
   transition: all 200ms ease-in; }
 
-/* line 27, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/base/components/gForm/_index.scss */
+/* line 27, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/base/components/gForm/_index.scss */
 .g-input-error-message-animate-leave {
   opacity: 1;
   left: 0;
   position: relative;
   transition: all 200ms ease-in; }
 
-/* line 34, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms-services/content/gocms/src/base/components/gForm/_index.scss */
+/* line 34, /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/base/components/gForm/_index.scss */
 .g-input-error-message-animate-leave.g-input-error-message-animate-leave-active {
   opacity: 0;
   left: 25px;
