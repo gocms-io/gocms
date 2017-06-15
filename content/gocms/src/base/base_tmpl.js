@@ -35,7 +35,7 @@ class BaseTemplate extends React.Component {
 
     render() {
         return (
-            <div id="goCMS">
+            <div id="gocms">
                 {this.props.children}
             </div>
         )
