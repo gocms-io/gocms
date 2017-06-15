@@ -3,11 +3,6 @@
 # for testing. comment out for release.
 TRAVIS_BRANCH=dev
 
-
-# remove frontend src dir
-rm -rf content/gocms/src
-
-
 # grab govendor and sync
 echo install govendor
 go get -u github.com/kardianos/govendor
@@ -15,11 +10,17 @@ go get -u github.com/kardianos/govendor
 echo pulling in deps with govendor
 govendor sync
 
+# remove frontend src dir
+echo remove admin src
+rm -rf content/gocms/src
+ls -al content/gocms/src
+
 # build linux64
 echo build linux64
 GOOS=linux GOARCH=amd64 go build -o bin/$TRAVIS_BRANCH/linux_64/gocms
 cp -r content bin/$TRAVIS_BRANCH/linux_64/.
 pushd bin/$TRAVIS_BRANCH/linux_64
+ls -al
 zip -r gocms.zip *
 rm -rf gocms content
 popd
