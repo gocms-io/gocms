@@ -148,7 +148,7 @@ var __makeRelativeRequire = function(require, mappings, pref) {
     return require(name);
   }
 };
-require.register("goCMS/admin/components/basicComponent/BasicComponent.js", function(exports, require, module) {
+require.register("gocms/admin/components/basicComponent/BasicComponent.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -219,7 +219,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, {})(BasicComponent);
 
 });
 
-require.register("goCMS/admin/config/actions/authenticationActions.js", function(exports, require, module) {
+require.register("gocms/admin/config/actions/authenticationActions.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -246,7 +246,7 @@ function removeUserFromState() {
 
 });
 
-;require.register("goCMS/admin/config/reducers/authenticationReducers.js", function(exports, require, module) {
+;require.register("gocms/admin/config/reducers/authenticationReducers.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -293,7 +293,7 @@ exports.default = authenticationReducers;
 
 });
 
-require.register("goCMS/admin/config/reducers/reducers.js", function(exports, require, module) {
+require.register("gocms/admin/config/reducers/reducers.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -317,7 +317,7 @@ exports.default = rootReducer;
 
 });
 
-require.register("goCMS/admin/config/router/routes.js", function(exports, require, module) {
+require.register("gocms/admin/config/router/routes.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -349,7 +349,7 @@ exports.default = _react2.default.createElement(
 
 });
 
-require.register("goCMS/admin/config/sagas.js", function(exports, require, module) {
+require.register("gocms/admin/config/sagas.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -390,7 +390,7 @@ function rootSaga() {
 
 });
 
-;require.register("goCMS/admin/containers/adminPages/adminPages.routes.js", function(exports, require, module) {
+;require.register("gocms/admin/containers/adminPages/adminPages.routes.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -428,7 +428,7 @@ exports.default = _react2.default.createElement(
 
 });
 
-require.register("goCMS/admin/containers/adminPages/components/mainMenu/MainMenu.js", function(exports, require, module) {
+require.register("gocms/admin/containers/adminPages/components/mainMenu/MainMenu.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -575,12 +575,12 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, {})(BasicComponent);
 
 });
 
-require.register("goCMS/admin/containers/adminPages/dashboardPage/dashboardPage.actions.js", function(exports, require, module) {
+require.register("gocms/admin/containers/adminPages/dashboardPage/dashboardPage.actions.js", function(exports, require, module) {
 "use strict";
 
 });
 
-require.register("goCMS/admin/containers/adminPages/dashboardPage/dashboardPage.container.js", function(exports, require, module) {
+require.register("gocms/admin/containers/adminPages/dashboardPage/dashboardPage.container.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -659,7 +659,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, {})(DashboardPage);
 
 });
 
-require.register("goCMS/admin/containers/adminPages/dashboardPage/dashboardPage.reducers.js", function(exports, require, module) {
+require.register("gocms/admin/containers/adminPages/dashboardPage/dashboardPage.reducers.js", function(exports, require, module) {
 // import {combineReducers} from 'redux'
 // import {REQUEST_PAGE, RECEIVE_PAGE} from './home.actions';
 //
@@ -708,7 +708,7 @@ require.register("goCMS/admin/containers/adminPages/dashboardPage/dashboardPage.
 
 });
 
-require.register("goCMS/admin/containers/adminPages/dashboardPage/dashboardPage.reducers.selectors.js", function(exports, require, module) {
+require.register("gocms/admin/containers/adminPages/dashboardPage/dashboardPage.reducers.selectors.js", function(exports, require, module) {
 // import {combineReducers} from 'redux'
 // import * as actions from '../../config/actions/form';
 //
@@ -762,7 +762,7 @@ require.register("goCMS/admin/containers/adminPages/dashboardPage/dashboardPage.
 
 });
 
-require.register("goCMS/admin/containers/adminPages/dashboardPage/dashboardPage.routes.js", function(exports, require, module) {
+require.register("gocms/admin/containers/adminPages/dashboardPage/dashboardPage.routes.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -789,7 +789,7 @@ exports.default = _react2.default.createElement(
 
 });
 
-require.register("goCMS/admin/containers/adminPages/dashboardPage/dashboardPage.sagas.js", function(exports, require, module) {
+require.register("gocms/admin/containers/adminPages/dashboardPage/dashboardPage.sagas.js", function(exports, require, module) {
 // import {fork, takeEvery, put, call} from 'redux-saga/effects';
 // import * as apiActions from '../../../base/actions/apiRequestActions'; // importing our action
 // import {login} from '../../config/actions/authenticationActions'
@@ -825,7 +825,7 @@ require.register("goCMS/admin/containers/adminPages/dashboardPage/dashboardPage.
 
 });
 
-require.register("goCMS/admin/containers/devTools/DevTools.js", function(exports, require, module) {
+require.register("gocms/admin/containers/devTools/DevTools.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -863,7 +863,7 @@ exports.default = DevTools;
 
 });
 
-require.register("goCMS/admin/containers/loginPage/loginPage.actions.js", function(exports, require, module) {
+require.register("gocms/admin/containers/loginPage/loginPage.actions.js", function(exports, require, module) {
 // export const REQUEST = 'REQUEST';
 // export const SUCCESS = 'FORM_SUCCESS';
 // export const FAILURE = 'FORM_FAIL';
@@ -902,7 +902,7 @@ require.register("goCMS/admin/containers/loginPage/loginPage.actions.js", functi
 
 });
 
-require.register("goCMS/admin/containers/loginPage/loginPage.container.js", function(exports, require, module) {
+require.register("gocms/admin/containers/loginPage/loginPage.container.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1087,7 +1087,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, {
 
 });
 
-require.register("goCMS/admin/containers/loginPage/loginPage.reducers.js", function(exports, require, module) {
+require.register("gocms/admin/containers/loginPage/loginPage.reducers.js", function(exports, require, module) {
 // import {combineReducers} from 'redux'
 // import {REQUEST_PAGE, RECEIVE_PAGE} from './home.actions';
 //
@@ -1136,7 +1136,7 @@ require.register("goCMS/admin/containers/loginPage/loginPage.reducers.js", funct
 
 });
 
-require.register("goCMS/admin/containers/loginPage/loginPage.reducers.selectors.js", function(exports, require, module) {
+require.register("gocms/admin/containers/loginPage/loginPage.reducers.selectors.js", function(exports, require, module) {
 // import {combineReducers} from 'redux'
 // import * as actions from '../../config/actions/form';
 //
@@ -1190,7 +1190,7 @@ require.register("goCMS/admin/containers/loginPage/loginPage.reducers.selectors.
 
 });
 
-require.register("goCMS/admin/containers/loginPage/loginPage.routes.js", function(exports, require, module) {
+require.register("gocms/admin/containers/loginPage/loginPage.routes.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1213,7 +1213,7 @@ exports.default = _react2.default.createElement(_reactRouter.Route, { path: 'log
 
 });
 
-require.register("goCMS/admin/containers/loginPage/loginPage.sagas.js", function(exports, require, module) {
+require.register("gocms/admin/containers/loginPage/loginPage.sagas.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1333,7 +1333,7 @@ function loginPageSagas() {
 
 });
 
-;require.register("goCMS/admin/init.js", function(exports, require, module) {
+;require.register("gocms/admin/init.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1363,7 +1363,7 @@ exports.default = {
 
 });
 
-require.register("goCMS/admin/services/authentication.js", function(exports, require, module) {
+require.register("gocms/admin/services/authentication.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1456,7 +1456,7 @@ function requireAuthUser(nextState, replace) {
 
 });
 
-;require.register("goCMS/admin/templates/admin_tmpl.js", function(exports, require, module) {
+;require.register("gocms/admin/templates/admin_tmpl.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

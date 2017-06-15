@@ -62,9 +62,6 @@ module.exports = {
                 autoReload: {
                     enabled: false
                 }
-            },
-            paths: {
-                public: "../gocms_prod"
             }
         }
     }
