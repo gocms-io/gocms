@@ -31,9 +31,9 @@ func (dc *DocumentationController) Default() {
 	// register plugins route
 	for _, plugin := range dc.serviceGroup.PluginsService.GetActivePlugins() {
 		name := plugin.Manifest.Name
-		link := fmt.Sprintf("docs/%s", plugin.Manifest.Bin)
+		link := fmt.Sprintf("docs/%s", plugin.Manifest.Services.Bin)
 		docsMap[name] = link
-		dc.routes.Root.Static(fmt.Sprintf("docs/%s", plugin.Manifest.Bin), fmt.Sprintf("./content/plugins/%s/docs", plugin.Manifest.Bin))
+		dc.routes.Root.Static(fmt.Sprintf("docs/%s", plugin.Manifest.Services.Bin), fmt.Sprintf("./content/plugins/%s/docs", plugin.Manifest.Services.Bin))
 	}
 
 	docsMap["GoCMS"] = "/docs/gocms"

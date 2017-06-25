@@ -7,3 +7,6 @@
 /content/themes/*
 !/content/themes/default
 !/content/themes/readme.md
+*.
+.DS_Store
+npm-debug.log

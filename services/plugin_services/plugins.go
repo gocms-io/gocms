@@ -130,7 +130,7 @@ func (ps *PluginsService) RegisterPluginRoutes(routes *routes.Routes) error {
 	for _, plugin := range ps.Plugins {
 
 		// loop through each manifest and apply each route to the middleware proxy
-		for _, routeManifest := range plugin.Manifest.Routes {
+		for _, routeManifest := range plugin.Manifest.Services.Routes {
 			routerGroup, err := ps.getRouteGroup(routeManifest.Route, routes)
 			if err != nil {
 				es := fmt.Sprintf("Plugin %s -> Route %s -> Method %s, Url %s, Error: %s\n", plugin.Manifest.Name, routeManifest.Route, routeManifest.Method, routeManifest.Url, err.Error())
@@ -194,7 +194,7 @@ func (ps *PluginsService) visitPlugin(path string, f os.FileInfo, err error) err
 
 		// verify that there is a main.go file
 		mainPath, _ := filepath.Split(path)
-		mainFilePath := filepath.Join(mainPath, manifest.Bin)
+		mainFilePath := filepath.Join(mainPath, manifest.Services.Bin)
 
 		// if windows add .exe to the bin
 		// if windows add exe
