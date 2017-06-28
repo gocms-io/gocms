@@ -12,7 +12,7 @@ GOCMS_VER_FILE="versions.txt"
 
 # get ver file
 curl http://release.gocms.io/$TRAVIS_BRANCH/$GOCMS_VER_FILE --output $GOCMS_VER_FILE
-echo ",$GOCMS_VERSION" >> $GOCMS_VER_FILE
+echo "$GOCMS_VERSION" >> $GOCMS_VER_FILE
 
 # copy files to s3
 echo copy files to current release dir
