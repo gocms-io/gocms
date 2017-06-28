@@ -29,6 +29,7 @@ type User struct {
 * @apiSuccess (Response) {string} fullName
 * @apiSuccess (Response) {string} email
 * @apiSuccess (Response) {number} gender 1=male, 2=female
+* @apiSuccess (Response) {string} photo url string
  */
 type UserDisplay struct {
 	Id       int    `json:"id,omitempty"`
