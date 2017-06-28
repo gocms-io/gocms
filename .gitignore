@@ -2,7 +2,7 @@
 .env
 /vendor/*
 /bin
-/content/plugins
+/content/plugins/*
 !/content/plugins/readme.md
 /content/themes/*
 !/content/themes/default
