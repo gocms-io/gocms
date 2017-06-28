@@ -93,6 +93,7 @@ func FindPort(startingPort int) (port int, err error) {
 
 		isAvailable, _ := CheckPort(testPort)
 		if isAvailable {
+			fmt.Printf("Port Available %v\n", testPort)
 			return testPort, nil
 		}
 
