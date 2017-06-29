@@ -80,9 +80,10 @@ func (es *EmailService) AddEmail(e *models.Email) error {
 	// send email to primary email about addition of email
 	if primaryEmail, err := es.RepositoriesGroup.EmailRepository.GetPrimaryByUserId(e.UserId); err == nil {
 		mail := Mail{
-			To:      primaryEmail.Email,
-			Subject: "New Email Added To Your Account",
-			Body:    "A new alternative email address, " + e.Email + ", was added to your account.\n\n If you believe this to be a mistake please contact support.",
+			To:       primaryEmail.Email,
+			Subject:  "New Email Added To Your Account",
+			Body:     "A new alternative email address, " + e.Email + ", was added to your account.\n\n If you believe this to be a mistake please contact support.",
+			BodyHTML: fmt.Sprintf("<h1>Alternative Email Added</h1><h3>%v</h3><p>If you believe this to be a mistake please contact support.</p>", e.Email),
 		}
 		es.MailService.Send(&mail)
 	}
@@ -123,13 +124,16 @@ func (es *EmailService) SendEmailActivationCode(emailAddress string) error {
 		return err
 	}
 
+	expTimeStr := time.Now().Add(time.Minute * time.Duration(context.Config.EmailActivationTimeout)).Format("01/02/2006 03:04 pm")
+	activationLink := fmt.Sprintf("%v/user/email/activate?code=%v&email=%v", context.Config.PublicApiUrl, code, emailAddress)
 	// send email
 	es.MailService.Send(&Mail{
 		To:      emailAddress,
-		Subject: "Email Verification Required",
-		Body: "Click on the link below to activate your email:\n" +
-			context.Config.PublicApiUrl + "/user/email/activate?code=" + code + "&email=" + emailAddress + "\n\nThe link will expire at: " +
-			time.Now().Add(time.Minute*time.Duration(context.Config.PasswordResetTimeout)).String() + ".",
+		Subject: "Account Verification Required",
+		Body: "Click on the link below to activate your account:\n" +
+			context.Config.PublicApiUrl + activationLink + "\n\nThe link will expire at: " +
+			expTimeStr + ".",
+		BodyHTML: fmt.Sprintf("<h1>Account Verification Required</h1><h2>Click on the link below to activate your account:</h2><p><a href='%v'>Activate Link</a></h3></p><p>The link will expire at: <b>%v</b></p>", activationLink, expTimeStr),
 	})
 	if err != nil {
 		log.Println("Error sending email activation code, sending mail: " + err.Error())
@@ -204,9 +208,10 @@ func (es *EmailService) PromoteEmail(email *models.Email) error {
 	// send notification
 	// send email to primary email about addition of email
 	mail := Mail{
-		To:      oldPrimaryEmail.Email,
-		Subject: "A New Primary Email Has Been Set",
-		Body:    "A new primary email address, " + email.Email + ", has been set on your account.\n\n If you believe this to be a mistake please contact support.",
+		To:       oldPrimaryEmail.Email,
+		Subject:  "New Primary Email",
+		Body:     "A new primary email address, " + email.Email + ", has been set on your account.\n\n If you believe this to be a mistake please contact support.",
+		BodyHTML: fmt.Sprintf("<h1>New Primary Email</h1><p>A new primary email address has been set for your account:</p><h3>%v</h3><p>If you believe this to be a mistake please contact support.</p>", email.Email),
 	}
 	es.MailService.Send(&mail)
 
@@ -265,9 +270,10 @@ func (es *EmailService) DeleteEmail(email *models.Email) error {
 	// send notification
 	// send email to primary email about addition of email
 	mail := Mail{
-		To:      primaryEmail.Email,
-		Subject: "Alternative Email Delete From Account",
-		Body:    "An alternative email, " + email.Email + ", has been deleted from your account.\n\n If you believe this to be a mistake please contact support.",
+		To:       primaryEmail.Email,
+		Subject:  "Alternative Email Deleted",
+		Body:     "An alternative email, " + email.Email + ", has been deleted from your account.\n\n If you believe this to be a mistake please contact support.",
+		BodyHTML: fmt.Sprintf("<h1>Alternative Email Deleted</h1><p>An alternative email address has been deleted from your account:</p><h3>%v</h3><p>If you believe this to be a mistake please contact support.</p>", email.Email),
 	}
 	es.MailService.Send(&mail)
 

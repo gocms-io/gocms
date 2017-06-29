@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/models"
 	"github.com/gocms-io/gocms/repositories"
@@ -117,13 +118,16 @@ func (as *AuthService) SendPasswordResetCode(email string) error {
 		return err
 	}
 
+	expireTimeStr := time.Now().Add(time.Minute * time.Duration(context.Config.PasswordResetTimeout)).Format("03:04 pm")
+
 	// send email
 	as.MailService.Send(&Mail{
 		To:      user.Email,
 		Subject: "Password Reset Requested",
 		Body: "To reset your password enter the code below into the app:\n" +
 			code + "\n\nThe code will expire at: " +
-			time.Now().Add(time.Minute*time.Duration(context.Config.PasswordResetTimeout)).String() + ".",
+			expireTimeStr + ".",
+		BodyHTML: fmt.Sprintf("<h1>Password Reset</h1><p>To reset your password enter the code below into the app:</p><h3>%v</h3><p>The code will expire at: <b>%v</b></p>", code, expireTimeStr),
 	})
 	if err != nil {
 		log.Print("Error sending mail: " + err.Error())
@@ -150,11 +154,14 @@ func (as *AuthService) SendTwoFactorCode(user *models.User) error {
 		return err
 	}
 
+	expireTimeStr := time.Now().Add(time.Minute * time.Duration(context.Config.TwoFactorCodeTimeout)).Format("03:04 pm")
+
 	// send email
 	as.MailService.Send(&Mail{
-		To:      user.Email,
-		Subject: "Device Verification",
-		Body:    "Your verification code is: " + code + "\n\nThe code will expire at: " + time.Now().Add(time.Minute*time.Duration(context.Config.TwoFactorCodeTimeout)).String() + ".",
+		To:       user.Email,
+		Subject:  "Device Verification",
+		Body:     "Your verification code is: " + code + "\n\nThe code will expire at: " + expireTimeStr + ".",
+		BodyHTML: fmt.Sprintf("<h1>Verification Code</h1><p>Your verification code is: </p><h3>%v</h3><p>The code will expire at: <b>%v</b></p>", code, expireTimeStr),
 	})
 	if err != nil {
 		log.Print("Error sending mail: " + err.Error())
