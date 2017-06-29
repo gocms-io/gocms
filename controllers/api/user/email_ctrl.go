@@ -1,7 +1,9 @@
 package user_ctrl
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/models"
 	"github.com/gocms-io/gocms/utility"
 	"github.com/gocms-io/gocms/utility/errors"
@@ -39,38 +41,38 @@ func (uc *UserController) requestActivationLink(c *gin.Context) {
 func (uc *UserController) activateEmail(c *gin.Context) {
 	code := c.Query("code")
 	if code == "" {
-		err := errors.New(errors.ApiError_Activating_Email)
-		errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/error", context.Config.RedirectRootUrl))
 		return
 	}
 
 	email := c.Query("email")
 	if email == "" {
-		err := errors.New(errors.ApiError_Activating_Email)
-		errors.Response(c, http.StatusBadRequest, err.Error(), err)
+
+		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/error", context.Config.RedirectRootUrl))
+		return
 	}
 
 	// get user
 	user, err := uc.ServicesGroup.UserService.GetByEmail(email)
 	if err != nil {
-		errors.Response(c, http.StatusBadRequest, errors.ApiError_Activating_Email, err)
+		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/error", context.Config.RedirectRootUrl))
 		return
 	}
 
 	if ok := uc.ServicesGroup.EmailService.VerifyEmailActivationCode(user.Id, code); !ok {
 		err = errors.New(errors.ApiError_Activating_Email)
-		errors.Response(c, http.StatusBadRequest, err.Error(), err)
+		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/error", context.Config.RedirectRootUrl))
 		return
 	}
 
 	// set email to verified
 	err = uc.ServicesGroup.EmailService.SetVerified(email)
 	if err != nil {
-		errors.Response(c, http.StatusBadRequest, errors.ApiError_Activating_Email, err)
+		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/error", context.Config.RedirectRootUrl))
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Your email has been verified. You can now log in."})
+	c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/success", context.Config.RedirectRootUrl))
 }
 
 /**
