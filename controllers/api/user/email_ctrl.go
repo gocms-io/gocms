@@ -41,38 +41,38 @@ func (uc *UserController) requestActivationLink(c *gin.Context) {
 func (uc *UserController) activateEmail(c *gin.Context) {
 	code := c.Query("code")
 	if code == "" {
-		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/error", context.Config.RedirectRootUrl))
+		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/error.html", context.Config.RedirectRootUrl))
 		return
 	}
 
 	email := c.Query("email")
 	if email == "" {
 
-		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/error", context.Config.RedirectRootUrl))
+		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/error.html", context.Config.RedirectRootUrl))
 		return
 	}
 
 	// get user
 	user, err := uc.ServicesGroup.UserService.GetByEmail(email)
 	if err != nil {
-		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/error", context.Config.RedirectRootUrl))
+		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/error.html", context.Config.RedirectRootUrl))
 		return
 	}
 
 	if ok := uc.ServicesGroup.EmailService.VerifyEmailActivationCode(user.Id, code); !ok {
 		err = errors.New(errors.ApiError_Activating_Email)
-		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/error", context.Config.RedirectRootUrl))
+		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/error.html", context.Config.RedirectRootUrl))
 		return
 	}
 
 	// set email to verified
 	err = uc.ServicesGroup.EmailService.SetVerified(email)
 	if err != nil {
-		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/error", context.Config.RedirectRootUrl))
+		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/error.html", context.Config.RedirectRootUrl))
 		return
 	}
 
-	c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/success", context.Config.RedirectRootUrl))
+	c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/success.html", context.Config.RedirectRootUrl))
 }
 
 /**
