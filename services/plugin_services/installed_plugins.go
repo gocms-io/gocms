@@ -1,14 +1,15 @@
 package plugin_services
 
 import (
-	"path/filepath"
+	"fmt"
+	"github.com/gocms-io/gocms/models/runtime_models"
 	"log"
 	"os"
+	"path/filepath"
 	"runtime"
-	"fmt"
 )
 
-func (ps *PluginsService) FindPlugins() error {
+func (ps *PluginsService) RefreshInstalledPlugins() error {
 
 	// find all plugins
 	err := filepath.Walk("./content/plugins", ps.visitPlugin)
@@ -34,32 +35,32 @@ func (ps *PluginsService) visitPlugin(path string, f os.FileInfo, err error) err
 		}
 
 		// verify that there is a main.go file
-		mainPath, _ := filepath.Split(path)
-		mainFilePath := filepath.Join(mainPath, manifest.Services.Bin)
+		pluginRoot, _ := filepath.Split(path)
 
 		// if windows add .exe to the bin
 		// if windows add exe
 		if runtime.GOOS == "windows" {
-			mainFilePath = fmt.Sprintf("%s.exe", mainFilePath)
+			manifest.Services.Bin = fmt.Sprintf("%s.exe", manifest.Services.Bin)
 		}
 
-		mainFile, err := os.Stat(mainFilePath)
+		binaryStat, err := os.Stat(filepath.Join(pluginRoot, manifest.Services.Bin))
 		if err != nil {
-			log.Printf("No main file for plugin %s: %s\n", manifest.Name, err.Error())
+			log.Printf("No binary for plugin %s: %s\n", manifest.Name, err.Error())
 			return err
 		}
 
-		if !mainFile.Mode().IsRegular() {
-			log.Printf("Main file for plugin %s, apprears to be corrupted: %s\n", manifest.Name, err.Error())
+		if !binaryStat.Mode().IsRegular() {
+			log.Printf("binary for plugin %s, apprears to be corrupted: %s\n", manifest.Id, err.Error())
 			return err
 		}
 
-		plugin := Plugin{
-			BinaryPath: mainFilePath,
+		plugin := runtime_models.Plugin{
+			PluginRoot: pluginRoot,
+			BinaryFile: manifest.Services.Bin,
 			Manifest:   manifest,
 		}
 
-		ps.Plugins = append(ps.Plugins, &plugin)
+		ps.installedPlugins[plugin.Manifest.Id] = &plugin
 	}
 
 	return nil

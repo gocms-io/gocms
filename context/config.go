@@ -1,7 +1,7 @@
 package context
 
 import (
-	"github.com/gocms-io/gocms/models"
+	"github.com/gocms-io/gocms/models/runtime_models"
 	"log"
 )
 
@@ -56,7 +56,7 @@ type RuntimeConfig struct {
 	ActiveThemeAssetsBase string
 }
 
-func (c *RuntimeConfig) ApplySettingsToConfig(settings map[string]models.Setting) {
+func (c *RuntimeConfig) ApplySettingsToConfig(settings map[string]runtime_models.Setting) {
 
 	log.Println("Refreshed GoCMS Settings")
 

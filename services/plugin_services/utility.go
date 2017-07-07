@@ -4,11 +4,11 @@ import (
 	"io/ioutil"
 	"log"
 	"encoding/json"
-	"github.com/gocms-io/gocms/models"
+	"github.com/gocms-io/gocms/models/runtime_models"
 )
 
-func (ps *PluginsService) parseManifest(fileUri string) (*models.PluginManifest, error) {
-	var manifest models.PluginManifest
+func (ps *PluginsService) parseManifest(fileUri string) (*runtime_models.PluginManifest, error) {
+	var manifest runtime_models.PluginManifest
 
 	// read file in
 	raw, err := ioutil.ReadFile(fileUri)

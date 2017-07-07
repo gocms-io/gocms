@@ -78,7 +78,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 	}
 
 	// register plugin routes
-	sg.PluginsService.RegisterPluginRoutes(routes)
+	sg.PluginsService.RegisterActivePluginRoutes(routes)
 
 	return controllersGroup
 }

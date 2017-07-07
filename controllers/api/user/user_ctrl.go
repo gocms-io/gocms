@@ -2,10 +2,10 @@ package user_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/gocms-io/gocms/controllers/api/api_utility"
 	"github.com/gocms-io/gocms/models"
 	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/services"
-	"github.com/gocms-io/gocms/utility"
 	"github.com/gocms-io/gocms/utility/errors"
 	"net/http"
 )
@@ -50,7 +50,7 @@ func (uc *UserController) Default() {
  */
 func (uc *UserController) get(c *gin.Context) {
 
-	authUser, _ := utility.GetUserFromContext(c)
+	authUser, _ := api_utility.GetUserFromContext(c)
 
 	c.JSON(http.StatusOK, authUser.GetUserDisplay())
 }
@@ -67,7 +67,7 @@ func (uc *UserController) get(c *gin.Context) {
 func (uc *UserController) update(c *gin.Context) {
 
 	// get logged in user
-	authUser, _ := utility.GetUserFromContext(c)
+	authUser, _ := api_utility.GetUserFromContext(c)
 
 	// copy current user info into update user
 	var userForUpdate models.UserUpdateInput
@@ -114,7 +114,7 @@ func (uc *UserController) update(c *gin.Context) {
 func (uc *UserController) changePassword(c *gin.Context) {
 
 	// get logged in user
-	authUser, _ := utility.GetUserFromContext(c)
+	authUser, _ := api_utility.GetUserFromContext(c)
 
 	// copy current user info into update user
 	var changePasswordInput models.UserChangePasswordInput
@@ -152,7 +152,7 @@ func (uc *UserController) changePassword(c *gin.Context) {
 func (uc *UserController) deactivateUser(c *gin.Context) {
 
 	// get logged in user
-	authUser, _ := utility.GetUserFromContext(c)
+	authUser, _ := api_utility.GetUserFromContext(c)
 
 	// copy current user info into update user
 	var userPasswordInput models.UserPasswordInput

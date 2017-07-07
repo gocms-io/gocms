@@ -1,4 +1,4 @@
-package models
+package runtime_models
 
 import "time"
 

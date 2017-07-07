@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/gocms-io/gocms/models"
+	"github.com/gocms-io/gocms/models/runtime_models"
 	"github.com/gocms-io/gocms/repositories"
 	"log"
 	"time"
@@ -9,15 +9,15 @@ import (
 
 type ISettingsService interface {
 	RefreshSettingsCache() error
-	GetSettings() map[string]models.Setting
-	RegisterRefreshCallback(func(map[string]models.Setting))
+	GetSettings() map[string]runtime_models.Setting
+	RegisterRefreshCallback(func(map[string]runtime_models.Setting))
 }
 
 type SettingsService struct {
 	LastRefresh        time.Time
-	SettingsCache      map[string]models.Setting
+	SettingsCache      map[string]runtime_models.Setting
 	RepositoriesGroup  *repositories.RepositoriesGroup
-	OnRefreshCallbacks []func(map[string]models.Setting)
+	OnRefreshCallbacks []func(map[string]runtime_models.Setting)
 }
 
 func DefaultSettingsService(rg *repositories.RepositoriesGroup) *SettingsService {
@@ -30,7 +30,7 @@ func DefaultSettingsService(rg *repositories.RepositoriesGroup) *SettingsService
 
 }
 
-func (ss *SettingsService) RegisterRefreshCallback(cb func(map[string]models.Setting)) {
+func (ss *SettingsService) RegisterRefreshCallback(cb func(map[string]runtime_models.Setting)) {
 
 	cbs := append(ss.OnRefreshCallbacks, cb)
 	ss.OnRefreshCallbacks = cbs
@@ -50,7 +50,7 @@ func (ss *SettingsService) RefreshSettingsCache() error {
 		return err
 	}
 
-	settingsCache := make(map[string]models.Setting, len(*settings))
+	settingsCache := make(map[string]runtime_models.Setting, len(*settings))
 	// cache permissions
 	for _, setting := range *settings {
 		settingsCache[setting.Name] = setting
@@ -64,6 +64,6 @@ func (ss *SettingsService) RefreshSettingsCache() error {
 	return nil
 }
 
-func (ss *SettingsService) GetSettings() map[string]models.Setting {
+func (ss *SettingsService) GetSettings() map[string]runtime_models.Setting {
 	return ss.SettingsCache
 }

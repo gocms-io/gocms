@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/gocms-io/gocms/context"
+	"github.com/gocms-io/gocms/controllers/api/api_utility"
 	"github.com/gocms-io/gocms/utility"
 	"github.com/gocms-io/gocms/utility/errors"
 )
@@ -19,7 +20,7 @@ type VerifyDeviceDisplay struct {
 // getDeviceToken
 func (ac *AuthController) getDeviceCode(c *gin.Context) {
 
-	user, _ := utility.GetUserFromContext(c)
+	user, _ := api_utility.GetUserFromContext(c)
 
 	err := ac.ServicesGroup.AuthService.SendTwoFactorCode(user)
 
@@ -35,7 +36,7 @@ func (ac *AuthController) getDeviceCode(c *gin.Context) {
 func (ac *AuthController) verifyDevice(c *gin.Context) {
 
 	// get userId
-	user, _ := utility.GetUserFromContext(c)
+	user, _ := api_utility.GetUserFromContext(c)
 
 	var verifyDeviceDisplay VerifyDeviceDisplay
 

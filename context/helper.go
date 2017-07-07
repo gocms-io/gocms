@@ -2,7 +2,7 @@ package context
 
 import (
 	"fmt"
-	"github.com/gocms-io/gocms/models"
+	"github.com/gocms-io/gocms/models/runtime_models"
 	"os"
 	"strconv"
 )
@@ -16,7 +16,7 @@ func GetEnvVarOrFail(envVar string) string {
 	return is
 }
 
-func GetIntOrFail(s string, settings map[string]models.Setting) int64 {
+func GetIntOrFail(s string, settings map[string]runtime_models.Setting) int64 {
 	is := settings[s].Value
 	i, err := strconv.ParseInt(is, 10, 34)
 	if err != nil {
@@ -26,7 +26,7 @@ func GetIntOrFail(s string, settings map[string]models.Setting) int64 {
 	return i
 }
 
-func GetStringOrFail(s string, settings map[string]models.Setting) string {
+func GetStringOrFail(s string, settings map[string]runtime_models.Setting) string {
 
 	ss := settings[s].Value
 	if ss == "" {
@@ -35,7 +35,7 @@ func GetStringOrFail(s string, settings map[string]models.Setting) string {
 	}
 	return ss
 }
-func GetBoolOrFail(s string, settings map[string]models.Setting) bool {
+func GetBoolOrFail(s string, settings map[string]runtime_models.Setting) bool {
 	bs := settings[s].Value
 	b, err := strconv.ParseBool(bs)
 	if err != nil {

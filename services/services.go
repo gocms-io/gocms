@@ -44,12 +44,12 @@ func DefaultServicesGroup(rg *repositories.RepositoriesGroup) *ServicesGroup {
 	emailService := DefaultEmailService(rg, mailService, authService)
 
 	// plugins service
-	pluginsService := plugin_services.DefaultPluginsService()
-	err := pluginsService.FindPlugins()
+	pluginsService := plugin_services.DefaultPluginsService(rg)
+	err := pluginsService.RefreshInstalledPlugins()
 	if err != nil {
 		log.Printf("Error finding plugins. Can't start plugin microservice: %s\n", err.Error())
 	} else {
-		pluginsService.StartPlugins()
+		pluginsService.StartActivePlugins()
 	}
 
 	sg := &ServicesGroup{

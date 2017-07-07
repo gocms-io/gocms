@@ -1,6 +1,21 @@
-package models
+package runtime_models
 
-import "time"
+import (
+	"github.com/gocms-io/gocms/controllers/middleware/plugins/proxy"
+	"os/exec"
+	"time"
+)
+
+type Plugin struct {
+	PluginRoot string
+	BinaryFile string
+	Host       string
+	Port       int64
+	Schema     string
+	Manifest   *PluginManifest
+	Proxy      *plugin_proxy_mdl.PluginProxyMiddleware
+	Cmd        *exec.Cmd
+}
 
 type PluginManifest struct {
 	Id          string          `json:"id"`
@@ -25,6 +40,7 @@ type PluginManifestRoute struct {
 type PluginServices struct {
 	Routes []*PluginManifestRoute `json:"routes"`
 	Bin    string                 `json:"bin"`
+	Docs   string                 `json:"docs"`
 }
 type PluginInterface struct {
 	Public       string `json:"public"`

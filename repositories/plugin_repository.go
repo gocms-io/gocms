@@ -1,13 +1,13 @@
 package repositories
 
 import (
-	"github.com/gocms-io/gocms/models"
+	"github.com/gocms-io/gocms/models/runtime_models"
 	"github.com/jmoiron/sqlx"
 	"log"
 )
 
 type IPluginRepository interface {
-	GetActivePlugins() ([]*models.PluginDatabaseRecord, error)
+	GetDatabasePlugins() ([]*runtime_models.PluginDatabaseRecord, error)
 }
 
 type PluginRepository struct {
@@ -27,11 +27,11 @@ func DefaultPluginRepository(db interface{}) *PluginRepository {
 }
 
 // get all events
-func (pr *PluginRepository) GetActivePlugins() ([]*models.PluginDatabaseRecord, error) {
-	var pluginRecords []*models.PluginDatabaseRecord
+func (pr *PluginRepository) GetDatabasePlugins() ([]*runtime_models.PluginDatabaseRecord, error) {
+	var pluginRecords []*runtime_models.PluginDatabaseRecord
 	err := pr.database.Select(&pluginRecords, `
-	SELECT * from gocms_plugins WHERE isActive=?
-	`, true)
+	SELECT * from gocms_plugins
+	`)
 	if err != nil {
 		log.Printf("Error getting getting latest security code for user from database: %s", err.Error())
 		return nil, err
