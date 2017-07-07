@@ -6,6 +6,7 @@ import (
 	"log"
 )
 
+
 type IPermissionsRepository interface {
 	GetAll() (*[]models.Permission, error)
 	GetUserPermissions(int) (*[]int, error)

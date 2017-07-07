@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type PluginManifest struct {
 	Id          string          `json:"id"`
 	Version     string          `json:"version"`
@@ -25,4 +27,15 @@ type PluginServices struct {
 	Bin    string                 `json:"bin"`
 }
 type PluginInterface struct {
+	Public       string `json:"public"`
+	PublicVendor string `json:"publicVendor"`
+}
+
+type PluginDatabaseRecord struct {
+	Id       int       `db:"id"`
+	PluginId string    `db:"pluginId"`
+	Name     string    `db:"name"`
+	Build    int       `db:"build"`
+	IsActive bool      `db:"isActive"`
+	Created  time.Time `db:"created"`
 }

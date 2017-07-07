@@ -9,6 +9,7 @@ type RepositoriesGroup struct {
 	EmailRepository       IEmailRepository
 	SecureCodeRepository  ISecureCodeRepository
 	PermissionsRepository IPermissionsRepository
+	PluginRepository      IPluginRepository
 }
 
 func DefaultRepositoriesGroup(db *database.Database) *RepositoriesGroup {
@@ -21,6 +22,7 @@ func DefaultRepositoriesGroup(db *database.Database) *RepositoriesGroup {
 		EmailRepository:       DefaultEmailRepository(db.SQL.Dbx),
 		SecureCodeRepository:  DefaultSecureCodeRepository(db.SQL.Dbx),
 		PermissionsRepository: DefaultPermissionsRepository(db.SQL.Dbx),
+		PluginRepository:      DefaultPluginRepository(db.SQL.Dbx),
 	}
 	return rg
 }

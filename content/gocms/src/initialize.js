@@ -11,13 +11,13 @@ export function run(withAdmin, activeTheme) {
     // check to see if we are loading admin section
     if (!!withAdmin) {
         let goCMSAdmin = require('./admin/init.js').default;
-        goCMSBase.injectApp(goCMSAdmin);
+        goCMSBase.injectModule(goCMSAdmin);
     }
 
     // load the theme
     let themeInit = activeTheme + '/theme/initialize.js';
     let goCMSTheme = require(themeInit).default;
-    goCMSBase.injectApp(goCMSTheme);
+    goCMSBase.injectModule(goCMSTheme);
 
     // run the cms
     goCMSBase.run();

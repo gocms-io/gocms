@@ -2,12 +2,12 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	_ "github.com/joho/godotenv/autoload"
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/controllers"
 	"github.com/gocms-io/gocms/database"
 	"github.com/gocms-io/gocms/repositories"
 	"github.com/gocms-io/gocms/services"
+	_ "github.com/joho/godotenv/autoload"
 	"log"
 	"os"
 )
@@ -21,6 +21,8 @@ type Engine struct {
 	RepositoriesGroup *repositories.RepositoriesGroup
 	Database          *database.Database
 }
+
+// todo write an optimizer for requirejs
 
 //go:generate apidoc -c ./ -i ./models -i ./controllers/ -o ./content/docs/ -f ".*\\.go$" -f ".*\\.js$"
 func Default() *Engine {
