@@ -1,19 +1,29 @@
 package content_ctrl
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/routes"
+	"github.com/gocms-io/gocms/services"
 	"net/http"
 )
 
 type ReactController struct {
-	routes *routes.Routes
+	routes       *routes.Routes
+	serviceGroup *services.ServicesGroup
 }
 
-func DefaultReactController(routes *routes.Routes) *ReactController {
+type ActivePluginDisplay struct {
+	Id           string
+	Public       string
+	PublicVendor string
+}
+
+func DefaultReactController(routes *routes.Routes, sg *services.ServicesGroup) *ReactController {
 	rc := &ReactController{
-		routes: routes,
+		routes:       routes,
+		serviceGroup: sg,
 	}
 
 	rc.Default()
@@ -29,17 +39,37 @@ func (rc *ReactController) Default() {
 }
 
 func (rc *ReactController) serveReact(c *gin.Context) {
+
 	c.HTML(http.StatusOK, "react.tmpl", gin.H{
-		"Theme":     context.Config.ActiveTheme,
-		"AssetBase": context.Config.ActiveThemeAssetsBase,
-		"Admin":     false,
+		"Theme":         context.Config.ActiveTheme,
+		"AssetBase":     context.Config.ActiveThemeAssetsBase,
+		"Admin":         false,
+		"ActivePlugins": rc.getActivePlugins(),
 	})
 }
 
 func (rc *ReactController) serveReactAdmin(c *gin.Context) {
 	c.HTML(http.StatusOK, "react.tmpl", gin.H{
-		"Theme":     context.Config.ActiveTheme,
-		"AssetBase": context.Config.ActiveThemeAssetsBase,
-		"Admin":     true,
+		"Theme":         context.Config.ActiveTheme,
+		"AssetBase":     context.Config.ActiveThemeAssetsBase,
+		"Admin":         true,
+		"ActivePlugins": rc.getActivePlugins(),
 	})
+}
+
+func (rc *ReactController) getActivePlugins() []*ActivePluginDisplay {
+	activePlugins := rc.serviceGroup.PluginsService.GetActivePlugins()
+
+	var activePluginsDisplay []*ActivePluginDisplay
+	for _, plugin := range activePlugins {
+		apd := ActivePluginDisplay{
+			Id:           plugin.Manifest.Id,
+			Public:       fmt.Sprintf("/content/%v%v", plugin.Manifest.Id, plugin.Manifest.Interface.Public),
+			PublicVendor: fmt.Sprintf("/content/%v%v", plugin.Manifest.Id, plugin.Manifest.Interface.PublicVendor),
+		}
+		activePluginsDisplay = append(activePluginsDisplay, &apd)
+	}
+
+	return activePluginsDisplay
+
 }

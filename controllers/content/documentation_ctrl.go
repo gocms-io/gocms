@@ -40,4 +40,8 @@ func (dc *DocumentationController) Default() {
 		c.HTML(http.StatusOK, "docs.tmpl", docsMap)
 	})
 
+	dc.routes.Root.GET("/docs/", func(c *gin.Context) {
+		c.Redirect(http.StatusTemporaryRedirect, "/docs")
+	})
+
 }
