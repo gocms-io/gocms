@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/models"
-	"github.com/gocms-io/gocms/utility/errors"
 	"io/ioutil"
 	"net"
 	"strconv"
 	"time"
+	"strings"
 )
 
 func GenerateRandomBytes(n int) ([]byte, error) {
@@ -80,26 +80,20 @@ func CheckPort(port int) (status bool, err error) {
 }
 
 // find an available port
-func FindPort(startingPort int) (port int, err error) {
-	// highest port 65535
-	i := 0
-	for true {
-		testPort := startingPort + i
+func FindPort() (port int, err error) {
 
-		// make sure we aren't over the allowed range
-		if testPort > 65535 {
-			return 0, errors.New("Over Allowed Port Range.")
-		}
-
-		isAvailable, _ := CheckPort(testPort)
-		if isAvailable {
-			fmt.Printf("Port Available %v\n", testPort)
-			return testPort, nil
-		}
-
-		i++
+	l, err := net.Listen("tcp", ":0")
+	defer l.Close()
+	if err != nil {
+		fmt.Printf("OS did not provide a tcp port: %v\n", err.Error())
+		return 0, err
 	}
 
-	return 0, errors.New("Couldn't find available open port.")
+	portString := strings.Replace(l.Addr().String(), "[::]:", "", 1)
+	port, err = strconv.Atoi(portString)
+	if err != nil {
+		fmt.Printf("plugin utility - error parsing port for plugin: %v\n", err.Error())
+	}
 
+	return port, nil
 }
