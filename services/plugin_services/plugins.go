@@ -59,19 +59,17 @@ func (ps *PluginsService) GetActivePlugins() []*Plugin {
 
 func (ps *PluginsService) StartPlugins() error {
 
-	var startingPort int = 30002
 	for _, plugin := range ps.Plugins {
 
 		// find port to run on
-		port, err := utility.FindPort(startingPort)
+		pluginPort, err := utility.FindPort()
 		if err != nil {
 			log.Printf("Couldn't start plugin %v, error: %v", plugin.Manifest.Name, err.Error())
 			return err
 		}
-		startingPort = port + 1
 
 		// build command
-		cmd := exec.Command(plugin.BinaryPath, fmt.Sprintf("-port=%d", port))
+		cmd := exec.Command(plugin.BinaryPath, fmt.Sprintf("-port=%d", pluginPort))
 
 		// set stdout to pipe
 		cmdStdoutReader, err := cmd.StdoutPipe()
@@ -116,7 +114,7 @@ func (ps *PluginsService) StartPlugins() error {
 
 		// create proxy for use during registration
 		plugin.Proxy = &plugin_proxy_mdl.PluginProxyMiddleware{
-			Port:   port,
+			Port:   pluginPort,
 			Schema: "http",
 			Host:   "localhost",
 		}
