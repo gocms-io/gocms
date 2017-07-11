@@ -64,8 +64,8 @@ func (rc *ReactController) getActivePlugins() []*ActivePluginDisplay {
 	for _, plugin := range activePlugins {
 		apd := ActivePluginDisplay{
 			Id:           plugin.Manifest.Id,
-			Public:       fmt.Sprintf("/content/%v%v", plugin.Manifest.Id, plugin.Manifest.Interface.Public),
-			PublicVendor: fmt.Sprintf("/content/%v%v", plugin.Manifest.Id, plugin.Manifest.Interface.PublicVendor),
+			Public:       fmt.Sprintf("/content/%v/%v", plugin.Manifest.Id, plugin.Manifest.Interface.Public),
+			PublicVendor: fmt.Sprintf("/content/%v/%v", plugin.Manifest.Id, plugin.Manifest.Interface.PublicVendor),
 		}
 		activePluginsDisplay = append(activePluginsDisplay, &apd)
 	}

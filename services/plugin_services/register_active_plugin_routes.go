@@ -33,6 +33,7 @@ func (ps *PluginsService) RegisterActivePluginRoutes(routes *routes.Routes) erro
 		// check if there is interface routes that need to be registered
 		if plugin.Manifest.Interface.Public != "" {
 			ps.registerPluginProxyOnRoute(routes.Root, "GET", fmt.Sprintf("/content/%v/public.js", plugin.Manifest.Id), plugin.Proxy)
+			ps.registerPluginProxyOnRoute(routes.Root, "GET", fmt.Sprintf("/content/%v/public_vendor.js", plugin.Manifest.Id), plugin.Proxy)
 		}
 
 		//

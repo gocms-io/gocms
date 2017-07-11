@@ -126,6 +126,12 @@
 <script src="/gocms/vendor.js"></script>
 <script src="/gocms/base.js"></script>
 <link rel="stylesheet" href="/gocms/base.css">
+
+{{ range $i, $plugin := .ActivePlugins }}
+    <script src="{{ $plugin.Public }}"></script>
+    <script src="{{ $plugin.PublicVendor }}"></script>
+{{ end }}
+
 {{ if .Admin }}
     <script src="/gocms/admin.js"></script>
     <link rel="stylesheet" href="/gocms/admin.css">
