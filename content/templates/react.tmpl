@@ -128,8 +128,8 @@
 <link rel="stylesheet" href="/gocms/base.css">
 
 {{ range $i, $plugin := .ActivePlugins }}
-    <script src="{{ $plugin.Public }}"></script>
     <script src="{{ $plugin.PublicVendor }}"></script>
+    <script src="{{ $plugin.Public }}"></script>
 {{ end }}
 
 {{ if .Admin }}
