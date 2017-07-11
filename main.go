@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/controllers"
@@ -77,6 +78,13 @@ func main() {
 	portEnv := os.Getenv("PORT")
 	if portEnv != "" {
 		port = portEnv
+	}
+
+	// check for port flag and override all
+	portFlag := flag.String("port", "", "port to run on. Overrides all.")
+	flag.Parse()
+	if *portFlag != "" {
+		port = *portFlag
 	}
 
 	if port == "" {
