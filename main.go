@@ -1,13 +1,15 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"github.com/gin-gonic/gin"
-	_ "github.com/joho/godotenv/autoload"
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/controllers"
 	"github.com/gocms-io/gocms/database"
 	"github.com/gocms-io/gocms/repositories"
 	"github.com/gocms-io/gocms/services"
+	_ "github.com/joho/godotenv/autoload"
 	"log"
 	"os"
 )
@@ -75,6 +77,13 @@ func main() {
 	portEnv := os.Getenv("PORT")
 	if portEnv != "" {
 		port = portEnv
+	}
+
+	// check for port flag and override all
+	portFlag := *flag.Int("port", 0, "port to run on. Overrides all.")
+	flag.Parse()
+	if portFlag != 0 {
+		port = fmt.Sprintf("%v", portFlag)
 	}
 
 	if port == "" {
