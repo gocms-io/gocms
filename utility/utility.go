@@ -70,14 +70,14 @@ func CheckPort(port int) (status bool, err error) {
 // find an available port
 func FindPort() (port int, err error) {
 
-	l, err := net.Listen("tcp", ":0")
+	l, err := net.Listen("tcp4", ":0")
 	defer l.Close()
 	if err != nil {
 		fmt.Printf("OS did not provide a tcp port: %v\n", err.Error())
 		return 0, err
 	}
 
-	portString := strings.Replace(l.Addr().String(), "[::]:", "", 1)
+	portString := strings.Replace(l.Addr().String(), "0.0.0.0:", "", 1)
 	port, err = strconv.Atoi(portString)
 	if err != nil {
 		fmt.Printf("plugin utility - error parsing port for plugin: %v\n", err.Error())
