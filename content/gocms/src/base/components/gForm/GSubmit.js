@@ -48,8 +48,10 @@ class GSubmit extends React.Component {
 
         return (
             <button type="submit"
-                    className={"btn" + (this.state.disabled ? " btn-disabled" : "") + (" " + this.state.className || "") + (this.state.shake ? " btn-animate-shake" : " ")}
-                    disabled={this.state.disabled}>{this.props.children}</button>
+                    className={"btn" + (" " + this.state.className || "") + (this.state.shake ? " btn-animate-shake" : " ")}
+            >
+                {this.props.children}
+            </button>
         );
     }
 }

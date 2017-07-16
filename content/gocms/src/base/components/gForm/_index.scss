@@ -4,7 +4,7 @@
 
 .g-input-error-message {
   margin-left: 12px;
-  margin-top: 3px;
+  //margin-top: 3px;
   color: $orange;
   font-size: 13px;
 }
@@ -35,6 +35,9 @@
   opacity: 0;
   left: 25px;
   position: relative;
+}
+.g-error-message {
+  min-height: 30px;
 }
 
 .g-error-message-box-animate {

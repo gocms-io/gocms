@@ -6,12 +6,18 @@ class GInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            blurred: false
+            blurred: false,
+            dirty: false
         };
         this.changeValue = this.changeValue.bind(this);
         this.handelBlur = this.handelBlur.bind(this);
         this.enableSubmitButton = this.changeValue.bind(this);
+    }
 
+    componentWillReceiveProps(nextProps) {
+        if (!!nextProps.dirty ) {
+            this.setState({dirty: true});
+        }
     }
 
     changeValue(event) {
@@ -35,6 +41,9 @@ class GInput extends React.Component {
         let errorMessage = [];
         if (this.state.blurred && this.props.getErrorMessage()) {
             errorMessage = this.props.getErrorMessage();
+        }
+        else if (this.state.dirty && this.props.showRequired()) {
+            errorMessage = "*Required";
         }
 
         return (
