@@ -60,7 +60,7 @@ class GForm extends React.Component {
                 onInvalid={this.disableSubmitButton}
                 formNoValidate>
                 {this.props.children}
-                {!this.props.submitBtn ? "" : <GSubmit type="submit" className={"btn btn-default " + (this.state.submitBtnClassName || "")} disabled={this.state.submitButtonIsDisabled}>{this.props.submitBtn}</GSubmit>}
+                {!this.props.submitBtn ? "" : <GSubmit type="submit" className={this.state.submitBtnClassName} disabled={this.state.submitButtonIsDisabled}>{this.props.submitBtn}</GSubmit>}
             </Formsy.Form>
         );
     }

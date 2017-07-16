@@ -38,10 +38,14 @@ export default class Api {
     callApi() {
         return this.fetch(this.url, this.options)
             .then(function (res) {
+                console.log("h");
                 return res.json().then(
                     function (json) { // success
-
+                        // todo need to rearange this so that 200 without json comes back successful
+                        // todo then we need to add a success handler to the contact form so that people only submit once
+                        // todo then we need to update the forms to allow for subit and error as apposed to just a disabled btn
                         if (res.status == 200 || res.status == 204) {
+                            console.log("200");
                             // if we receive an auth token we should add this to the storage
                             if (res.headers.has(AUTH_TOKEN_HEADER)) {
                                 sessionStorage.setItem(AUTH_TOKEN_HEADER, res.headers.get(AUTH_TOKEN_HEADER))
@@ -55,6 +59,7 @@ export default class Api {
                         // if we have a authorization error we should delete the auth token
 
                         else {
+                            console.log("issues");
                             switch (res.status) {
                                 case 401:
                                 case 403:
@@ -64,13 +69,15 @@ export default class Api {
                                     return Promise.reject({status: res.status, json: json});
                             }
                         }
-                    })
+                    });
             })
             .then(
                 function (res) { // success
+                    console.log("s");
                     return {res};
                 },
                 function (err) { //fail
+                    console.log("e");
                     return {err}
                 });
     }

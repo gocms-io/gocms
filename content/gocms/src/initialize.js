@@ -1,4 +1,4 @@
-export function run(withAdmin, activeTheme) {
+export function run(withAdmin, activePlugins, activeTheme) {
 
     // first get goCMS base
     let goCMSBase = require('./base/init.js');
@@ -12,6 +12,12 @@ export function run(withAdmin, activeTheme) {
     if (!!withAdmin) {
         let goCMSAdmin = require('./admin/init.js').default;
         goCMSBase.injectModule(goCMSAdmin);
+    }
+
+    for (let i = 0; i < activePlugins.length; i++) {
+        let activePluginInit = activePlugins[i] + "/initialize.js";
+        let activePlugin = require(activePluginInit).default;
+        goCMSBase.injectModule(activePlugin);
     }
 
     // load the theme

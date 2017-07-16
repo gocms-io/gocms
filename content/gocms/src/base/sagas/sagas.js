@@ -6,7 +6,6 @@ let sagas = [];
 
 export function rootSaga() {
     return function* () {
-
         yield [
             ...injectedSagas
         ]

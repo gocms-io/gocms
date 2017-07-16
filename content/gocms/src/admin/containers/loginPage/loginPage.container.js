@@ -3,11 +3,11 @@
 import React from 'react';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 import {connect} from 'react-redux'
-import {request} from '../../../base/actions/apiRequestActions';
+import {gocms_login} from './loginPage.actions';
 import GForm from '../../../base/components/gForm/GForm'
 import GInput from '../../../base/components/gForm/GInput'
 
-const LOGIN_FORM = "LOGIN_FORM";
+const LOGIN_FORM = "GOCMS_LOGIN_FORM";
 
 
 class LoginPage extends React.Component {
@@ -37,7 +37,7 @@ class LoginPage extends React.Component {
     }
 
     handleSubmit(model) {
-        this.props.request(LOGIN_FORM, model);
+        this.props.gocms_login(LOGIN_FORM, model);
         this.setState({errMessage: null});
     }
 
@@ -107,5 +107,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-    request
+    gocms_login
 })(LoginPage);

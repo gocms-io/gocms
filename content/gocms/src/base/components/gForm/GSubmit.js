@@ -33,7 +33,7 @@ class GSubmit extends React.Component {
 
     render() {
         return (
-            <button type="submit" className={"btn btn-default" + (this.state.disabled ? " btn-default-disabled" : "") + (" " + this.state.className)} disabled={this.state.disabled}>{this.props.children}</button>
+            <button type="submit" className={"btn" + (this.state.disabled ? " btn-disabled" : "") + (" " + this.state.className || "")} disabled={this.state.disabled}>{this.props.children}</button>
         );
     }
 }

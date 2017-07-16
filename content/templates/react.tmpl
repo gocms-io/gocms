@@ -127,9 +127,16 @@
 <script src="/gocms/base.js"></script>
 <link rel="stylesheet" href="/gocms/base.css">
 
+<script>
+    var activePlugins = [];
+</script>
+
 {{ range $i, $plugin := .ActivePlugins }}
     <script src="{{ $plugin.PublicVendor }}"></script>
     <script src="{{ $plugin.Public }}"></script>
+    <script>
+        activePlugins.push({{ $plugin.Id }});
+    </script>
 {{ end }}
 
 {{ if .Admin }}
@@ -138,9 +145,9 @@
 {{ end }}
 {{template "theme_footer.tmpl" .}}
 <script>
-    var ASSET_BASE = {{.AssetBase}};
+    var ASSET_BASE = {{ .AssetBase }};
     var GOCMS_LOGIN_TITLE = 'GoCMS';
     var GOCMS_LOGIN_SUCCESS_REDIRECT = '/admin';
     var _app = require('gocms/initialize');
-    _app.run({{.Admin}}, {{.Theme}});
+    _app.run({{ .Admin }}, activePlugins, {{ .Theme }});
 </script>
