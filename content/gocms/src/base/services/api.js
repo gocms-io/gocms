@@ -38,46 +38,52 @@ export default class Api {
     callApi() {
         return this.fetch(this.url, this.options)
             .then(function (res) {
-                console.log("h");
-                return res.json().then(
-                    function (json) { // success
-                        // todo need to rearange this so that 200 without json comes back successful
-                        // todo then we need to add a success handler to the contact form so that people only submit once
-                        // todo then we need to update the forms to allow for subit and error as apposed to just a disabled btn
-                        if (res.status == 200 || res.status == 204) {
-                            console.log("200");
-                            // if we receive an auth token we should add this to the storage
-                            if (res.headers.has(AUTH_TOKEN_HEADER)) {
-                                sessionStorage.setItem(AUTH_TOKEN_HEADER, res.headers.get(AUTH_TOKEN_HEADER))
-                            }
-                            // if we receive a device token we should add this to the storage
-                            if (res.headers.has(DEVICE_TOKEN_HEADER)) {
-                                sessionStorage.setItem(DEVICE_TOKEN_HEADER, res.headers.get(DEVICE_TOKEN_HEADER))
-                            }
-                            return {status: res.status, json: json};
-                        }
-                        // if we have a authorization error we should delete the auth token
+                if (res.status >= 200 && res.status < 300) {
+                    // if we receive an auth token we should add this to the storage
+                    if (res.headers.has(AUTH_TOKEN_HEADER)) {
+                        sessionStorage.setItem(AUTH_TOKEN_HEADER, res.headers.get(AUTH_TOKEN_HEADER))
+                    }
+                    // if we receive a device token we should add this to the storage
+                    if (res.headers.has(DEVICE_TOKEN_HEADER)) {
+                        sessionStorage.setItem(DEVICE_TOKEN_HEADER, res.headers.get(DEVICE_TOKEN_HEADER))
+                    }
 
-                        else {
-                            console.log("issues");
-                            switch (res.status) {
+                    return res.json()
+                        .then(
+                            function (json) {
+                                return {status: res.status, json: json}
+                            })
+                        .catch(function (e) {
+                            return {status: res.status}; // not really an error. If request wasn't a json request then skip
+                        });
+                }
+                else {
+                    // try to get error message from json
+                    return res.json()
+                        .then(
+                            function (json) {
+                                return Promise.reject({status: res.status, json: json})
+                            })
+                        .catch(function (e) {
+                            switch (e.status) {
                                 case 401:
                                 case 403:
                                     sessionStorage.removeItem(AUTH_TOKEN_HEADER);
-                                    return Promise.reject({status: res.status, json: json});
+                                    return Promise.reject(e);
                                 default:
-                                    return Promise.reject({status: res.status, json: json});
+                                    return Promise.reject(e);
                             }
-                        }
-                    });
+                        });
+
+                }
             })
+            //         // todo then we need to add a success handler to the contact form so that people only submit once
+            //         // todo then we need to update the forms to allow for subit and error as apposed to just a disabled btn
             .then(
                 function (res) { // success
-                    console.log("s");
                     return {res};
                 },
                 function (err) { //fail
-                    console.log("e");
                     return {err}
                 });
     }

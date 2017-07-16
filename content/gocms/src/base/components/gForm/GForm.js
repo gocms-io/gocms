@@ -11,7 +11,8 @@ class GForm extends React.Component {
         super(props);
         this.state = {
             submitButtonIsDisabled: true,
-            submitBtnClassName: this.props.submitBtnClassName || ""
+            submitBtnClassName: this.props.submitBtnClassName || "",
+            submitBtnShake: this.props.submitBtnShake
         };
         this.handleSubmit = this.handleSubmit.bind(this); //bind function once
         this.disableSubmitButton = this.disableSubmitButton.bind(this); //bind function once
@@ -22,6 +23,16 @@ class GForm extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (!!nextProps.submitBtnClassName && nextProps.submitBtnClassName != this.props.submitBtnClassName) {
             this.setState({submitBtnClassName: nextProps.submitBtnClassName})
+        }
+        if (nextProps.submitBtnShake) {
+            this.setState({
+                submitBtnShake: true
+            })
+        }
+        else {
+            this.setState({
+                submitBtnShake: false
+            })
         }
     }
 
@@ -60,7 +71,8 @@ class GForm extends React.Component {
                 onInvalid={this.disableSubmitButton}
                 formNoValidate>
                 {this.props.children}
-                {!this.props.submitBtn ? "" : <GSubmit type="submit" className={this.state.submitBtnClassName} disabled={this.state.submitButtonIsDisabled}>{this.props.submitBtn}</GSubmit>}
+                {!this.props.submitBtn ? "" : <GSubmit type="submit" className={this.state.submitBtnClassName} shake={this.state.submitBtnShake}
+                                                       disabled={this.state.submitButtonIsDisabled}>{this.props.submitBtn}</GSubmit>}
             </Formsy.Form>
         );
     }

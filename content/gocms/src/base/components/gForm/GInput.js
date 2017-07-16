@@ -38,7 +38,7 @@ class GInput extends React.Component {
         }
 
         return (
-            <div className={"g-container-col g-input " + (className || "")}>
+            <div className={"g-container-col g-input " + (this.props.className || "")}>
                 <label htmlFor={this.props.name}>{this.props.label}
                     <CSSTransitionGroup transitionName="g-input-error-message-animate"
                                         transitionEnterTimeout={500}

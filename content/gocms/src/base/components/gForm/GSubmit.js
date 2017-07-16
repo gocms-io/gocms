@@ -8,6 +8,7 @@ class GSubmit extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            shake: false,
             disabled: this.props.disabled,
             className: this.props.className || ""
         };
@@ -21,6 +22,12 @@ class GSubmit extends React.Component {
         else {
             this.setState({disabled: false});
         }
+        if (nextProps.shake) {
+            this.setState({shake: true});
+        }
+        else {
+            this.setState({shake: false});
+        }
 
         if (!!nextProps.className && nextProps.className != this.state.className) {
             this.setState({className: nextProps.className});
@@ -32,8 +39,17 @@ class GSubmit extends React.Component {
 
 
     render() {
+        // if the button shakes stop it!
+        if (this.state.shake) {
+            setTimeout(function () {
+                this.setState({shake: false});
+            }.bind(this), 1000);
+        }
+
         return (
-            <button type="submit" className={"btn" + (this.state.disabled ? " btn-disabled" : "") + (" " + this.state.className || "")} disabled={this.state.disabled}>{this.props.children}</button>
+            <button type="submit"
+                    className={"btn" + (this.state.disabled ? " btn-disabled" : "") + (" " + this.state.className || "") + (this.state.shake ? " btn-animate-shake" : " ")}
+                    disabled={this.state.disabled}>{this.props.children}</button>
         );
     }
 }
