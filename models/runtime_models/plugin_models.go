@@ -45,6 +45,7 @@ type PluginServices struct {
 type PluginInterface struct {
 	Public       string `json:"public"`
 	PublicVendor string `json:"publicVendor"`
+	PublicStyle string `json:"publicStyle"`
 }
 
 type PluginDatabaseRecord struct {

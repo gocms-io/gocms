@@ -2,6 +2,7 @@
 
 import React from 'react';
 import {connect} from 'react-redux'
+import Busy from '../busy/Busy'
 
 
 class GSubmit extends React.Component {
@@ -10,18 +11,22 @@ class GSubmit extends React.Component {
         this.state = {
             shake: false,
             disabled: this.props.disabled,
-            className: this.props.className || ""
+            className: this.props.className || "",
+            busy: false
         };
 
     }
 
     componentWillReceiveProps(nextProps) {
+        // disabled
         if (!!nextProps.disabled) {
             this.setState({disabled: true});
         }
         else {
             this.setState({disabled: false});
         }
+
+        // shake
         if (nextProps.shake) {
             this.setState({shake: true});
         }
@@ -29,6 +34,15 @@ class GSubmit extends React.Component {
             this.setState({shake: false});
         }
 
+        // busy
+        if (nextProps.busy) {
+            this.setState({busy: true});
+        }
+        else {
+            this.setState({busy: false});
+        }
+
+        // className
         if (!!nextProps.className && nextProps.className != this.state.className) {
             this.setState({className: nextProps.className});
         }
@@ -39,6 +53,9 @@ class GSubmit extends React.Component {
 
 
     render() {
+
+        let html = null;
+
         // if the button shakes stop it!
         if (this.state.shake) {
             setTimeout(function () {
@@ -46,13 +63,27 @@ class GSubmit extends React.Component {
             }.bind(this), 1000);
         }
 
-        return (
-            <button type="submit"
-                    className={"btn" + (" " + this.state.className || "") + (this.state.shake ? " btn-animate-shake" : " ")}
-            >
-                {this.props.children}
-            </button>
-        );
+        // if we are not busy show the button
+        if (!this.state.busy) {
+            html =
+                <button type="submit"
+                        className={"btn" + (" " + this.state.className || "") + (this.state.shake ? " btn-animate-shake" : " ")}
+                >
+                    {this.props.children}
+                </button>;
+        }
+        // else show the busy button
+        else {
+            html =
+                <button type="submit"
+                        className={"btn" + (" " + this.state.className || "")}
+                        disabled
+                >
+                    <Busy/>
+                </button>;
+        }
+
+        return (html);
     }
 }
 

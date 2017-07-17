@@ -137,6 +137,9 @@
     <script>
         activePlugins.push({{ $plugin.Id }});
     </script>
+    {{ if (not (eq $plugin.PublicStyle "")) }}
+        <link rel="stylesheet" href="{{ $plugin.PublicStyle }}" >
+    {{ end }}
 {{ end }}
 
 {{ if .Admin }}

@@ -18,6 +18,7 @@ type ActivePluginDisplay struct {
 	Id           string
 	Public       string
 	PublicVendor string
+	PublicStyle  string
 }
 
 func DefaultReactController(routes *routes.Routes, sg *services.ServicesGroup) *ReactController {
@@ -66,6 +67,7 @@ func (rc *ReactController) getActivePlugins() []*ActivePluginDisplay {
 			Id:           plugin.Manifest.Id,
 			Public:       fmt.Sprintf("/content/%v/%v", plugin.Manifest.Id, plugin.Manifest.Interface.Public),
 			PublicVendor: fmt.Sprintf("/content/%v/%v", plugin.Manifest.Id, plugin.Manifest.Interface.PublicVendor),
+			PublicStyle:  fmt.Sprintf("/content/%v/%v", plugin.Manifest.Id, plugin.Manifest.Interface.PublicStyle),
 		}
 		activePluginsDisplay = append(activePluginsDisplay, &apd)
 	}

@@ -15,6 +15,7 @@ class GForm extends React.Component {
             submitButtonIsDisabled: true,
             submitBtnClassName: this.props.submitBtnClassName || "",
             submitBtnShake: this.props.submitBtnShake,
+            submitBtnBusy: false,
             dirty: false
         };
         this.handleSubmit = this.handleSubmit.bind(this); //bind function once
@@ -27,6 +28,20 @@ class GForm extends React.Component {
         if (!!nextProps.submitBtnClassName && nextProps.submitBtnClassName != this.props.submitBtnClassName) {
             this.setState({submitBtnClassName: nextProps.submitBtnClassName})
         }
+
+        // busy button
+        if (nextProps.submitBtnBusy) {
+            this.setState({
+                submitBtnBusy: true
+            })
+        }
+        else {
+            this.setState({
+                submitBtnBusy: false
+            })
+        }
+
+        // shake button
         if (nextProps.submitBtnShake) {
             this.setState({
                 submitBtnShake: true
@@ -74,6 +89,7 @@ class GForm extends React.Component {
             // otherwise submit
             else {
                 this.props.onSubmit(model);
+                this.setState({submitBtnBusy: true});
             }
         }
     }
@@ -84,10 +100,19 @@ class GForm extends React.Component {
         let childrenWithProps = React.Children.map(this.props.children,
             function (child) {
                 if (!!child) {
-                    return React.cloneElement(child, {
-                        dirty: isDirty,
-                        key: child.props.key
-                    });
+                    // if gocms form type
+                    if (child.type == GInput || child.type == GTextArea) {
+                        return React.cloneElement(child, {
+                            dirty: isDirty,
+                            key: child.props.key
+                        });
+                    }
+                    // else pass through
+                    else {
+                        return React.cloneElement(child, {
+                            key: child.props.key
+                        });
+                    }
                 }
             }
         );
@@ -103,7 +128,9 @@ class GForm extends React.Component {
                 formNoValidate>
                 {childrenWithProps}
                 {!this.props.submitBtn ? "" :
-                    <GSubmit type="submit" className={this.state.submitBtnClassName} shake={this.state.submitBtnShake}
+                    <GSubmit type="submit" className={this.state.submitBtnClassName}
+                             shake={this.state.submitBtnShake}
+                             busy={this.state.submitBtnBusy}
                     >{this.props.submitBtn}</GSubmit>}
             </Formsy.Form>
         );
