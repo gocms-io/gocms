@@ -1,0 +1,3 @@
+# so repo shows as Go ;)
+*.js linguist-vendored=true
+*.jsx linguist-vendored=true
