@@ -52,7 +52,7 @@ func (rc *ReactController) serveReact(c *gin.Context) {
 		"Admin":                false,
 		"PluginScripts":        activePlugins.Scripts,
 		"PluginStyles":         activePlugins.Styles,
-		"ActivePlugins":        activePlugins.Ids,
+		"ActivePlugins":        template.JS(activePlugins.Ids),
 	})
 }
 
@@ -134,8 +134,12 @@ func (rc *ReactController) getActivePlugins(loadAdmin bool) *ActivePluginDisplay
 	apd.Styles = append(apd.Styles, publicStyles...)
 
 	// add plugin ids
-	apd.AdminIds = fmt.Sprintf("[\"%v\"]", pluginAdminIds[1:])
-	apd.Ids = fmt.Sprintf("[\"%v\"]", pluginIds[1:])
+	if len(pluginAdminIds) > 0 {
+		apd.AdminIds = fmt.Sprintf("[\"%v\"]", pluginAdminIds[1:])
+	}
+	if len(pluginIds) > 0 {
+		apd.Ids = fmt.Sprintf("[\"%v\"]", pluginIds[1:])
+	}
 
 	return apd
 }
