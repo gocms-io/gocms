@@ -7,7 +7,8 @@ class GInput extends React.Component {
         super(props);
         this.state = {
             blurred: false,
-            dirty: false
+            dirty: false,
+            name: this.props.name || ""
         };
         this.changeValue = this.changeValue.bind(this);
         this.handelBlur = this.handelBlur.bind(this);
@@ -18,10 +19,17 @@ class GInput extends React.Component {
         if (!!nextProps.dirty ) {
             this.setState({dirty: true});
         }
+
+        if (!!nextProps.name) {
+            this.setState({name: nextProps.name});
+        }
     }
 
     changeValue(event) {
         this.props.setValue(event.currentTarget.value);
+        if (!!this.props.onChange) {
+            this.props.onChange(event);
+        }
     }
 
     handelBlur() {
@@ -48,7 +56,7 @@ class GInput extends React.Component {
 
         return (
             <div className={"g-container-col g-input " + (this.props.className || "")}>
-                <label htmlFor={this.props.name}>{this.props.label}
+                <label htmlFor={this.state.name}>{this.props.label}
                     <CSSTransitionGroup transitionName="g-input-error-message-animate"
                                         transitionEnterTimeout={500}
                                         transitionLeaveTimeout={500}>
@@ -56,7 +64,7 @@ class GInput extends React.Component {
                     </CSSTransitionGroup>
                 </label>
                 <input type={this.props.type}
-                       name={this.props.name}
+                       name={this.state.name}
                        onChange={this.changeValue}
                        onBlur={this.handelBlur}
                        value={this.props.getValue() || ''}

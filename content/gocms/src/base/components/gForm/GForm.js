@@ -94,29 +94,26 @@ class GForm extends React.Component {
         }
     }
 
-
-    render() {
-        let isDirty = this.state.dirty;
-        let childrenWithProps = React.Children.map(this.props.children,
-            function (child) {
-                if (!!child) {
-                    // if gocms form type
-                    if (child.type == GInput || child.type == GTextArea) {
-                        return React.cloneElement(child, {
-                            dirty: isDirty,
-                            key: child.props.key
-                        });
-                    }
-                    // else pass through
-                    else {
-                        return React.cloneElement(child, {
-                            key: child.props.key
-                        });
-                    }
+    recursiveCloneChildren(children) {
+        return React.Children.map(children, child => {
+                if (!React.isValidElement(child)) return child;
+                let childProps = {};
+                if (!!child.props.children) {
+                    childProps.children = this.recursiveCloneChildren(child.props.children);
+                }
+                // if child is GInput add dirty prop
+                if (child.type === GInput || child.type === GTextArea) {
+                    childProps.dirty = this.state.dirty;
+                    return React.cloneElement(child, childProps);
+                }
+                else {
+                    return React.cloneElement(child, childProps);
                 }
             }
-        );
+        )
+    }
 
+    render() {
         return (
             <Formsy.Form
                 id={this.props.name}
@@ -126,7 +123,7 @@ class GForm extends React.Component {
                 onValid={this.enableSubmitButton}
                 onInvalid={this.disableSubmitButton}
                 formNoValidate>
-                {childrenWithProps}
+                {this.recursiveCloneChildren(this.props.children)}
                 {!this.props.submitBtn ? "" :
                     <GSubmit type="submit" className={this.state.submitBtnClassName}
                              shake={this.state.submitBtnShake}
@@ -137,8 +134,18 @@ class GForm extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
+function
+
+mapStateToProps(state) {
     return {}
 }
 
-export default connect(mapStateToProps, {})(GForm);
+export
+default
+
+connect(mapStateToProps, {})
+
+(
+    GForm
+)
+;
