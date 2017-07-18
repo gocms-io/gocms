@@ -123,28 +123,21 @@
 {{template "theme_body.tmpl" .}}
 <div id="app"></div>
 </body>
+
 <script src="/gocms/vendor.js"></script>
 <script src="/gocms/base.js"></script>
 <link rel="stylesheet" href="/gocms/base.css">
-
-<script>
-    var activePlugins = [];
-</script>
-
-{{ range $i, $plugin := .ActivePlugins }}
-    <script src="{{ $plugin.PublicVendor }}"></script>
-    <script src="{{ $plugin.Public }}"></script>
-    <script>
-        activePlugins.push({{ $plugin.Id }});
-    </script>
-    {{ if (not (eq $plugin.PublicStyle "")) }}
-        <link rel="stylesheet" href="{{ $plugin.PublicStyle }}" >
-    {{ end }}
-{{ end }}
-
 {{ if .Admin }}
-    <script src="/gocms/admin.js"></script>
-    <link rel="stylesheet" href="/gocms/admin.css">
+<link rel="stylesheet" href="/gocms/admin.css">
+{{ end }}
+{{ range $script := .PluginScripts }}
+<script src="{{ $script }}"></script>
+{{ end }}
+{{ range $style:= .PluginStyles }}
+<link rel="stylesheet" href="{{ $style }}">
+{{ end }}
+{{ if .Admin }}
+<script src="/gocms/admin.js"></script>
 {{ end }}
 {{template "theme_footer.tmpl" .}}
 <script>
@@ -152,5 +145,5 @@
     var GOCMS_LOGIN_TITLE = 'GoCMS';
     var GOCMS_LOGIN_SUCCESS_REDIRECT = '/admin';
     var _app = require('gocms/initialize');
-    _app.run({{ .Admin }}, activePlugins, {{ .Theme }});
+    _app.run({{ .Admin }}, {{ .ActivePlugins }}, {{ .ActiveAdminPlugins }}, {{ .Theme }});
 </script>

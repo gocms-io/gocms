@@ -1,7 +1,6 @@
 import {fork} from 'redux-saga/effects';
 
 let injectedSagas = [];
-let sagas = [];
 
 
 export function rootSaga() {

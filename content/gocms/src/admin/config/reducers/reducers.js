@@ -2,11 +2,19 @@ import {routerReducer as routing} from 'react-router-redux'
 import authenticationReducers from './authenticationReducers'
 
 
+let injectedReducers = {};
 
+export function injectReducers(r) {
+    injectedReducers = Object.assign({}, r, injectedReducers);
+}
 
-const rootReducer = {
+let rootReducers =
+    {
     auth: authenticationReducers,
+    ...injectedReducers,
     routing,
 };
 
-export default rootReducer
+export function registeredReducers() {
+    return rootReducers;
+}
