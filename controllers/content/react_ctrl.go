@@ -45,12 +45,14 @@ func (rc *ReactController) serveReact(c *gin.Context) {
 	activePlugins := rc.getActivePlugins(false)
 
 	c.HTML(http.StatusOK, "react.tmpl", gin.H{
-		"Theme":         context.Config.ActiveTheme,
-		"AssetBase":     context.Config.ActiveThemeAssetsBase,
-		"Admin":         false,
-		"PluginScripts": activePlugins.Scripts,
-		"PluginStyles":  activePlugins.Styles,
-		"ActivePlugins": activePlugins.Ids,
+		"Theme":                context.Config.ActiveTheme,
+		"AssetBase":            context.Config.ActiveThemeAssetsBase,
+		"LoginTitle":           context.Config.LoginTitle,
+		"LoginSuccessRedirect": context.Config.LoginSuccessRedirect,
+		"Admin":                false,
+		"PluginScripts":        activePlugins.Scripts,
+		"PluginStyles":         activePlugins.Styles,
+		"ActivePlugins":        activePlugins.Ids,
 	})
 }
 
@@ -59,13 +61,15 @@ func (rc *ReactController) serveReactAdmin(c *gin.Context) {
 	activePlugins := rc.getActivePlugins(true)
 
 	c.HTML(http.StatusOK, "react.tmpl", gin.H{
-		"Theme":              context.Config.ActiveTheme,
-		"AssetBase":          context.Config.ActiveThemeAssetsBase,
-		"Admin":              true,
-		"PluginScripts":      activePlugins.Scripts,
-		"PluginStyles":       activePlugins.Styles,
-		"ActivePlugins":      template.JS(activePlugins.Ids),
-		"ActiveAdminPlugins": template.JS(activePlugins.AdminIds),
+		"Theme":                context.Config.ActiveTheme,
+		"AssetBase":            context.Config.ActiveThemeAssetsBase,
+		"LoginTitle":           context.Config.LoginTitle,
+		"LoginSuccessRedirect": context.Config.LoginSuccessRedirect,
+		"Admin":                true,
+		"PluginScripts":        activePlugins.Scripts,
+		"PluginStyles":         activePlugins.Styles,
+		"ActivePlugins":        template.JS(activePlugins.Ids),
+		"ActiveAdminPlugins":   template.JS(activePlugins.AdminIds),
 	})
 }
 

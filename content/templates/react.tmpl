@@ -142,8 +142,8 @@
 {{template "theme_footer.tmpl" .}}
 <script>
     var ASSET_BASE = {{ .AssetBase }};
-    var GOCMS_LOGIN_TITLE = 'GoCMS';
-    var GOCMS_LOGIN_SUCCESS_REDIRECT = '/admin';
+    var GOCMS_LOGIN_TITLE = {{ .LoginTitle }};
+    var GOCMS_LOGIN_SUCCESS_REDIRECT = {{ .LoginSuccessRedirect }};
     var _app = require('gocms/initialize');
     _app.run({{ .Admin }}, {{ .ActivePlugins }}, {{ .ActiveAdminPlugins }}, {{ .Theme }});
 </script>

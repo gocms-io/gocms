@@ -54,6 +54,8 @@ type RuntimeConfig struct {
 	// GoCMS
 	ActiveTheme           string
 	ActiveThemeAssetsBase string
+	LoginTitle            string
+	LoginSuccessRedirect  string
 }
 
 func (c *RuntimeConfig) ApplySettingsToConfig(settings map[string]runtime_models.Setting) {
@@ -93,5 +95,7 @@ func (c *RuntimeConfig) ApplySettingsToConfig(settings map[string]runtime_models
 	// GoCMS
 	c.ActiveTheme = GetStringOrFail("ACTIVE_THEME", settings)
 	c.ActiveThemeAssetsBase = GetStringOrFail("ACTIVE_THEME_ASSETS_BASE", settings)
+	c.LoginTitle = GetStringOrFail("GOCMS_LOGIN_TITLE", settings)
+	c.LoginSuccessRedirect = GetStringOrFail("GOCMS_LOGIN_SUCCESS_REDIRECT", settings)
 
 }

@@ -149,6 +149,10 @@ func CreateInitial() *migrate.Migration {
 			INSERT INTO gocms_settings (name, value, description) VALUES('ACTIVE_THEME', 'default', 'The current active theme that is running on goCMS.');
 			`, `
 			INSERT INTO gocms_settings (name, value, description) VALUES('ACTIVE_THEME_ASSETS_BASE', 'http://localhost:9090/themes/default/', 'The assets base for the current theme. (Enables use of CDN)');
+			`, `
+			INSERT INTO gocms_settings (name, value, description) VALUES('GOCMS_LOGIN_TITLE', 'GoCMS', 'Login Title at the top of the admin section and on the login page.');
+			`, `
+			INSERT INTO gocms_settings (name, value, description) VALUES('GOCMS_LOGIN_SUCCESS_REDIRECT', '/admin/dashboard', 'Where to redirect after login');
 			`,
 		},
 		Down: []string{

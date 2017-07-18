@@ -9,7 +9,7 @@ let injectedRoutes = [];
 
 let routes =
     <Route>
-        <Redirect from="admin" to="admin/dashboard"/>
+        <Redirect from="admin" to={GOCMS_LOGIN_SUCCESS_REDIRECT}/>
         <Route path="admin" component={AdminTemplate} onEnter={requireAuthUser}>
             {DashboardRoutes}
             {injectedRoutes}
