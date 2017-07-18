@@ -26,7 +26,12 @@ func (ps *PluginsService) RegisterActivePluginRoutes(routes *routes.Routes) erro
 				log.Print(es)
 				return err
 			} else {
-				ps.registerPluginProxyOnRoute(routerGroup, routeManifest.Method, fmt.Sprintf("%v/%v", plugin.Manifest.Id, routeManifest.Url), plugin.Proxy)
+				// if we want to disable the namespace for route
+				if routeManifest.DisableNamespace {
+					ps.registerPluginProxyOnRoute(routerGroup, routeManifest.Method, routeManifest.Url, plugin.Proxy)
+				} else { // else namespace route
+					ps.registerPluginProxyOnRoute(routerGroup, routeManifest.Method, fmt.Sprintf("%v/%v", plugin.Manifest.Id, routeManifest.Url), plugin.Proxy)
+				}
 			}
 		}
 

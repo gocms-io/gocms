@@ -31,12 +31,12 @@ type PluginManifest struct {
 }
 
 type PluginManifestRoute struct {
-	Name   string `json:"name"`
-	Route  string `json:"route"`
-	Method string `json:"method"`
-	Url    string `json:"url"`
+	Name             string `json:"name"`
+	Route            string `json:"route"`
+	Method           string `json:"method"`
+	Url              string `json:"url"`
+	DisableNamespace bool   `json:"disableNamespace"`
 }
-
 type PluginServices struct {
 	Routes []*PluginManifestRoute `json:"routes"`
 	Bin    string                 `json:"bin"`
