@@ -5,11 +5,22 @@ import AdminTemplate from '../../templates/admin_tmpl'
 import {Route, Redirect} from 'react-router'
 
 
-export default (
+let injectedRoutes = [];
+
+let routes =
     <Route>
-        <Redirect from="admin" to="admin/dashboard"/>
+        <Redirect from="admin" to={GOCMS_LOGIN_SUCCESS_REDIRECT}/>
         <Route path="admin" component={AdminTemplate} onEnter={requireAuthUser}>
             {DashboardRoutes}
+            {injectedRoutes}
         </Route>
-    </Route>
-)
+    </Route>;
+
+
+export function injectAdminRoutes(r) {
+    injectedRoutes.push(r);
+}
+
+export function registeredAdminRoutes() {
+    return routes;
+}

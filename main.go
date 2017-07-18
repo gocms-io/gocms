@@ -23,6 +23,8 @@ type Engine struct {
 	Database          *database.Database
 }
 
+// todo write an optimizer for requirejs
+
 //go:generate apidoc -c ./ -i ./models -i ./controllers/ -o ./content/docs/ -f ".*\\.go$" -f ".*\\.js$"
 func Default() *Engine {
 

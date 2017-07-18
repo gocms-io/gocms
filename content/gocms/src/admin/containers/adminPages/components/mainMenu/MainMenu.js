@@ -45,7 +45,7 @@ class BasicComponent extends React.Component {
                             </a>
                         </div>
                         <div className="g-container-col">
-                            <h1 className="g-a-main-menu-title">GoCMS</h1>
+                            <h1 className="g-a-main-menu-title">{GOCMS_LOGIN_TITLE}</h1>
                             <h2 className="g-a-main-menu-sub-title"><a className="" href="">{this.props.user.fullName}</a><span className="g-a-main-menu-sign-out"><a href="" onClick={this.handleSignOut}>Sign Out</a></span></h2>
                         </div>
                     </div>

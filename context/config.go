@@ -1,7 +1,7 @@
 package context
 
 import (
-	"github.com/gocms-io/gocms/models"
+	"github.com/gocms-io/gocms/models/runtime_models"
 	"log"
 )
 
@@ -54,9 +54,11 @@ type RuntimeConfig struct {
 	// GoCMS
 	ActiveTheme           string
 	ActiveThemeAssetsBase string
+	LoginTitle            string
+	LoginSuccessRedirect  string
 }
 
-func (c *RuntimeConfig) ApplySettingsToConfig(settings map[string]models.Setting) {
+func (c *RuntimeConfig) ApplySettingsToConfig(settings map[string]runtime_models.Setting) {
 
 	log.Println("Refreshed GoCMS Settings")
 
@@ -93,5 +95,7 @@ func (c *RuntimeConfig) ApplySettingsToConfig(settings map[string]models.Setting
 	// GoCMS
 	c.ActiveTheme = GetStringOrFail("ACTIVE_THEME", settings)
 	c.ActiveThemeAssetsBase = GetStringOrFail("ACTIVE_THEME_ASSETS_BASE", settings)
+	c.LoginTitle = GetStringOrFail("GOCMS_LOGIN_TITLE", settings)
+	c.LoginSuccessRedirect = GetStringOrFail("GOCMS_LOGIN_SUCCESS_REDIRECT", settings)
 
 }

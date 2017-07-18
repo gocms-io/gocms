@@ -28,18 +28,20 @@ func (dc *DocumentationController) Default() {
 	dc.routes.Root.Static("/docs/gocms", "./content/docs")
 	docsMap := make(map[string]string)
 
-	// register plugins route
+	// build map for docs page render
 	for _, plugin := range dc.serviceGroup.PluginsService.GetActivePlugins() {
-		name := plugin.Manifest.Name
-		link := fmt.Sprintf("docs/%s", plugin.Manifest.Services.Bin)
-		docsMap[name] = link
-		dc.routes.Root.Static(fmt.Sprintf("docs/%s", plugin.Manifest.Services.Bin), fmt.Sprintf("./content/plugins/%s/docs", plugin.Manifest.Services.Bin))
+		link := fmt.Sprintf("docs/%s", plugin.Manifest.Id)
+		docsMap[plugin.Manifest.Name] = link
 	}
 
 	docsMap["GoCMS"] = "/docs/gocms"
 
 	dc.routes.Root.GET("/docs", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "docs.tmpl", docsMap)
+	})
+
+	dc.routes.Root.GET("/docs/", func(c *gin.Context) {
+		c.Redirect(http.StatusTemporaryRedirect, "/docs")
 	})
 
 }

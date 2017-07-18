@@ -4,8 +4,6 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/models"
 	"io/ioutil"
 	"net"
 	"strconv"
@@ -31,16 +29,6 @@ func GenerateRandomString(s int) (string, error) {
 	}
 	code := base64.URLEncoding.EncodeToString(b)
 	return code[0:s], nil
-}
-
-func GetUserFromContext(c *gin.Context) (*models.User, bool) {
-	// get user from context
-	if userContext, ok := c.Get("user"); ok {
-		if userDisplay, ok := userContext.(models.User); ok {
-			return &userDisplay, true
-		}
-	}
-	return nil, false
 }
 
 // getTimeout

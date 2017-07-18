@@ -2,7 +2,7 @@ package auth_ctrl
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/utility"
+	"github.com/gocms-io/gocms/controllers/api/api_utility"
 	"github.com/gocms-io/gocms/utility/errors"
 	"net/http"
 	"strconv"
@@ -21,7 +21,7 @@ import (
  */
 func (ac *AuthController) verifyUser(c *gin.Context) {
 	// get logged in user
-	authUser, _ := utility.GetUserFromContext(c)
+	authUser, _ := api_utility.GetUserFromContext(c)
 
 	// check for refresh token
 	refreshTokenString := c.DefaultQuery("refreshToken", "false")

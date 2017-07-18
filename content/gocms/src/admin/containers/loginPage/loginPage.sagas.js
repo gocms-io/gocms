@@ -1,5 +1,6 @@
 import {fork, takeEvery, put, call} from 'redux-saga/effects';
-import * as apiActions from '../../../base/actions/apiRequestActions'; // importing our action
+import * as loginActions from './loginPage.actions';
+import * as apiActions from '../../../base/actions/apiRequestActions';
 import {Post, ENDPOINTS} from '../../../base/services/api';
 import {addUserToSession, syncSessionUserToState} from '../../services/authentication'
 import { browserHistory } from 'react-router'
@@ -8,7 +9,7 @@ import { browserHistory } from 'react-router'
 
 // watch for login requests
 function* watchLoginSaga() {
-    yield takeEvery(apiActions.REQUEST, handleLoginSaga); // see details what is REQUEST param below
+    yield takeEvery(loginActions.GOCMS_LOGIN, handleLoginSaga); // see details what is REQUEST param below
 }
 
 function* handleLoginSaga(action) {

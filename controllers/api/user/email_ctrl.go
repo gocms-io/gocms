@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/context"
+	"github.com/gocms-io/gocms/controllers/api/api_utility"
 	"github.com/gocms-io/gocms/models"
-	"github.com/gocms-io/gocms/utility"
 	"github.com/gocms-io/gocms/utility/errors"
 	"net/http"
 )
@@ -88,7 +88,7 @@ func (uc *UserController) activateEmail(c *gin.Context) {
 func (uc *UserController) addEmail(c *gin.Context) {
 
 	// get logged in user
-	authUser, _ := utility.GetUserFromContext(c)
+	authUser, _ := api_utility.GetUserFromContext(c)
 
 	// get reqeust data
 	var addEmailInput models.EmailInput
@@ -148,7 +148,7 @@ func (uc *UserController) addEmail(c *gin.Context) {
 func (uc *UserController) promoteEmail(c *gin.Context) {
 
 	// get logged in user
-	authUser, _ := utility.GetUserFromContext(c)
+	authUser, _ := api_utility.GetUserFromContext(c)
 
 	// get reqeust data
 	var promoteEmailInput models.EmailInput
@@ -191,7 +191,7 @@ func (uc *UserController) promoteEmail(c *gin.Context) {
 func (uc *UserController) deleteEmail(c *gin.Context) {
 
 	// get logged in user
-	authUser, _ := utility.GetUserFromContext(c)
+	authUser, _ := api_utility.GetUserFromContext(c)
 
 	// get reqeust data
 	var addEmailInput models.EmailInput
@@ -235,7 +235,7 @@ func (uc *UserController) deleteEmail(c *gin.Context) {
 func (uc *UserController) getEmails(c *gin.Context) {
 
 	// get logged in user
-	authUser, _ := utility.GetUserFromContext(c)
+	authUser, _ := api_utility.GetUserFromContext(c)
 
 	// get all emails
 	emails, err := uc.ServicesGroup.EmailService.GetEmailsByUserId(authUser.Id)

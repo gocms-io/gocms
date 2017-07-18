@@ -36,7 +36,7 @@ export function getStore() {
     return store;
 }
 
-export function injectApp(a) {
+export function injectModule(a) {
     injectSagas(a.sagas);
     injectRoutes(a.routes);
     injectReducers(a.reducers);

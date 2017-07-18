@@ -4,7 +4,7 @@
 
 .g-input-error-message {
   margin-left: 12px;
-  margin-top: 3px;
+  //margin-top: 3px;
   color: $orange;
   font-size: 13px;
 }
@@ -35,4 +35,58 @@
   opacity: 0;
   left: 25px;
   position: relative;
+}
+.g-error-message {
+  min-height: 30px;
+}
+
+.g-error-message-box-animate {
+}
+
+.g-error-message-box-animate-enter {
+  opacity: 0;
+  top: 10px;
+  position: relative;
+}
+
+.g-error-message-box-animate-enter.g-error-message-box-animate-enter-active {
+  opacity: 1;
+  top: 0;
+  position: relative;
+  transition: all 200ms ease-in;
+
+}
+
+.g-error-message-box-animate-leave {
+  opacity: 1;
+  top: 0;
+  position: relative;
+  transition: all 200ms ease-in;
+}
+
+.g-error-message-box-animate-leave.g-error-message-box-animate-leave-active {
+  opacity: 0;
+  top: 10px;
+  position: relative;
+}
+
+.btn-animate-shake {
+  animation: shake 1s 1;
+}
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }

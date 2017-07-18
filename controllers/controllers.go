@@ -68,7 +68,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 		DocumentationController: content_ctrl.DefaultDocumentationController(routes, sg),
 		ThemesControllers:       content_ctrl.DefaultThemesController(r, routes),
 		TemplateControllers:     content_ctrl.DefaultTemplatesController(routes),
-		ReactControllers:        content_ctrl.DefaultReactController(routes),
+		ReactControllers:        content_ctrl.DefaultReactController(routes, sg),
 	}
 
 	controllersGroup := &ControllersGroup{
@@ -78,7 +78,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 	}
 
 	// register plugin routes
-	sg.PluginsService.RegisterPluginRoutes(routes)
+	sg.PluginsService.RegisterActivePluginRoutes(routes)
 
 	return controllersGroup
 }
