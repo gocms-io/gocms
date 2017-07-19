@@ -133,12 +133,18 @@ func (rc *ReactController) getActivePlugins(loadAdmin bool) *ActivePluginDisplay
 	apd.Styles = append(apd.Styles, adminStyles...)
 	apd.Styles = append(apd.Styles, publicStyles...)
 
-	// add plugin ids
+	// add plugin admin ids
 	if len(pluginAdminIds) > 0 {
 		apd.AdminIds = fmt.Sprintf("[\"%v\"]", pluginAdminIds[1:])
+	} else {
+		apd.AdminIds = "[]"
 	}
+
+	// add plugin admin ids
 	if len(pluginIds) > 0 {
 		apd.Ids = fmt.Sprintf("[\"%v\"]", pluginIds[1:])
+	} else {
+		apd.Ids = "[]"
 	}
 
 	return apd
