@@ -86,6 +86,31 @@ func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
 		return false
 	}
 
+	// check if users primary email needs to be activated
+	emails, err := as.RepositoriesGroup.EmailRepository.GetByUserId(id)
+	if err != nil {
+		log.Printf("Verify password reset code, error getting primary email to check activation: %v\n", err.Error())
+	} else {
+		for _, email := range emails {
+			// if primary email is not verified; verify it and enable user
+			if email.IsPrimary && !email.IsVerified {
+				email.IsVerified = true
+				err := as.RepositoriesGroup.EmailRepository.Update(&email)
+				if err != nil { // log error but don't fail
+					log.Printf("Verify password reset code, error setting primary email to verified: %v\n", err.Error())
+				} else { // email user to be nice
+					mail := Mail{
+						To:       email.Email,
+						Subject:  "We Activated Your Account",
+						Body:     "You successfully reset your password. We also noticed that your account had not yet been activated, so we activated it. You can now login to our system.\n\n Thanks.",
+						BodyHTML: fmt.Sprintf("<h1>Password Reset & Account Activation</h1><p>You successfully reset your password.<br/><br/>We also noticed that your account had not yet been activated, so we activated it. You can now login!<br/><br/> Thanks.</p>"),
+					}
+					as.MailService.Send(&mail)
+				}
+			}
+		}
+	}
+
 	err = as.RepositoriesGroup.SecureCodeRepository.Delete(secureCode.Id)
 	if err != nil {
 		return false
