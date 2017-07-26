@@ -17,6 +17,7 @@ func CreateInitial() *migrate.Migration {
 			photo varchar(255) NOT NULL DEFAULT '',
 			enabled int(1) NOT NULL DEFAULT 0,
 			created datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			lastModified datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY (id)
 			) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 			`, `

@@ -2,11 +2,12 @@ package repositories
 
 import (
 	"database/sql"
+	"log"
+	"time"
+
 	"github.com/gocms-io/gocms/models"
 	"github.com/gocms-io/gocms/utility/errors"
 	"github.com/jmoiron/sqlx"
-	"log"
-	"time"
 )
 
 type IUserRepository interface {
@@ -105,10 +106,11 @@ func (ur *UserRepository) Add(user *models.User) error {
 	}
 
 	user.Created = time.Now()
+	user.LastModified = time.Now()
 
 	// insert user
 	result, err := ur.database.NamedExec(`
-	INSERT INTO gocms_users (fullName, gender, photo, minAge, maxAge, password, enabled, created) VALUES (:fullName, :gender, :photo, :minAge, :maxAge, :password, :enabled, :created)
+	INSERT INTO gocms_users (fullName, gender, photo, minAge, maxAge, password, enabled, created, lastModified) VALUES (:fullName, :gender, :photo, :minAge, :maxAge, :password, :enabled, :created, :lastModified)
 	`, user)
 	if err != nil {
 		log.Printf("Error adding user to db: %s", err.Error())
@@ -123,8 +125,9 @@ func (ur *UserRepository) Add(user *models.User) error {
 func (ur *UserRepository) Update(id int, user *models.User) error {
 	// insert row
 	user.Id = id
+	user.LastModified = time.Now()
 	_, err := ur.database.NamedExec(`
-	UPDATE gocms_users SET fullName=:fullName, gender=:gender, photo=:photo, maxAge=:maxAge, minAge=:minAge WHERE id=:id
+	UPDATE gocms_users SET fullName=:fullName, gender=:gender, photo=:photo, maxAge=:maxAge, minAge=:minAge, lastModified=:lastModified WHERE id=:id
 	`, user)
 	if err != nil {
 		log.Printf("Error updating user in database: %s", err.Error())
@@ -136,8 +139,8 @@ func (ur *UserRepository) Update(id int, user *models.User) error {
 
 func (ur *UserRepository) SetEnabled(id int, enabled bool) error {
 	_, err := ur.database.NamedExec(`
-	UPDATE gocms_users SET enabled=:enabled WHERE id=:id
-	`, map[string]interface{}{"enabled": enabled, "id": id})
+	UPDATE gocms_users SET enabled=:enabled, lastModified=:lastModified WHERE id=:id
+	`, map[string]interface{}{"enabled": enabled, "id": id, "lastModified": time.Now()})
 	if err != nil {
 		log.Printf("Error setting enabled for user in database: %s", err.Error())
 
@@ -150,11 +153,12 @@ func (ur *UserRepository) SetEnabled(id int, enabled bool) error {
 func (ur *UserRepository) UpdatePassword(id int, hash string) error {
 	// insert row
 	user := models.User{
-		Id:       id,
-		Password: hash,
+		Id:           id,
+		Password:     hash,
+		LastModified: time.Now(),
 	}
 	_, err := ur.database.NamedExec(`
-	UPDATE gocms_users SET password=:password WHERE id=:id
+	UPDATE gocms_users SET password=:password, lastModified=:lastModified WHERE id=:id
 	`, user)
 	if err != nil {
 		log.Printf("Error getting updating password for user in database: %s", err.Error())
