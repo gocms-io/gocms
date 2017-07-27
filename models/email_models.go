@@ -5,12 +5,13 @@ import (
 )
 
 type Email struct {
-	Id         int       `db:"id"`
-	UserId     int       `db:"userId"`
-	Email      string    `db:"email"`
-	IsVerified bool      `db:"isVerified"`
-	IsPrimary  bool      `db:"isPrimary"`
-	Created    time.Time `db:"created"`
+	Id           int       `db:"id"`
+	UserId       int       `db:"userId"`
+	Email        string    `db:"email"`
+	IsVerified   bool      `db:"isVerified"`
+	IsPrimary    bool      `db:"isPrimary"`
+	Created      time.Time `db:"created"`
+	LastModified time.Time `db:"lastModified"`
 }
 
 /**
@@ -19,12 +20,14 @@ type Email struct {
 * @apiSuccess (Response) {string} email
 * @apiSuccess (Response) {number} verified
 * @apiSuccess (Response) {number} isPrimary
+* @apiSuccess (Response) {string} lastModified
  */
 type EmailDisplay struct {
-	Id        int    `json:"id,omitempty"`
-	Email     string `json:"email,omitempty"`
-	Verified  bool   `json:"verified"`
-	IsPrimary bool   `json:"isPrimary"`
+	Id           int       `json:"id,omitempty"`
+	Email        string    `json:"email,omitempty"`
+	Verified     bool      `json:"verified"`
+	IsPrimary    bool      `json:"isPrimary"`
+	LastModified time.Time `json:"lastModified,omitempty"`
 }
 
 /**
@@ -47,10 +50,11 @@ type RequestEmailActivationLinkInput struct {
 
 func (e *Email) GetEmailDisplay() *EmailDisplay {
 	em := EmailDisplay{
-		Email:     e.Email,
-		Id:        e.Id,
-		IsPrimary: e.IsPrimary,
-		Verified:  e.IsVerified,
+		Email:        e.Email,
+		Id:           e.Id,
+		IsPrimary:    e.IsPrimary,
+		Verified:     e.IsVerified,
+		LastModified: e.LastModified,
 	}
 	return &em
 }
