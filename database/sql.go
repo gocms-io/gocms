@@ -2,9 +2,9 @@ package database
 
 import (
 	"database/sql"
-	"github.com/jmoiron/sqlx"
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/database/migrations/sql"
+	"github.com/jmoiron/sqlx"
 	"github.com/rubenv/sql-migrate"
 	"log"
 )
@@ -51,9 +51,10 @@ func (database *Database) MigrateSql(tableName string, migrationSource *migrate.
 			log.Println("No rollback required.")
 			return err
 		}
-	}
-	if n > 0 {
+	} else if n > 0 {
 		log.Printf("Applied %d migrations to %s. Database up to date.\n", n, tableName)
+	} else {
+		log.Printf("No Migrations Required.")
 	}
 	return nil
 }
@@ -61,6 +62,7 @@ func (database *Database) MigrateSql(tableName string, migrationSource *migrate.
 func (database *Database) MigrateCMSSql() error {
 	tableName := "gocms_migrations"
 	migrate.SetTable(tableName)
+	log.Printf("Checking for database migrations\n.")
 	n, err := migrate.Exec(database.SQL.Dbx.DB, "mysql", database.SQL.migrations, migrate.Up)
 	if err != nil {
 		log.Printf("MIGRATION ERROR: %s\n", err.Error())
@@ -73,7 +75,7 @@ func (database *Database) MigrateCMSSql() error {
 			log.Printf("Rolled back %d migrations.\n", rn)
 			return err
 		} else {
-			log.Println("No rollback required.")
+			log.Println("No rollback required.\n")
 			return err
 		}
 	}
