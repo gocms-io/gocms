@@ -15,33 +15,36 @@ import (
 * @apiSuccess (Response) {number} minAge
 * @apiSuccess (Response) {number} maxAge
 * @apiSuccess (Response) {string} created
+* @apiSuccess (Response) {string} lastModified
  */
 type UserAdminDisplay struct {
-	Id       int       `json:"id,omitempty"`
-	FullName string    `json:"fullName,omitempty"`
-	Email    string    `json:"email,omitempty"`
-	Verified bool      `json:"verified,omitempty"`
-	Gender   int       `json:"gender,omitempty"`
-	Photo    string    `json:"photo,string,omitempty"`
-	Enabled  bool      `json:"enabled,omitempty"`
-	MinAge   int       `json:"minAge,omitempty"`
-	MaxAge   int       `json:"maxAge,omitempty"`
-	Created  time.Time `json:"created,omitempty"`
+	Id           int       `json:"id,omitempty"`
+	FullName     string    `json:"fullName,omitempty"`
+	Email        string    `json:"email,omitempty"`
+	Verified     bool      `json:"verified,omitempty"`
+	Gender       int       `json:"gender,omitempty"`
+	Photo        string    `json:"photo,string,omitempty"`
+	Enabled      bool      `json:"enabled,omitempty"`
+	MinAge       int       `json:"minAge,omitempty"`
+	MaxAge       int       `json:"maxAge,omitempty"`
+	Created      time.Time `json:"created,omitempty"`
+	LastModified time.Time `json:"lastModified,omitempty"`
 }
 
 // helper function to get userAdminDisplay from user object
 func (user *User) GetUserAdminDisplay() *UserAdminDisplay {
 	userAdminDisplay := UserAdminDisplay{
-		Id:       user.Id,
-		Email:    user.Email,
-		FullName: user.FullName,
-		Gender:   user.Gender,
-		Photo:    user.Photo,
-		Enabled:  user.Enabled,
-		Verified: user.Verified,
-		Created:  user.Created,
-		MaxAge:   user.MaxAge,
-		MinAge:   user.MinAge,
+		Id:           user.Id,
+		Email:        user.Email,
+		FullName:     user.FullName,
+		Gender:       user.Gender,
+		Photo:        user.Photo,
+		Enabled:      user.Enabled,
+		Verified:     user.Verified,
+		Created:      user.Created,
+		MaxAge:       user.MaxAge,
+		MinAge:       user.MinAge,
+		LastModified: user.LastModified,
 	}
 	return &userAdminDisplay
 }

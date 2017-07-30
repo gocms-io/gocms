@@ -17,6 +17,7 @@ func CreateInitial() *migrate.Migration {
 			photo varchar(255) NOT NULL DEFAULT '',
 			enabled int(1) NOT NULL DEFAULT 0,
 			created datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			lastModified datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			PRIMARY KEY (id)
 			) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 			`, `
@@ -27,6 +28,7 @@ func CreateInitial() *migrate.Migration {
 			isVerified int(1) NOT NULL DEFAULT 0,
 			isPrimary int(1) NOT NULL DEFAULT 0,
 			created datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			lastModified datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			PRIMARY KEY (id),
 			FOREIGN KEY (userId)
 				REFERENCES gocms_users (id)
@@ -38,6 +40,7 @@ func CreateInitial() *migrate.Migration {
 			name varchar(30) NOT NULL UNIQUE,
 			description varchar(255) NOT NULL,
 			created datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			lastModified datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			PRIMARY KEY (id)
 			) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 			`, `
@@ -59,6 +62,7 @@ func CreateInitial() *migrate.Migration {
 			value varchar(255) NOT NULL,
 			description varchar(255) NOT NULL,
 			created datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			lastModified datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			PRIMARY KEY (id)
 			) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 			`, `
@@ -68,6 +72,7 @@ func CreateInitial() *migrate.Migration {
 			value varchar(255) NOT NULL,
 			description varchar(255) NOT NULL,
 			created datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			lastModified datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			PRIMARY KEY (id)
 			) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 			`, `
@@ -75,6 +80,7 @@ func CreateInitial() *migrate.Migration {
 			userId int(11) NOT NULL,
 			permissionsId int(11) NOT NULL,
 			created datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			lastModified datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			PRIMARY KEY (userId, permissionsId),
 			FOREIGN KEY (userId)
 				REFERENCES gocms_users (id)
@@ -91,6 +97,7 @@ func CreateInitial() *migrate.Migration {
 			build int(11) NOT NULL DEFAULT 0,
 			isActive int(1) NOT NULL DEFAULT 0,
 			created datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			lastModified datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			PRIMARY KEY (id)
 			) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 			`, `
