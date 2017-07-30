@@ -9,18 +9,19 @@ var GENDER_MALE = 1
 var GENDER_FEMALE = 2
 
 type User struct {
-	Id        int    `db:"id"`
-	FullName  string `db:"fullName"`
-	Email     string `db:"email"`
-	Verified  bool   `db:"isVerified"`
-	AltEmails []Email
-	Password  string    `db:"password"`
-	Gender    int       `db:"gender"`
-	Photo     string    `db:"photo"`
-	MinAge    int       `db:"minAge"`
-	MaxAge    int       `db:"maxAge"`
-	Created   time.Time `db:"created"`
-	Enabled   bool      `db:"enabled"`
+	Id           int    `db:"id"`
+	FullName     string `db:"fullName"`
+	Email        string `db:"email"`
+	Verified     bool   `db:"isVerified"`
+	AltEmails    []Email
+	Password     string    `db:"password"`
+	Gender       int       `db:"gender"`
+	Photo        string    `db:"photo"`
+	MinAge       int       `db:"minAge"`
+	MaxAge       int       `db:"maxAge"`
+	Created      time.Time `db:"created"`
+	Enabled      bool      `db:"enabled"`
+	LastModified time.Time `db:"lastModified"`
 }
 
 /**
@@ -30,13 +31,15 @@ type User struct {
 * @apiSuccess (Response) {string} email
 * @apiSuccess (Response) {number} gender 1=male, 2=female
 * @apiSuccess (Response) {string} photo url string
+* @apiSuccess (Response) {string} lastModified
  */
 type UserDisplay struct {
-	Id       int    `json:"id,omitempty"`
-	FullName string `json:"fullName,omitempty"`
-	Email    string `json:"email,omitempty"`
-	Gender   int    `json:"gender,omitempty"`
-	Photo    string `json:"photo,string,omitempty"`
+	Id           int       `json:"id,omitempty"`
+	FullName     string    `json:"fullName,omitempty"`
+	Email        string    `json:"email,omitempty"`
+	Gender       int       `json:"gender,omitempty"`
+	Photo        string    `json:"photo,string,omitempty"`
+	LastModified time.Time `json:"lastModified,omitempty"`
 }
 
 /**
@@ -64,17 +67,18 @@ type UserChangePasswordInput struct {
 * @apiParam (Request) {string} password The current users password.
  */
 type UserPasswordInput struct {
-	Password    string `json:"password,omitempty"`
+	Password string `json:"password,omitempty"`
 }
 
 // helper function to get userDisplay from user object
 func (user *User) GetUserDisplay() *UserDisplay {
 	userDisplay := UserDisplay{
-		Id:       user.Id,
-		Email:    user.Email,
-		FullName: user.FullName,
-		Gender:   user.Gender,
-		Photo:    user.Photo,
+		Id:           user.Id,
+		Email:        user.Email,
+		FullName:     user.FullName,
+		Gender:       user.Gender,
+		Photo:        user.Photo,
+		LastModified: user.LastModified,
 	}
 	return &userDisplay
 }

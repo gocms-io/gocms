@@ -15,6 +15,7 @@ type SqlMigrationList []*SqlMigration
 func GoCMSSqlMigrations() []*migrate.Migration {
 	migrationsList := []*migrate.Migration{
 		CreateInitial(),
+		AddLastModified(),
 	}
 	return migrationsList
 }

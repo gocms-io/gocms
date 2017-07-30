@@ -1,9 +1,10 @@
 package runtime_models
 
 import (
-	"github.com/gocms-io/gocms/controllers/middleware/plugins/proxy"
 	"os/exec"
 	"time"
+
+	"github.com/gocms-io/gocms/controllers/middleware/plugins/proxy"
 )
 
 type Plugin struct {
@@ -52,10 +53,11 @@ type PluginInterface struct {
 }
 
 type PluginDatabaseRecord struct {
-	Id       int       `db:"id"`
-	PluginId string    `db:"pluginId"`
-	Name     string    `db:"name"`
-	Build    int       `db:"build"`
-	IsActive bool      `db:"isActive"`
-	Created  time.Time `db:"created"`
+	Id           int       `db:"id"`
+	PluginId     string    `db:"pluginId"`
+	Name         string    `db:"name"`
+	Build        int       `db:"build"`
+	IsActive     bool      `db:"isActive"`
+	Created      time.Time `db:"created"`
+	LastModified time.Time `db:"lastModified"`
 }
