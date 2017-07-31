@@ -3,7 +3,7 @@ import loginPageSagas  from '../containers/loginPage/loginPage.sagas'
 
 let injectedSagas = [];
 
-export default function* rootSaga() {
+export function* rootSaga() {
     yield [
         fork(loginPageSagas),
         ...injectedSagas
