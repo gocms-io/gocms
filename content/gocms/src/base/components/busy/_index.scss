@@ -1,0 +1,56 @@
+.busy-loader-wrapper {
+  animation: fadein 500ms ease-in;
+  transition: opacity 500ms ease-out;
+  width: 100%;
+  height: 100%;
+  z-index: 9000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0
+  }
+  100% {
+    opacity: 1
+  }
+}
+
+.busy-loader {
+  border-radius: 50%;
+  margin: 0 2%;
+}
+
+.busy-loader {
+  animation: 1s infinite ease-in-out;
+
+  &-1 {
+    animation-delay: .2s;
+  }
+  &-2 {
+    animation-delay: 0s;
+  }
+  &-3 {
+    animation-delay: .4s;
+  }
+
+}
+
+.busy-loader {
+  animation-name: busy-loader;
+}
+
+@keyframes busy-loader {
+  from {
+    transform: scale(0);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}

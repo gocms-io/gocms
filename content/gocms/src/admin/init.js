@@ -1,11 +1,11 @@
-import sagas, {injectSagas,} from './config/sagas';
+import {injectSagas, rootSaga} from './config/sagas';
 import {injectRoutes, registeredRoutes} from './config/router/routes';
 import {injectReducers, registeredReducers} from './config/reducers/reducers'
 
 export function getModule() {
     return {
         name: "goCMS Admin",
-        sagas: sagas,
+        sagas: rootSaga,
         routes: registeredRoutes(),
         reducers: registeredReducers(),
     }

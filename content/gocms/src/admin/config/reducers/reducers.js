@@ -8,13 +8,10 @@ export function injectReducers(r) {
     injectedReducers = Object.assign({}, r, injectedReducers);
 }
 
-let rootReducers =
-    {
-    auth: authenticationReducers,
-    ...injectedReducers,
-    routing,
-};
-
 export function registeredReducers() {
-    return rootReducers;
+    return  {
+        auth: authenticationReducers,
+        ...injectedReducers,
+        routing,
+    };
 }
