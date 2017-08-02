@@ -37,10 +37,9 @@ func (rc *ReactController) Default() {
 	rc.routes.Root.GET("/admin", rc.serveReactAdmin)
 	rc.routes.Root.GET("/login", rc.serveReactAdmin)
 	rc.routes.Root.GET("/admin/*adminPath", rc.serveReactAdmin)
-	rc.routes.NoRoute(rc.serveReact)
 }
 
-func (rc *ReactController) serveReact(c *gin.Context) {
+func (rc *ReactController) ServeReact(c *gin.Context) {
 
 	activePlugins := rc.getActivePlugins(false)
 

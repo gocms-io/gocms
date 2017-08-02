@@ -134,18 +134,8 @@ class GForm extends React.Component {
     }
 }
 
-function
-
-mapStateToProps(state) {
+function mapStateToProps(state) {
     return {}
 }
 
-export
-default
-
-connect(mapStateToProps, {})
-
-(
-    GForm
-)
-;
+export default connect(mapStateToProps, {})(GForm);

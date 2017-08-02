@@ -14,6 +14,7 @@ import (
 	"github.com/gocms-io/gocms/controllers/middleware/uuid"
 	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/services"
+	"strings"
 )
 
 type ControllersGroup struct {
@@ -55,6 +56,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 		Auth:    r.Group(defaultRoutePrefix),
 		NoRoute: r.NoRoute,
 	}
+
 	// define routes and apply middleware
 	apiControllers := &ApiControllers{
 		AuthController:      auth_ctrl.DefaultAuthController(routes, sg),
@@ -71,14 +73,24 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 		ReactControllers:        content_ctrl.DefaultReactController(routes, sg),
 	}
 
+	// register plugin routes
+	sg.PluginsService.RegisterActivePluginRoutes(routes)
+
+	// add no route controller
+	routes.NoRoute(func(c *gin.Context) {
+		paths := strings.Split(c.Request.RequestURI, "/")
+		if paths[1] == "api" {
+			return // handle default not route
+		}
+		// otherwise return homepage
+		contentControllers.ReactControllers.ServeReact(c)
+	})
+
 	controllersGroup := &ControllersGroup{
 		ApiControllers:     apiControllers,
 		ContentControllers: contentControllers,
 		Routes:             routes,
 	}
-
-	// register plugin routes
-	sg.PluginsService.RegisterActivePluginRoutes(routes)
 
 	return controllersGroup
 }
