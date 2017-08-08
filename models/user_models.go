@@ -8,20 +8,21 @@ var GENDER_UNKNOWN = 0
 var GENDER_MALE = 1
 var GENDER_FEMALE = 2
 
+// TODO remove user json binding and create a user input.
 type User struct {
-	Id           int    `db:"id"`
-	FullName     string `db:"fullName"`
-	Email        string `db:"email"`
-	Verified     bool   `db:"isVerified"`
+	Id           int    `json:"id" db:"id"`
+	FullName     string `json:"fullName" db:"fullName"`
+	Email        string `json:"email" db:"email"`
+	Verified     bool   `json:"isVerified" db:"isVerified"`
 	AltEmails    []Email
-	Password     string    `db:"password"`
-	Gender       int       `db:"gender"`
-	Photo        string    `db:"photo"`
-	MinAge       int       `db:"minAge"`
-	MaxAge       int       `db:"maxAge"`
-	Created      time.Time `db:"created"`
-	Enabled      bool      `db:"enabled"`
-	LastModified time.Time `db:"lastModified"`
+	Password     string    `json:"password" db:"password"`
+	Gender       int       `json:"gender" db:"gender"`
+	Photo        string    `json:"photo" db:"photo"`
+	MinAge       int       `json:"minAge" db:"minAge"`
+	MaxAge       int       `json:"maxAge" db:"maxAge"`
+	Created      time.Time `json:"created" db:"created"`
+	Enabled      bool      `json:"enabled" db:"enabled"`
+	LastModified time.Time `json:"lastModified" db:"lastModified"`
 }
 
 /**
