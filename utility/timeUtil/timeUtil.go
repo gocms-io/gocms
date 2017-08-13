@@ -17,12 +17,3 @@ func init() {
 func RoundToDay(current time.Time) (rounded time.Time) {
 	return time.Date(current.Year(), current.Month(), current.Day(), 0, 0, 0, 0, current.Location())
 }
-
-// TimeIn gets time in the provided timezone
-func TimeIn(t time.Time, timeZone string) time.Time {
-	loc, err := time.LoadLocation(timeZone)
-	if err != nil {
-		panic(err)
-	}
-	return t.In(loc)
-}
