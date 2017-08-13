@@ -11,6 +11,7 @@ import (
 	"github.com/gocms-io/gocms/controllers/api/user"
 	"github.com/gocms-io/gocms/controllers/content"
 	"github.com/gocms-io/gocms/controllers/middleware/cors"
+	"github.com/gocms-io/gocms/controllers/middleware/timezone"
 	"github.com/gocms-io/gocms/controllers/middleware/uuid"
 	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/services"
@@ -46,6 +47,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 	// top level middleware
 	r.Use(uuidMdl.UUID())
 	r.Use(aclMdl.CORS())
+	r.Use(timezoneMdl.Timezone())
 
 	//r.LoadHTMLGlob("./content/templates/*.tmpl")
 	r.HTMLRender = createMyRender()

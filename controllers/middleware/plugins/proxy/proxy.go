@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/controllers/api/api_utility"
+	"github.com/gocms-io/gocms/controllers/middleware/timezone"
 	"github.com/gocms-io/gocms/utility/errors"
 	"log"
 	"net/http"
@@ -28,10 +29,12 @@ func (ppm *PluginProxyMiddleware) reverseProxy(c *gin.Context) {
 
 	// check to see if authUser available
 	authUser, _ := api_utility.GetUserFromContext(c)
+	timezone, _ := timezoneMdl.GetTimezoneFromContext(c)
 	if authUser != nil {
 		c.Request.Header.Set("GOCMS-AUTH-USER-ID", strconv.Itoa(authUser.Id))
 		c.Request.Header.Set("GOCMS-AUTH-NAME", authUser.FullName)
 		c.Request.Header.Set("GOCMS-AUTH-EMAIL", authUser.Email)
+		c.Request.Header.Set("GOCMS-TIMEZONE", timezone.String())
 	}
 
 	target, err := url.Parse(fmt.Sprintf("%s://%s:%d", ppm.Schema, ppm.Host, ppm.Port))
