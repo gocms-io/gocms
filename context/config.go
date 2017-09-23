@@ -60,7 +60,7 @@ type RuntimeConfig struct {
 
 func (c *RuntimeConfig) ApplySettingsToConfig(settings map[string]runtime_models.Setting) {
 
-	log.Println("Refreshed GoCMS Settings")
+	log.Printf("Refresh GoCMS Settings\n")
 
 	// Debug
 	c.Debug = GetBoolOrFail("DEBUG", settings)

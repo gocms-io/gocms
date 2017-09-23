@@ -34,8 +34,8 @@ func (ppm *PluginProxyMiddleware) reverseProxy(c *gin.Context) {
 		c.Request.Header.Set("GOCMS-AUTH-USER-ID", strconv.Itoa(authUser.Id))
 		c.Request.Header.Set("GOCMS-AUTH-NAME", authUser.FullName)
 		c.Request.Header.Set("GOCMS-AUTH-EMAIL", authUser.Email)
-		c.Request.Header.Set("GOCMS-TIMEZONE", timezone.String())
 	}
+	c.Request.Header.Set("GOCMS-TIMEZONE", timezone.String())
 
 	target, err := url.Parse(fmt.Sprintf("%s://%s:%d", ppm.Schema, ppm.Host, ppm.Port))
 	if err != nil {
