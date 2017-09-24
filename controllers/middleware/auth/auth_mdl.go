@@ -8,31 +8,25 @@ import (
 	"net/http"
 
 	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/controllers/api/api_utility"
+	"github.com/gocms-io/gocms/context/consts"
+	"github.com/gocms-io/gocms/models"
 	"github.com/gocms-io/gocms/routes"
-	"log"
 )
 
 type AuthMiddleware struct {
 	ServicesGroup *services.ServicesGroup
 }
 
-const USER_CONTEXT_KEY = "user"
-
-func DefaultAuthMiddleware(sg *services.ServicesGroup, routes *routes.Routes) *AuthMiddleware {
+func DefaultAuthMiddleware(sg *services.ServicesGroup) *AuthMiddleware {
 
 	authMiddleware := &AuthMiddleware{
 		ServicesGroup: sg,
 	}
 
-	authMiddleware.Default(routes)
 	return authMiddleware
 }
 
-func (am *AuthMiddleware) Default(routes *routes.Routes) {
-	/// this right here is the issue with grnow compiling
-	routes.Root.Use(am.AddUserToContextIfValidToken())
-
+func (am *AuthMiddleware) ApplyAuthToRoutes(routes *routes.Routes) {
 	routes.Auth.Use(am.RequireAuthenticatedUser())
 	routes.PreTwofactor = routes.Auth
 	if context.Config.UseTwoFactor {
@@ -42,7 +36,7 @@ func (am *AuthMiddleware) Default(routes *routes.Routes) {
 
 // middleware
 func (am *AuthMiddleware) AddUserToContextIfValidToken() gin.HandlerFunc {
-	return am.getAuthedUserIfPresent
+	return am.addUserToContextIfValidToken
 }
 func (am *AuthMiddleware) RequireAuthenticatedUser() gin.HandlerFunc {
 	return am.requireAuthedUser
@@ -52,7 +46,7 @@ func (am *AuthMiddleware) RequireAuthenticatedDevice() gin.HandlerFunc {
 }
 
 // getAuthedUserIfPresent
-func (am *AuthMiddleware) getAuthedUserIfPresent(c *gin.Context) {
+func (am *AuthMiddleware) addUserToContextIfValidToken(c *gin.Context) {
 
 	// get token
 	authHeader := c.Request.Header.Get("X-AUTH-TOKEN")
@@ -70,7 +64,6 @@ func (am *AuthMiddleware) getAuthedUserIfPresent(c *gin.Context) {
 
 			userId, ok := token.Claims["userId"].(float64)
 			if !ok {
-				log.Print("UserId not contained in token.")
 				c.Next()
 				return
 			} else {
@@ -87,7 +80,7 @@ func (am *AuthMiddleware) getAuthedUserIfPresent(c *gin.Context) {
 						c.Next()
 						return
 					}
-					c.Set(USER_CONTEXT_KEY, *user)
+					c.Set(consts.USER_KEY_FOR_GIN_CONTEXT, *user)
 					// continue
 					c.Next()
 					return
@@ -100,7 +93,7 @@ func (am *AuthMiddleware) getAuthedUserIfPresent(c *gin.Context) {
 // requireAuthedUser middleware
 func (am *AuthMiddleware) requireAuthedUser(c *gin.Context) {
 
-	user, ok := api_utility.GetUserFromContext(c)
+	user, ok := GetUserFromContext(c)
 	if !ok {
 		errors.Response(c, http.StatusUnauthorized, errors.ApiError_UserToken, nil)
 		return
@@ -158,4 +151,14 @@ func (am *AuthMiddleware) verifyToken(authHeader string) (*jwt.Token, error) {
 	}
 
 	return token, nil
+}
+
+func GetUserFromContext(c *gin.Context) (*models.User, bool) {
+	// get user from context
+	if userContext, ok := c.Get(consts.USER_KEY_FOR_GIN_CONTEXT); ok {
+		if userDisplay, ok := userContext.(models.User); ok {
+			return &userDisplay, true
+		}
+	}
+	return nil, false
 }
