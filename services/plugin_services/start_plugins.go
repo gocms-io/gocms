@@ -85,6 +85,7 @@ func (ps *PluginsService) StartActivePlugins() error {
 
 		// add plugin to active list for monitoring and other things
 		ps.activePlugins[plugin.Manifest.Id] = plugin
+
 	}
 
 	return nil

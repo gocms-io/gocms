@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/controllers/middleware/auth"
 	"github.com/gocms-io/gocms/utility"
 )
 
@@ -28,9 +27,6 @@ func DefaultAuthController(routes *routes.Routes, sg *services.ServicesGroup) *A
 		routes:        routes,
 		ServicesGroup: sg,
 	}
-
-	// apply auth middleware
-	aclMdl.DefaultAuthMiddleware(sg, routes)
 
 	authController.Default()
 

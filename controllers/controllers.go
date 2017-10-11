@@ -10,6 +10,7 @@ import (
 	"github.com/gocms-io/gocms/controllers/api/healthy_ctrl"
 	"github.com/gocms-io/gocms/controllers/api/user"
 	"github.com/gocms-io/gocms/controllers/content"
+	"github.com/gocms-io/gocms/controllers/middleware/auth"
 	"github.com/gocms-io/gocms/controllers/middleware/cors"
 	"github.com/gocms-io/gocms/controllers/middleware/timezone"
 	"github.com/gocms-io/gocms/controllers/middleware/uuid"
@@ -48,6 +49,8 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 	r.Use(uuidMdl.UUID())
 	r.Use(aclMdl.CORS())
 	r.Use(timezoneMdl.Timezone())
+	am := authMdl.DefaultAuthMiddleware(sg)
+	r.Use(am.AddUserToContextIfValidToken())
 
 	//r.LoadHTMLGlob("./content/templates/*.tmpl")
 	r.HTMLRender = createMyRender()
@@ -58,6 +61,9 @@ func DefaultControllerGroup(r *gin.Engine, sg *services.ServicesGroup) *Controll
 		Auth:    r.Group(defaultRoutePrefix),
 		NoRoute: r.NoRoute,
 	}
+
+	// apply auth middleware
+	am.ApplyAuthToRoutes(routes)
 
 	// define routes and apply middleware
 	apiControllers := &ApiControllers{
