@@ -1,6 +1,7 @@
 import {injectSagas, rootSaga} from './config/sagas';
-import {injectRoutes, registeredRoutes} from './config/router/routes';
-import {injectReducers, registeredReducers} from './config/reducers/reducers'
+import {injectAuthedRoutes, registeredRoutes} from './config/router/routes';
+import {injectReducers, registeredReducers} from './config/reducers/reducers';
+import {injectLoginRoutes} from './containers/loginPage/loginPage.routes';
 
 export function getModule() {
     return {
@@ -14,6 +15,11 @@ export function getModule() {
 
 export function injectModule(a) {
     injectSagas(a.sagas);
-    injectRoutes(a.routes);
+    injectAuthedRoutes(a.routes);
     injectReducers(a.reducers);
+
+    // if not null inject custom login route
+    if (a.loginRoutes != "" && a.loginRoutes != null && a.loginRoutes != [] && a.loginRoutes != {}) {
+        injectLoginRoutes(a.loginRoutes);
+    }
 }

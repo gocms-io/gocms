@@ -14,13 +14,6 @@ type RuntimeConfig struct {
 	DbPassword string
 	DbServer   string
 
-	// Elastic Search
-	ElasticSearchConnectionUrl      string
-	ElasticSearchUseAwsSignedClient bool
-	ElasticSearchAwsUser            string
-	ElasticSearchAwsSecret          string
-	ElasticSearchAwsRegion          string
-
 	// Debug
 	Debug         bool
 	DebugSecurity bool
@@ -32,6 +25,9 @@ type RuntimeConfig struct {
 	CorsHost            string
 	OpenRegistration    bool
 	SettingsRefreshRate int64
+
+	// Manifest Items From Plugins
+	DisableDefaultLoginPage bool
 
 	// Authentication
 	AuthKey                string
