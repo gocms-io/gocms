@@ -1,4 +1,4 @@
-package repositories
+package secure_code_repository
 
 import (
 	"github.com/jmoiron/sqlx"
@@ -17,13 +17,10 @@ type SecureCodeRepository struct {
 	database *sqlx.DB
 }
 
-func DefaultSecureCodeRepository(db interface{}) *SecureCodeRepository {
-	d, ok := db.(*sqlx.DB)
-	if !ok {
-		log.Fatalf("Secure Code Repo expected *sqlx.DB but got %T.\n", db)
-	}
+func DefaultSecureCodeRepository(dbx *sqlx.DB) *SecureCodeRepository {
+
 	secureCodeRepository := &SecureCodeRepository{
-		database: d,
+		database: dbx,
 	}
 
 	return secureCodeRepository

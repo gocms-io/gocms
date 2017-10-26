@@ -1,4 +1,4 @@
-package repositories
+package runtime_repository
 
 import (
 	"github.com/gocms-io/gocms/models/runtime_models"
@@ -15,13 +15,9 @@ type RuntimeRepository struct {
 	database *sqlx.DB
 }
 
-func DefaultRuntimeRepository(db interface{}) *RuntimeRepository {
-	d, ok := db.(*sqlx.DB)
-	if !ok {
-		log.Fatalf("Runtime Repo expected *sqlx.DB but got %T.\n", db)
-	}
+func DefaultRuntimeRepository(dbx *sqlx.DB) *RuntimeRepository {
 	runtimeRepository := &RuntimeRepository{
-		database: d,
+		database: dbx,
 	}
 
 	return runtimeRepository

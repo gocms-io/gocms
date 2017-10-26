@@ -1,4 +1,4 @@
-package sql_migrations
+package migrations
 
 import "github.com/rubenv/sql-migrate"
 

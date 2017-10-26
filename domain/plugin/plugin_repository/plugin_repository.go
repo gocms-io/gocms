@@ -1,4 +1,4 @@
-package repositories
+package plugin_repository
 
 import (
 	"github.com/gocms-io/gocms/models/runtime_models"
@@ -14,13 +14,9 @@ type PluginRepository struct {
 	database *sqlx.DB
 }
 
-func DefaultPluginRepository(db interface{}) *PluginRepository {
-	d, ok := db.(*sqlx.DB)
-	if !ok {
-		log.Fatalf("Plugin Repo expected *sqlx.DB but got %T.\n", db)
-	}
+func DefaultPluginRepository(dbx *sqlx.DB) *PluginRepository {
 	pluginRepository := &PluginRepository{
-		database: d,
+		database: dbx,
 	}
 
 	return pluginRepository

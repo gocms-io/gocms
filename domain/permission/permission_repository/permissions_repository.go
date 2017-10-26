@@ -1,4 +1,4 @@
-package repositories
+package permission_repository
 
 import (
 	"github.com/jmoiron/sqlx"
@@ -16,13 +16,9 @@ type PermissionsRepository struct {
 	database *sqlx.DB
 }
 
-func DefaultPermissionsRepository(db interface{}) *PermissionsRepository {
-	d, ok := db.(*sqlx.DB)
-	if !ok {
-		log.Fatalf("Permissions Repo expected *sqlx.DB but got %T.\n", db)
-	}
+func DefaultPermissionsRepository(dbx *sqlx.DB) *PermissionsRepository {
 	permissionsRepository := &PermissionsRepository{
-		database: d,
+		database: dbx,
 	}
 
 	return permissionsRepository

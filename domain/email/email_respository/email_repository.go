@@ -1,4 +1,4 @@
-package repositories
+package email_respository
 
 import (
 	"github.com/jmoiron/sqlx"
@@ -22,13 +22,9 @@ type EmailRepository struct {
 	database *sqlx.DB
 }
 
-func DefaultEmailRepository(db interface{}) *EmailRepository {
-	d, ok := db.(*sqlx.DB)
-	if !ok {
-		log.Fatalf("Email Repo expected *sqlx.DB but got %T.\n", db)
-	}
+func DefaultEmailRepository(dbx *sqlx.DB) *EmailRepository {
 	emailRepository := &EmailRepository{
-		database: d,
+		database: dbx,
 	}
 	return emailRepository
 }

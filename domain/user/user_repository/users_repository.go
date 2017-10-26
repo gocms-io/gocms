@@ -1,4 +1,4 @@
-package repositories
+package user_repository
 
 import (
 	"database/sql"
@@ -24,13 +24,9 @@ type UserRepository struct {
 	database *sqlx.DB
 }
 
-func DefaultUserRepository(db interface{}) *UserRepository {
-	d, ok := db.(*sqlx.DB)
-	if !ok {
-		log.Fatalf("User Repo expected *sqlx.DB but got %T.\n", db)
-	}
+func DefaultUserRepository(dbx *sqlx.DB) *UserRepository {
 	userRepository := &UserRepository{
-		database: d,
+		database: dbx,
 	}
 
 	return userRepository
