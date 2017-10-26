@@ -1,4 +1,4 @@
-package runtime_models
+package plugin_model
 
 import (
 	"os/exec"

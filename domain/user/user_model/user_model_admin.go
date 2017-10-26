@@ -1,4 +1,4 @@
-package models
+package user_model
 
 import (
 	"time"

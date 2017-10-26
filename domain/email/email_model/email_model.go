@@ -1,4 +1,4 @@
-package models
+package email_model
 
 import (
 	"time"

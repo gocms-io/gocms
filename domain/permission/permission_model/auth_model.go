@@ -1,4 +1,4 @@
-package models
+package permission_model
 
 /**
  * @apiDefine UserAuthHeader

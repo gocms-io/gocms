@@ -1,4 +1,4 @@
-package models
+package security_code_model
 
 import "time"
 
