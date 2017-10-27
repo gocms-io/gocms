@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/context"
+	"github.com/gocms-io/gocms/domain/email/email_model"
+	"github.com/gocms-io/gocms/init/service"
+	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/utility/api_utility"
 	"github.com/gocms-io/gocms/utility/errors"
 	"net/http"
-	"github.com/gocms-io/gocms/routes"
-	"github.com/gocms-io/gocms/init/service"
-	"github.com/gocms-io/gocms/domain/email/email_model"
 )
 
 type EmailController struct {
@@ -97,7 +97,7 @@ func (ec *EmailController) activateEmail(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/seccess.html", context.Config.DbVars.RedirectRootUrl))
+	c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%v/activateEmail/success.html", context.Config.DbVars.RedirectRootUrl))
 }
 
 /**

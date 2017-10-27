@@ -134,7 +134,7 @@ func (es *EmailService) SendEmailActivationCode(emailAddress string) error {
 		To:      emailAddress,
 		Subject: "Account Verification Required",
 		Body: "Click on the link below to activate your account:\n" +
-			context.Config.DbVars.PublicApiUrl + activationLink + "\n\nThe link will expire at: " +
+			activationLink + "\n\nThe link will expire at: " +
 			expTimeStr + ".",
 		BodyHTML: fmt.Sprintf("<h1>Account Verification Required</h1><h2>Click on the link below to activate your account:</h2><p><a href='%v'>Activate Link</a></h3></p><p>The link will expire at: <b>%v</b></p>", activationLink, expTimeStr),
 	})
