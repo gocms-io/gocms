@@ -1,9 +1,9 @@
 package setting_repository
 
 import (
+	"github.com/gocms-io/gocms/domain/setting/setting_model"
 	"github.com/jmoiron/sqlx"
 	"log"
-	"bitbucket.org/grnow/grnow-services/domain/setting/setting_model"
 )
 
 type ISettingsRepository interface {

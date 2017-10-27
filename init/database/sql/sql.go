@@ -2,6 +2,7 @@ package sql
 
 import (
 	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/init/database/sql/migrations/sql"
 	"github.com/jmoiron/sqlx"
@@ -23,13 +24,13 @@ func DefaultSQL() *SQL {
 	}
 	dbx := sqlx.NewDb(dbHandle, "mysql")
 
-	sql := &SQL{
+	mySql := &SQL{
 		Dbx:        dbx,
 		migrations: migrations.Default(),
 	}
 
 	// apply migrations up by default
-	return sql
+	return mySql
 }
 
 func (sql *SQL) MigrateSql() error {
