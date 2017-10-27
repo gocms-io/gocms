@@ -1,10 +1,10 @@
 package setting_service
 
 import (
+	"github.com/gocms-io/gocms/domain/setting/setting_model"
+	"github.com/gocms-io/gocms/init/repository"
 	"log"
 	"time"
-	"bitbucket.org/grnow/grnow-services/init/repository"
-	"bitbucket.org/grnow/grnow-services/domain/setting/setting_model"
 )
 
 type ISettingsService interface {

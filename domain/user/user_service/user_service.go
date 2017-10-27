@@ -1,30 +1,33 @@
-package services
+package user_service
 
 import (
-	"github.com/gocms-io/gocms/models"
-	"github.com/gocms-io/gocms/repositories"
+	"github.com/gocms-io/gocms/domain/access_control_layer/auth_service"
+	"github.com/gocms-io/gocms/domain/email/email_model"
+	"github.com/gocms-io/gocms/domain/mail/mail_service"
+	"github.com/gocms-io/gocms/domain/user/user_model"
+	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/utility"
 	"github.com/gocms-io/gocms/utility/errors"
 )
 
 type IUserService interface {
-	Add(*models.User) error
-	Get(int) (*models.User, error)
-	GetByEmail(string) (*models.User, error)
-	GetAll() (*[]models.User, error)
+	Add(*user_model.User) error
+	Get(int) (*user_model.User, error)
+	GetByEmail(string) (*user_model.User, error)
+	GetAll() (*[]user_model.User, error)
 	Delete(int) error
-	Update(int, *models.User) error
+	Update(int, *user_model.User) error
 	UpdatePassword(int, string) error
 	SetEnabled(int, bool) error
 }
 
 type UserService struct {
-	AuthService       IAuthService
-	MailService       IMailService
-	RepositoriesGroup *repositories.RepositoriesGroup
+	AuthService       auth_service.IAuthService
+	MailService       mail_service.IMailService
+	RepositoriesGroup *repository.RepositoriesGroup
 }
 
-func DefaultUserService(rg *repositories.RepositoriesGroup, authService *AuthService, mailService *MailService) *UserService {
+func DefaultUserService(rg *repository.RepositoriesGroup, authService *auth_service.AuthService, mailService *mail_service.MailService) *UserService {
 	userService := &UserService{
 		AuthService:       authService,
 		MailService:       mailService,
@@ -34,7 +37,7 @@ func DefaultUserService(rg *repositories.RepositoriesGroup, authService *AuthSer
 	return userService
 }
 
-func (us *UserService) Get(id int) (*models.User, error) {
+func (us *UserService) Get(id int) (*user_model.User, error) {
 
 	user, err := us.RepositoriesGroup.UsersRepository.Get(id)
 
@@ -45,7 +48,7 @@ func (us *UserService) Get(id int) (*models.User, error) {
 	return user, nil
 }
 
-func (us *UserService) GetByEmail(email string) (*models.User, error) {
+func (us *UserService) GetByEmail(email string) (*user_model.User, error) {
 	// check emails for userid
 	user, err := us.RepositoriesGroup.UsersRepository.GetByEmail(email)
 
@@ -56,7 +59,7 @@ func (us *UserService) GetByEmail(email string) (*models.User, error) {
 	return user, nil
 }
 
-func (us *UserService) GetAll() (*[]models.User, error) {
+func (us *UserService) GetAll() (*[]user_model.User, error) {
 
 	users, err := us.RepositoriesGroup.UsersRepository.GetAll()
 	if err != nil {
@@ -66,7 +69,7 @@ func (us *UserService) GetAll() (*[]models.User, error) {
 	return users, nil
 }
 
-func (us *UserService) Add(user *models.User) error {
+func (us *UserService) Add(user *user_model.User) error {
 
 	// email must exist and not be null
 	if user.Email == "" {
@@ -96,7 +99,7 @@ func (us *UserService) Add(user *models.User) error {
 	}
 
 	// add email to db and attach to user
-	emailToAdd := models.Email{
+	emailToAdd := email_model.Email{
 		Email:     user.Email,
 		UserId:    user.Id,
 		IsPrimary: true,
@@ -118,7 +121,7 @@ func (us *UserService) Delete(id int) error {
 	return nil
 }
 
-func (us *UserService) Update(id int, userForUpdate *models.User) error {
+func (us *UserService) Update(id int, userForUpdate *user_model.User) error {
 	err := us.RepositoriesGroup.UsersRepository.Update(id, userForUpdate)
 	if err != nil {
 		return err

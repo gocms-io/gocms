@@ -1,23 +1,23 @@
-package services
+package acl_service
 
 import (
-	"github.com/gocms-io/gocms/models"
-	"github.com/gocms-io/gocms/repositories"
+	"github.com/gocms-io/gocms/domain/permission/permission_model"
+	"github.com/gocms-io/gocms/init/repository"
 	"log"
 )
 
 type IAclService interface {
 	RefreshPermissionsCache() error
-	GetPermissions() map[string]models.Permission
+	GetPermissions() map[string]permission_model.Permission
 	IsAuthorized(string, int) bool
 }
 
 type AclService struct {
-	Permissions       map[string]models.Permission
-	RepositoriesGroup *repositories.RepositoriesGroup
+	Permissions       map[string]permission_model.Permission
+	RepositoriesGroup *repository.RepositoriesGroup
 }
 
-func DefaultAclService(rg *repositories.RepositoriesGroup) *AclService {
+func DefaultAclService(rg *repository.RepositoriesGroup) *AclService {
 	aclService := &AclService{
 		RepositoriesGroup: rg,
 	}
@@ -35,7 +35,7 @@ func (as *AclService) RefreshPermissionsCache() error {
 		return err
 	}
 
-	permissionsCache := make(map[string]models.Permission, len(*permissions))
+	permissionsCache := make(map[string]permission_model.Permission, len(*permissions))
 	// cache permissions
 	for _, permission := range *permissions {
 		permissionsCache[permission.Name] = permission
@@ -45,7 +45,7 @@ func (as *AclService) RefreshPermissionsCache() error {
 	return nil
 }
 
-func (as *AclService) GetPermissions() map[string]models.Permission {
+func (as *AclService) GetPermissions() map[string]permission_model.Permission {
 	return as.Permissions
 }
 

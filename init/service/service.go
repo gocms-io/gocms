@@ -1,16 +1,18 @@
-package services
+package service
 
 import (
 	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/repositories"
-	"github.com/gocms-io/gocms/services/plugin_services"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_services"
 	"log"
 	"time"
+	"github.com/gocms-io/gocms/domain/setting/setting_service"
+	"github.com/gocms-io/gocms/init/repository"
+	"github.com/gocms-io/gocms/domain/mail/mail_service"
 )
 
 type ServicesGroup struct {
-	SettingsService ISettingsService
-	MailService     IMailService
+	SettingsService setting_service.ISettingsService
+	MailService     mail_service.IMailService
 	AuthService     IAuthService
 	UserService     IUserService
 	AclService      IAclService
@@ -18,20 +20,20 @@ type ServicesGroup struct {
 	PluginsService  plugin_services.IPluginsService
 }
 
-func DefaultServicesGroup(rg *repositories.RepositoriesGroup) *ServicesGroup {
+func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup) *ServicesGroup {
 
 	// setup settings
-	settingsService := DefaultSettingsService(rg)
-	settingsService.RegisterRefreshCallback(context.Config.ApplySettingsToConfig)
+	settingsService := setting_service.DefaultSettingsService(repositoriesGroup)
+	settingsService.RegisterRefreshCallback(context.Config.DbVars.LoadDbVars)
 
 	// refresh settings every x minutes
-	refreshSettings := time.Duration(context.Config.SettingsRefreshRate) * time.Minute
+	refreshSettings := time.Duration(context.Config.DbVars.SettingsRefreshRate) * time.Minute
 	context.Schedule.AddTicker(refreshSettings, func() {
 		settingsService.RefreshSettingsCache()
 	})
 
 	// mail service
-	mailService := DefaultMailService()
+	mailService := mail_service.DefaultMailService()
 
 	// start permissions cache
 	aclService := DefaultAclService(rg)

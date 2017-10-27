@@ -1,4 +1,4 @@
-package services
+package mail_service
 
 import (
 	"fmt"
@@ -29,12 +29,12 @@ type Mail struct {
 }
 
 func DefaultMailService() *MailService {
-	defaultTemplatePath := filepath.Join("./content/themes", context.Config.ActiveTheme, "theme_email.tmpl")
+	defaultTemplatePath := filepath.Join("./content/themes", context.Config.DbVars.ActiveTheme, "theme_email.tmpl")
 	defaultTemplate := template.Must(template.ParseGlob(defaultTemplatePath))
 
 	mailService := &MailService{
-		Dialer:          gomail.NewDialer(context.Config.SMTPServer, int(context.Config.SMTPPort), context.Config.SMTPUser, context.Config.SMTPPassword),
-		From:            context.Config.SMTPFromAddress,
+		Dialer:          gomail.NewDialer(context.Config.DbVars.SMTPServer, int(context.Config.DbVars.SMTPPort), context.Config.DbVars.SMTPUser, context.Config.DbVars.SMTPPassword),
+		From:            context.Config.DbVars.SMTPFromAddress,
 		DefaultTemplate: defaultTemplate,
 	}
 
@@ -69,7 +69,7 @@ func (ms *MailService) Send(mail *Mail) error {
 	})
 
 	// Send the email
-	if !context.Config.SMTPSimulate {
+	if !context.Config.DbVars.SMTPSimulate {
 		err := ms.Dialer.DialAndSend(m)
 		if err != nil {
 			log.Print("Error sending mail: " + err.Error())
