@@ -3,7 +3,7 @@ package plugin_proxy_mdl
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/controllers/api/api_utility"
+	"github.com/gocms-io/gocms/utility/api_utility"
 	"github.com/gocms-io/gocms/controllers/middleware/timezone"
 	"github.com/gocms-io/gocms/utility/errors"
 	"log"

@@ -8,15 +8,19 @@ import (
 	"github.com/gocms-io/gocms/domain/setting/setting_service"
 	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/domain/mail/mail_service"
+	"github.com/gocms-io/gocms/domain/user/user_service"
+	"github.com/gocms-io/gocms/domain/access_control_layer/acl_service"
+	"github.com/gocms-io/gocms/domain/email/email_service"
+	"github.com/gocms-io/gocms/domain/access_control_layer/authentication/authentication_service"
 )
 
 type ServicesGroup struct {
 	SettingsService setting_service.ISettingsService
 	MailService     mail_service.IMailService
-	AuthService     IAuthService
-	UserService     IUserService
-	AclService      IAclService
-	EmailService    IEmailService
+	AuthService     authentication_service.IAuthService
+	UserService     user_service.IUserService
+	AclService      acl_service.IAclService
+	EmailService    email_service.IEmailService
 	PluginsService  plugin_services.IPluginsService
 }
 
@@ -36,17 +40,17 @@ func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup) *Serv
 	mailService := mail_service.DefaultMailService()
 
 	// start permissions cache
-	aclService := DefaultAclService(rg)
+	aclService := acl_service.DefaultAclService(repositoriesGroup)
 	aclService.RefreshPermissionsCache()
 
-	authService := DefaultAuthService(rg, mailService)
-	userService := DefaultUserService(rg, authService, mailService)
+	authService := authentication_service.DefaultAuthService(repositoriesGroup, mailService)
+	userService := user_service.DefaultUserService(repositoriesGroup, authService, mailService)
 
 	// email service
-	emailService := DefaultEmailService(rg, mailService, authService)
+	emailService := email_service.DefaultEmailService(repositoriesGroup, mailService, authService)
 
 	// plugins service
-	pluginsService := plugin_services.DefaultPluginsService(rg)
+	pluginsService := plugin_services.DefaultPluginsService(repositoriesGroup)
 	err := pluginsService.RefreshInstalledPlugins()
 	if err != nil {
 		log.Printf("Error finding plugins. Can't start plugin microservice: %s\n", err.Error())

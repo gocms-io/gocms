@@ -2,7 +2,7 @@ package user_repository
 
 import (
 	"database/sql"
-	"github.com/gocms-io/gocms/models"
+	"github.com/gocms-io/gocms/domain/user/user_model"
 	"github.com/gocms-io/gocms/utility/errors"
 	"github.com/jmoiron/sqlx"
 	"log"
@@ -10,11 +10,11 @@ import (
 )
 
 type IUserRepository interface {
-	Get(int) (*models.User, error)
-	GetByEmail(string) (*models.User, error)
-	GetAll() (*[]models.User, error)
-	Add(*models.User) error
-	Update(int, *models.User) error
+	Get(int) (*user_model.User, error)
+	GetByEmail(string) (*user_model.User, error)
+	GetAll() (*[]user_model.User, error)
+	Add(*user_model.User) error
+	Update(int, *user_model.User) error
 	UpdatePassword(int, string) error
 	Delete(int) error
 	SetEnabled(int, bool) error
@@ -33,8 +33,8 @@ func DefaultUserRepository(dbx *sqlx.DB) *UserRepository {
 }
 
 // get user by id
-func (ur *UserRepository) Get(id int) (*models.User, error) {
-	var user models.User
+func (ur *UserRepository) Get(id int) (*user_model.User, error) {
+	var user user_model.User
 	err := ur.database.Get(&user, `
 	SELECT gocms_users.*, gocms_emails.email, gocms_emails.isVerified
 	FROM gocms_users
@@ -53,10 +53,10 @@ func (ur *UserRepository) Get(id int) (*models.User, error) {
 }
 
 // get user by email
-func (ur *UserRepository) GetByEmail(email string) (*models.User, error) {
+func (ur *UserRepository) GetByEmail(email string) (*user_model.User, error) {
 
 	// first get the user by email
-	var user models.User
+	var user user_model.User
 	err := ur.database.Get(&user, `
 	SELECT gocms_users.*, gocms_emails.email, gocms_emails.isVerified
 	FROM gocms_users
@@ -78,8 +78,8 @@ func (ur *UserRepository) GetByEmail(email string) (*models.User, error) {
 }
 
 // get a list of all users
-func (ur *UserRepository) GetAll() (*[]models.User, error) {
-	var users []models.User
+func (ur *UserRepository) GetAll() (*[]user_model.User, error) {
+	var users []user_model.User
 	err := ur.database.Select(&users, `
 	SELECT gocms_users.*, gocms_emails.email, gocms_emails.isVerified
 	FROM gocms_users
@@ -93,7 +93,7 @@ func (ur *UserRepository) GetAll() (*[]models.User, error) {
 	return &users, nil
 }
 
-func (ur *UserRepository) Add(user *models.User) error {
+func (ur *UserRepository) Add(user *user_model.User) error {
 
 	// check if user exists
 	if ur.userExistsByEmail(user.Email) {
@@ -116,7 +116,7 @@ func (ur *UserRepository) Add(user *models.User) error {
 	return nil
 }
 
-func (ur *UserRepository) Update(id int, user *models.User) error {
+func (ur *UserRepository) Update(id int, user *user_model.User) error {
 	// insert row
 	user.Id = id
 	_, err := ur.database.NamedExec(`
@@ -145,7 +145,7 @@ func (ur *UserRepository) SetEnabled(id int, enabled bool) error {
 
 func (ur *UserRepository) UpdatePassword(id int, hash string) error {
 	// insert row
-	user := models.User{
+	user := user_model.User{
 		Id:       id,
 		Password: hash,
 	}
@@ -178,7 +178,7 @@ func (ur *UserRepository) Delete(id int) error {
 }
 
 func (ur *UserRepository) userExistsByEmail(email string) bool {
-	user := models.User{}
+	user := user_model.User{}
 	err := ur.database.QueryRowx(`
 	SELECT email FROM gocms_emails WHERE email = ?
 	`, email).Scan(&user.Email)

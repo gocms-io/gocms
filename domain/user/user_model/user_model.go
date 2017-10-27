@@ -1,6 +1,7 @@
 package user_model
 
 import (
+	"github.com/gocms-io/gocms/domain/email/email_model"
 	"time"
 )
 
@@ -14,7 +15,7 @@ type User struct {
 	FullName     string `json:"fullName" db:"fullName"`
 	Email        string `json:"email" db:"email"`
 	Verified     bool   `json:"isVerified" db:"isVerified"`
-	AltEmails    []Email
+	AltEmails    []email_model.Email
 	Password     string    `json:"password" db:"password"`
 	Gender       int       `json:"gender" db:"gender"`
 	Photo        string    `json:"photo" db:"photo"`

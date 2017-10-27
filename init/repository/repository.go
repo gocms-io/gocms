@@ -1,8 +1,8 @@
 package repository
 
 import (
+	"github.com/gocms-io/gocms/domain/access_control_layer/permission_repository"
 	"github.com/gocms-io/gocms/domain/email/email_respository"
-	"github.com/gocms-io/gocms/domain/permission/permission_repository"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_repository"
 	"github.com/gocms-io/gocms/domain/runtime/runtime_repository"
 	"github.com/gocms-io/gocms/domain/secure_code/secure_code_repository"

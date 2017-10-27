@@ -2,13 +2,13 @@ package permission_repository
 
 import (
 	"github.com/jmoiron/sqlx"
-	"github.com/gocms-io/gocms/models"
 	"log"
+	"github.com/gocms-io/gocms/domain/access_control_layer/permission_model"
 )
 
 
 type IPermissionsRepository interface {
-	GetAll() (*[]models.Permission, error)
+	GetAll() (*[]permission_model.Permission, error)
 	GetUserPermissions(int) (*[]int, error)
 }
 
@@ -25,8 +25,8 @@ func DefaultPermissionsRepository(dbx *sqlx.DB) *PermissionsRepository {
 }
 
 // get all permissions
-func (ur *PermissionsRepository) GetAll() (*[]models.Permission, error) {
-	var permissions []models.Permission
+func (ur *PermissionsRepository) GetAll() (*[]permission_model.Permission, error) {
+	var permissions []permission_model.Permission
 	err := ur.database.Select(&permissions, "SELECT * FROM gocms_permissions")
 	if err != nil {
 		log.Printf("Error getting permissions from database: %s", err.Error())

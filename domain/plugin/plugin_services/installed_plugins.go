@@ -2,6 +2,7 @@ package plugin_services
 
 import (
 	"fmt"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
 	"log"
 	"os"
 	"path/filepath"
@@ -53,7 +54,7 @@ func (ps *PluginsService) visitPlugin(path string, f os.FileInfo, err error) err
 			return err
 		}
 
-		plugin := runtime_models.Plugin{
+		plugin := plugin_model.Plugin{
 			PluginRoot: pluginRoot,
 			BinaryFile: manifest.Services.Bin,
 			Manifest:   manifest,

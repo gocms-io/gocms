@@ -3,31 +3,34 @@ package email_service
 import (
 	"fmt"
 	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/models"
-	"github.com/gocms-io/gocms/repositories"
 	"github.com/gocms-io/gocms/utility/errors"
 	"log"
 	"time"
+	"github.com/gocms-io/gocms/domain/email/email_model"
+	"github.com/gocms-io/gocms/domain/mail/mail_service"
+	"github.com/gocms-io/gocms/domain/access_control_layer/auth_service"
+	"github.com/gocms-io/gocms/init/repository"
+	"github.com/gocms-io/gocms/domain/secure_code/security_code_model"
 )
 
 type IEmailService interface {
 	SetVerified(email string) error
 	GetVerified(email string) bool
-	AddEmail(email *models.Email) error
-	GetEmailsByUserId(userId int) ([]models.Email, error)
+	AddEmail(email *email_model.Email) error
+	GetEmailsByUserId(userId int) ([]email_model.Email, error)
 	SendEmailActivationCode(email string) error
 	VerifyEmailActivationCode(id int, code string) bool
-	PromoteEmail(email *models.Email) error
-	DeleteEmail(email *models.Email) error
+	PromoteEmail(email *email_model.Email) error
+	DeleteEmail(email *email_model.Email) error
 }
 
 type EmailService struct {
-	MailService       IMailService
-	AuthService       IAuthService
-	RepositoriesGroup *repositories.RepositoriesGroup
+	MailService       mail_service.IMailService
+	AuthService       authentication_service.IAuthService
+	RepositoriesGroup *repository.RepositoriesGroup
 }
 
-func DefaultEmailService(rg *repositories.RepositoriesGroup, ms *MailService, as *AuthService) *EmailService {
+func DefaultEmailService(rg *repository.RepositoriesGroup, ms *mail_service.MailService, as *authentication_service.AuthService) *EmailService {
 	emailService := &EmailService{
 		RepositoriesGroup: rg,
 		AuthService:       as,
@@ -62,7 +65,7 @@ func (es *EmailService) GetVerified(e string) bool {
 	return email.IsVerified
 }
 
-func (es *EmailService) AddEmail(e *models.Email) error {
+func (es *EmailService) AddEmail(e *email_model.Email) error {
 
 	// check to see if email exist
 	emailExists, _ := es.RepositoriesGroup.EmailRepository.GetByAddress(e.Email)
@@ -79,7 +82,7 @@ func (es *EmailService) AddEmail(e *models.Email) error {
 
 	// send email to primary email about addition of email
 	if primaryEmail, err := es.RepositoriesGroup.EmailRepository.GetPrimaryByUserId(e.UserId); err == nil {
-		mail := Mail{
+		mail := mail_service.Mail{
 			To:       primaryEmail.Email,
 			Subject:  "New Email Added To Your Account",
 			Body:     "A new alternative email address, " + e.Email + ", was added to your account.\n\n If you believe this to be a mistake please contact support.",
@@ -114,9 +117,9 @@ func (es *EmailService) SendEmailActivationCode(emailAddress string) error {
 	}
 
 	// update user with new code
-	err = es.RepositoriesGroup.SecureCodeRepository.Add(&models.SecureCode{
+	err = es.RepositoriesGroup.SecureCodeRepository.Add(&security_code_model.SecureCode{
 		UserId: email.UserId,
-		Type:   models.Code_VerifyEmail,
+		Type:   security_code_model.Code_VerifyEmail,
 		Code:   hashedCode,
 	})
 	if err != nil {
@@ -124,14 +127,14 @@ func (es *EmailService) SendEmailActivationCode(emailAddress string) error {
 		return err
 	}
 
-	expTimeStr := time.Now().Add(time.Minute * time.Duration(context.Config.EmailActivationTimeout)).Format("01/02/2006 03:04 pm")
-	activationLink := fmt.Sprintf("%v/user/email/activate?code=%v&email=%v", context.Config.PublicApiUrl, code, emailAddress)
+	expTimeStr := time.Now().Add(time.Minute * time.Duration(context.Config.DbVars.EmailActivationTimeout)).Format("01/02/2006 03:04 pm")
+	activationLink := fmt.Sprintf("%v/user/email/activate?code=%v&email=%v", context.Config.DbVars.PublicApiUrl, code, emailAddress)
 	// send email
-	es.MailService.Send(&Mail{
+	es.MailService.Send(&mail_service.Mail{
 		To:      emailAddress,
 		Subject: "Account Verification Required",
 		Body: "Click on the link below to activate your account:\n" +
-			context.Config.PublicApiUrl + activationLink + "\n\nThe link will expire at: " +
+			context.Config.DbVars.PublicApiUrl + activationLink + "\n\nThe link will expire at: " +
 			expTimeStr + ".",
 		BodyHTML: fmt.Sprintf("<h1>Account Verification Required</h1><h2>Click on the link below to activate your account:</h2><p><a href='%v'>Activate Link</a></h3></p><p>The link will expire at: <b>%v</b></p>", activationLink, expTimeStr),
 	})
@@ -145,7 +148,7 @@ func (es *EmailService) SendEmailActivationCode(emailAddress string) error {
 func (es *EmailService) VerifyEmailActivationCode(id int, code string) bool {
 
 	// get code
-	secureCode, err := es.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, models.Code_VerifyEmail)
+	secureCode, err := es.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, security_code_model.Code_VerifyEmail)
 	if err != nil {
 		log.Printf("error getting latest password reset code: %s", err.Error())
 		return false
@@ -156,7 +159,7 @@ func (es *EmailService) VerifyEmailActivationCode(id int, code string) bool {
 	}
 
 	// check within time
-	if time.Since(secureCode.Created) > (time.Minute * time.Duration(context.Config.PasswordResetTimeout)) {
+	if time.Since(secureCode.Created) > (time.Minute * time.Duration(context.Config.DbVars.PasswordResetTimeout)) {
 		return false
 	}
 
@@ -168,7 +171,7 @@ func (es *EmailService) VerifyEmailActivationCode(id int, code string) bool {
 	return true
 }
 
-func (es *EmailService) PromoteEmail(email *models.Email) error {
+func (es *EmailService) PromoteEmail(email *email_model.Email) error {
 
 	// get email for verification
 	dbEmail, err := es.RepositoriesGroup.EmailRepository.GetByAddress(email.Email)
@@ -207,7 +210,7 @@ func (es *EmailService) PromoteEmail(email *models.Email) error {
 
 	// send notification
 	// send email to primary email about addition of email
-	mail := Mail{
+	mail := mail_service.Mail{
 		To:       oldPrimaryEmail.Email,
 		Subject:  "New Primary Email",
 		Body:     "A new primary email address, " + email.Email + ", has been set on your account.\n\n If you believe this to be a mistake please contact support.",
@@ -218,7 +221,7 @@ func (es *EmailService) PromoteEmail(email *models.Email) error {
 	return nil
 }
 
-func (es *EmailService) GetEmailsByUserId(userId int) ([]models.Email, error) {
+func (es *EmailService) GetEmailsByUserId(userId int) ([]email_model.Email, error) {
 
 	// get all emails
 	emails, err := es.RepositoriesGroup.EmailRepository.GetByUserId(userId)
@@ -230,7 +233,7 @@ func (es *EmailService) GetEmailsByUserId(userId int) ([]models.Email, error) {
 	return emails, nil
 }
 
-func (es *EmailService) DeleteEmail(email *models.Email) error {
+func (es *EmailService) DeleteEmail(email *email_model.Email) error {
 
 	// get email for verification
 	dbEmail, err := es.RepositoriesGroup.EmailRepository.GetByAddress(email.Email)
@@ -269,7 +272,7 @@ func (es *EmailService) DeleteEmail(email *models.Email) error {
 
 	// send notification
 	// send email to primary email about addition of email
-	mail := Mail{
+	mail := mail_service.Mail{
 		To:       primaryEmail.Email,
 		Subject:  "Alternative Email Deleted",
 		Body:     "An alternative email, " + email.Email + ", has been deleted from your account.\n\n If you believe this to be a mistake please contact support.",

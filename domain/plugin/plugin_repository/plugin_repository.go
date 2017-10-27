@@ -1,13 +1,13 @@
 package plugin_repository
 
 import (
-	"github.com/gocms-io/gocms/models/runtime_models"
 	"github.com/jmoiron/sqlx"
 	"log"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
 )
 
 type IPluginRepository interface {
-	GetDatabasePlugins() ([]*runtime_models.PluginDatabaseRecord, error)
+	GetDatabasePlugins() ([]*plugin_model.PluginDatabaseRecord, error)
 }
 
 type PluginRepository struct {
@@ -23,8 +23,8 @@ func DefaultPluginRepository(dbx *sqlx.DB) *PluginRepository {
 }
 
 // get all events
-func (pr *PluginRepository) GetDatabasePlugins() ([]*runtime_models.PluginDatabaseRecord, error) {
-	var pluginRecords []*runtime_models.PluginDatabaseRecord
+func (pr *PluginRepository) GetDatabasePlugins() ([]*plugin_model.PluginDatabaseRecord, error) {
+	var pluginRecords []*plugin_model.PluginDatabaseRecord
 	err := pr.database.Select(&pluginRecords, `
 	SELECT * from gocms_plugins
 	`)

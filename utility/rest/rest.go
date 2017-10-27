@@ -13,7 +13,7 @@ var POST string = "POST"
 var PUT string = "PUT"
 var DELETE string = "DELETE"
 
-type RestRequest struct {
+type Request struct {
 	Url     string
 	Headers map[string]string
 	Body    []byte
@@ -26,17 +26,17 @@ type RestResponse struct {
 	Body       []byte
 }
 
-func (rr *RestRequest) Get() (*RestResponse, error) {
+func (rr *Request) Get() (*RestResponse, error) {
 	rr.method = GET
 	return rr.do()
 }
 
-func (rr *RestRequest) Post() (*RestResponse, error) {
+func (rr *Request) Post() (*RestResponse, error) {
 	rr.method = POST
 	return rr.do()
 }
 
-func (rr *RestRequest) do() (*RestResponse, error) {
+func (rr *Request) do() (*RestResponse, error) {
 	// create request
 	req, err := http.NewRequest(rr.method, rr.Url, bytes.NewBuffer(rr.Body))
 	if err != nil {

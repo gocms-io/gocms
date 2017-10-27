@@ -1,13 +1,13 @@
 package user_service
 
 import (
-	"github.com/gocms-io/gocms/domain/access_control_layer/auth_service"
-	"github.com/gocms-io/gocms/domain/email/email_model"
-	"github.com/gocms-io/gocms/domain/mail/mail_service"
-	"github.com/gocms-io/gocms/domain/user/user_model"
-	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/utility"
 	"github.com/gocms-io/gocms/utility/errors"
+	"github.com/gocms-io/gocms/domain/user/user_model"
+	"github.com/gocms-io/gocms/init/repository"
+	"github.com/gocms-io/gocms/domain/mail/mail_service"
+	"github.com/gocms-io/gocms/domain/access_control_layer/auth_service"
+	"github.com/gocms-io/gocms/domain/email/email_model"
 )
 
 type IUserService interface {
@@ -22,12 +22,12 @@ type IUserService interface {
 }
 
 type UserService struct {
-	AuthService       auth_service.IAuthService
+	AuthService       authentication_service.IAuthService
 	MailService       mail_service.IMailService
 	RepositoriesGroup *repository.RepositoriesGroup
 }
 
-func DefaultUserService(rg *repository.RepositoriesGroup, authService *auth_service.AuthService, mailService *mail_service.MailService) *UserService {
+func DefaultUserService(rg *repository.RepositoriesGroup, authService *authentication_service.AuthService, mailService *mail_service.MailService) *UserService {
 	userService := &UserService{
 		AuthService:       authService,
 		MailService:       mailService,

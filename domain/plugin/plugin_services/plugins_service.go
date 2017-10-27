@@ -3,38 +3,38 @@ package plugin_services
 import (
 	"database/sql"
 	"fmt"
-	"github.com/gocms-io/gocms/models/runtime_models"
-	"github.com/gocms-io/gocms/repositories"
 	"github.com/gocms-io/gocms/routes"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
+	"github.com/gocms-io/gocms/init/repository"
 )
 
 type IPluginsService interface {
 	StartActivePlugins() error
 	RegisterActivePluginRoutes(routes *routes.Routes) error
-	GetDatabasePlugins() (map[string]*runtime_models.PluginDatabaseRecord, error)
+	GetDatabasePlugins() (map[string]*plugin_model.PluginDatabaseRecord, error)
 	RefreshInstalledPlugins() error
-	GetActivePlugins() map[string]*runtime_models.Plugin
+	GetActivePlugins() map[string]*plugin_model.Plugin
 }
 
 type PluginsService struct {
-	repositoriesGroup *repositories.RepositoriesGroup
-	installedPlugins  map[string]*runtime_models.Plugin
-	activePlugins     map[string]*runtime_models.Plugin
+	repositoriesGroup *repository.RepositoriesGroup
+	installedPlugins  map[string]*plugin_model.Plugin
+	activePlugins     map[string]*plugin_model.Plugin
 }
 
-func DefaultPluginsService(rg *repositories.RepositoriesGroup) *PluginsService {
+func DefaultPluginsService(rg *repository.RepositoriesGroup) *PluginsService {
 
 	pluginsService := &PluginsService{
 		repositoriesGroup: rg,
-		installedPlugins:  make(map[string]*runtime_models.Plugin),
-		activePlugins:     make(map[string]*runtime_models.Plugin),
+		installedPlugins:  make(map[string]*plugin_model.Plugin),
+		activePlugins:     make(map[string]*plugin_model.Plugin),
 	}
 
 	return pluginsService
 
 }
 
-func (ps *PluginsService) GetDatabasePlugins() (map[string]*runtime_models.PluginDatabaseRecord, error) {
+func (ps *PluginsService) GetDatabasePlugins() (map[string]*plugin_model.PluginDatabaseRecord, error) {
 	databasePluginRecords, err := ps.repositoriesGroup.PluginRepository.GetDatabasePlugins()
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -45,7 +45,7 @@ func (ps *PluginsService) GetDatabasePlugins() (map[string]*runtime_models.Plugi
 		return nil, err
 	}
 
-	databasePluginsMap := make(map[string]*runtime_models.PluginDatabaseRecord)
+	databasePluginsMap := make(map[string]*plugin_model.PluginDatabaseRecord)
 	for _, databasePlugin := range databasePluginRecords {
 		databasePluginsMap[databasePlugin.PluginId] = databasePlugin
 	}
@@ -53,6 +53,6 @@ func (ps *PluginsService) GetDatabasePlugins() (map[string]*runtime_models.Plugi
 	return databasePluginsMap, nil
 }
 
-func (ps *PluginsService) GetActivePlugins() map[string]*runtime_models.Plugin {
+func (ps *PluginsService) GetActivePlugins() map[string]*plugin_model.Plugin {
 	return ps.activePlugins
 }

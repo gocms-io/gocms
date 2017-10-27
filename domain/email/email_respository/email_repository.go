@@ -1,20 +1,20 @@
 package email_respository
 
 import (
+	"github.com/gocms-io/gocms/domain/email/email_model"
 	"github.com/jmoiron/sqlx"
-	"github.com/gocms-io/gocms/models"
 	"log"
 	"time"
 )
 
 type IEmailRepository interface {
-	Add(*models.Email) error
-	Get(int) (*models.Email, error)
-	GetByAddress(string) (*models.Email, error)
-	GetByUserId(int) ([]models.Email, error)
-	GetPrimaryByUserId(int) (*models.Email, error)
+	Add(*email_model.Email) error
+	Get(int) (*email_model.Email, error)
+	GetByAddress(string) (*email_model.Email, error)
+	GetByUserId(int) ([]email_model.Email, error)
+	GetPrimaryByUserId(int) (*email_model.Email, error)
 	PromoteEmail(emailId int, userId int) error
-	Update(email *models.Email) error
+	Update(email *email_model.Email) error
 	Delete(int) error
 }
 
@@ -29,7 +29,7 @@ func DefaultEmailRepository(dbx *sqlx.DB) *EmailRepository {
 	return emailRepository
 }
 
-func (er *EmailRepository) Add(e *models.Email) error {
+func (er *EmailRepository) Add(e *email_model.Email) error {
 	e.Created = time.Now()
 	// insert row
 	result, err := er.database.NamedExec(`
@@ -46,9 +46,9 @@ func (er *EmailRepository) Add(e *models.Email) error {
 	return nil
 }
 
-func (er *EmailRepository) Get(id int) (*models.Email, error) {
+func (er *EmailRepository) Get(id int) (*email_model.Email, error) {
 	// get email by id
-	var email models.Email
+	var email email_model.Email
 	err := er.database.Get(&email, `
 	SELECT gocms_emails.*
 	FROM gocms_emails
@@ -62,9 +62,9 @@ func (er *EmailRepository) Get(id int) (*models.Email, error) {
 	return &email, nil
 }
 
-func (er *EmailRepository) GetByAddress(address string) (*models.Email, error) {
+func (er *EmailRepository) GetByAddress(address string) (*email_model.Email, error) {
 	// get email by id
-	var email models.Email
+	var email email_model.Email
 	err := er.database.Get(&email, `
 	SELECT gocms_emails.*
 	FROM gocms_emails
@@ -78,9 +78,9 @@ func (er *EmailRepository) GetByAddress(address string) (*models.Email, error) {
 	return &email, nil
 }
 
-func (er *EmailRepository) GetByUserId(userId int) ([]models.Email, error) {
+func (er *EmailRepository) GetByUserId(userId int) ([]email_model.Email, error) {
 	// get email by id
-	var emails []models.Email
+	var emails []email_model.Email
 	err := er.database.Select(&emails, `
 	SELECT gocms_emails.*
 	FROM gocms_emails
@@ -94,9 +94,9 @@ func (er *EmailRepository) GetByUserId(userId int) ([]models.Email, error) {
 	return emails, nil
 }
 
-func (er *EmailRepository) GetPrimaryByUserId(userId int) (*models.Email, error) {
+func (er *EmailRepository) GetPrimaryByUserId(userId int) (*email_model.Email, error) {
 	// get email by id
-	var email models.Email
+	var email email_model.Email
 	err := er.database.Get(&email, `
 	SELECT gocms_emails.*
 	FROM gocms_emails
@@ -111,7 +111,7 @@ func (er *EmailRepository) GetPrimaryByUserId(userId int) (*models.Email, error)
 	return &email, nil
 }
 
-func (er *EmailRepository) Update(email *models.Email) error {
+func (er *EmailRepository) Update(email *email_model.Email) error {
 	// get email by id
 	_, err := er.database.NamedExec(`
 	UPDATE gocms_emails SET isVerified=:isVerified, isPrimary=:isPrimary WHERE id=:id

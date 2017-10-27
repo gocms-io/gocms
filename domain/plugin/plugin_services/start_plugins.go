@@ -4,12 +4,12 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/gocms-io/gocms/controllers/middleware/plugins/proxy"
-	"github.com/gocms-io/gocms/models/runtime_models"
 	"github.com/gocms-io/gocms/utility"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
 )
 
 func (ps *PluginsService) StartActivePlugins() error {
@@ -92,7 +92,7 @@ func (ps *PluginsService) StartActivePlugins() error {
 
 }
 
-func (ps *PluginsService) getPluginsToStart() (map[string]*runtime_models.Plugin, error) {
+func (ps *PluginsService) getPluginsToStart() (map[string]*plugin_model.Plugin, error) {
 
 	// get plugins listed in database
 	databasePlugins, err := ps.GetDatabasePlugins()
@@ -101,7 +101,7 @@ func (ps *PluginsService) getPluginsToStart() (map[string]*runtime_models.Plugin
 		return nil, err
 	}
 
-	pluginsToStart := make(map[string]*runtime_models.Plugin)
+	pluginsToStart := make(map[string]*plugin_model.Plugin)
 
 	// loop through database plugins
 	for dbPluginId, dbPlugin := range databasePlugins {
