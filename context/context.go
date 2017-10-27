@@ -2,15 +2,26 @@ package context
 
 import "time"
 
+var Config *Context
+
+type Context struct {
+	EnvVars *envVars
+	DbVars  *dbVars
+}
+
 func Init() {
 
 	// set config
-	config := RuntimeConfig{
-		DbName:     GetEnvVarOrFail("DB_NAME"),
-		DbUser:     GetEnvVarOrFail("DB_USER"),
-		DbPassword: GetEnvVarOrFail("DB_PASSWORD"),
-		DbServer:   GetEnvVarOrFail("DB_SERVER"),
+	config := Context{
+		EnvVars: &envVars{
+			DbName:     GetEnvVarOrFail("DB_NAME"),
+			DbUser:     GetEnvVarOrFail("DB_USER"),
+			DbPassword: GetEnvVarOrFail("DB_PASSWORD"),
+			DbServer:   GetEnvVarOrFail("DB_SERVER"),
+		},
+		DbVars: &dbVars{},
 	}
+
 	Config = &config
 
 	// set scheduler
@@ -20,5 +31,4 @@ func Init() {
 		timers:  make(map[int]*time.Timer),
 	}
 	Schedule = &schedule
-
 }
