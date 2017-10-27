@@ -1,4 +1,4 @@
-package timezoneMdl
+package user_middleware
 
 import (
 	"fmt"

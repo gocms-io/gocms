@@ -1,10 +1,10 @@
-package plugin_proxy_mdl
+package plugin_proxy_middleware
 
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/utility/api_utility"
 	"github.com/gocms-io/gocms/controllers/middleware/timezone"
+	"github.com/gocms-io/gocms/utility/api_utility"
 	"github.com/gocms-io/gocms/utility/errors"
 	"log"
 	"net/http"

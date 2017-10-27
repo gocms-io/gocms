@@ -1,4 +1,4 @@
-package uuidMdl
+package user_middleware
 
 import (
 	"github.com/gin-gonic/gin"

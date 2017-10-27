@@ -1,16 +1,16 @@
-package aclMdl
+package access_control_middleware
 
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/utility/api_utility"
-	"github.com/gocms-io/gocms/services"
 	"github.com/gocms-io/gocms/utility/errors"
 	"net/http"
+	"github.com/gocms-io/gocms/init/service"
 )
 
 type AclMiddleware struct {
-	ServicesGroup *services.ServicesGroup
+	ServicesGroup *service.ServicesGroup
 }
 
 // middleware

@@ -5,11 +5,9 @@ import (
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/controllers/middleware/auth"
-	"github.com/gocms-io/gocms/controllers/middleware/cors"
-	"github.com/gocms-io/gocms/controllers/middleware/timezone"
-	"github.com/gocms-io/gocms/controllers/middleware/uuid"
-	"github.com/gocms-io/gocms/domain/access_control_layer/authentication/authentication_controller"
+	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_middleware"
+	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_controller"
+	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_middleware"
 	"github.com/gocms-io/gocms/domain/content/documentation"
 	"github.com/gocms-io/gocms/domain/content/react"
 	"github.com/gocms-io/gocms/domain/content/template"
@@ -18,6 +16,7 @@ import (
 	"github.com/gocms-io/gocms/domain/health/health_controller"
 	"github.com/gocms-io/gocms/domain/user/user_admin_controller"
 	"github.com/gocms-io/gocms/domain/user/user_controller"
+	"github.com/gocms-io/gocms/domain/user/user_middleware"
 	"github.com/gocms-io/gocms/init/service"
 	"github.com/gocms-io/gocms/routes"
 	"strings"
@@ -51,10 +50,10 @@ var (
 func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *ControllersGroup {
 
 	// top level middleware
-	r.Use(uuidMdl.UUID())
-	r.Use(aclMdl.CORS())
-	r.Use(timezoneMdl.Timezone())
-	am := authMdl.DefaultAuthMiddleware(sg)
+	r.Use(user_middleware.UUID())
+	r.Use(access_control_middleware.CORS())
+	r.Use(user_middleware.Timezone())
+	am := authentication_middleware.DefaultAuthMiddleware(sg)
 	r.Use(am.AddUserToContextIfValidToken())
 
 	//r.LoadHTMLGlob("./content/templates/*.tmpl")

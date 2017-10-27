@@ -1,23 +1,23 @@
-package authMdl
+package authentication_middleware
 
 import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/services"
 	"github.com/gocms-io/gocms/utility/errors"
 	"net/http"
 
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/context/consts"
-	"github.com/gocms-io/gocms/models"
+	"github.com/gocms-io/gocms/domain/user/user_model"
+	"github.com/gocms-io/gocms/init/service"
 	"github.com/gocms-io/gocms/routes"
 )
 
 type AuthMiddleware struct {
-	ServicesGroup *services.ServicesGroup
+	ServicesGroup *service.ServicesGroup
 }
 
-func DefaultAuthMiddleware(sg *services.ServicesGroup) *AuthMiddleware {
+func DefaultAuthMiddleware(sg *service.ServicesGroup) *AuthMiddleware {
 
 	authMiddleware := &AuthMiddleware{
 		ServicesGroup: sg,
@@ -29,7 +29,7 @@ func DefaultAuthMiddleware(sg *services.ServicesGroup) *AuthMiddleware {
 func (am *AuthMiddleware) ApplyAuthToRoutes(routes *routes.Routes) {
 	routes.Auth.Use(am.RequireAuthenticatedUser())
 	routes.PreTwofactor = routes.Auth
-	if context.Config.UseTwoFactor {
+	if context.Config.DbVars.UseTwoFactor {
 		routes.Auth.Use(am.RequireAuthenticatedDevice())
 	}
 }
@@ -137,7 +137,7 @@ func (am *AuthMiddleware) verifyToken(authHeader string) (*jwt.Token, error) {
 			return nil, errors.New("Token signing method does not match.")
 		}
 
-		return []byte(context.Config.AuthKey), nil
+		return []byte(context.Config.DbVars.AuthKey), nil
 	})
 
 	// check for parsing erorr
@@ -153,10 +153,10 @@ func (am *AuthMiddleware) verifyToken(authHeader string) (*jwt.Token, error) {
 	return token, nil
 }
 
-func GetUserFromContext(c *gin.Context) (*models.User, bool) {
+func GetUserFromContext(c *gin.Context) (*user_model.User, bool) {
 	// get user from context
 	if userContext, ok := c.Get(consts.USER_KEY_FOR_GIN_CONTEXT); ok {
-		if userDisplay, ok := userContext.(models.User); ok {
+		if userDisplay, ok := userContext.(user_model.User); ok {
 			return &userDisplay, true
 		}
 	}

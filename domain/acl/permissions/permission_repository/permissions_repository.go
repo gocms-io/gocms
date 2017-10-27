@@ -3,7 +3,7 @@ package permission_repository
 import (
 	"github.com/jmoiron/sqlx"
 	"log"
-	"github.com/gocms-io/gocms/domain/access_control_layer/permission_model"
+	"github.com/gocms-io/gocms/domain/acl/permissions/permission_model"
 )
 
 

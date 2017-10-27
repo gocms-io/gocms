@@ -2,16 +2,16 @@ package service
 
 import (
 	"github.com/gocms-io/gocms/context"
+	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_service"
+	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_service"
+	"github.com/gocms-io/gocms/domain/email/email_service"
+	"github.com/gocms-io/gocms/domain/mail/mail_service"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_services"
+	"github.com/gocms-io/gocms/domain/setting/setting_service"
+	"github.com/gocms-io/gocms/domain/user/user_service"
+	"github.com/gocms-io/gocms/init/repository"
 	"log"
 	"time"
-	"github.com/gocms-io/gocms/domain/setting/setting_service"
-	"github.com/gocms-io/gocms/init/repository"
-	"github.com/gocms-io/gocms/domain/mail/mail_service"
-	"github.com/gocms-io/gocms/domain/user/user_service"
-	"github.com/gocms-io/gocms/domain/access_control_layer/acl_service"
-	"github.com/gocms-io/gocms/domain/email/email_service"
-	"github.com/gocms-io/gocms/domain/access_control_layer/authentication/authentication_service"
 )
 
 type ServicesGroup struct {
@@ -19,7 +19,7 @@ type ServicesGroup struct {
 	MailService     mail_service.IMailService
 	AuthService     authentication_service.IAuthService
 	UserService     user_service.IUserService
-	AclService      acl_service.IAclService
+	AclService      access_control_service.IAclService
 	EmailService    email_service.IEmailService
 	PluginsService  plugin_services.IPluginsService
 }
@@ -40,7 +40,7 @@ func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup) *Serv
 	mailService := mail_service.DefaultMailService()
 
 	// start permissions cache
-	aclService := acl_service.DefaultAclService(repositoriesGroup)
+	aclService := access_control_service.DefaultAclService(repositoriesGroup)
 	aclService.RefreshPermissionsCache()
 
 	authService := authentication_service.DefaultAuthService(repositoriesGroup, mailService)

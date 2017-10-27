@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/utility/errors"
 	"net/http"
-	"github.com/gocms-io/gocms/domain/access_control_layer/authentication/authentication_model"
+	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_model"
 )
 
 /**

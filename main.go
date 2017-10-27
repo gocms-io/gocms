@@ -4,10 +4,10 @@ import (
 	"flag"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/controllers"
-	"github.com/gocms-io/gocms/database"
-	"github.com/gocms-io/gocms/repositories"
-	"github.com/gocms-io/gocms/services"
+	"github.com/gocms-io/gocms/init/controller"
+	"github.com/gocms-io/gocms/init/database"
+	"github.com/gocms-io/gocms/init/repository"
+	"github.com/gocms-io/gocms/init/service"
 	_ "github.com/joho/godotenv/autoload"
 	"log"
 	"os"
@@ -17,9 +17,9 @@ var app *Engine
 
 type Engine struct {
 	Gin               *gin.Engine
-	ControllersGroup  *controllers.ControllersGroup
-	ServicesGroup     *services.ServicesGroup
-	RepositoriesGroup *repositories.RepositoriesGroup
+	ControllersGroup  *controller.ControllersGroup
+	ServicesGroup     *service.ServicesGroup
+	RepositoriesGroup *repository.RepositoriesGroup
 	Database          *database.Database
 }
 
@@ -32,21 +32,21 @@ func Default() *Engine {
 	context.Init()
 
 	// setup database
-	db := database.Default()
+	db := database.DefaultSQL()
 
 	// migrate cms db
-	db.MigrateCMSSql()
+	db.SQL.MigrateSql()
 
 	// start gin with defaults
 	r := gin.Default()
 	// setup repositories
-	rg := repositories.DefaultRepositoriesGroup(db)
+	rg := repository.DefaultRepositoriesGroup(db.SQL.Dbx)
 
 	// setup services
-	sg := services.DefaultServicesGroup(rg)
+	sg := service.DefaultServicesGroup(rg)
 
 	// setup controllers
-	cg := controllers.DefaultControllerGroup(r, sg)
+	cg := controller.DefaultControllerGroup(r, sg)
 
 	// create engine
 	engine := Engine{
@@ -72,7 +72,7 @@ func main() {
 	app = Default()
 
 	// start server and listen
-	port := context.Config.Port
+	port := context.Config.DbVars.Port
 
 	// check if env is set and override
 	portEnv := os.Getenv("PORT")

@@ -3,17 +3,15 @@ package authentication_service
 import (
 	"fmt"
 	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/domain/mail/mail_service"
-	"github.com/gocms-io/gocms/domain/secure_code/security_code_model"
-	"github.com/gocms-io/gocms/domain/user/user_model"
-	"github.com/gocms-io/gocms/init/repository"
-	"github.com/gocms-io/gocms/models"
-	"github.com/gocms-io/gocms/repositories"
 	"github.com/gocms-io/gocms/utility"
 	"github.com/nbutton23/zxcvbn-go"
 	"golang.org/x/crypto/bcrypt"
 	"log"
 	"time"
+	"github.com/gocms-io/gocms/domain/user/user_model"
+	"github.com/gocms-io/gocms/domain/mail/mail_service"
+	"github.com/gocms-io/gocms/init/repository"
+	"github.com/gocms-io/gocms/domain/secure_code/security_code_model"
 )
 
 type IAuthService interface {
