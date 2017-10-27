@@ -1,9 +1,9 @@
 package access_control_service
 
 import (
-	"log"
-	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/domain/acl/permissions/permission_model"
+	"github.com/gocms-io/gocms/init/repository"
+	"log"
 )
 
 type IAclService interface {

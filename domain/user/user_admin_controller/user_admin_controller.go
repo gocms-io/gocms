@@ -2,13 +2,13 @@ package user_admin_controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/controllers/middleware/acl"
 	"github.com/gocms-io/gocms/domain/user/user_model"
 	"github.com/gocms-io/gocms/init/service"
 	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/utility/errors"
 	"net/http"
 	"strconv"
+	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_middleware"
 )
 
 type UserAdminController struct {
@@ -23,7 +23,7 @@ func DefaultUserAdminController(routes *routes.Routes, sg *service.ServicesGroup
 	}
 
 	// create acl object
-	acl := aclMdl.AclMiddleware{
+	acl := access_control_middleware.AclMiddleware{
 		ServicesGroup: sg,
 	}
 

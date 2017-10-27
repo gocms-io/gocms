@@ -3,7 +3,7 @@ package plugin_proxy_middleware
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/controllers/middleware/timezone"
+	"github.com/gocms-io/gocms/domain/user/user_middleware"
 	"github.com/gocms-io/gocms/utility/api_utility"
 	"github.com/gocms-io/gocms/utility/errors"
 	"log"
@@ -29,7 +29,7 @@ func (ppm *PluginProxyMiddleware) reverseProxy(c *gin.Context) {
 
 	// check to see if authUser available
 	authUser, _ := api_utility.GetUserFromContext(c)
-	timezone, _ := timezoneMdl.GetTimezoneFromContext(c)
+	timezone, _ := user_middleware.GetTimezoneFromContext(c)
 	if authUser != nil {
 		c.Request.Header.Set("GOCMS-AUTH-USER-ID", strconv.Itoa(authUser.Id))
 		c.Request.Header.Set("GOCMS-AUTH-NAME", authUser.FullName)

@@ -3,13 +3,13 @@ package plugin_services
 import (
 	"bufio"
 	"fmt"
-	"github.com/gocms-io/gocms/controllers/middleware/plugins/proxy"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_middleware/plugin_proxy_middleware"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
 	"github.com/gocms-io/gocms/utility"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
 )
 
 func (ps *PluginsService) StartActivePlugins() error {
@@ -76,7 +76,7 @@ func (ps *PluginsService) StartActivePlugins() error {
 		plugin.Cmd = cmd
 
 		// create proxy for use during registration
-		plugin.Proxy = &plugin_proxy_mdl.PluginProxyMiddleware{
+		plugin.Proxy = &plugin_proxy_middleware.PluginProxyMiddleware{
 			Port:     pluginPort,
 			Schema:   "http",
 			Host:     "localhost",

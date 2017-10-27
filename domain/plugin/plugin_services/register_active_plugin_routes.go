@@ -3,10 +3,10 @@ package plugin_services
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/controllers/middleware/plugins/proxy"
 	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/utility/errors"
 	"log"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_middleware/plugin_proxy_middleware"
 )
 
 type ProxyRoute struct {
@@ -49,7 +49,7 @@ func (ps *PluginsService) RegisterActivePluginRoutes(routes *routes.Routes) erro
 	return nil
 }
 
-func (ps *PluginsService) registerPluginProxyOnRoute(route *gin.RouterGroup, method string, url string, pluginProxy *plugin_proxy_mdl.PluginProxyMiddleware) {
+func (ps *PluginsService) registerPluginProxyOnRoute(route *gin.RouterGroup, method string, url string, pluginProxy *plugin_proxy_middleware.PluginProxyMiddleware) {
 	route.Handle(method, url, pluginProxy.ReverseProxy())
 }
 

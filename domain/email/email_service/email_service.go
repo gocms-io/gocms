@@ -3,14 +3,14 @@ package email_service
 import (
 	"fmt"
 	"github.com/gocms-io/gocms/context"
+	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_service"
+	"github.com/gocms-io/gocms/domain/email/email_model"
+	"github.com/gocms-io/gocms/domain/mail/mail_service"
+	"github.com/gocms-io/gocms/domain/secure_code/security_code_model"
+	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/utility/errors"
 	"log"
 	"time"
-	"github.com/gocms-io/gocms/domain/email/email_model"
-	"github.com/gocms-io/gocms/domain/mail/mail_service"
-	"github.com/gocms-io/gocms/domain/access_control_layer/auth_service"
-	"github.com/gocms-io/gocms/init/repository"
-	"github.com/gocms-io/gocms/domain/secure_code/security_code_model"
 )
 
 type IEmailService interface {

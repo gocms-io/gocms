@@ -6,8 +6,8 @@ import (
 	"github.com/gocms-io/gocms/domain/user/user_model"
 	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/domain/mail/mail_service"
-	"github.com/gocms-io/gocms/domain/access_control_layer/auth_service"
 	"github.com/gocms-io/gocms/domain/email/email_model"
+	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_service"
 )
 
 type IUserService interface {

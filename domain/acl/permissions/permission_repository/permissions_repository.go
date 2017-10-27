@@ -1,11 +1,10 @@
 package permission_repository
 
 import (
+	"github.com/gocms-io/gocms/domain/acl/permissions/permission_model"
 	"github.com/jmoiron/sqlx"
 	"log"
-	"github.com/gocms-io/gocms/domain/acl/permissions/permission_model"
 )
-
 
 type IPermissionsRepository interface {
 	GetAll() (*[]permission_model.Permission, error)

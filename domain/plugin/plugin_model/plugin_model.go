@@ -3,8 +3,7 @@ package plugin_model
 import (
 	"os/exec"
 	"time"
-
-	"github.com/gocms-io/gocms/controllers/middleware/plugins/proxy"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_middleware/plugin_proxy_middleware"
 )
 
 type Plugin struct {
@@ -14,7 +13,7 @@ type Plugin struct {
 	Port       int64
 	Schema     string
 	Manifest   *PluginManifest
-	Proxy      *plugin_proxy_mdl.PluginProxyMiddleware
+	Proxy      *plugin_proxy_middleware.PluginProxyMiddleware
 	Cmd        *exec.Cmd
 }
 
