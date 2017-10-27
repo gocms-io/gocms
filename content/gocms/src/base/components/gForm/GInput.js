@@ -1,3 +1,12 @@
+/**
+ * This GoCMS input component supports these standard HTML form input features such as text,
+ * number email and password. It also (optionally) supports:
+ * - Checkboxes - Set the type to "checkbox" and pass an initial boolean value using the value property.
+ *     Note that checkboxes always have a value so the required attribute does nothing.
+ * - Datalists - Pass a list of legal values via the suggestedValues property.
+ *     Note that HTML datalist don't require that the user choose on eof the suggested values.
+ * - Attributes - Set the autoFocus or required attributes as in a standard HTML form.
+ */
 import React from 'react';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 import {HOC} from 'formsy-react';
@@ -11,7 +20,7 @@ class GInput extends React.Component {
             name: this.props.name || ""
         };
         this.changeValue = this.changeValue.bind(this);
-        this.handelBlur = this.handelBlur.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
         this.enableSubmitButton = this.changeValue.bind(this);
     }
 
@@ -26,18 +35,58 @@ class GInput extends React.Component {
     }
 
     changeValue(event) {
-        this.props.setValue(event.currentTarget.value);
+
+        // For checkboxes, invert the current value, otherwise just set the value.
+        if (this.props.type === "checkbox") {
+            this.props.setValue(!this.props.getValue());
+        } else {
+            this.props.setValue(event.currentTarget.value);
+        }
+
+        // Run the provided onChange() handler, if any.
         if (!!this.props.onChange) {
             this.props.onChange(event);
         }
     }
 
-    handelBlur() {
+    handleBlur() {
         if (!!this.props.getValue()) {
             this.setState({blurred: true})
         }
         else {
             this.setState({blurred: false})
+        }
+        if (!!this.props.onBlur) {
+            this.props.onBlur(event);
+        }
+    }
+
+    createUniqueDataListName() {
+        // The input component just refer to the datalist by (unique) ID.
+        return this.props.name + "Values";
+    }
+
+    generateDatalistOptions() {
+        return(
+            this.props.suggestedValues.map(
+                (value, index) => {
+                    return (
+                        <option key={index} value={value} />
+                    );
+                }
+            )
+        );
+    }
+
+    createDataListIfAppropriate() {
+        if (Array.isArray(this.props.suggestedValues) && this.props.suggestedValues.length > 0) {
+            return (
+                <datalist id={ this.createUniqueDataListName() }>
+                    { this.generateDatalistOptions() }
+                </datalist>
+            );
+        } else {
+            return "";
         }
     }
 
@@ -66,9 +115,13 @@ class GInput extends React.Component {
                 <input type={this.props.type}
                        name={this.state.name}
                        onChange={this.changeValue}
-                       onBlur={this.handelBlur}
+                       onBlur={this.handleBlur}
                        value={this.props.getValue() || ''}
+                       list={this.createUniqueDataListName()}
+                       checked={this.props.getValue()}
+                       autoFocus={this.props.autoFocus}
                 />
+                { this.createDataListIfAppropriate() }
             </div>
         );
     }

@@ -1,18 +1,42 @@
+/**
+ * This is a date-picking version of GInput based on the react-datepicker and MomentJS.
+ * - Dates are initialized/stored using MomentJS format.
+ * - Initialize the date using the value property; the component defaults to today.
+ * - The user can manually edit the date value, but only legal dates will be stored/returned by the form.
+ *     Entering illegal date formats will not overwrite the form's previous date value.
+ */
 import React from 'react';
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
+import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import PropTypes from 'prop-types';
 import {HOC} from 'formsy-react';
 
-class GTextArea extends React.Component {
+import moment from 'moment';
+import DatePicker from 'react-datepicker';
+
+// TODO: Deliver this file to the running application somehow.
+//import 'react-datepicker/dist/react-datepicker.css';
+
+class GDatePicker extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
             blurred: false,
             dirty: false,
-            name: this.props.name || ""
+            name: this.props.name || "",
         };
         this.changeValue = this.changeValue.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
-        this.enableSubmitButton = this.changeValue.bind(this);
+    }
+
+    componentWillMount(){
+        let initialDate;
+        if (!!this.props.value) {
+            initialDate = this.props.value;
+        } else {
+            initialDate = moment();
+        }
+        this.props.setValue(initialDate);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -25,14 +49,14 @@ class GTextArea extends React.Component {
         }
     }
 
-    changeValue(event) {
-        this.props.setValue(event.currentTarget.value);
+    changeValue(date) {
+        this.props.setValue(!!date ? date : "");
         if (!!this.props.onChange) {
-            this.props.onChange(event);
+            this.props.onChange(date);
         }
     }
 
-    handleBlur() {
+    handleBlur(event) {
         if (!!this.props.getValue()) {
             this.setState({blurred: true})
         }
@@ -45,10 +69,8 @@ class GTextArea extends React.Component {
     }
 
     render() {
-        const className = this.props.showRequired() ? 'g-input-required' : this.props.showError() ? 'g-input-required' : null;
+        const className = this.props.showRequired() ? 'g-input-required' : this.props.showError() ? 'g-input-error' : null;
 
-        // An error message is returned ONLY if the component is invalid
-        // or the server has returned an error message
         let errorMessage = [];
         if (this.state.blurred && this.props.getErrorMessage()) {
             errorMessage = this.props.getErrorMessage();
@@ -66,18 +88,18 @@ class GTextArea extends React.Component {
                         {errorMessage != "" ? <span className="g-input-error-message">{errorMessage}</span> : null}
                     </CSSTransitionGroup>
                 </label>
-                <textarea type={this.props.type}
-                       name={this.props.name}
-                       onChange={this.changeValue}
-                       onBlur={this.handleBlur}
-                       value={this.props.getValue() || ''}
-                       rows={this.props.rows}
-                       cols={this.props.cols}
-                       autoFocus={this.props.autoFocus}
+                <DatePicker
+                    name={this.state.name}
+                    selected={this.props.getValue()}
+                    onChange={this.changeValue}
+                    onBlur={this.handleBlur}
+                    autoFocus={this.props.autoFocus}
                 />
             </div>
         );
+
     }
 
 }
-export default HOC(GTextArea);
+
+export default HOC(GDatePicker);

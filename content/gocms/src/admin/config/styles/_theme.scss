@@ -153,7 +153,9 @@ $white: #ffffff;
   }
 
   input,
-  input:focus {
+  input:focus,
+  select,
+  select:focus {
     outline: none;
     font-family: Lato, sans-serif;
     border: 1px $gray-dark solid;
@@ -161,6 +163,19 @@ $white: #ffffff;
     color: $gray;
     margin: 6px 0 14px 0;
     height: 40px;
+    width: 100%;
+    padding: 4px 15px 4px 15px;
+    font-size: 20px;
+  }
+
+  textarea,
+  textarea:focus {
+    outline: none;
+    font-family: Lato, sans-serif;
+    border: 1px $gray-dark solid;
+    border-radius: 4px;
+    color: $gray;
+    margin: 6px 0 14px 0;
     width: 100%;
     padding: 4px 15px 4px 15px;
     font-size: 20px;
