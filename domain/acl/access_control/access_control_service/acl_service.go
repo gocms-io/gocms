@@ -49,7 +49,7 @@ func (as *AclService) GetPermissions() map[string]permission_model.Permission {
 	return as.Permissions
 }
 
-func (as *AclService) IsAuthorized(permission string, userId int) bool {
+func (as *AclService) IsAuthorized(permissionName string, userId int) bool {
 	// get user permissions mapped to user
 	activePermissions, err := as.RepositoriesGroup.PermissionsRepository.GetUserPermissions(userId)
 	if err != nil {
@@ -58,8 +58,8 @@ func (as *AclService) IsAuthorized(permission string, userId int) bool {
 	}
 
 	// loop over permissions and see if they match the request one
-	for _, permId := range *activePermissions {
-		if permId == as.Permissions[permission].Id {
+	for _, permission := range activePermissions {
+		if permission.Id == as.Permissions[permissionName].Id {
 			return true
 		}
 	}
