@@ -1,6 +1,7 @@
 <h1>GoCMS</h1>
 
-
+<h3>Official Documentation</h3>
+<p>A work in proggress wiki can be found on the <a href="https://menklab.atlassian.net/wiki/spaces/GW/overview">GoCMS Confluence Site</a>.</p>
 
 <h3>Generate Docs</h3>
 <p>To generate api docs you need to have apidocs installed</p>
