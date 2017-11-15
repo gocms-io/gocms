@@ -63,7 +63,7 @@ type dbVars struct {
 }
 
 func (dbVars *dbVars) LoadDbVars(settings map[string]setting_model.Setting) {
-	log.Infof("Refresh GoCMS Settings\n")
+	log.Debugf("Refresh GoCMS Settings\n")
 
 	// Debug
 	dbVars.Debug = GetBoolOrFail("DEBUG", settings)

@@ -2,13 +2,14 @@ package user_admin_controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_middleware"
+	"github.com/gocms-io/gocms/domain/acl/permissions"
 	"github.com/gocms-io/gocms/domain/user/user_model"
 	"github.com/gocms-io/gocms/init/service"
 	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/utility/errors"
 	"net/http"
 	"strconv"
-	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_middleware"
 )
 
 type UserAdminController struct {
@@ -28,9 +29,7 @@ func DefaultUserAdminController(routes *routes.Routes, sg *service.ServicesGroup
 	}
 
 	// add acl rules to route
-	routes.Admin = routes.Auth.Group("/admin", acl.RequirePermission("admin"))
-
-	//routes.Admin.Use(acl.RequirePermission("admin"))
+	routes.Admin = routes.Auth.Group("/admin", acl.RequirePermission(permissions.SUPER_ADMIN))
 
 	adminUserController.Default()
 	return adminUserController

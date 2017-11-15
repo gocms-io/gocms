@@ -63,7 +63,7 @@ func (as *AuthService) AuthUser(email string, password string) (*user_model.User
 func (as *AuthService) VerifyPassword(passwordHash string, password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(password))
 	if err != nil {
-		log.Errorf("Error comparing hashes: %s", err.Error())
+		log.Warningf("Error comparing hashes: %s", err.Error())
 		return false
 	}
 

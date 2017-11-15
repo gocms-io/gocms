@@ -61,8 +61,6 @@ func (ps *PluginsService) getRouteGroup(pluginRoute string, routes *routes.Route
 		return routes.PreTwofactor, nil
 	case "Auth":
 		return routes.Auth, nil
-	case "Admin":
-		return routes.Admin, nil
 	case "Root":
 		return routes.Root, nil
 	default:

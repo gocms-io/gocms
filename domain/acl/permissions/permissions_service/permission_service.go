@@ -28,7 +28,6 @@ func DefaultPermissionService(rg *repository.RepositoriesGroup) *PermissionServi
 		RepositoriesGroup: rg,
 	}
 
-
 	return permissionService
 }
 

@@ -6,7 +6,8 @@ type Routes struct {
 	Public       *gin.RouterGroup
 	PreTwofactor *gin.RouterGroup
 	Auth         *gin.RouterGroup
-	Admin        *gin.RouterGroup
-	Root         *gin.RouterGroup
-	NoRoute      func(...gin.HandlerFunc)
+	// todo remove admin and replace with permissions and acl layer
+	Admin   *gin.RouterGroup
+	Root    *gin.RouterGroup
+	NoRoute func(...gin.HandlerFunc)
 }

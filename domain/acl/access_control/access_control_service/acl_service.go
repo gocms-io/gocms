@@ -46,6 +46,7 @@ func (as *AclService) RefreshPermissionsCache() error {
 
 	as.Permissions = permissionsCache
 	as.permissionsAge = time.Now()
+	log.Debugf("Permission Cache Updated\n")
 	return nil
 }
 
@@ -60,15 +61,16 @@ func (as *AclService) GetPermissions() map[string]permission_model.Permission {
 
 func (as *AclService) IsAuthorized(permissionName string, userId int) bool {
 	// get user permissions mapped to user
-	activePermissions, err := as.RepositoriesGroup.PermissionsRepository.GetUserPermissions(userId)
+	userPermissions, err := as.RepositoriesGroup.PermissionsRepository.GetUserPermissions(userId)
 	if err != nil {
 		log.Errorf("Error getting users permissions: %s\n", err.Error())
 		return false
 	}
 
 	// loop over permissions and see if they match the request one
-	for _, permission := range activePermissions {
-		if permission.Id == as.Permissions[permissionName].Id {
+	for _, permission := range userPermissions {
+		cachedPermissions := as.GetPermissions() // use function to verify that cache is refreshed
+		if permission.Id == cachedPermissions[permissionName].Id {
 			return true
 		}
 	}
