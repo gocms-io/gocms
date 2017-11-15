@@ -54,6 +54,8 @@ func AddACL() *migrate.Migration {
   			FOREIGN KEY (permissionId)
   			REFERENCES gocms_permissions (id)
   			ON DELETE CASCADE;
+			`,`
+			INSERT INTO gocms_settings (name, value, description) VALUES('PERMISSIONS_CACHE_LIFE', '3600', 'Seconds to cache permissions between requests.');
 			`,
 		},
 		Down: []string{

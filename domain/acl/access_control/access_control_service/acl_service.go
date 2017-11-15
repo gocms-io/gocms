@@ -1,9 +1,11 @@
 package access_control_service
 
 import (
+	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/domain/acl/permissions/permission_model"
 	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/utility/log"
+	"time"
 )
 
 type IAclService interface {
@@ -14,6 +16,7 @@ type IAclService interface {
 
 type AclService struct {
 	Permissions       map[string]permission_model.Permission
+	permissionsAge    time.Time
 	RepositoriesGroup *repository.RepositoriesGroup
 }
 
@@ -42,10 +45,16 @@ func (as *AclService) RefreshPermissionsCache() error {
 	}
 
 	as.Permissions = permissionsCache
+	as.permissionsAge = time.Now()
 	return nil
 }
 
 func (as *AclService) GetPermissions() map[string]permission_model.Permission {
+	// if cache has expired refresh permissions
+	if time.Now().Sub(as.permissionsAge).Seconds() > float64(context.Config.DbVars.PermissionsCacheLife) {
+		as.RefreshPermissionsCache()
+	}
+
 	return as.Permissions
 }
 

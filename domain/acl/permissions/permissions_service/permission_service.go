@@ -1,10 +1,8 @@
 package permission_service
 
 import (
-	"fmt"
 	"github.com/gocms-io/gocms/domain/acl/permissions/permission_model"
 	"github.com/gocms-io/gocms/init/repository"
-	"runtime/debug"
 )
 
 type IPermissionService interface {
@@ -30,6 +28,7 @@ func DefaultPermissionService(rg *repository.RepositoriesGroup) *PermissionServi
 		RepositoriesGroup: rg,
 	}
 
+
 	return permissionService
 }
 
@@ -37,10 +36,7 @@ func (ps *PermissionService) Add(permission *permission_model.Permission) error 
 
 	err := ps.RepositoriesGroup.PermissionsRepository.Add(permission)
 	if err != nil {
-		fmt.Sprintf("Permission service - error adding permission %v: %v\n", permission, err)
-		debug.Stack()
 		return nil
 	}
-
 	return nil
 }

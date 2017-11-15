@@ -1,4 +1,4 @@
-package access_control_middleware
+package cors
 
 import (
 	"github.com/gin-gonic/gin"

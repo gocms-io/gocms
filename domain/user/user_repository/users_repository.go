@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"github.com/gocms-io/gocms/domain/user/user_model"
 	"github.com/gocms-io/gocms/utility/errors"
+	"github.com/gocms-io/gocms/utility/log"
 	"github.com/jmoiron/sqlx"
 	"time"
-	"github.com/gocms-io/gocms/utility/log"
 )
 
 type IUserRepository interface {

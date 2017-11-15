@@ -5,9 +5,9 @@ import (
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_middleware"
 	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_controller"
 	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_middleware"
+	"github.com/gocms-io/gocms/domain/acl/cors"
 	"github.com/gocms-io/gocms/domain/content/documentation"
 	"github.com/gocms-io/gocms/domain/content/react"
 	"github.com/gocms-io/gocms/domain/content/template"
@@ -51,7 +51,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 
 	// top level middleware
 	r.Use(user_middleware.UUID())
-	r.Use(access_control_middleware.CORS())
+	r.Use(cors.CORS())
 	r.Use(user_middleware.Timezone())
 	am := authentication_middleware.DefaultAuthMiddleware(sg)
 	r.Use(am.AddUserToContextIfValidToken())

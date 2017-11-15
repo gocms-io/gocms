@@ -45,6 +45,7 @@ type dbVars struct {
 	TwoFactorCodeTimeout   int64
 	UseTwoFactor           bool
 	PasswordComplexity     int64
+	PermissionsCacheLife   int64
 
 	// SMTP
 	SMTPServer      string
@@ -85,6 +86,7 @@ func (dbVars *dbVars) LoadDbVars(settings map[string]setting_model.Setting) {
 	dbVars.UseTwoFactor = GetBoolOrFail("USE_TWO_FACTOR", settings)
 	dbVars.PasswordComplexity = GetIntOrFail("PASSWORD_COMPLEXITY", settings)
 	dbVars.OpenRegistration = GetBoolOrFail("OPEN_REGISTRATION", settings)
+	dbVars.PermissionsCacheLife = GetIntOrFail("PERMISSIONS_CACHE_LIFE", settings)
 
 	// SMTP
 	dbVars.SMTPServer = GetStringOrFail("SMTP_SERVER", settings)
