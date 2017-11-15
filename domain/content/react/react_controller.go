@@ -115,7 +115,6 @@ func (rc *ReactController) getActivePlugins(loadAdmin bool) *ActivePluginDisplay
 			pluginIds = fmt.Sprintf("%v,%v", pluginIds, plugin.Manifest.Id)
 		}
 		if plugin.Manifest.Interface.PublicStyle != "" {
-			fmt.Printf("adding style: %v\n", publicStyles)
 			publicStyles = append(publicStyles, fmt.Sprintf("/content/%v/%v", plugin.Manifest.Id, plugin.Manifest.Interface.PublicStyle))
 		}
 	}

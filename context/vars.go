@@ -2,7 +2,7 @@ package context
 
 import (
 	"github.com/gocms-io/gocms/domain/setting/setting_model"
-	"log"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type envVars struct {
@@ -11,6 +11,7 @@ type envVars struct {
 	DbUser     string
 	DbPassword string
 	DbServer   string
+	LogLevel   int64
 }
 
 type dbVars struct {
@@ -61,7 +62,7 @@ type dbVars struct {
 }
 
 func (dbVars *dbVars) LoadDbVars(settings map[string]setting_model.Setting) {
-	log.Printf("Refresh GoCMS Settings\n")
+	log.Infof("Refresh GoCMS Settings\n")
 
 	// Debug
 	dbVars.Debug = GetBoolOrFail("DEBUG", settings)

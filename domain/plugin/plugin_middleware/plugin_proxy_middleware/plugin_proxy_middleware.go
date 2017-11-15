@@ -1,17 +1,17 @@
 package plugin_proxy_middleware
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/domain/user/user_middleware"
 	"github.com/gocms-io/gocms/utility/api_utility"
 	"github.com/gocms-io/gocms/utility/errors"
-	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"strconv"
 	"strings"
+	"fmt"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type PluginProxyMiddleware struct {
@@ -39,7 +39,7 @@ func (ppm *PluginProxyMiddleware) reverseProxy(c *gin.Context) {
 
 	target, err := url.Parse(fmt.Sprintf("%s://%s:%d", ppm.Schema, ppm.Host, ppm.Port))
 	if err != nil {
-		log.Printf("Error creating reverse proxy: %s", err.Error())
+		log.Errorf("Error creating reverse proxy: %s", err.Error())
 		errors.Response(c, http.StatusInternalServerError, errors.ApiError_Server, errors.New("Failed to create reverse proxy."))
 		return
 	}

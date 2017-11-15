@@ -1,8 +1,8 @@
 package user_middleware
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gocms-io/gocms/utility/log"
 	"time"
 )
 
@@ -35,7 +35,7 @@ func timezoneMiddleware(c *gin.Context) {
 	}
 	timezone, err := time.LoadLocation(timezoneHeader)
 	if err != nil {
-		fmt.Printf("Error parsing timezone header %v: %v\n", timezoneHeader, err)
+		log.Errorf("Error parsing timezone header %v: %v\n", timezoneHeader, err)
 		timezone, _ = time.LoadLocation("Local")
 	}
 	c.Set(TIMEZONE_MIDDLEWARE_KEY, *timezone)

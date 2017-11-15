@@ -8,8 +8,8 @@ import (
 	"github.com/gocms-io/gocms/init/database"
 	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/init/service"
+	"github.com/gocms-io/gocms/utility/log"
 	_ "github.com/joho/godotenv/autoload"
-	"log"
 	"os"
 )
 
@@ -37,8 +37,20 @@ func Default() *Engine {
 	// migrate cms db
 	db.SQL.MigrateSql()
 
-	// start gin with defaults
+	// setup log level
+	switch context.Config.EnvVars.LogLevel {
+	case log.LOG_LEVEL_CRITICAL:
+		fallthrough
+	case log.LOG_LEVEL_ERROR:
+		gin.SetMode(gin.ReleaseMode)
+	case log.LOG_LEVEL_WARNING:
+		gin.SetMode(gin.TestMode)
+	case log.LOG_LEVEL_DEBUG:
+		gin.SetMode(gin.DebugMode)
+	}
 	r := gin.Default()
+
+
 	// setup repositories
 	rg := repository.DefaultRepositoriesGroup(db.SQL.Dbx)
 
@@ -62,7 +74,7 @@ func Default() *Engine {
 func (engine *Engine) Listen(uri string) {
 
 	err := engine.Gin.Run(uri)
-	log.Println(err.Error())
+	log.Debugf(err.Error())
 
 }
 

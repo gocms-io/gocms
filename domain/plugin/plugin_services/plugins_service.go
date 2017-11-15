@@ -2,10 +2,10 @@ package plugin_services
 
 import (
 	"database/sql"
-	"fmt"
-	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
 	"github.com/gocms-io/gocms/init/repository"
+	"github.com/gocms-io/gocms/routes"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type IPluginsService interface {
@@ -38,10 +38,10 @@ func (ps *PluginsService) GetDatabasePlugins() (map[string]*plugin_model.PluginD
 	databasePluginRecords, err := ps.repositoriesGroup.PluginRepository.GetDatabasePlugins()
 	if err != nil {
 		if err == sql.ErrNoRows {
-			fmt.Printf("No plugins referenced in database.\n")
+			log.Debugf("No plugins referenced in database.\n")
 			return nil, err
 		}
-		fmt.Printf("Error getting database plugins: %v\n", err.Error())
+		log.Errorf("Error getting database plugins: %v\n", err.Error())
 		return nil, err
 	}
 

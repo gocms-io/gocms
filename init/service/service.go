@@ -10,14 +10,16 @@ import (
 	"github.com/gocms-io/gocms/domain/setting/setting_service"
 	"github.com/gocms-io/gocms/domain/user/user_service"
 	"github.com/gocms-io/gocms/init/repository"
-	"log"
 	"time"
+	"github.com/gocms-io/gocms/domain/acl/permissions/permissions_service"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type ServicesGroup struct {
 	SettingsService setting_service.ISettingsService
 	MailService     mail_service.IMailService
 	AuthService     authentication_service.IAuthService
+	PermissionService     permission_service.IPermissionService
 	UserService     user_service.IUserService
 	AclService      access_control_service.IAclService
 	EmailService    email_service.IEmailService
@@ -43,6 +45,8 @@ func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup) *Serv
 	aclService := access_control_service.DefaultAclService(repositoriesGroup)
 	aclService.RefreshPermissionsCache()
 
+	permissionService := permission_service.DefaultPermissionService(repositoriesGroup)
+
 	authService := authentication_service.DefaultAuthService(repositoriesGroup, mailService)
 	userService := user_service.DefaultUserService(repositoriesGroup, authService, mailService)
 
@@ -53,7 +57,7 @@ func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup) *Serv
 	pluginsService := plugin_services.DefaultPluginsService(repositoriesGroup)
 	err := pluginsService.RefreshInstalledPlugins()
 	if err != nil {
-		log.Printf("Error finding plugins. Can't start plugin microservice: %s\n", err.Error())
+		log.Errorf("Error finding plugins. Can't start plugin microservice: %s\n", err.Error())
 	} else {
 		pluginsService.StartActivePlugins()
 	}
@@ -62,6 +66,7 @@ func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup) *Serv
 		SettingsService: settingsService,
 		MailService:     mailService,
 		AuthService:     authService,
+		PermissionService: permissionService,
 		UserService:     userService,
 		AclService:      aclService,
 		EmailService:    emailService,

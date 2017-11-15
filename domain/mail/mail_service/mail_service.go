@@ -1,14 +1,14 @@
 package mail_service
 
 import (
-	"fmt"
 	"github.com/gocms-io/gocms/context"
 	"gopkg.in/gomail.v2"
 	"io"
-	"log"
 	"path/filepath"
 	"text/template"
 	"time"
+	"github.com/gocms-io/gocms/utility/log"
+	"fmt"
 )
 
 type IMailService interface {
@@ -63,7 +63,7 @@ func (ms *MailService) Send(mail *Mail) error {
 	m.AddAlternativeWriter("text/html", func(w io.Writer) error {
 		err := ms.DefaultTemplate.Execute(w, htmlData)
 		if err != nil {
-			fmt.Printf("Error adding alt writter to html email: %v\n", err.Error())
+			log.Errorf("Error adding alt writter to html email: %v\n", err.Error())
 		}
 		return err
 	})
@@ -72,10 +72,10 @@ func (ms *MailService) Send(mail *Mail) error {
 	if !context.Config.DbVars.SMTPSimulate {
 		err := ms.Dialer.DialAndSend(m)
 		if err != nil {
-			log.Print("Error sending mail: " + err.Error())
+			log.Errorf("Error sending mail: " + err.Error())
 		}
 	} else {
-		log.Print("Email simulated: " + mail.Body)
+		log.Debugf("Email simulated: " + mail.Body)
 	}
 
 	return nil

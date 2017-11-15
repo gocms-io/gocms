@@ -3,7 +3,7 @@ package plugin_services
 import (
 	"fmt"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
-	"log"
+	"github.com/gocms-io/gocms/utility/log"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -15,7 +15,7 @@ func (ps *PluginsService) RefreshInstalledPlugins() error {
 	err := filepath.Walk("./content/plugins", ps.visitPlugin)
 
 	if err != nil {
-		log.Printf("Error finding plugins while traversing plugin directory: %s\n", err.Error())
+		log.Errorf("Error finding plugins while traversing plugin directory: %s\n", err.Error())
 		return err
 	}
 
@@ -24,7 +24,7 @@ func (ps *PluginsService) RefreshInstalledPlugins() error {
 
 func (ps *PluginsService) visitPlugin(path string, f os.FileInfo, err error) error {
 	if err != nil {
-		log.Printf("Error traversing %s, %s\n", path, err.Error())
+		log.Errorf("Error traversing %s, %s\n", path, err.Error())
 	}
 
 	// parse manifests as they are found
@@ -45,12 +45,12 @@ func (ps *PluginsService) visitPlugin(path string, f os.FileInfo, err error) err
 
 		binaryStat, err := os.Stat(filepath.Join(pluginRoot, manifest.Services.Bin))
 		if err != nil {
-			log.Printf("No binary for plugin %s: %s\n", manifest.Name, err.Error())
+			log.Errorf("No binary for plugin %s: %s\n", manifest.Name, err.Error())
 			return err
 		}
 
 		if !binaryStat.Mode().IsRegular() {
-			log.Printf("binary for plugin %s, apprears to be corrupted: %s\n", manifest.Id, err.Error())
+			log.Errorf("binary for plugin %s, apprears to be corrupted: %s\n", manifest.Id, err.Error())
 			return err
 		}
 

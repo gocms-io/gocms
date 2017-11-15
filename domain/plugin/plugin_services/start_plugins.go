@@ -2,14 +2,14 @@ package plugin_services
 
 import (
 	"bufio"
-	"fmt"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_middleware/plugin_proxy_middleware"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
 	"github.com/gocms-io/gocms/utility"
-	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"fmt"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 func (ps *PluginsService) StartActivePlugins() error {
@@ -17,7 +17,7 @@ func (ps *PluginsService) StartActivePlugins() error {
 	// get plugins that are both active in the database and installed on disk
 	pluginsToStart, err := ps.getPluginsToStart()
 	if err != nil {
-		fmt.Printf("No plugins to start due to error\n.")
+		log.Errorf("No plugins to start due to error\n.")
 		return err
 	}
 
@@ -26,7 +26,7 @@ func (ps *PluginsService) StartActivePlugins() error {
 		// find port to run on
 		pluginPort, err := utility.FindPort()
 		if err != nil {
-			log.Printf("Couldn't start plugin %v, error: %v", plugin.Manifest.Name, err.Error())
+			log.Errorf("Couldn't start plugin %v, error: %v", plugin.Manifest.Name, err.Error())
 			return err
 		}
 
@@ -65,7 +65,7 @@ func (ps *PluginsService) StartActivePlugins() error {
 		}()
 
 		// find port and start microservice
-		log.Printf("Starting microservice: %s - %v\n", plugin.Manifest.Name, plugin.Manifest.Id)
+		log.Infof("Starting microservice: %s - %v\n", plugin.Manifest.Name, plugin.Manifest.Id)
 		err = cmd.Start()
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "Error starting Cmd", err)
@@ -97,7 +97,7 @@ func (ps *PluginsService) getPluginsToStart() (map[string]*plugin_model.Plugin, 
 	// get plugins listed in database
 	databasePlugins, err := ps.GetDatabasePlugins()
 	if err != nil {
-		fmt.Printf("Couldn't get plugins to start: %v\n", err)
+		log.Errorf("Couldn't get plugins to start: %v\n", err)
 		return nil, err
 	}
 
@@ -109,7 +109,7 @@ func (ps *PluginsService) getPluginsToStart() (map[string]*plugin_model.Plugin, 
 			if ps.installedPlugins[dbPluginId] != nil {
 				pluginsToStart[dbPluginId] = ps.installedPlugins[dbPluginId]
 			} else {
-				fmt.Printf("Skiping %v, plugin active in database but not installed\n", dbPlugin.PluginId)
+				log.Debugf("Skiping %v, plugin active in database but not installed\n", dbPlugin.PluginId)
 			}
 		}
 	}

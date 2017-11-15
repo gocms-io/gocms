@@ -3,7 +3,7 @@ package permission_repository
 import (
 	"github.com/gocms-io/gocms/domain/acl/permissions/permission_model"
 	"github.com/jmoiron/sqlx"
-	"log"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type IPermissionsRepository interface {
@@ -29,6 +29,7 @@ func DefaultPermissionsRepository(dbx *sqlx.DB) *PermissionsRepository {
 	permissionsRepository := &PermissionsRepository{
 		database: dbx,
 	}
+
 	return permissionsRepository
 }
 
@@ -40,7 +41,7 @@ func (pr *PermissionsRepository) Add(permission *permission_model.Permission) er
 	INSERT INTO gocms_permissions (name, description) VALUES (:name, :description)
 	`, permission)
 	if err != nil {
-		log.Printf("Error adding permission to db: %s\n", err.Error())
+		log.Errorf("Error adding permission to db: %s\n", err.Error())
 		return err
 	}
 	id, _ := result.LastInsertId()
@@ -57,7 +58,7 @@ func (pr *PermissionsRepository) Delete(permissionId int64) error {
 	DELETE FROM gocms_permissions WHERE id=:id
 	`, map[string]interface{}{"id": permissionId})
 	if err != nil {
-		log.Printf("Error deleting permission %v from database: %s\n", permissionId, err.Error())
+		log.Errorf("Error deleting permission %v from database: %s\n", permissionId, err.Error())
 		return err
 	}
 
@@ -69,7 +70,7 @@ func (pr *PermissionsRepository) GetAll() (*[]permission_model.Permission, error
 	var permissions []permission_model.Permission
 	err := pr.database.Select(&permissions, "SELECT * FROM gocms_permissions")
 	if err != nil {
-		log.Printf("Error getting permissions from database: %s\n", err.Error())
+		log.Errorf("Error getting permissions from database: %s\n", err.Error())
 		return nil, err
 	}
 	return &permissions, nil
@@ -94,7 +95,7 @@ func (pr *PermissionsRepository) GetUserPermissions(userId int) ([]*permission_m
 	ON permIds.permissionId = perms.id
 	`, userId, userId)
 	if err != nil {
-		log.Printf("Error getting all permissions for user %v from database: %s\n", userId, err.Error())
+		log.Errorf("Error getting all permissions for user %v from database: %s\n", userId, err.Error())
 		return nil, err
 	}
 	return userPermissions, nil
@@ -108,7 +109,7 @@ func (pr *PermissionsRepository) AddUserToPermission(userId int, permissionId in
 	INSERT INTO gocms_users_to_permissions (userId, permissionId) VALUES (:userId, :permissionId)
 	`, map[string]interface{}{"userId": userId, "permissionId": permissionId})
 	if err != nil {
-		log.Printf("Error adding user %v to permission %v: %s\n", userId, permissionId, err.Error())
+		log.Errorf("Error adding user %v to permission %v: %s\n", userId, permissionId, err.Error())
 		return err
 	}
 	return nil
@@ -124,7 +125,7 @@ func (pr *PermissionsRepository) RemoveUserFromPermission(userId int, permission
 	AND permissionId=:permissionId
 	`, map[string]interface{}{"userId": userId, "permissionId": permissionId})
 	if err != nil {
-		log.Printf("Error deleting user %v to permission %v: %s\n", userId, permissionId, err.Error())
+		log.Errorf("Error deleting user %v to permission %v: %s\n", userId, permissionId, err.Error())
 		return err
 	}
 
@@ -139,7 +140,7 @@ func (pr *PermissionsRepository) AddGroupToPermission(groupId int, permissionId 
 	INSERT INTO gocms_groups_to_permissions (groupId, permissionId) VALUES (:groupId, :permissionId)
 	`, map[string]interface{}{"groupId": groupId, "permissionId": permissionId})
 	if err != nil {
-		log.Printf("Error adding group %v to permission %v: %s\n", groupId, permissionId, err.Error())
+		log.Errorf("Error adding group %v to permission %v: %s\n", groupId, permissionId, err.Error())
 		return err
 	}
 	return nil
@@ -155,7 +156,7 @@ func (pr *PermissionsRepository) RemoveGroupFromPermission(groupId int, permissi
 	AND permissionId=:permissionId
 	`, map[string]interface{}{"groupId": groupId, "permissionId": permissionId})
 	if err != nil {
-		log.Printf("Error deleting group %v to permission %v: %s\n", groupId, permissionId, err.Error())
+		log.Errorf("Error deleting group %v to permission %v: %s\n", groupId, permissionId, err.Error())
 		return err
 	}
 
@@ -175,7 +176,7 @@ func (pr *PermissionsRepository) GetGroupPermissions(groupId int) ([]*permission
 	ON permissionsIds.permissionId = perms.id
 	`, groupId)
 	if err != nil {
-		log.Printf("Error getting all permissions for group %v from database: %s\n", groupId, err.Error())
+		log.Errorf("Error getting all permissions for group %v from database: %s\n", groupId, err.Error())
 		return nil, err
 	}
 	return groupPermissions, nil

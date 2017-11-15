@@ -3,16 +3,16 @@ package authentication_controller
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/utility/errors"
-	"log"
 	"net/http"
 	"strings"
 
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/domain/user/user_model"
 	"github.com/gocms-io/gocms/utility/rest"
+	"fmt"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type gImage struct {
@@ -71,7 +71,7 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 	var me gMe
 	err = json.Unmarshal(res.Body, &me)
 	if err != nil {
-		log.Printf("Error marshaling response from Google /me: %s", err.Error())
+		log.Errorf("Error marshaling response from Google /me: %s", err.Error())
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Parse Google Response", REDIRECT_LOGIN)
 		return
 	}
@@ -80,7 +80,7 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 	user, err := ac.ServicesGroup.UserService.GetByEmail(me.EmailList[0].Email)
 	if err != nil && err != sql.ErrNoRows {
 		// other error
-		log.Printf("error looking up user: %s", err.Error())
+		log.Errorf("error looking up user: %s", err.Error())
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error Validating User", REDIRECT_LOGIN)
 		return
 	}
@@ -108,14 +108,14 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 		// add user
 		err = ac.ServicesGroup.UserService.Add(user)
 		if err != nil {
-			log.Printf("error adding user from google login: %s\n", err.Error())
+			log.Errorf("error adding user from google login: %s\n", err.Error())
 			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from google.", REDIRECT_LOGIN)
 			return
 		}
 		// make sure we auto verify the email address
 		err = ac.ServicesGroup.EmailService.SetVerified(user.Email)
 		if err != nil {
-			log.Printf("Error auto verifiying email: %s\n", err.Error())
+			log.Errorf("Error auto verifiying email: %s\n", err.Error())
 		}
 	}
 
@@ -128,7 +128,7 @@ func (ac *AuthController) loginGoogle(c *gin.Context) {
 	// update user with merged data
 	err = ac.ServicesGroup.UserService.Update(user.Id, user)
 	if err != nil {
-		log.Printf("error updating user from google login: %s", err.Error())
+		log.Errorf("error updating user from google login: %s", err.Error())
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from google.", REDIRECT_LOGIN)
 		return
 	}

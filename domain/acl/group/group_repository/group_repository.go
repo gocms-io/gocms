@@ -3,7 +3,7 @@ package group_repository
 import (
 	"github.com/gocms-io/gocms/domain/acl/group/group_model"
 	"github.com/jmoiron/sqlx"
-	"log"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type IGroupsRepository interface {
@@ -37,7 +37,7 @@ func (pr *GroupsRepository) Add(group *group_model.Group) error {
 	INSERT INTO gocms_groups (name, description) VALUES (:name, :description)
 	`, group)
 	if err != nil {
-		log.Printf("Error adding group to db: %s\n", err.Error())
+		log.Errorf("Error adding group to db: %s\n", err.Error())
 		return err
 	}
 	id, _ := result.LastInsertId()
@@ -54,7 +54,7 @@ func (pr *GroupsRepository) Delete(groupId int64) error {
 	DELETE FROM gocms_groups WHERE id=:id
 	`, map[string]interface{}{"id": groupId})
 	if err != nil {
-		log.Printf("Error deleting group %v from database: %s\n", groupId, err.Error())
+		log.Errorf("Error deleting group %v from database: %s\n", groupId, err.Error())
 		return err
 	}
 
@@ -66,7 +66,7 @@ func (pr *GroupsRepository) GetAll() (*[]group_model.Group, error) {
 	var groups []group_model.Group
 	err := pr.database.Select(&groups, "SELECT * FROM gocms_groups")
 	if err != nil {
-		log.Printf("Error getting groups from database: %s\n", err.Error())
+		log.Errorf("Error getting groups from database: %s\n", err.Error())
 		return nil, err
 	}
 	return &groups, nil
@@ -85,7 +85,7 @@ func (pr *GroupsRepository) GetUserGroups(userId int) ([]*group_model.Group, err
 	ON groupIds.groupId = grps.id
 	`, userId, userId)
 	if err != nil {
-		log.Printf("Error getting all groups for user %v from database: %s\n", userId, err.Error())
+		log.Errorf("Error getting all groups for user %v from database: %s\n", userId, err.Error())
 		return nil, err
 	}
 	return userGroups, nil
@@ -99,7 +99,7 @@ func (pr *GroupsRepository) AddUserToGroup(userId int, groupId int) error {
 	INSERT INTO gocms_users_to_groups (userId, groupId) VALUES (:userId, :groupId)
 	`, map[string]interface{}{"userId": userId, "groupId": groupId})
 	if err != nil {
-		log.Printf("Error adding user %v to group %v: %s\n", userId, groupId, err.Error())
+		log.Errorf("Error adding user %v to group %v: %s\n", userId, groupId, err.Error())
 		return err
 	}
 	return nil
@@ -115,7 +115,7 @@ func (pr *GroupsRepository) RemoveUserFromGroup(userId int, groupId int) error {
 	AND groupId=:groupId
 	`, map[string]interface{}{"userId": userId, "groupId": groupId})
 	if err != nil {
-		log.Printf("Error deleting user %v to group %v: %s\n", userId, groupId, err.Error())
+		log.Errorf("Error deleting user %v to group %v: %s\n", userId, groupId, err.Error())
 		return err
 	}
 

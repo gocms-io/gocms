@@ -1,7 +1,6 @@
 package access_control_middleware
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/context"
 )
@@ -19,7 +18,6 @@ func corsMiddleware(c *gin.Context) {
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
 	if c.Request.Method == "OPTIONS" {
-		fmt.Print("OPTIONS")
 		c.AbortWithStatus(204)
 	} else {
 		c.Next()

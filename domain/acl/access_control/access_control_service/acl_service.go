@@ -3,7 +3,7 @@ package access_control_service
 import (
 	"github.com/gocms-io/gocms/domain/acl/permissions/permission_model"
 	"github.com/gocms-io/gocms/init/repository"
-	"log"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type IAclService interface {
@@ -31,7 +31,7 @@ func (as *AclService) RefreshPermissionsCache() error {
 	// get all permissions
 	permissions, err := as.RepositoriesGroup.PermissionsRepository.GetAll()
 	if err != nil {
-		log.Fatalf("Fatal - Error caching permissions: %s\n", err.Error())
+		log.Criticalf("Fatal - Error caching permissions: %s\n", err.Error())
 		return err
 	}
 
@@ -53,7 +53,7 @@ func (as *AclService) IsAuthorized(permissionName string, userId int) bool {
 	// get user permissions mapped to user
 	activePermissions, err := as.RepositoriesGroup.PermissionsRepository.GetUserPermissions(userId)
 	if err != nil {
-		log.Printf("Error getting users permissions: %s\n", err.Error())
+		log.Errorf("Error getting users permissions: %s\n", err.Error())
 		return false
 	}
 

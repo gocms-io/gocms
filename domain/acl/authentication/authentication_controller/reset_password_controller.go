@@ -3,9 +3,9 @@ package authentication_controller
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/utility/errors"
-	"log"
 	"net/http"
 	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_model"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 /**
@@ -28,7 +28,7 @@ func (ac *AuthController) resetPassword(c *gin.Context) {
 	// send password reset link
 	err = ac.ServicesGroup.AuthService.SendPasswordResetCode(resetRequest.Email)
 	if err != nil {
-		log.Printf("Error sending reset email: %s", err.Error())
+		log.Errorf("Error sending reset email: %s", err.Error())
 		//return nothing for security.
 	}
 

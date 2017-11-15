@@ -2,8 +2,8 @@ package email_respository
 
 import (
 	"github.com/gocms-io/gocms/domain/email/email_model"
+	"github.com/gocms-io/gocms/utility/log"
 	"github.com/jmoiron/sqlx"
-	"log"
 	"time"
 )
 
@@ -36,7 +36,7 @@ func (er *EmailRepository) Add(e *email_model.Email) error {
 	INSERT INTO gocms_emails (userId, email, isVerified, isPrimary) VALUES (:userId, :email, :isVerified, :isPrimary)
 	`, e)
 	if err != nil {
-		log.Printf("Error adding email to database: %s", err.Error())
+		log.Errorf("Error adding email to database: %s", err.Error())
 		return err
 	}
 	// add id to user object
@@ -55,7 +55,7 @@ func (er *EmailRepository) Get(id int) (*email_model.Email, error) {
 	WHERE gocms_emails.id=?
 	`, id)
 	if err != nil {
-		log.Printf("Error getting email by id: %s", err.Error())
+		log.Errorf("Error getting email by id: %s", err.Error())
 		return nil, err
 	}
 
@@ -71,7 +71,7 @@ func (er *EmailRepository) GetByAddress(address string) (*email_model.Email, err
 	WHERE gocms_emails.email=?
 	`, address)
 	if err != nil {
-		log.Printf("Error getting email by address: %s", err.Error())
+		log.Errorf("Error getting email by address: %s", err.Error())
 		return nil, err
 	}
 
@@ -87,7 +87,7 @@ func (er *EmailRepository) GetByUserId(userId int) ([]email_model.Email, error) 
 	WHERE gocms_emails.userId=?
 	`, userId)
 	if err != nil {
-		log.Printf("Error getting email by userId: %s", err.Error())
+		log.Errorf("Error getting email by userId: %s", err.Error())
 		return nil, err
 	}
 
@@ -104,7 +104,7 @@ func (er *EmailRepository) GetPrimaryByUserId(userId int) (*email_model.Email, e
 	AND gocms_emails.isPrimary=?
 	`, userId, 1)
 	if err != nil {
-		log.Printf("Error getting primary email by userId: %s", err.Error())
+		log.Errorf("Error getting primary email by userId: %s", err.Error())
 		return nil, err
 	}
 
@@ -117,7 +117,7 @@ func (er *EmailRepository) Update(email *email_model.Email) error {
 	UPDATE gocms_emails SET isVerified=:isVerified, isPrimary=:isPrimary WHERE id=:id
 	`, email)
 	if err != nil {
-		log.Printf("Error updating email: %s", err.Error())
+		log.Errorf("Error updating email: %s", err.Error())
 		return err
 	}
 
@@ -130,7 +130,7 @@ func (er *EmailRepository) PromoteEmail(emailId int, userId int) error {
 	UPDATE gocms_emails SET isPrimary=? WHERE userId=?
 	`, false, userId)
 	if err != nil {
-		log.Printf("Error bulk setting email to non-primary: %s", err.Error())
+		log.Errorf("Error bulk setting email to non-primary: %s", err.Error())
 		return err
 	}
 
@@ -139,7 +139,7 @@ func (er *EmailRepository) PromoteEmail(emailId int, userId int) error {
 	UPDATE gocms_emails SET isPrimary=? WHERE id=?
 	`, true, emailId)
 	if err != nil {
-		log.Printf("Error setting new primary email: %s", err.Error())
+		log.Errorf("Error setting new primary email: %s", err.Error())
 		return err
 	}
 
@@ -151,7 +151,7 @@ func (er *EmailRepository) Delete(id int) error {
 	DELETE FROM gocms_emails WHERE id=?
 	`, id)
 	if err != nil {
-		log.Printf("Error deleting email from database: %s", err.Error())
+		log.Errorf("Error deleting email from database: %s", err.Error())
 		return err
 	}
 

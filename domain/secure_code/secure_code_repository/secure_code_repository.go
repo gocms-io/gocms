@@ -3,8 +3,8 @@ package secure_code_repository
 import (
 	"github.com/gocms-io/gocms/domain/secure_code/security_code_model"
 	"github.com/jmoiron/sqlx"
-	"log"
 	"time"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type ISecureCodeRepository interface {
@@ -33,7 +33,7 @@ func (scr *SecureCodeRepository) Add(code *security_code_model.SecureCode) error
 	INSERT INTO gocms_secure_codes (userId, type, code, created) VALUES (:userId, :type, :code, :created)
 	`, code)
 	if err != nil {
-		log.Printf("Error adding security code to database: %s", err.Error())
+		log.Errorf("Error adding security code to database: %s", err.Error())
 		return err
 	}
 
@@ -49,7 +49,7 @@ func (scr *SecureCodeRepository) Delete(id int) error {
 	DELETE FROM gocms_secure_codes WHERE id=?
 	`, id)
 	if err != nil {
-		log.Printf("Error deleting security code from database: %s", err.Error())
+		log.Errorf("Error deleting security code from database: %s", err.Error())
 		return err
 	}
 
@@ -63,7 +63,7 @@ func (scr *SecureCodeRepository) GetLatestForUserByType(id int, codeType securit
 	SELECT * from gocms_secure_codes WHERE userId=? AND type=? ORDER BY created DESC LIMIT 1
 	`, id, codeType)
 	if err != nil {
-		log.Printf("Error getting getting latest security code for user from database: %s", err.Error())
+		log.Errorf("Error getting getting latest security code for user from database: %s", err.Error())
 		return nil, err
 	}
 	return &secureCode, nil

@@ -3,7 +3,7 @@ package setting_repository
 import (
 	"github.com/gocms-io/gocms/domain/setting/setting_model"
 	"github.com/jmoiron/sqlx"
-	"log"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type ISettingsRepository interface {
@@ -30,7 +30,7 @@ func (ur *SettingsRepository) GetAll() (*[]setting_model.Setting, error) {
 	var settings []setting_model.Setting
 	err := ur.database.Select(&settings, "SELECT * FROM gocms_settings")
 	if err != nil {
-		log.Printf("Error getting settings from database: %s", err.Error())
+		log.Errorf("Error getting settings from database: %s", err.Error())
 		return nil, err
 	}
 	return &settings, nil
@@ -41,7 +41,7 @@ func (ur *SettingsRepository) GetByName(name string) (*setting_model.Setting, er
 	var runtime setting_model.Setting
 	err := ur.database.Get(&runtime, "SELECT * FROM gocms_settings WHERE name = ?", name)
 	if err != nil {
-		log.Printf("Error getting runtime from database: %s", err.Error())
+		log.Errorf("Error getting runtime from database: %s", err.Error())
 		return nil, err
 	}
 	return &runtime, nil
@@ -51,7 +51,7 @@ func (ur *SettingsRepository) GetByName(name string) (*setting_model.Setting, er
 func (ur *SettingsRepository) UpdateValueById(id int, value string) error {
 	_, err := ur.database.NamedExec("UPDATE gocms_settings SET value=:value WHERE id=:id", map[string]interface{}{"value": value, "id": id})
 	if err != nil {
-		log.Printf("Error updating value of runtime from database: %s", err.Error())
+		log.Errorf("Error updating value of runtime from database: %s", err.Error())
 		return err
 	}
 	return nil
@@ -61,7 +61,7 @@ func (ur *SettingsRepository) UpdateValueById(id int, value string) error {
 func (ur *SettingsRepository) UpdateValueByName(name string, value string) error {
 	_, err := ur.database.NamedExec("UPDATE gocms_settings SET value=:value WHERE name=:name", map[string]interface{}{"value": value, "name": name})
 	if err != nil {
-		log.Printf("Error updating value of runtime from database: %s", err.Error())
+		log.Errorf("Error updating value of runtime from database: %s", err.Error())
 		return err
 	}
 	return nil

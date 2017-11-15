@@ -7,8 +7,8 @@ import (
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/domain/user/user_model"
 	"github.com/gocms-io/gocms/utility/errors"
+	"github.com/gocms-io/gocms/utility/log"
 	"github.com/gocms-io/gocms/utility/rest"
-	"log"
 	"net/http"
 )
 
@@ -65,7 +65,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	var me fbMe
 	err = json.Unmarshal(res.Body, &me)
 	if err != nil {
-		log.Printf("Error marshaling response from facebook /me: %s", err.Error())
+		log.Errorf("Error marshaling response from facebook /me: %s", err.Error())
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Parse Facebook Response", REDIRECT_LOGIN)
 		return
 	}
@@ -74,7 +74,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	user, err := ac.ServicesGroup.UserService.GetByEmail(me.Email)
 	if err != nil && err != sql.ErrNoRows {
 		// other error
-		log.Printf("error looking up user: %s", err.Error())
+		log.Errorf("error looking up user: %s", err.Error())
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error Validating User", REDIRECT_LOGIN)
 		return
 	}
@@ -102,14 +102,14 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 		// add user
 		err = ac.ServicesGroup.UserService.Add(user)
 		if err != nil {
-			log.Printf("error adding user from facebook login: %s\n", err.Error())
+			log.Errorf("error adding user from facebook login: %s\n", err.Error())
 			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from facebook.", REDIRECT_LOGIN)
 			return
 		}
 		// make sure we auto verify the email address
 		err = ac.ServicesGroup.EmailService.SetVerified(user.Email)
 		if err != nil {
-			log.Printf("Error auto verifiying email: %s\n", err.Error())
+			log.Errorf("Error auto verifiying email: %s\n", err.Error())
 		}
 	}
 
@@ -131,7 +131,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	// update user with merged data
 	err = ac.ServicesGroup.UserService.Update(user.Id, user)
 	if err != nil {
-		log.Printf("error updating user from facebook login: %s", err.Error())
+		log.Errorf("error updating user from facebook login: %s", err.Error())
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from facebook.", REDIRECT_LOGIN)
 		return
 	}
