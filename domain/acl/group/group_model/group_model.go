@@ -1,8 +1,8 @@
-package permission_model
+package group_model
 
 import "time"
 
-type Permission struct {
+type Group struct {
 	Id           int64     `db:"id"`
 	Name         string    `db:"name"`
 	Description  string    `db:"description"`

@@ -8,7 +8,7 @@ func AddACL() *migrate.Migration {
 		Up: []string{`
 			CREATE TABLE gocms_groups (
 			id int(11) NOT NULL AUTO_INCREMENT,
-			groupName varchar(30) NOT NULL UNIQUE,
+			name varchar(30) NOT NULL UNIQUE,
 			description varchar(255) NOT NULL,
 			created datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			lastModified DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -44,9 +44,6 @@ func AddACL() *migrate.Migration {
 			) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 			`, `
 			UPDATE gocms_permissions SET name='super_admin', description='Super Admins have full access to everything.' WHERE id=1;
-			`, `
-			ALTER TABLE gocms_permissions
-			CHANGE COLUMN name permissionName VARCHAR(30) NOT NULL;
 			`, `
 			ALTER TABLE gocms_users_to_permissions
 			DROP FOREIGN KEY gocms_users_to_permissions_ibfk_2;
