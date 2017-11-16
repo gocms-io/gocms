@@ -24,13 +24,8 @@ func DefaultUserAdminController(routes *routes.Routes, sg *service.ServicesGroup
 		ServicesGroup: sg,
 	}
 
-	// create acl object
-	acl := access_control_middleware.AclMiddleware{
-		ServicesGroup: sg,
-	}
-
 	// add acl rules to route
-	adminUserController.adminRoutes = routes.Auth.Group("/admin", acl.RequirePermission(permissions.SUPER_ADMIN))
+	adminUserController.adminRoutes = routes.Auth.Group("/admin", access_control_middleware.RequirePermission(sg.AclService, permissions.SUPER_ADMIN))
 
 	adminUserController.Default()
 	return adminUserController

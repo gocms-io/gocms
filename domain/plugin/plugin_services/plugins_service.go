@@ -2,6 +2,7 @@ package plugin_services
 
 import (
 	"database/sql"
+	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_service"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
 	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/routes"
@@ -20,14 +21,16 @@ type PluginsService struct {
 	repositoriesGroup *repository.RepositoriesGroup
 	installedPlugins  map[string]*plugin_model.Plugin
 	activePlugins     map[string]*plugin_model.Plugin
+	aclService        access_control_service.IAclService
 }
 
-func DefaultPluginsService(rg *repository.RepositoriesGroup) *PluginsService {
+func DefaultPluginsService(rg *repository.RepositoriesGroup, aclService access_control_service.IAclService) *PluginsService {
 
 	pluginsService := &PluginsService{
 		repositoriesGroup: rg,
 		installedPlugins:  make(map[string]*plugin_model.Plugin),
 		activePlugins:     make(map[string]*plugin_model.Plugin),
+		aclService:        aclService,
 	}
 
 	return pluginsService

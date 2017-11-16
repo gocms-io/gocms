@@ -3,8 +3,9 @@ package plugin_services
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_middleware"
 	"github.com/gocms-io/gocms/domain/acl/permissions"
-	"github.com/gocms-io/gocms/domain/plugin/plugin_middleware/plugin_proxy_middleware"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
 	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/utility/errors"
 	"github.com/gocms-io/gocms/utility/log"
@@ -17,6 +18,7 @@ type ProxyRoute struct {
 }
 
 // todo figure out how to apply permissions to middleware in here
+// todo also add health checks for plugin
 func (ps *PluginsService) RegisterActivePluginRoutes(routes *routes.Routes) error {
 	for _, plugin := range ps.GetActivePlugins() {
 
@@ -27,14 +29,10 @@ func (ps *PluginsService) RegisterActivePluginRoutes(routes *routes.Routes) erro
 				es := fmt.Sprintf("Plugin %s -> Route %s -> Method %s, Url %s, Error: %s\n", plugin.Manifest.Id, routeManifest.Route, routeManifest.Method, routeManifest.Url, err.Error())
 				log.Errorf(es)
 				return err
-			} else {
-				// if we want to disable the namespace for route
-				if routeManifest.DisableNamespace {
-					ps.registerPluginProxyOnRoute(routerGroup, routeManifest.Method, routeManifest.Url, plugin.Proxy)
-				} else { // else namespace route
-					ps.registerPluginProxyOnRoute(routerGroup, routeManifest.Method, fmt.Sprintf("%v/%v", plugin.Manifest.Id, routeManifest.Url), plugin.Proxy)
-				}
 			}
+
+			// register route and permissions within GoCMS
+			ps.registerPluginProxyOnRoute(routerGroup, plugin, routeManifest)
 		}
 
 		// check if there is interface routes that need to be registered
@@ -51,8 +49,29 @@ func (ps *PluginsService) RegisterActivePluginRoutes(routes *routes.Routes) erro
 	return nil
 }
 
-func (ps *PluginsService) registerPluginProxyOnRoute(route *gin.RouterGroup, method string, url string, pluginProxy *plugin_proxy_middleware.PluginProxyMiddleware) {
-	route.Handle(method, url, pluginProxy.ReverseProxy())
+func (ps *PluginsService) registerPluginProxyOnRoute(route *gin.RouterGroup, plugin *plugin_model.Plugin, routeManifest *plugin_model.PluginManifestRoute) {
+
+	// middlewares
+	var handlers []gin.HandlerFunc
+	url := routeManifest.Url
+
+	// add acl middleware if needed
+	if routeManifest.Route == routes.AUTH && len(routeManifest.Permissions) > 0 {
+		log.Debugf("Adding ACL Middleware for %v\n", routeManifest.Url)
+		handlers = append(handlers, access_control_middleware.RequirePermission(ps.aclService, routeManifest.Permissions...))
+	}
+
+	// if the namespace is not disabled then we should inject
+	// the plugin id to namespace the url
+	if !routeManifest.DisableNamespace {
+		url = fmt.Sprintf("%v/%v", plugin.Manifest.Id, routeManifest.Url)
+	}
+
+	// add reverse proxy handler
+	handlers = append(handlers, plugin.Proxy.ReverseProxy())
+
+	// register route
+	route.Handle(routeManifest.Method, url, handlers...)
 }
 
 func (ps *PluginsService) getRouteGroup(pluginRoute string, r *routes.Routes) (*gin.RouterGroup, error) {
