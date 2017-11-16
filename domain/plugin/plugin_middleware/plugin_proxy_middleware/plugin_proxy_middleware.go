@@ -1,17 +1,17 @@
 package plugin_proxy_middleware
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gocms-io/gocms/context/consts"
 	"github.com/gocms-io/gocms/domain/user/user_middleware"
 	"github.com/gocms-io/gocms/utility/api_utility"
 	"github.com/gocms-io/gocms/utility/errors"
+	"github.com/gocms-io/gocms/utility/log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	"strconv"
 	"strings"
-	"fmt"
-	"github.com/gocms-io/gocms/utility/log"
 )
 
 type PluginProxyMiddleware struct {
@@ -31,11 +31,10 @@ func (ppm *PluginProxyMiddleware) reverseProxy(c *gin.Context) {
 	authUser, _ := api_utility.GetUserFromContext(c)
 	timezone, _ := user_middleware.GetTimezoneFromContext(c)
 	if authUser != nil {
-		c.Request.Header.Set("GOCMS-AUTH-USER-ID", strconv.Itoa(authUser.Id))
-		c.Request.Header.Set("GOCMS-AUTH-NAME", authUser.FullName)
-		c.Request.Header.Set("GOCMS-AUTH-EMAIL", authUser.Email)
+		userHeaderContext := authUser.GetUserContextHeader().Marshal()
+		c.Request.Header.Set(consts.GOCMS_HEADER_USER_CONTEXT_KEY, userHeaderContext)
 	}
-	c.Request.Header.Set("GOCMS-TIMEZONE", timezone.String())
+	c.Request.Header.Set(consts.GOCMS_HEADER_TIMEZONE_KEY, timezone.String())
 
 	target, err := url.Parse(fmt.Sprintf("%s://%s:%d", ppm.Schema, ppm.Host, ppm.Port))
 	if err != nil {

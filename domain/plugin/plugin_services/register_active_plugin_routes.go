@@ -3,12 +3,12 @@ package plugin_services
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_middleware"
 	"github.com/gocms-io/gocms/domain/acl/permissions"
-	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
 	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/utility/errors"
 	"github.com/gocms-io/gocms/utility/log"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
+	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_middleware"
 )
 
 type ProxyRoute struct {
@@ -17,7 +17,7 @@ type ProxyRoute struct {
 	Port   string
 }
 
-// todo figure out how to apply permissions to middleware in here
+// todo pass permissions on to plugin
 // todo also add health checks for plugin
 func (ps *PluginsService) RegisterActivePluginRoutes(routes *routes.Routes) error {
 	for _, plugin := range ps.GetActivePlugins() {

@@ -1,6 +1,8 @@
 package group_model
 
-import "time"
+import (
+	"time"
+)
 
 type Group struct {
 	Id           int64     `db:"id"`

@@ -2,6 +2,7 @@ package access_control_service
 
 import (
 	"github.com/gocms-io/gocms/context"
+	"github.com/gocms-io/gocms/domain/acl/group/group_model"
 	"github.com/gocms-io/gocms/domain/acl/permissions/permission_model"
 	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/utility/log"
@@ -12,6 +13,7 @@ type IAclService interface {
 	RefreshPermissionsCache() error
 	GetPermissions() map[string]permission_model.Permission
 	IsAuthorized(string, int) bool
+	IsAuthorizedWithContext(permissionName string, userId int) (bool, []*permission_model.Permission, []*group_model.Group)
 }
 
 type AclService struct {
@@ -59,20 +61,45 @@ func (as *AclService) GetPermissions() map[string]permission_model.Permission {
 	return as.Permissions
 }
 
+func (as *AclService) IsAuthorizedWithContext(permissionName string, userId int) (bool, []*permission_model.Permission, []*group_model.Group) {
+
+	isAuthorized, permissions := as.isAuthorized(permissionName, userId)
+
+	// if authorized get users groups
+	if isAuthorized {
+		groups, err := as.RepositoriesGroup.GroupsRepository.GetUserGroups(userId)
+		if err != nil {
+			log.Errorf("Error getting users groups: %s\n", err.Error())
+			return false, nil, nil
+		}
+
+		// return with full context
+		return true, permissions, groups
+	}
+
+	return false, nil, nil
+}
+
 func (as *AclService) IsAuthorized(permissionName string, userId int) bool {
-	// get user permissions mapped to user
-	userPermissions, err := as.RepositoriesGroup.PermissionsRepository.GetUserPermissions(userId)
+
+	isAuthorized, _ := as.isAuthorized(permissionName, userId)
+	return isAuthorized
+}
+
+func (as *AclService) isAuthorized(permissionName string, userId int) (bool, []*permission_model.Permission) {
+	// get user permissions
+	permissions, err := as.RepositoriesGroup.PermissionsRepository.GetUserPermissions(userId)
 	if err != nil {
 		log.Errorf("Error getting users permissions: %s\n", err.Error())
-		return false
+		return false, nil
 	}
 
 	// loop over permissions and see if they match the request one
-	for _, permission := range userPermissions {
+	for _, permission := range permissions {
 		cachedPermissions := as.GetPermissions() // use function to verify that cache is refreshed
 		if permission.Id == cachedPermissions[permissionName].Id {
-			return true
+			return true, permissions
 		}
 	}
-	return false
+	return false, nil
 }

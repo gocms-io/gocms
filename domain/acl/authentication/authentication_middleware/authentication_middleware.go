@@ -3,13 +3,13 @@ package authentication_middleware
 import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/utility/errors"
-	"net/http"
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/context/consts"
-	"github.com/gocms-io/gocms/domain/user/user_model"
 	"github.com/gocms-io/gocms/init/service"
 	"github.com/gocms-io/gocms/routes"
+	"github.com/gocms-io/gocms/utility/api_utility"
+	"github.com/gocms-io/gocms/utility/errors"
+	"net/http"
 )
 
 type AuthMiddleware struct {
@@ -92,7 +92,7 @@ func (am *AuthMiddleware) addUserToContextIfValidToken(c *gin.Context) {
 // requireAuthedUser middleware
 func (am *AuthMiddleware) requireAuthedUser(c *gin.Context) {
 
-	user, ok := GetUserFromContext(c)
+	user, ok := api_utility.GetUserFromContext(c)
 	if !ok {
 		errors.Response(c, http.StatusUnauthorized, errors.ApiError_UserToken, nil)
 		return
@@ -150,14 +150,4 @@ func (am *AuthMiddleware) verifyToken(authHeader string) (*jwt.Token, error) {
 	}
 
 	return token, nil
-}
-
-func GetUserFromContext(c *gin.Context) (*user_model.User, bool) {
-	// get user from context
-	if userContext, ok := c.Get(consts.USER_KEY_FOR_GIN_CONTEXT); ok {
-		if userDisplay, ok := userContext.(user_model.User); ok {
-			return &userDisplay, true
-		}
-	}
-	return nil, false
 }

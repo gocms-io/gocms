@@ -2,8 +2,8 @@ package group_repository
 
 import (
 	"github.com/gocms-io/gocms/domain/acl/group/group_model"
-	"github.com/jmoiron/sqlx"
 	"github.com/gocms-io/gocms/utility/log"
+	"github.com/jmoiron/sqlx"
 )
 
 type IGroupsRepository interface {
@@ -83,7 +83,7 @@ func (pr *GroupsRepository) GetUserGroups(userId int) ([]*group_model.Group, err
 	) as groupIds
 	JOIN gocms_groups as grps
 	ON groupIds.groupId = grps.id
-	`, userId, userId)
+	`, userId)
 	if err != nil {
 		log.Errorf("Error getting all groups for user %v from database: %s\n", userId, err.Error())
 		return nil, err

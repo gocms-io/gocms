@@ -1,6 +1,8 @@
 package user_model
 
 import (
+	"github.com/gocms-io/gocms/domain/acl/group/group_model"
+	"github.com/gocms-io/gocms/domain/acl/permissions/permission_model"
 	"github.com/gocms-io/gocms/domain/email/email_model"
 	"time"
 )
@@ -24,6 +26,8 @@ type User struct {
 	Created      time.Time `json:"created" db:"created"`
 	Enabled      bool      `json:"enabled" db:"enabled"`
 	LastModified time.Time `json:"lastModified" db:"lastModified"`
+	Permissions  []*permission_model.Permission
+	Groups       []*group_model.Group
 }
 
 /**
@@ -81,6 +85,17 @@ func (user *User) GetUserDisplay() *UserDisplay {
 		Gender:       user.Gender,
 		Photo:        user.Photo,
 		LastModified: user.LastModified,
+	}
+	return &userDisplay
+}
+
+// helper function to get userContextHeader from user object
+func (user *User) GetUserContextHeader() *UserContextHeader {
+	userDisplay := UserContextHeader{
+		Id:           user.Id,
+		Email:        user.Email,
+		FullName:     user.FullName,
+		ACL: user.GetUserAclPermissionsAndGroups(),
 	}
 	return &userDisplay
 }

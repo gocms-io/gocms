@@ -3,6 +3,7 @@ package access_control_middleware
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gocms-io/gocms/context/consts"
 	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_service"
 	"github.com/gocms-io/gocms/utility/api_utility"
 	"github.com/gocms-io/gocms/utility/errors"
@@ -15,9 +16,13 @@ func RequirePermission(aclService access_control_service.IAclService, permission
 	return func(c *gin.Context) {
 		authUser, _ := api_utility.GetUserFromContext(c)
 		for _, permission := range permissions {
-			log.Debugf("Checking permission %v\n", permission)
-			if aclService.IsAuthorized(permission, authUser.Id) {
-				log.Debugf("User has permission. Continue.")
+			isAuthorized, permissions, groups := aclService.IsAuthorizedWithContext(permission, authUser.Id)
+			if isAuthorized {
+				// add permissions and roles to context
+				authUser.Permissions = permissions
+				authUser.Groups = groups
+				log.Debugf("User %v has permissions %v\n", authUser.Id, permission)
+				c.Set(consts.USER_KEY_FOR_GIN_CONTEXT, *authUser)
 				c.Next()
 				return
 			}

@@ -2,8 +2,8 @@ package permission_repository
 
 import (
 	"github.com/gocms-io/gocms/domain/acl/permissions/permission_model"
-	"github.com/jmoiron/sqlx"
 	"github.com/gocms-io/gocms/utility/log"
+	"github.com/jmoiron/sqlx"
 )
 
 type IPermissionsRepository interface {
@@ -78,27 +78,30 @@ func (pr *PermissionsRepository) GetAll() (*[]permission_model.Permission, error
 
 // GetUserPermissions get permissions assigned to a given user via userId
 func (pr *PermissionsRepository) GetUserPermissions(userId int) ([]*permission_model.Permission, error) {
-	var userPermissions []*permission_model.Permission
-	err := pr.database.Select(&userPermissions, `
-	SELECT permissionId as id, name, description
+
+	var permissions []*permission_model.Permission
+	err := pr.database.Select(&permissions, `
+	SELECT perms.id AS 'id', perms.name AS 'name',
+	perms.description AS 'description', groupId AS 'inheritedFromGroupId'
 	FROM (
-		SELECT permissionId FROM gocms_groups_to_permissions
+		SELECT permissionId, groupId FROM gocms_groups_to_permissions
 		WHERE groupId IN (
 			SELECT groupId FROM gocms_users_to_groups
 			WHERE userId = ?
 		)
 		UNION
-		SELECT permissionId from gocms_users_to_permissions
+		SELECT permissionId, 0 AS groupId FROM gocms_users_to_permissions
 		WHERE userId = ?
-	) as permIds
-	JOIN gocms_permissions as perms
+	) AS permIds
+	JOIN gocms_permissions AS perms
 	ON permIds.permissionId = perms.id
 	`, userId, userId)
 	if err != nil {
 		log.Errorf("Error getting all permissions for user %v from database: %s\n", userId, err.Error())
 		return nil, err
 	}
-	return userPermissions, nil
+
+	return permissions, nil
 }
 
 // AddUserToPermission adds a user to the permission via userId and permissionId
