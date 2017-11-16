@@ -15,6 +15,7 @@ import (
 type UserAdminController struct {
 	routes        *routes.Routes
 	ServicesGroup *service.ServicesGroup
+	adminRoutes   *gin.RouterGroup
 }
 
 func DefaultUserAdminController(routes *routes.Routes, sg *service.ServicesGroup) *UserAdminController {
@@ -29,7 +30,7 @@ func DefaultUserAdminController(routes *routes.Routes, sg *service.ServicesGroup
 	}
 
 	// add acl rules to route
-	routes.Admin = routes.Auth.Group("/admin", acl.RequirePermission(permissions.SUPER_ADMIN))
+	adminUserController.adminRoutes = routes.Auth.Group("/admin", acl.RequirePermission(permissions.SUPER_ADMIN))
 
 	adminUserController.Default()
 	return adminUserController
@@ -42,11 +43,11 @@ func DefaultUserAdminController(routes *routes.Routes, sg *service.ServicesGroup
  */
 func (auc *UserAdminController) Default() {
 
-	auc.routes.Admin.GET("/user", auc.getAll)
-	auc.routes.Admin.GET("/user/:userId", auc.get)
-	auc.routes.Admin.PUT("/user/:userId", auc.update)
-	auc.routes.Admin.POST("/user", auc.add)
-	auc.routes.Admin.DELETE("/user/:userId", auc.delete)
+	auc.adminRoutes.GET("/user", auc.getAll)
+	auc.adminRoutes.GET("/user/:userId", auc.get)
+	auc.adminRoutes.PUT("/user/:userId", auc.update)
+	auc.adminRoutes.POST("/user", auc.add)
+	auc.adminRoutes.DELETE("/user/:userId", auc.delete)
 }
 
 func (auc *UserAdminController) add(c *gin.Context) {

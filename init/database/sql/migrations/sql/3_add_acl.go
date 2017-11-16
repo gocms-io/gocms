@@ -47,14 +47,16 @@ func AddACL() *migrate.Migration {
 			`, `
 			ALTER TABLE gocms_users_to_permissions
 			DROP FOREIGN KEY gocms_users_to_permissions_ibfk_2;
+			`, `
 			ALTER TABLE gocms_users_to_permissions
-			CHANGE COLUMN permissionsId permissionId INT(11) NOT NULL;
+			CHANGE permissionsId permissionId INT(11) NOT NULL;
+			`, `
 			ALTER TABLE gocms_users_to_permissions
 			ADD CONSTRAINT gocms_users_to_permissions_ibfk_2
-  			FOREIGN KEY (permissionId)
-  			REFERENCES gocms_permissions (id)
-  			ON DELETE CASCADE;
-			`,`
+			FOREIGN KEY (permissionId)
+			REFERENCES gocms_permissions (id)
+			ON DELETE CASCADE;
+			`, `
 			INSERT INTO gocms_settings (name, value, description) VALUES('PERMISSIONS_CACHE_LIFE', '3600', 'Seconds to cache permissions between requests.');
 			`,
 		},

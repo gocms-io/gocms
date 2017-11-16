@@ -2,6 +2,12 @@ package routes
 
 import "github.com/gin-gonic/gin"
 
+const PUBLIC = "Public"
+const PRE_TWO_FACTOR = "PreTwoFactor"
+const AUTH = "Auth"
+const ROOT = "Root"
+const ADMIN = "Admin" // Deprecated, Do not use!
+
 // Routes are the most basic organizational option available. They define urls as well as what level authentication is required.
 type Routes struct {
 	// Root provides access to / and allows for just about anything. No authentication is applied.

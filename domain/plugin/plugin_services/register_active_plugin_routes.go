@@ -3,10 +3,11 @@ package plugin_services
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gocms-io/gocms/domain/acl/permissions"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_middleware/plugin_proxy_middleware"
 	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/utility/errors"
-	"log"
-	"github.com/gocms-io/gocms/domain/plugin/plugin_middleware/plugin_proxy_middleware"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type ProxyRoute struct {
@@ -15,6 +16,7 @@ type ProxyRoute struct {
 	Port   string
 }
 
+// todo figure out how to apply permissions to middleware in here
 func (ps *PluginsService) RegisterActivePluginRoutes(routes *routes.Routes) error {
 	for _, plugin := range ps.GetActivePlugins() {
 
@@ -23,7 +25,7 @@ func (ps *PluginsService) RegisterActivePluginRoutes(routes *routes.Routes) erro
 			routerGroup, err := ps.getRouteGroup(routeManifest.Route, routes)
 			if err != nil {
 				es := fmt.Sprintf("Plugin %s -> Route %s -> Method %s, Url %s, Error: %s\n", plugin.Manifest.Id, routeManifest.Route, routeManifest.Method, routeManifest.Url, err.Error())
-				log.Print(es)
+				log.Errorf(es)
 				return err
 			} else {
 				// if we want to disable the namespace for route
@@ -53,17 +55,19 @@ func (ps *PluginsService) registerPluginProxyOnRoute(route *gin.RouterGroup, met
 	route.Handle(method, url, pluginProxy.ReverseProxy())
 }
 
-func (ps *PluginsService) getRouteGroup(pluginRoute string, routes *routes.Routes) (*gin.RouterGroup, error) {
+func (ps *PluginsService) getRouteGroup(pluginRoute string, r *routes.Routes) (*gin.RouterGroup, error) {
 	switch pluginRoute {
-	case "Public":
-		return routes.Public, nil
-	case "PreTwofactor":
-		return routes.PreTwofactor, nil
-	case "Auth":
-		return routes.Auth, nil
-	case "Root":
-		return routes.Root, nil
-	default:
-		return nil, errors.New(fmt.Sprintf("Route %s doesn't exist.\n", pluginRoute))
+	case routes.PUBLIC:
+		return r.Public, nil
+	case routes.PRE_TWO_FACTOR:
+		return r.PreTwofactor, nil
+	case routes.AUTH:
+		return r.Auth, nil
+	case routes.ROOT:
+		return r.Root, nil
+	case routes.ADMIN:
+		log.Warningf("Admin route no longer exists. Instead apply the '%v' permission to route in manifest.json route\n", permissions.SUPER_ADMIN)
 	}
+
+	return nil, errors.New(fmt.Sprintf("Plugin is registering on route %v that doesn't exist\n", pluginRoute))
 }
