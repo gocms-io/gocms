@@ -5,8 +5,8 @@ import (
 )
 
 type Email struct {
-	Id           int       `db:"id"`
-	UserId       int       `db:"userId"`
+	Id           int64     `db:"id"`
+	UserId       int64     `db:"userId"`
 	Email        string    `db:"email"`
 	IsVerified   bool      `db:"isVerified"`
 	IsPrimary    bool      `db:"isPrimary"`
@@ -23,7 +23,7 @@ type Email struct {
 * @apiSuccess (Response) {string} lastModified
  */
 type EmailDisplay struct {
-	Id           int       `json:"id,omitempty"`
+	Id           int64     `json:"id,omitempty"`
 	Email        string    `json:"email,omitempty"`
 	Verified     bool      `json:"verified"`
 	IsPrimary    bool      `json:"isPrimary"`

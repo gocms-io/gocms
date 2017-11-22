@@ -7,22 +7,22 @@ import (
 	"time"
 )
 
-var GENDER_UNKNOWN = 0
-var GENDER_MALE = 1
-var GENDER_FEMALE = 2
+var GENDER_UNKNOWN int64 = 0
+var GENDER_MALE int64 = 1
+var GENDER_FEMALE int64 = 2
 
 // TODO remove user json binding and create a user input.
 type User struct {
-	Id           int    `json:"id" db:"id"`
+	Id           int64  `json:"id" db:"id"`
 	FullName     string `json:"fullName" db:"fullName"`
 	Email        string `json:"email" db:"email"`
 	Verified     bool   `json:"isVerified" db:"isVerified"`
 	AltEmails    []email_model.Email
 	Password     string    `json:"password" db:"password"`
-	Gender       int       `json:"gender" db:"gender"`
+	Gender       int64     `json:"gender" db:"gender"`
 	Photo        string    `json:"photo" db:"photo"`
-	MinAge       int       `json:"minAge" db:"minAge"`
-	MaxAge       int       `json:"maxAge" db:"maxAge"`
+	MinAge       int64     `json:"minAge" db:"minAge"`
+	MaxAge       int64     `json:"maxAge" db:"maxAge"`
 	Created      time.Time `json:"created" db:"created"`
 	Enabled      bool      `json:"enabled" db:"enabled"`
 	LastModified time.Time `json:"lastModified" db:"lastModified"`
@@ -40,10 +40,10 @@ type User struct {
 * @apiSuccess (Response) {string} lastModified
  */
 type UserDisplay struct {
-	Id           int       `json:"id,omitempty"`
+	Id           int64     `json:"id,omitempty"`
 	FullName     string    `json:"fullName,omitempty"`
 	Email        string    `json:"email,omitempty"`
-	Gender       int       `json:"gender,omitempty"`
+	Gender       int64     `json:"gender,omitempty"`
 	Photo        string    `json:"photo,string,omitempty"`
 	LastModified time.Time `json:"lastModified,omitempty"`
 }
@@ -55,7 +55,7 @@ type UserDisplay struct {
  */
 type UserUpdateInput struct {
 	FullName string `json:"fullName,omitempty"`
-	Gender   int    `json:"gender"`
+	Gender   int64  `json:"gender"`
 }
 
 /**
@@ -92,10 +92,10 @@ func (user *User) GetUserDisplay() *UserDisplay {
 // helper function to get userContextHeader from user object
 func (user *User) GetUserContextHeader() *UserContextHeader {
 	userDisplay := UserContextHeader{
-		Id:           user.Id,
-		Email:        user.Email,
-		FullName:     user.FullName,
-		ACL: user.GetUserAclPermissionsAndGroups(),
+		Id:       user.Id,
+		Email:    user.Email,
+		FullName: user.FullName,
+		ACL:      user.GetUserAclPermissionsAndGroups(),
 	}
 	return &userDisplay
 }

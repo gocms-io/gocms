@@ -2,15 +2,15 @@ package secure_code_repository
 
 import (
 	"github.com/gocms-io/gocms/domain/secure_code/security_code_model"
+	"github.com/gocms-io/gocms/utility/log"
 	"github.com/jmoiron/sqlx"
 	"time"
-	"github.com/gocms-io/gocms/utility/log"
 )
 
 type ISecureCodeRepository interface {
 	Add(*security_code_model.SecureCode) error
-	Delete(int) error
-	GetLatestForUserByType(int, security_code_model.SecureCodeType) (*security_code_model.SecureCode, error)
+	Delete(int64) error
+	GetLatestForUserByType(int64, security_code_model.SecureCodeType) (*security_code_model.SecureCode, error)
 }
 
 type SecureCodeRepository struct {
@@ -39,12 +39,12 @@ func (scr *SecureCodeRepository) Add(code *security_code_model.SecureCode) error
 
 	// add id to user object
 	id, _ := result.LastInsertId()
-	code.Id = int(id)
+	code.Id = id
 
 	return nil
 }
 
-func (scr *SecureCodeRepository) Delete(id int) error {
+func (scr *SecureCodeRepository) Delete(id int64) error {
 	_, err := scr.database.Exec(`
 	DELETE FROM gocms_secure_codes WHERE id=?
 	`, id)
@@ -57,7 +57,7 @@ func (scr *SecureCodeRepository) Delete(id int) error {
 }
 
 // get all events
-func (scr *SecureCodeRepository) GetLatestForUserByType(id int, codeType security_code_model.SecureCodeType) (*security_code_model.SecureCode, error) {
+func (scr *SecureCodeRepository) GetLatestForUserByType(id int64, codeType security_code_model.SecureCodeType) (*security_code_model.SecureCode, error) {
 	var secureCode security_code_model.SecureCode
 	err := scr.database.Get(&secureCode, `
 	SELECT * from gocms_secure_codes WHERE userId=? AND type=? ORDER BY created DESC LIMIT 1

@@ -11,9 +11,9 @@ type IGroupsRepository interface {
 	Delete(int64) error
 	GetAll() (*[]group_model.Group, error)
 
-	GetUserGroups(userId int) ([]*group_model.Group, error)
-	AddUserToGroup(userId int, groupId int) error
-	RemoveUserFromGroup(userId int, groupId int) error
+	GetUserGroups(userId int64) ([]*group_model.Group, error)
+	AddUserToGroup(userId int64, groupId int64) error
+	RemoveUserFromGroup(userId int64, groupId int64) error
 }
 
 type GroupsRepository struct {
@@ -73,7 +73,7 @@ func (pr *GroupsRepository) GetAll() (*[]group_model.Group, error) {
 }
 
 // GetUserGroups get groups assigned to a given user via userId
-func (pr *GroupsRepository) GetUserGroups(userId int) ([]*group_model.Group, error) {
+func (pr *GroupsRepository) GetUserGroups(userId int64) ([]*group_model.Group, error) {
 	var userGroups []*group_model.Group
 	err := pr.database.Select(&userGroups, `
 	SELECT groupId as id, name, description
@@ -92,7 +92,7 @@ func (pr *GroupsRepository) GetUserGroups(userId int) ([]*group_model.Group, err
 }
 
 // AddUserToGroup adds a user to the group via userId and groupId
-func (pr *GroupsRepository) AddUserToGroup(userId int, groupId int) error {
+func (pr *GroupsRepository) AddUserToGroup(userId int64, groupId int64) error {
 
 	// insert user
 	_, err := pr.database.NamedExec(`
@@ -107,7 +107,7 @@ func (pr *GroupsRepository) AddUserToGroup(userId int, groupId int) error {
 }
 
 // RemoveUserFromGroup removes a user from the group via userId and groupId
-func (pr *GroupsRepository) RemoveUserFromGroup(userId int, groupId int) error {
+func (pr *GroupsRepository) RemoveUserFromGroup(userId int64, groupId int64) error {
 
 	_, err := pr.database.NamedExec(`
 	DELETE FROM gocms_users_to_groups

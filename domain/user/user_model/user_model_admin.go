@@ -18,15 +18,15 @@ import (
 * @apiSuccess (Response) {string} lastModified
  */
 type UserAdminDisplay struct {
-	Id           int       `json:"id,omitempty"`
+	Id           int64     `json:"id,omitempty"`
 	FullName     string    `json:"fullName,omitempty"`
 	Email        string    `json:"email,omitempty"`
 	Verified     bool      `json:"verified,omitempty"`
-	Gender       int       `json:"gender,omitempty"`
+	Gender       int64     `json:"gender,omitempty"`
 	Photo        string    `json:"photo,string,omitempty"`
 	Enabled      bool      `json:"enabled,omitempty"`
-	MinAge       int       `json:"minAge,omitempty"`
-	MaxAge       int       `json:"maxAge,omitempty"`
+	MinAge       int64     `json:"minAge,omitempty"`
+	MaxAge       int64     `json:"maxAge,omitempty"`
 	Created      time.Time `json:"created,omitempty"`
 	LastModified time.Time `json:"lastModified,omitempty"`
 }

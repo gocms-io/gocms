@@ -6,7 +6,7 @@ import (
 )
 
 type UserContextHeader struct {
-	Id       int      `json:"id"`
+	Id       int64    `json:"id"`
 	FullName string   `json:"fullName"`
 	Email    string   `json:"email"`
 	ACL      *UserAcl `json:"acl"`

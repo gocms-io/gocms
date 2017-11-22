@@ -8,11 +8,11 @@ import (
 	"net/http"
 	"strings"
 
+	"fmt"
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/domain/user/user_model"
-	"github.com/gocms-io/gocms/utility/rest"
-	"fmt"
 	"github.com/gocms-io/gocms/utility/log"
+	"github.com/gocms-io/gocms/utility/rest"
 )
 
 type gImage struct {
@@ -23,8 +23,8 @@ type gEmail struct {
 	Email string `json:"value" binding:"required"`
 }
 type gAgeRange struct {
-	Min int `json:"min" binding:"required"`
-	Max int `json:"max" binding:"required"`
+	Min int64 `json:"min" binding:"required"`
+	Max int64 `json:"max" binding:"required"`
 }
 
 type gMe struct {

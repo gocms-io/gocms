@@ -7,22 +7,22 @@ import (
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/domain/user/user_model"
 	"github.com/gocms-io/gocms/utility/errors"
-	"github.com/gocms-io/gocms/utility/log"
 	"github.com/gocms-io/gocms/utility/rest"
 	"net/http"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type fbData struct {
-	Height int    `json:"height" binding:"required"`
-	Width  int    `json:"width" binding:"required"`
+	Height int64    `json:"height" binding:"required"`
+	Width  int64    `json:"width" binding:"required"`
 	Url    string `json:"url" binding:"required"`
 }
 type fbPicture struct {
 	Data fbData `json:"data" binding:"required"`
 }
 type fbAgeRange struct {
-	Min int `json:"min" binding:"required"`
-	Max int `json:"max" binding:"required"`
+	Min int64 `json:"min" binding:"required"`
+	Max int64 `json:"max" binding:"required"`
 }
 type fbMe struct {
 	Id       string     `json:"id" binding:"required"`

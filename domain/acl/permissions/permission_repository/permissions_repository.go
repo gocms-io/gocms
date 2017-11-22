@@ -11,13 +11,13 @@ type IPermissionsRepository interface {
 	Delete(int64) error
 	GetAll() (*[]permission_model.Permission, error)
 
-	GetUserPermissions(userId int) ([]*permission_model.Permission, error)
-	AddUserToPermission(userId int, permissionId int) error
-	RemoveUserFromPermission(userId int, permissionId int) error
+	GetUserPermissions(userId int64) ([]*permission_model.Permission, error)
+	AddUserToPermission(userId int64, permissionId int64) error
+	RemoveUserFromPermission(userId int64, permissionId int64) error
 
-	GetGroupPermissions(groupId int) ([]*permission_model.Permission, error)
-	AddGroupToPermission(groupId int, permissionId int) error
-	RemoveGroupFromPermission(groupId int, permissionId int) error
+	GetGroupPermissions(groupId int64) ([]*permission_model.Permission, error)
+	AddGroupToPermission(groupId int64, permissionId int64) error
+	RemoveGroupFromPermission(groupId int64, permissionId int64) error
 }
 
 type PermissionsRepository struct {
@@ -77,7 +77,7 @@ func (pr *PermissionsRepository) GetAll() (*[]permission_model.Permission, error
 }
 
 // GetUserPermissions get permissions assigned to a given user via userId
-func (pr *PermissionsRepository) GetUserPermissions(userId int) ([]*permission_model.Permission, error) {
+func (pr *PermissionsRepository) GetUserPermissions(userId int64) ([]*permission_model.Permission, error) {
 
 	var permissions []*permission_model.Permission
 	err := pr.database.Select(&permissions, `
@@ -105,7 +105,7 @@ func (pr *PermissionsRepository) GetUserPermissions(userId int) ([]*permission_m
 }
 
 // AddUserToPermission adds a user to the permission via userId and permissionId
-func (pr *PermissionsRepository) AddUserToPermission(userId int, permissionId int) error {
+func (pr *PermissionsRepository) AddUserToPermission(userId int64, permissionId int64) error {
 
 	// insert user
 	_, err := pr.database.NamedExec(`
@@ -120,7 +120,7 @@ func (pr *PermissionsRepository) AddUserToPermission(userId int, permissionId in
 }
 
 // RemoveUserFromPermission removes a user from the permission via userId and permissionId
-func (pr *PermissionsRepository) RemoveUserFromPermission(userId int, permissionId int) error {
+func (pr *PermissionsRepository) RemoveUserFromPermission(userId int64, permissionId int64) error {
 
 	_, err := pr.database.NamedExec(`
 	DELETE FROM gocms_users_to_permissions
@@ -136,7 +136,7 @@ func (pr *PermissionsRepository) RemoveUserFromPermission(userId int, permission
 }
 
 // AddGroupToPermission adds a group to the permission via groupId and permissionId
-func (pr *PermissionsRepository) AddGroupToPermission(groupId int, permissionId int) error {
+func (pr *PermissionsRepository) AddGroupToPermission(groupId int64, permissionId int64) error {
 
 	// insert user
 	_, err := pr.database.NamedExec(`
@@ -151,7 +151,7 @@ func (pr *PermissionsRepository) AddGroupToPermission(groupId int, permissionId 
 }
 
 // RemoveGroupFromPermission removes a group from the permission via groupId and permissionId
-func (pr *PermissionsRepository) RemoveGroupFromPermission(groupId int, permissionId int) error {
+func (pr *PermissionsRepository) RemoveGroupFromPermission(groupId int64, permissionId int64) error {
 
 	_, err := pr.database.NamedExec(`
 	DELETE FROM gocms_groups_to_permissions
@@ -167,7 +167,7 @@ func (pr *PermissionsRepository) RemoveGroupFromPermission(groupId int, permissi
 }
 
 // GetGroupPermissions get permissions assigned to a given group via groupId
-func (pr *PermissionsRepository) GetGroupPermissions(groupId int) ([]*permission_model.Permission, error) {
+func (pr *PermissionsRepository) GetGroupPermissions(groupId int64) ([]*permission_model.Permission, error) {
 	var groupPermissions []*permission_model.Permission
 	err := pr.database.Select(&groupPermissions, `
 	SELECT permissionId as id, name, description

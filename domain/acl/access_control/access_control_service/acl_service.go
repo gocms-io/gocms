@@ -2,18 +2,18 @@ package access_control_service
 
 import (
 	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/domain/acl/group/group_model"
 	"github.com/gocms-io/gocms/domain/acl/permissions/permission_model"
 	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/utility/log"
 	"time"
+	"github.com/gocms-io/gocms/domain/acl/group/group_model"
 )
 
 type IAclService interface {
 	RefreshPermissionsCache() error
 	GetPermissions() map[string]permission_model.Permission
-	IsAuthorized(string, int) bool
-	IsAuthorizedWithContext(permissionName string, userId int) (bool, []*permission_model.Permission, []*group_model.Group)
+	IsAuthorized(string, int64) bool
+	IsAuthorizedWithContext(permissionName string, userId int64) (bool, []*permission_model.Permission, []*group_model.Group)
 }
 
 type AclService struct {
@@ -61,7 +61,7 @@ func (as *AclService) GetPermissions() map[string]permission_model.Permission {
 	return as.Permissions
 }
 
-func (as *AclService) IsAuthorizedWithContext(permissionName string, userId int) (bool, []*permission_model.Permission, []*group_model.Group) {
+func (as *AclService) IsAuthorizedWithContext(permissionName string, userId int64) (bool, []*permission_model.Permission, []*group_model.Group) {
 
 	isAuthorized, permissions := as.isAuthorized(permissionName, userId)
 
@@ -80,13 +80,13 @@ func (as *AclService) IsAuthorizedWithContext(permissionName string, userId int)
 	return false, nil, nil
 }
 
-func (as *AclService) IsAuthorized(permissionName string, userId int) bool {
+func (as *AclService) IsAuthorized(permissionName string, userId int64) bool {
 
 	isAuthorized, _ := as.isAuthorized(permissionName, userId)
 	return isAuthorized
 }
 
-func (as *AclService) isAuthorized(permissionName string, userId int) (bool, []*permission_model.Permission) {
+func (as *AclService) isAuthorized(permissionName string, userId int64) (bool, []*permission_model.Permission) {
 	// get user permissions
 	permissions, err := as.RepositoriesGroup.PermissionsRepository.GetUserPermissions(userId)
 	if err != nil {

@@ -83,7 +83,7 @@ func (auc *UserAdminController) add(c *gin.Context) {
  */
 func (auc *UserAdminController) get(c *gin.Context) {
 
-	userId, err := strconv.Atoi(c.Param("userId"))
+	userId, err := strconv.ParseInt(c.Param("userId"), 10, 64)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, err.Error(), err)
 	}
@@ -125,7 +125,7 @@ func (auc *UserAdminController) getAll(c *gin.Context) {
 
 func (auc *UserAdminController) update(c *gin.Context) {
 	// get user to update
-	userId, err := strconv.Atoi(c.Param("userId"))
+	userId, err := strconv.ParseInt(c.Param("userId"), 10, 64)
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, "Missing Id Field", err)
 		return
@@ -151,7 +151,7 @@ func (auc *UserAdminController) update(c *gin.Context) {
 }
 
 func (auc *UserAdminController) delete(c *gin.Context) {
-	userId, err := strconv.Atoi(c.Param("userId"))
+	userId, err := strconv.ParseInt(c.Param("userId"), 10, 64)
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, "Missing Id Field", err)
 		return

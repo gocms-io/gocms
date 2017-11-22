@@ -7,9 +7,9 @@ import (
 	"github.com/gocms-io/gocms/context/consts"
 	"github.com/gocms-io/gocms/init/service"
 	"github.com/gocms-io/gocms/routes"
-	"github.com/gocms-io/gocms/utility/api_utility"
 	"github.com/gocms-io/gocms/utility/errors"
 	"net/http"
+	"github.com/gocms-io/gocms/utility/api_utility"
 )
 
 type AuthMiddleware struct {
@@ -68,7 +68,7 @@ func (am *AuthMiddleware) addUserToContextIfValidToken(c *gin.Context) {
 			} else {
 
 				// get user
-				user, err := am.ServicesGroup.UserService.Get(int(userId))
+				user, err := am.ServicesGroup.UserService.Get(int64(userId))
 				if err != nil {
 					c.Next()
 					return

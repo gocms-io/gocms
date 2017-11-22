@@ -9,13 +9,13 @@ import (
 
 type IEmailRepository interface {
 	Add(*email_model.Email) error
-	Get(int) (*email_model.Email, error)
+	Get(int64) (*email_model.Email, error)
 	GetByAddress(string) (*email_model.Email, error)
-	GetByUserId(int) ([]email_model.Email, error)
-	GetPrimaryByUserId(int) (*email_model.Email, error)
-	PromoteEmail(emailId int, userId int) error
+	GetByUserId(int64) ([]email_model.Email, error)
+	GetPrimaryByUserId(int64) (*email_model.Email, error)
+	PromoteEmail(emailId int64, userId int64) error
 	Update(email *email_model.Email) error
-	Delete(int) error
+	Delete(int64) error
 }
 
 type EmailRepository struct {
@@ -41,12 +41,12 @@ func (er *EmailRepository) Add(e *email_model.Email) error {
 	}
 	// add id to user object
 	id, _ := result.LastInsertId()
-	e.Id = int(id)
+	e.Id = id
 
 	return nil
 }
 
-func (er *EmailRepository) Get(id int) (*email_model.Email, error) {
+func (er *EmailRepository) Get(id int64) (*email_model.Email, error) {
 	// get email by id
 	var email email_model.Email
 	err := er.database.Get(&email, `
@@ -78,7 +78,7 @@ func (er *EmailRepository) GetByAddress(address string) (*email_model.Email, err
 	return &email, nil
 }
 
-func (er *EmailRepository) GetByUserId(userId int) ([]email_model.Email, error) {
+func (er *EmailRepository) GetByUserId(userId int64) ([]email_model.Email, error) {
 	// get email by id
 	var emails []email_model.Email
 	err := er.database.Select(&emails, `
@@ -94,7 +94,7 @@ func (er *EmailRepository) GetByUserId(userId int) ([]email_model.Email, error) 
 	return emails, nil
 }
 
-func (er *EmailRepository) GetPrimaryByUserId(userId int) (*email_model.Email, error) {
+func (er *EmailRepository) GetPrimaryByUserId(userId int64) (*email_model.Email, error) {
 	// get email by id
 	var email email_model.Email
 	err := er.database.Get(&email, `
@@ -124,7 +124,7 @@ func (er *EmailRepository) Update(email *email_model.Email) error {
 	return nil
 }
 
-func (er *EmailRepository) PromoteEmail(emailId int, userId int) error {
+func (er *EmailRepository) PromoteEmail(emailId int64, userId int64) error {
 	// set all emails to not be primary
 	_, err := er.database.Exec(`
 	UPDATE gocms_emails SET isPrimary=? WHERE userId=?
@@ -146,7 +146,7 @@ func (er *EmailRepository) PromoteEmail(emailId int, userId int) error {
 	return nil
 }
 
-func (er *EmailRepository) Delete(id int) error {
+func (er *EmailRepository) Delete(id int64) error {
 	_, err := er.database.Exec(`
 	DELETE FROM gocms_emails WHERE id=?
 	`, id)

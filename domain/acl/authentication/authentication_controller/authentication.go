@@ -2,11 +2,11 @@ package authentication_controller
 
 import (
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gocms-io/gocms/routes"
-	"time"
 	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/utility"
 	"github.com/gocms-io/gocms/init/service"
+	"github.com/gocms-io/gocms/routes"
+	"github.com/gocms-io/gocms/utility"
+	"time"
 )
 
 const (
@@ -52,7 +52,7 @@ func (ac *AuthController) Default() {
 	}
 }
 
-func (ac *AuthController) createToken(userId int) (string, error) {
+func (ac *AuthController) createToken(userId int64) (string, error) {
 	expire := time.Now().Add(time.Minute * utility.GetTimeout(context.Config.DbVars.UserAuthTimeout))
 	userToken := jwt.New(jwt.SigningMethodHS256)
 	userToken.Claims["userId"] = userId

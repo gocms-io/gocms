@@ -10,14 +10,14 @@ import (
 )
 
 type IUserRepository interface {
-	Get(int) (*user_model.User, error)
+	Get(int64) (*user_model.User, error)
 	GetByEmail(string) (*user_model.User, error)
 	GetAll() (*[]user_model.User, error)
 	Add(*user_model.User) error
-	Update(int, *user_model.User) error
-	UpdatePassword(int, string) error
-	Delete(int) error
-	SetEnabled(int, bool) error
+	Update(int64, *user_model.User) error
+	UpdatePassword(int64, string) error
+	Delete(int64) error
+	SetEnabled(int64, bool) error
 }
 
 type UserRepository struct {
@@ -33,7 +33,7 @@ func DefaultUserRepository(dbx *sqlx.DB) *UserRepository {
 }
 
 // get user by id
-func (ur *UserRepository) Get(id int) (*user_model.User, error) {
+func (ur *UserRepository) Get(id int64) (*user_model.User, error) {
 	var user user_model.User
 	err := ur.database.Get(&user, `
 	SELECT gocms_users.*, gocms_emails.email, gocms_emails.isVerified
@@ -111,12 +111,12 @@ func (ur *UserRepository) Add(user *user_model.User) error {
 		return err
 	}
 	id, _ := result.LastInsertId()
-	user.Id = int(id)
+	user.Id = id
 
 	return nil
 }
 
-func (ur *UserRepository) Update(id int, user *user_model.User) error {
+func (ur *UserRepository) Update(id int64, user *user_model.User) error {
 	// insert row
 	user.Id = id
 	_, err := ur.database.NamedExec(`
@@ -130,7 +130,7 @@ func (ur *UserRepository) Update(id int, user *user_model.User) error {
 	return nil
 }
 
-func (ur *UserRepository) SetEnabled(id int, enabled bool) error {
+func (ur *UserRepository) SetEnabled(id int64, enabled bool) error {
 	_, err := ur.database.NamedExec(`
 	UPDATE gocms_users SET enabled=:enabled WHERE id=:id
 	`, map[string]interface{}{"enabled": enabled, "id": id})
@@ -143,7 +143,7 @@ func (ur *UserRepository) SetEnabled(id int, enabled bool) error {
 	return nil
 }
 
-func (ur *UserRepository) UpdatePassword(id int, hash string) error {
+func (ur *UserRepository) UpdatePassword(id int64, hash string) error {
 	// insert row
 	user := user_model.User{
 		Id:       id,
@@ -160,7 +160,7 @@ func (ur *UserRepository) UpdatePassword(id int, hash string) error {
 	return nil
 }
 
-func (ur *UserRepository) Delete(id int) error {
+func (ur *UserRepository) Delete(id int64) error {
 
 	if id == 0 {
 		return errors.New("Missing user id. Can't delete user from database")

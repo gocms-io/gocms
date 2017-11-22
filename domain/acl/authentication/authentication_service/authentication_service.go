@@ -19,11 +19,11 @@ type IAuthService interface {
 	HashPassword(string) (string, error)
 	SendPasswordResetCode(string) error
 	VerifyPassword(string, string) bool
-	VerifyPasswordResetCode(int, string) bool
+	VerifyPasswordResetCode(int64, string) bool
 	SendTwoFactorCode(*user_model.User) error
-	VerifyTwoFactorCode(int, string) bool
+	VerifyTwoFactorCode(int64, string) bool
 	PasswordIsComplex(string) bool
-	GetRandomCode(int) (string, string, error)
+	GetRandomCode(int64) (string, string, error)
 }
 
 type AuthService struct {
@@ -70,7 +70,7 @@ func (as *AuthService) VerifyPassword(passwordHash string, password string) bool
 	return true
 }
 
-func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
+func (as *AuthService) VerifyPasswordResetCode(id int64, code string) bool {
 
 	// get code
 	secureCode, err := as.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, security_code_model.Code_ResetPassword)
@@ -197,7 +197,7 @@ func (as *AuthService) SendTwoFactorCode(user *user_model.User) error {
 	return nil
 }
 
-func (as *AuthService) VerifyTwoFactorCode(id int, code string) bool {
+func (as *AuthService) VerifyTwoFactorCode(id int64, code string) bool {
 
 	// get code from db
 	secureCode, err := as.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, security_code_model.Code_VerifyDevice)
@@ -233,9 +233,9 @@ func (as *AuthService) HashPassword(password string) (string, error) {
 	return string(hashedPassword), nil
 }
 
-func (as *AuthService) GetRandomCode(length int) (string, string, error) {
+func (as *AuthService) GetRandomCode(length int64) (string, string, error) {
 	// create code
-	code, err := utility.GenerateRandomString(length)
+	code, err := utility.GenerateRandomString(int(length))
 	if err != nil {
 		return "", "", err
 	}
