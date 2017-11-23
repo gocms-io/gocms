@@ -7,7 +7,6 @@ import (
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_controller"
 	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_middleware"
-	"github.com/gocms-io/gocms/domain/acl/cors"
 	"github.com/gocms-io/gocms/domain/content/documentation"
 	"github.com/gocms-io/gocms/domain/content/react"
 	"github.com/gocms-io/gocms/domain/content/template"
@@ -20,6 +19,7 @@ import (
 	"github.com/gocms-io/gocms/init/service"
 	"github.com/gocms-io/gocms/routes"
 	"strings"
+	"github.com/gocms-io/gocms/domain/acl/cors"
 )
 
 type ControllersGroup struct {
@@ -73,7 +73,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 	apiControllers := &ApiControllers{
 		AuthController:      authentication_controller.DefaultAuthController(routes, sg),
 		AdminUserController: user_admin_controller.DefaultUserAdminController(routes, sg),
-		HealthyController:   health_controller.DefaultHealthyController(routes),
+		HealthyController:   health_controller.DefaultHealthyController(routes, sg),
 		UserController:      user_controller.DefaultUserController(routes, sg),
 		EmailController:     email_controller.DefaultEmailController(routes, sg),
 	}

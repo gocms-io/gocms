@@ -1,18 +1,22 @@
 package health_controller
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gocms-io/gocms/init/service"
 	"github.com/gocms-io/gocms/routes"
 	"net/http"
 )
 
 type HealthyController struct {
-	routes *routes.Routes
+	routes       *routes.Routes
+	serviceGroup *service.ServicesGroup
 }
 
-func DefaultHealthyController(routes *routes.Routes) *HealthyController {
+func DefaultHealthyController(routes *routes.Routes, serviceGroup *service.ServicesGroup) *HealthyController {
 	hc := &HealthyController{
-		routes: routes,
+		routes:       routes,
+		serviceGroup: serviceGroup,
 	}
 
 	hc.Default()
@@ -30,5 +34,15 @@ func (hc *HealthyController) Default() {
 * @apiGroup Utility
  */
 func (hc *HealthyController) healthy(c *gin.Context) {
+
+	// get active plugins
+	activePlugins := hc.serviceGroup.PluginsService.GetActivePlugins()
+	for _, activePlugin := range activePlugins {
+		fmt.Printf("ActivePlugin: %v\n", activePlugin.Cmd.ProcessState)
+		//if err != nil {
+		//	fmt.Printf("died.")
+		//}
+	}
+
 	c.Status(http.StatusOK)
 }

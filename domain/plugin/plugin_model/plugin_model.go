@@ -17,6 +17,7 @@ type Plugin struct {
 	Manifest   *PluginManifest
 	Proxy      *plugin_proxy_middleware.PluginProxyMiddleware
 	Cmd        *exec.Cmd
+	Running    bool
 }
 
 // PluginManifest is the root manifest object.

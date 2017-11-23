@@ -2,14 +2,14 @@ package plugin_services
 
 import (
 	"bufio"
+	"fmt"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_middleware/plugin_proxy_middleware"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
 	"github.com/gocms-io/gocms/utility"
+	"github.com/gocms-io/gocms/utility/log"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"fmt"
-	"github.com/gocms-io/gocms/utility/log"
 )
 
 func (ps *PluginsService) StartActivePlugins() error {
@@ -22,74 +22,103 @@ func (ps *PluginsService) StartActivePlugins() error {
 	}
 
 	for _, plugin := range pluginsToStart {
-
-		// find port to run on
-		pluginPort, err := utility.FindPort()
-		if err != nil {
-			log.Errorf("Couldn't start plugin %v, error: %v", plugin.Manifest.Name, err.Error())
-			return err
-		}
-
-		// build command
-		cmd := exec.Command(filepath.FromSlash("./"+plugin.BinaryFile), fmt.Sprintf("-port=%d", pluginPort))
-		cmd.Dir = plugin.PluginRoot
-
-		// set stdout to pipe
-		cmdStdoutReader, err := cmd.StdoutPipe()
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
-			return err
-		}
-
-		// setup stdout to scan continuously
-		stdOutScanner := bufio.NewScanner(cmdStdoutReader)
-		go func() {
-			for stdOutScanner.Scan() {
-				fmt.Printf("\t > %s - %s\n", plugin.Manifest.Name, stdOutScanner.Text())
-			}
-		}()
-
-		// set stderr to pipe
-		cmdStderrReader, err := cmd.StderrPipe()
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
-			return err
-		}
-
-		// setup stderr to scan continuously
-		stdErrScanner := bufio.NewScanner(cmdStderrReader)
-		go func() {
-			for stdErrScanner.Scan() {
-				fmt.Printf("\t > %s - %s\n", plugin.Manifest.Name, stdErrScanner.Text())
-			}
-		}()
-
-		// find port and start microservice
-		log.Infof("Starting microservice: %s - %v\n", plugin.Manifest.Name, plugin.Manifest.Id)
-		err = cmd.Start()
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "Error starting Cmd", err)
-			return err
-		}
-
-		// add handle to command
-		plugin.Cmd = cmd
-
-		// create proxy for use during registration
-		plugin.Proxy = &plugin_proxy_middleware.PluginProxyMiddleware{
-			Port:     pluginPort,
-			Schema:   "http",
-			Host:     "localhost",
-			PluginId: plugin.Manifest.Id,
-		}
-
-		// add plugin to active list for monitoring and other things
-		ps.activePlugins[plugin.Manifest.Id] = plugin
-
+		_ = ps.startPlugin(plugin)
 	}
 
 	return nil
 
+}
+
+func (ps *PluginsService) startPlugin(plugin *plugin_model.Plugin) error {
+	// find port to run on
+	pluginPort, err := utility.FindPort()
+	if err != nil {
+		log.Errorf("Couldn't start plugin %v, error: %v", plugin.Manifest.Name, err.Error())
+		return err
+	}
+
+	// build command
+	cmd := exec.Command(filepath.FromSlash("./"+plugin.BinaryFile), fmt.Sprintf("-port=%d", pluginPort))
+	cmd.Dir = plugin.PluginRoot
+
+	// set stdout to pipe
+	cmdStdoutReader, err := cmd.StdoutPipe()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
+		return err
+	}
+
+	// setup stdout to scan continuously
+	stdOutScanner := bufio.NewScanner(cmdStdoutReader)
+	go func() {
+		for stdOutScanner.Scan() {
+			fmt.Printf("\t > %s - %s\n", plugin.Manifest.Name, stdOutScanner.Text())
+		}
+	}()
+
+	// set stderr to pipe
+	cmdStderrReader, err := cmd.StderrPipe()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
+		return err
+	}
+
+	// setup stderr to scan continuously
+	stdErrScanner := bufio.NewScanner(cmdStderrReader)
+	go func() {
+		for stdErrScanner.Scan() {
+			fmt.Printf("\t > %s - %s\n", plugin.Manifest.Name, stdErrScanner.Text())
+		}
+	}()
+
+	started := make(chan error)
+	done := make(chan error)
+
+	// find port and start microservice
+	log.Infof("Microservice Starting :%v\n", plugin.Manifest.Id)
+
+	// kick off the command in a none blocking way
+	go func() {
+		started <- cmd.Start()
+		done <- cmd.Wait()
+	}()
+
+	go func() {
+		err := <-done
+		plugin.Running = false
+		if err != nil {
+			log.Errorf("Microservice, %v, stopped unexpectedly: %v\n Attempting restart...", plugin.Manifest.Id, err.Error())
+			ps.startPlugin(plugin)
+		} else {
+			// no error it just quit
+			log.Infof("Microservice, %v, stopped\n", plugin.Manifest.Id)
+		}
+	}()
+
+	// check to see if there is an error starting plugin
+	err = <-started
+	if err != nil {
+		log.Errorf("Error starting plugin %v: %v", plugin.Manifest.Name, err)
+		return err
+	} else {
+		// no error
+		plugin.Running = true
+	}
+
+	// add handle to command
+	plugin.Cmd = cmd
+	// create proxy for use during registration
+	plugin.Proxy = &plugin_proxy_middleware.PluginProxyMiddleware{
+		Port:     pluginPort,
+		Schema:   "http",
+		Host:     "localhost",
+		PluginId: plugin.Manifest.Id,
+	}
+
+	// add plugin to active list for monitoring and other things
+	ps.activePlugins[plugin.Manifest.Id] = plugin
+
+	return nil
 }
 
 func (ps *PluginsService) getPluginsToStart() (map[string]*plugin_model.Plugin, error) {
