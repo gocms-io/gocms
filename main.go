@@ -10,6 +10,7 @@ import (
 	"github.com/gocms-io/gocms/init/service"
 	"github.com/gocms-io/gocms/utility/log"
 	_ "github.com/joho/godotenv/autoload"
+	"net/http"
 	"os"
 )
 
@@ -50,7 +51,6 @@ func Default() *Engine {
 	}
 	r := gin.Default()
 
-
 	// setup repositories
 	rg := repository.DefaultRepositoriesGroup(db.SQL.Dbx)
 
@@ -73,7 +73,8 @@ func Default() *Engine {
 
 func (engine *Engine) Listen(uri string) {
 
-	err := engine.Gin.Run(uri)
+	log.Infof("Listening on: %v\n", uri)
+	err := http.ListenAndServe(uri, engine.Gin)
 	log.Debugf(err.Error())
 
 }

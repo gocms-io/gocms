@@ -11,8 +11,6 @@ import (
 type Plugin struct {
 	PluginRoot string
 	BinaryFile string
-	Host       string
-	Port       int64
 	Schema     string
 	Manifest   *PluginManifest
 	Proxy      *plugin_proxy_middleware.PluginProxyMiddleware

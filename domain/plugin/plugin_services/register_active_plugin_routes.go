@@ -17,8 +17,6 @@ type ProxyRoute struct {
 	Port   string
 }
 
-// todo pass permissions on to plugin
-// todo also add health checks for plugin
 func (ps *PluginsService) RegisterActivePluginRoutes(routes *routes.Routes) error {
 	for _, plugin := range ps.GetActivePlugins() {
 

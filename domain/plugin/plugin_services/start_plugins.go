@@ -73,6 +73,7 @@ func (ps *PluginsService) startPlugin(plugin *plugin_model.Plugin) error {
 
 	started := make(chan error)
 	done := make(chan error)
+	newPpmChan := make(chan *plugin_proxy_middleware.PluginProxyMiddleware) // this channel is used to update the port if plugin is restarted
 
 	// find port and start microservice
 	log.Infof("Microservice Starting :%v\n", plugin.Manifest.Id)
@@ -81,18 +82,6 @@ func (ps *PluginsService) startPlugin(plugin *plugin_model.Plugin) error {
 	go func() {
 		started <- cmd.Start()
 		done <- cmd.Wait()
-	}()
-
-	go func() {
-		err := <-done
-		plugin.Running = false
-		if err != nil {
-			log.Errorf("Microservice, %v, stopped unexpectedly: %v\n Attempting restart...", plugin.Manifest.Id, err.Error())
-			ps.startPlugin(plugin)
-		} else {
-			// no error it just quit
-			log.Infof("Microservice, %v, stopped\n", plugin.Manifest.Id)
-		}
 	}()
 
 	// check to see if there is an error starting plugin
@@ -107,16 +96,39 @@ func (ps *PluginsService) startPlugin(plugin *plugin_model.Plugin) error {
 
 	// add handle to command
 	plugin.Cmd = cmd
+
 	// create proxy for use during registration
 	plugin.Proxy = &plugin_proxy_middleware.PluginProxyMiddleware{
-		Port:     pluginPort,
-		Schema:   "http",
-		Host:     "localhost",
-		PluginId: plugin.Manifest.Id,
+		Port:            pluginPort,
+		Schema:          "http",
+		Host:            "localhost",
+		PluginId:        plugin.Manifest.Id,
+		UpdateProxyChan: newPpmChan,
+		Disabled:        false,
 	}
 
 	// add plugin to active list for monitoring and other things
 	ps.activePlugins[plugin.Manifest.Id] = plugin
+
+	go func() {
+		err := <-done
+		plugin.Running = false
+		if err != nil {
+			log.Errorf("Microservice, %v, stopped unexpectedly: %v\n Attempting restart...", plugin.Manifest.Id, err.Error())
+			err := ps.startPlugin(plugin)
+			if err != nil {
+				plugin.Proxy.Disabled = true
+				newPpmChan <- plugin.Proxy
+				log.Errorf("Microservice, %v, failed to restart: %v\n", plugin.Manifest.Id, err.Error())
+			} else {
+				newPpmChan <- plugin.Proxy
+				log.Infof("Hot swapped new plugin. Running on port %v\n", plugin.Proxy.Port)
+			}
+		} else {
+			// no error it just quit
+			log.Infof("Microservice, %v, stopped\n", plugin.Manifest.Id)
+		}
+	}()
 
 	return nil
 }
