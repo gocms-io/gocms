@@ -5,9 +5,9 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/init/database/sql/migrations/sql"
+	"github.com/gocms-io/gocms/utility/log"
 	"github.com/jmoiron/sqlx"
 	"github.com/rubenv/sql-migrate"
-	"github.com/gocms-io/gocms/utility/log"
 )
 
 type SQL struct {
@@ -20,8 +20,15 @@ func DefaultSQL() *SQL {
 	connectionString := context.Config.EnvVars.DbName + ":" + context.Config.EnvVars.DbPassword + "@" + context.Config.EnvVars.DbServer + "/" + context.Config.EnvVars.DbName + "?parseTime=true"
 	dbHandle, err := sql.Open("mysql", connectionString)
 	if err != nil {
-		log.Criticalf("Database Error: ", err.Error())
+		log.Criticalf("Database Error opening connection: %v\n", err.Error())
 	}
+
+	// ping to verify connection
+	err = dbHandle.Ping()
+	if err != nil {
+		log.Criticalf("Database Error verifying good connection: %v\n", err.Error())
+	}
+
 	dbx := sqlx.NewDb(dbHandle, "mysql")
 
 	mySql := &SQL{

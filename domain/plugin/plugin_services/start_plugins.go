@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 )
 
-func (ps *PluginsService) StartActivePlugins() error {
+func (ps *PluginsService) StartActivePlugins() (err error) {
 
 	// get plugins that are both active in the database and installed on disk
 	pluginsToStart, err := ps.getPluginsToStart()
@@ -22,10 +22,14 @@ func (ps *PluginsService) StartActivePlugins() error {
 	}
 
 	for _, plugin := range pluginsToStart {
-		_ = ps.startPlugin(plugin)
+		newErr := ps.startPlugin(plugin)
+		if newErr != nil {
+			log.Errorf("Error starting plugin %v: %v\n", plugin.Manifest.Id, err.Error())
+			err = newErr
+		}
 	}
 
-	return nil
+	return err
 
 }
 

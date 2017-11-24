@@ -4,29 +4,33 @@ import (
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_service"
 	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_service"
+	"github.com/gocms-io/gocms/domain/acl/permissions/permissions_service"
 	"github.com/gocms-io/gocms/domain/email/email_service"
+	"github.com/gocms-io/gocms/domain/health/health_service"
 	"github.com/gocms-io/gocms/domain/mail/mail_service"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_services"
 	"github.com/gocms-io/gocms/domain/setting/setting_service"
 	"github.com/gocms-io/gocms/domain/user/user_service"
+	"github.com/gocms-io/gocms/init/database"
 	"github.com/gocms-io/gocms/init/repository"
-	"time"
-	"github.com/gocms-io/gocms/domain/acl/permissions/permissions_service"
 	"github.com/gocms-io/gocms/utility/log"
+	"time"
 )
 
 type ServicesGroup struct {
-	SettingsService setting_service.ISettingsService
-	MailService     mail_service.IMailService
-	AuthService     authentication_service.IAuthService
-	PermissionService     permission_service.IPermissionService
-	UserService     user_service.IUserService
-	AclService      access_control_service.IAclService
-	EmailService    email_service.IEmailService
-	PluginsService  plugin_services.IPluginsService
+	SettingsService   setting_service.ISettingsService
+	MailService       mail_service.IMailService
+	AuthService       authentication_service.IAuthService
+	PermissionService permission_service.IPermissionService
+	UserService       user_service.IUserService
+	AclService        access_control_service.IAclService
+	EmailService      email_service.IEmailService
+	PluginsService    plugin_services.IPluginsService
+	HealthService     health_service.IHealthService
 }
 
-func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup) *ServicesGroup {
+func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup, db *database.Database) *ServicesGroup {
+	var pluginRelatedErr error
 
 	// setup settings
 	settingsService := setting_service.DefaultSettingsService(repositoriesGroup)
@@ -55,22 +59,26 @@ func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup) *Serv
 
 	// plugins service
 	pluginsService := plugin_services.DefaultPluginsService(repositoriesGroup, aclService)
-	err := pluginsService.RefreshInstalledPlugins()
-	if err != nil {
-		log.Errorf("Error finding plugins. Can't start plugin microservice: %s\n", err.Error())
+	pluginRelatedErr = pluginsService.RefreshInstalledPlugins()
+	if pluginRelatedErr != nil {
+		log.Errorf("Error finding plugins. Can't start plugin microservice: %s\n", pluginRelatedErr.Error())
 	} else {
-		pluginsService.StartActivePlugins()
+		pluginRelatedErr = pluginsService.StartActivePlugins()
 	}
 
+	// heath service
+	healthService := health_service.DefaultHealthService(db, pluginsService)
+
 	sg := &ServicesGroup{
-		SettingsService: settingsService,
-		MailService:     mailService,
-		AuthService:     authService,
+		SettingsService:   settingsService,
+		MailService:       mailService,
+		AuthService:       authService,
 		PermissionService: permissionService,
-		UserService:     userService,
-		AclService:      aclService,
-		EmailService:    emailService,
-		PluginsService:  pluginsService,
+		UserService:       userService,
+		AclService:        aclService,
+		EmailService:      emailService,
+		PluginsService:    pluginsService,
+		HealthService:     healthService,
 	}
 
 	return sg

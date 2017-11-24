@@ -37,7 +37,7 @@ type ContentControllers struct {
 
 type ApiControllers struct {
 	AuthController      *authentication_controller.AuthController
-	HealthyController   *health_controller.HealthyController
+	HealthyController   *health_controller.HealthController
 	AdminUserController *user_admin_controller.UserAdminController
 	UserController      *user_controller.UserController
 	EmailController     *email_controller.EmailController
@@ -73,7 +73,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 	apiControllers := &ApiControllers{
 		AuthController:      authentication_controller.DefaultAuthController(routes, sg),
 		AdminUserController: user_admin_controller.DefaultUserAdminController(routes, sg),
-		HealthyController:   health_controller.DefaultHealthyController(routes, sg),
+		HealthyController:   health_controller.DefaultHealthController(routes, sg),
 		UserController:      user_controller.DefaultUserController(routes, sg),
 		EmailController:     email_controller.DefaultEmailController(routes, sg),
 	}

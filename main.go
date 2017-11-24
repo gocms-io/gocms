@@ -55,7 +55,7 @@ func Default() *Engine {
 	rg := repository.DefaultRepositoriesGroup(db.SQL.Dbx)
 
 	// setup services
-	sg := service.DefaultServicesGroup(rg)
+	sg := service.DefaultServicesGroup(rg, db)
 
 	// setup controllers
 	cg := controller.DefaultControllerGroup(r, sg)

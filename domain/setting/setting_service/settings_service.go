@@ -3,7 +3,7 @@ package setting_service
 import (
 	"github.com/gocms-io/gocms/domain/setting/setting_model"
 	"github.com/gocms-io/gocms/init/repository"
-	"log"
+	"github.com/gocms-io/gocms/utility/log"
 	"time"
 )
 
@@ -36,7 +36,7 @@ func (ss *SettingsService) RegisterRefreshCallback(cb func(map[string]setting_mo
 	ss.OnRefreshCallbacks = cbs
 
 	if err := ss.RefreshSettingsCache(); err != nil {
-		log.Fatalf("Error getting db settings: %s\n", err.Error())
+		log.Warningf("Error getting db settings: %s\n", err.Error())
 	}
 
 }
@@ -46,7 +46,7 @@ func (ss *SettingsService) RefreshSettingsCache() error {
 	// get all permissions
 	settings, err := ss.RepositoriesGroup.SettingsRepository.GetAll()
 	if err != nil {
-		log.Fatalf("Fatal - Error caching permissions: %s\n", err.Error())
+		log.Warningf("Error caching permissions: %s\n", err.Error())
 		return err
 	}
 
