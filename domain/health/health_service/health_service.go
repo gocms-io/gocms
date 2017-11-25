@@ -7,6 +7,8 @@ import (
 	"github.com/gocms-io/gocms/domain/plugin/plugin_services"
 	"github.com/gocms-io/gocms/init/database"
 	"github.com/gocms-io/gocms/utility/log"
+	"github.com/gocms-io/gocms/utility/rest"
+	"net/http"
 	"time"
 )
 
@@ -34,7 +36,7 @@ func DefaultHealthService(db *database.Database, pluginService plugin_services.I
 
 	// add health checks
 	context.Schedule.AddTicker(15*time.Second, healthService.checkDatabaseHealth)
-	context.Schedule.AddTicker(60*time.Second, healthService.checkActivePluginHealth)
+	context.Schedule.AddTicker(10*time.Second, healthService.checkActivePluginHealth)
 
 	return healthService
 
@@ -69,8 +71,28 @@ func (healthService *HealthService) checkActivePluginHealth() {
 				log.Errorf("[Health Service] - Plugin %v, failed to start or is no longer running\n", plugin.Manifest.Id)
 				healthService.health.Plugin[plugin.Manifest.Id] = false
 			} else {
-				// todo make a request to plugin /healthy to get report
-				healthService.health.Plugin[plugin.Manifest.Id] = true
+				// if health checks are not enabled we are good, and done!
+				if !plugin.Manifest.Services.HealthCheck {
+					healthService.health.Plugin[plugin.Manifest.Id] = true
+					return
+				}
+
+				// otherwise we need make a health check request first
+				healthUrl := fmt.Sprintf("%v://%v:%v/api/healthy", plugin.Proxy.Schema, plugin.Proxy.Host, plugin.Proxy.Port)
+				request := rest.Request{
+					Url: healthUrl,
+				}
+				response, err := request.Get()
+				if err != nil {
+					log.Warningf("Error making plugin %v health request%v\n", plugin.Manifest.Id, err.Error())
+					healthService.health.Plugin[plugin.Manifest.Id] = false
+
+				} else if response.StatusCode != http.StatusOK {
+					log.Warningf("Plugin %v health request came back bad %v\n", plugin.Manifest.Id, response.StatusCode)
+					healthService.health.Plugin[plugin.Manifest.Id] = false
+				} else {
+					healthService.health.Plugin[plugin.Manifest.Id] = true
+				}
 			}
 		}
 	}()

@@ -1,9 +1,9 @@
 package context
 
 import (
-	"time"
-	"strconv"
 	"github.com/gocms-io/gocms/utility/log"
+	"strconv"
+	"time"
 )
 
 var Config *Context
@@ -15,11 +15,17 @@ type Context struct {
 
 func Init() {
 
-	logLevel, err := strconv.ParseInt(GetEnvVarOrFail("Log_Level"), 10, 32)
+	// log level
+	logLevel, err := strconv.ParseInt(GetEnvVarOrFail("LOG_LEVEL"), 10, 32)
 	if err != nil {
 		logLevel = 4
 	}
 	log.LogLevel = logLevel
+
+	devMode, err := strconv.ParseBool(GetEnvVarOrFail("DEV_MODE"))
+	if err != nil {
+		devMode = false
+	}
 
 	// set config
 	config := Context{
@@ -30,6 +36,7 @@ func Init() {
 			DbPassword: GetEnvVarOrFail("DB_PASSWORD"),
 			DbServer:   GetEnvVarOrFail("DB_SERVER"),
 			LogLevel:   logLevel,
+			DevMode:    devMode,
 		},
 		DbVars: &dbVars{},
 	}

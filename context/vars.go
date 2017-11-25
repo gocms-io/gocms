@@ -11,16 +11,13 @@ type envVars struct {
 	DbUser     string
 	DbPassword string
 	DbServer   string
+
+	// Dev & Debug
+	DevMode bool
 	LogLevel   int64
 }
 
 type dbVars struct {
-	// DB (GET FROM ENV)
-	DbName     string
-	DbUser     string
-	DbPassword string
-	DbServer   string
-
 	// Debug
 	Debug         bool
 	DebugSecurity bool

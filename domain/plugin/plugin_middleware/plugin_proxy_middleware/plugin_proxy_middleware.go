@@ -47,7 +47,6 @@ func (ppm *PluginProxyMiddleware) reverseProxy(c *gin.Context) {
 		// check new port channel in case the plugin has moved ports
 		req.URL.Scheme = ppm.Schema
 		req.URL.Host = fmt.Sprintf("%v:%v", ppm.Host, ppm.Port)
-		log.Infof("Req URL: %v\n", req.URL)
 
 		// take namespace away from app unless it asks for it in the manifest
 		nonNamespacedRequestUrl := strings.Replace(req.URL.Path, fmt.Sprintf("%v/", ppm.PluginId), "", 1)
@@ -76,7 +75,6 @@ func (ppm *PluginProxyMiddleware) handleProxyUpdate(c *gin.Context) {
 			ppm.UpdateProxyChan = newppm.UpdateProxyChan
 		}
 	default:
-		log.Debugf("no update for proxy moving on\n")
 	}
 }
 

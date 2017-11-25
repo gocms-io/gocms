@@ -3,6 +3,7 @@ package plugin_services
 import (
 	"bufio"
 	"fmt"
+	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_middleware/plugin_proxy_middleware"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
 	"github.com/gocms-io/gocms/utility"
@@ -118,8 +119,12 @@ func (ps *PluginsService) startPlugin(plugin *plugin_model.Plugin) error {
 		err := <-done
 		plugin.Running = false
 		if err != nil {
-			log.Errorf("Microservice, %v, stopped unexpectedly: %v\n Attempting restart...", plugin.Manifest.Id, err.Error())
-			err := ps.startPlugin(plugin)
+			log.Errorf("Microservice, %v, stopped unexpectedly: %v\n", plugin.Manifest.Id, err.Error())
+			// do not restart plugins in dev mode
+			if !context.Config.EnvVars.DevMode {
+				log.Infof("Attempting to restart %v...\n", plugin.Manifest.Id)
+				err = ps.startPlugin(plugin)
+			}
 			if err != nil {
 				plugin.Proxy.Disabled = true
 				newPpmChan <- plugin.Proxy

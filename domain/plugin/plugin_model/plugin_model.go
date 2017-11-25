@@ -45,9 +45,10 @@ type PluginManifest struct {
 // PluginServices should the plugin provide backend services, like an API, that configuration is done in this section.
 type PluginServices struct {
 	// Routes See "Plugin ManifestRoute"
-	Routes []*PluginManifestRoute `json:"routes"`
-	Bin    string                 `json:"bin"`
-	Docs   string                 `json:"docs"`
+	Routes      []*PluginManifestRoute `json:"routes"`
+	Bin         string                 `json:"bin"`
+	Docs        string                 `json:"docs"`
+	HealthCheck bool                   `json:"healthCheck"`
 }
 
 // PluginManifestRoute routes for the api services are defined here. Currently only HTTP Request are supported through a reverse proxy provided by the GoCMS Parent Service
