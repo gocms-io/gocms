@@ -1,6 +1,5 @@
 .idea
 .env
-/vendor/*
 /bin
 /content/plugins/*
 !/content/plugins/readme.md
