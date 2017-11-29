@@ -13,7 +13,7 @@ type Scheduler struct {
 }
 
 func (s *Scheduler) AddTicker(d time.Duration, f func()) int {
-	// increment id count and assing
+	// increment id count and assign
 	s.idCount += 1
 	id := s.idCount
 

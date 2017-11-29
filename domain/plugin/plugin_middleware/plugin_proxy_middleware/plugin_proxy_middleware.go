@@ -3,22 +3,23 @@ package plugin_proxy_middleware
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gocms-io/gocms/context/consts"
 	"github.com/gocms-io/gocms/domain/user/user_middleware"
 	"github.com/gocms-io/gocms/utility/api_utility"
 	"github.com/gocms-io/gocms/utility/errors"
-	"log"
+	"github.com/gocms-io/gocms/utility/log"
 	"net/http"
 	"net/http/httputil"
-	"net/url"
-	"strconv"
 	"strings"
 )
 
 type PluginProxyMiddleware struct {
-	Schema   string
-	Port     int
-	Host     string
-	PluginId string
+	Schema          string
+	Port            int
+	Host            string
+	PluginId        string
+	UpdateProxyChan chan (*PluginProxyMiddleware)
+	Disabled        bool
 }
 
 func (ppm *PluginProxyMiddleware) ReverseProxy() gin.HandlerFunc {
@@ -27,37 +28,30 @@ func (ppm *PluginProxyMiddleware) ReverseProxy() gin.HandlerFunc {
 
 func (ppm *PluginProxyMiddleware) reverseProxy(c *gin.Context) {
 
-	// check to see if authUser available
-	authUser, _ := api_utility.GetUserFromContext(c)
-	timezone, _ := user_middleware.GetTimezoneFromContext(c)
-	if authUser != nil {
-		c.Request.Header.Set("GOCMS-AUTH-USER-ID", strconv.Itoa(authUser.Id))
-		c.Request.Header.Set("GOCMS-AUTH-NAME", authUser.FullName)
-		c.Request.Header.Set("GOCMS-AUTH-EMAIL", authUser.Email)
-	}
-	c.Request.Header.Set("GOCMS-TIMEZONE", timezone.String())
+	// check if proxy should be updated and apply if needed
+	// check if proxy is disabled and skip with error if it is
+	ppm.handleProxyUpdate(c)
 
-	target, err := url.Parse(fmt.Sprintf("%s://%s:%d", ppm.Schema, ppm.Host, ppm.Port))
-	if err != nil {
-		log.Printf("Error creating reverse proxy: %s", err.Error())
-		errors.Response(c, http.StatusInternalServerError, errors.ApiError_Server, errors.New("Failed to create reverse proxy."))
+	// if disabled then return error and skip
+	if ppm.Disabled {
+		log.Errorf("Plugin proxy is currently disabled for %v\n", ppm.PluginId)
+		errors.Response(c, http.StatusInternalServerError, errors.ApiError_Server, errors.ApiError_Server)
 		return
 	}
 
-	targetQuery := target.RawQuery
+	// transfer headers and user context as needed
+	ppm.handleHeadersAndUserContext(c)
+
+	// do actual request directing
 	director := func(req *http.Request) {
-		req.URL.Scheme = target.Scheme
-		req.URL.Host = target.Host
+		// check new port channel in case the plugin has moved ports
+		req.URL.Scheme = ppm.Schema
+		req.URL.Host = fmt.Sprintf("%v:%v", ppm.Host, ppm.Port)
 
 		// take namespace away from app unless it asks for it in the manifest
 		nonNamespacedRequestUrl := strings.Replace(req.URL.Path, fmt.Sprintf("%v/", ppm.PluginId), "", 1)
 
-		req.URL.Path = singleJoiningSlash(target.Path, nonNamespacedRequestUrl)
-		if targetQuery == "" || req.URL.RawQuery == "" {
-			req.URL.RawQuery = targetQuery + req.URL.RawQuery
-		} else {
-			req.URL.RawQuery = targetQuery + "&" + req.URL.RawQuery
-		}
+		req.URL.Path = singleJoiningSlash("", nonNamespacedRequestUrl)
 		if _, ok := req.Header["User-Agent"]; !ok {
 			// explicitly disable User-Agent so it's not set to default value
 			req.Header.Set("User-Agent", "")
@@ -66,6 +60,32 @@ func (ppm *PluginProxyMiddleware) reverseProxy(c *gin.Context) {
 
 	proxy := &httputil.ReverseProxy{Director: director}
 	proxy.ServeHTTP(c.Writer, c.Request)
+}
+
+func (ppm *PluginProxyMiddleware) handleProxyUpdate(c *gin.Context) {
+	// check for updates to proxy settings
+	select {
+	case newppm, ok := <-ppm.UpdateProxyChan:
+		if ok {
+			log.Debugf("proxy updated to: %+v\n", newppm)
+			ppm.Port = newppm.Port
+			ppm.Host = newppm.Host
+			ppm.Schema = newppm.Schema
+			ppm.PluginId = newppm.PluginId
+			ppm.UpdateProxyChan = newppm.UpdateProxyChan
+		}
+	default:
+	}
+}
+
+func (ppm *PluginProxyMiddleware) handleHeadersAndUserContext(c *gin.Context) {
+	authUser, _ := api_utility.GetUserFromContext(c)
+	timezone, _ := user_middleware.GetTimezoneFromContext(c)
+	if authUser != nil {
+		userHeaderContext := authUser.GetUserContextHeader().Marshal()
+		c.Request.Header.Set(consts.GOCMS_HEADER_USER_CONTEXT_KEY, userHeaderContext)
+	}
+	c.Request.Header.Set(consts.GOCMS_HEADER_TIMEZONE_KEY, timezone.String())
 }
 
 func singleJoiningSlash(a, b string) string {

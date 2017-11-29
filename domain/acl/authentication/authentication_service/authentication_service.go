@@ -3,15 +3,15 @@ package authentication_service
 import (
 	"fmt"
 	"github.com/gocms-io/gocms/context"
+	"github.com/gocms-io/gocms/domain/mail/mail_service"
+	"github.com/gocms-io/gocms/domain/secure_code/security_code_model"
+	"github.com/gocms-io/gocms/domain/user/user_model"
+	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/utility"
+	"github.com/gocms-io/gocms/utility/log"
 	"github.com/nbutton23/zxcvbn-go"
 	"golang.org/x/crypto/bcrypt"
-	"log"
 	"time"
-	"github.com/gocms-io/gocms/domain/user/user_model"
-	"github.com/gocms-io/gocms/domain/mail/mail_service"
-	"github.com/gocms-io/gocms/init/repository"
-	"github.com/gocms-io/gocms/domain/secure_code/security_code_model"
 )
 
 type IAuthService interface {
@@ -19,11 +19,11 @@ type IAuthService interface {
 	HashPassword(string) (string, error)
 	SendPasswordResetCode(string) error
 	VerifyPassword(string, string) bool
-	VerifyPasswordResetCode(int, string) bool
+	VerifyPasswordResetCode(int64, string) bool
 	SendTwoFactorCode(*user_model.User) error
-	VerifyTwoFactorCode(int, string) bool
+	VerifyTwoFactorCode(int64, string) bool
 	PasswordIsComplex(string) bool
-	GetRandomCode(int) (string, string, error)
+	GetRandomCode(int64) (string, string, error)
 }
 
 type AuthService struct {
@@ -48,7 +48,7 @@ func (as *AuthService) AuthUser(email string, password string) (*user_model.User
 	dbUser, err = as.RepositoriesGroup.UsersRepository.GetByEmail(email)
 
 	if err != nil {
-		log.Print("Error authing user: " + err.Error())
+		log.Errorf("Error authing user: " + err.Error())
 		return nil, false
 	}
 
@@ -63,19 +63,19 @@ func (as *AuthService) AuthUser(email string, password string) (*user_model.User
 func (as *AuthService) VerifyPassword(passwordHash string, password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(password))
 	if err != nil {
-		log.Printf("Error comparing hashes: %s", err.Error())
+		log.Warningf("Error comparing hashes: %s", err.Error())
 		return false
 	}
 
 	return true
 }
 
-func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
+func (as *AuthService) VerifyPasswordResetCode(id int64, code string) bool {
 
 	// get code
 	secureCode, err := as.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, security_code_model.Code_ResetPassword)
 	if err != nil {
-		log.Printf("error getting latest password reset code: %s", err.Error())
+		log.Errorf("error getting latest password reset code: %s", err.Error())
 		return false
 	}
 
@@ -91,7 +91,7 @@ func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
 	// check if users primary email needs to be activated
 	emails, err := as.RepositoriesGroup.EmailRepository.GetByUserId(id)
 	if err != nil {
-		log.Printf("Verify password reset code, error getting primary email to check activation: %v\n", err.Error())
+		log.Errorf("Verify password reset code, error getting primary email to check activation: %v\n", err.Error())
 	} else {
 		for _, email := range emails {
 			// if primary email is not verified; verify it and enable user
@@ -99,7 +99,7 @@ func (as *AuthService) VerifyPasswordResetCode(id int, code string) bool {
 				email.IsVerified = true
 				err := as.RepositoriesGroup.EmailRepository.Update(&email)
 				if err != nil { // log error but don't fail
-					log.Printf("Verify password reset code, error setting primary email to verified: %v\n", err.Error())
+					log.Errorf("Verify password reset code, error setting primary email to verified: %v\n", err.Error())
 				} else { // email user to be nice
 					mail := mail_service.Mail{
 						To:       email.Email,
@@ -157,7 +157,7 @@ func (as *AuthService) SendPasswordResetCode(email string) error {
 		BodyHTML: fmt.Sprintf("<h1>Password Reset</h1><p>To reset your password enter the code below into the app:</p><h3>%v</h3><p>The code will expire at: <b>%v</b></p>", code, expireTimeStr),
 	})
 	if err != nil {
-		log.Print("Error sending mail: " + err.Error())
+		log.Errorf("Error sending mail: " + err.Error())
 	}
 
 	return nil
@@ -191,13 +191,13 @@ func (as *AuthService) SendTwoFactorCode(user *user_model.User) error {
 		BodyHTML: fmt.Sprintf("<h1>Verification Code</h1><p>Your verification code is: </p><h3>%v</h3><p>The code will expire at: <b>%v</b></p>", code, expireTimeStr),
 	})
 	if err != nil {
-		log.Print("Error sending mail: " + err.Error())
+		log.Errorf("Error sending mail: " + err.Error())
 	}
 
 	return nil
 }
 
-func (as *AuthService) VerifyTwoFactorCode(id int, code string) bool {
+func (as *AuthService) VerifyTwoFactorCode(id int64, code string) bool {
 
 	// get code from db
 	secureCode, err := as.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, security_code_model.Code_VerifyDevice)
@@ -233,9 +233,9 @@ func (as *AuthService) HashPassword(password string) (string, error) {
 	return string(hashedPassword), nil
 }
 
-func (as *AuthService) GetRandomCode(length int) (string, string, error) {
+func (as *AuthService) GetRandomCode(length int64) (string, string, error) {
 	// create code
-	code, err := utility.GenerateRandomString(length)
+	code, err := utility.GenerateRandomString(int(length))
 	if err != nil {
 		return "", "", err
 	}

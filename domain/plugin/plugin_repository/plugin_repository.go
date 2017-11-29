@@ -2,8 +2,8 @@ package plugin_repository
 
 import (
 	"github.com/jmoiron/sqlx"
-	"log"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type IPluginRepository interface {
@@ -29,7 +29,7 @@ func (pr *PluginRepository) GetDatabasePlugins() ([]*plugin_model.PluginDatabase
 	SELECT * from gocms_plugins
 	`)
 	if err != nil {
-		log.Printf("Error getting getting latest security code for user from database: %s", err.Error())
+		log.Errorf("Error getting getting latest security code for user from database: %s", err.Error())
 		return nil, err
 	}
 	return pluginRecords, nil

@@ -8,21 +8,21 @@ import (
 	"github.com/gocms-io/gocms/domain/user/user_model"
 	"github.com/gocms-io/gocms/utility/errors"
 	"github.com/gocms-io/gocms/utility/rest"
-	"log"
 	"net/http"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type fbData struct {
-	Height int    `json:"height" binding:"required"`
-	Width  int    `json:"width" binding:"required"`
+	Height int64    `json:"height" binding:"required"`
+	Width  int64    `json:"width" binding:"required"`
 	Url    string `json:"url" binding:"required"`
 }
 type fbPicture struct {
 	Data fbData `json:"data" binding:"required"`
 }
 type fbAgeRange struct {
-	Min int `json:"min" binding:"required"`
-	Max int `json:"max" binding:"required"`
+	Min int64 `json:"min" binding:"required"`
+	Max int64 `json:"max" binding:"required"`
 }
 type fbMe struct {
 	Id       string     `json:"id" binding:"required"`
@@ -65,7 +65,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	var me fbMe
 	err = json.Unmarshal(res.Body, &me)
 	if err != nil {
-		log.Printf("Error marshaling response from facebook /me: %s", err.Error())
+		log.Errorf("Error marshaling response from facebook /me: %s", err.Error())
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Couldn't Parse Facebook Response", REDIRECT_LOGIN)
 		return
 	}
@@ -74,7 +74,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	user, err := ac.ServicesGroup.UserService.GetByEmail(me.Email)
 	if err != nil && err != sql.ErrNoRows {
 		// other error
-		log.Printf("error looking up user: %s", err.Error())
+		log.Errorf("error looking up user: %s", err.Error())
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error Validating User", REDIRECT_LOGIN)
 		return
 	}
@@ -102,14 +102,14 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 		// add user
 		err = ac.ServicesGroup.UserService.Add(user)
 		if err != nil {
-			log.Printf("error adding user from facebook login: %s\n", err.Error())
+			log.Errorf("error adding user from facebook login: %s\n", err.Error())
 			errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from facebook.", REDIRECT_LOGIN)
 			return
 		}
 		// make sure we auto verify the email address
 		err = ac.ServicesGroup.EmailService.SetVerified(user.Email)
 		if err != nil {
-			log.Printf("Error auto verifiying email: %s\n", err.Error())
+			log.Errorf("Error auto verifiying email: %s\n", err.Error())
 		}
 	}
 
@@ -131,7 +131,7 @@ func (ac *AuthController) loginFacebook(c *gin.Context) {
 	// update user with merged data
 	err = ac.ServicesGroup.UserService.Update(user.Id, user)
 	if err != nil {
-		log.Printf("error updating user from facebook login: %s", err.Error())
+		log.Errorf("error updating user from facebook login: %s", err.Error())
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error syncing data from facebook.", REDIRECT_LOGIN)
 		return
 	}

@@ -9,17 +9,17 @@ import (
 	"github.com/gocms-io/gocms/domain/secure_code/security_code_model"
 	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/utility/errors"
-	"log"
 	"time"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type IEmailService interface {
 	SetVerified(email string) error
 	GetVerified(email string) bool
 	AddEmail(email *email_model.Email) error
-	GetEmailsByUserId(userId int) ([]email_model.Email, error)
+	GetEmailsByUserId(userId int64) ([]email_model.Email, error)
 	SendEmailActivationCode(email string) error
-	VerifyEmailActivationCode(id int, code string) bool
+	VerifyEmailActivationCode(id int64, code string) bool
 	PromoteEmail(email *email_model.Email) error
 	DeleteEmail(email *email_model.Email) error
 }
@@ -58,7 +58,7 @@ func (es *EmailService) SetVerified(e string) error {
 func (es *EmailService) GetVerified(e string) bool {
 	email, err := es.RepositoriesGroup.EmailRepository.GetByAddress(e)
 	if err != nil {
-		log.Printf("Email Service, Get Verified, Error getting email by address: %s\n", err.Error())
+		log.Errorf("Email Service, Get Verified, Error getting email by address: %s\n", err.Error())
 		return false
 	}
 
@@ -76,7 +76,7 @@ func (es *EmailService) AddEmail(e *email_model.Email) error {
 	// add email
 	err := es.RepositoriesGroup.EmailRepository.Add(e)
 	if err != nil {
-		log.Printf("Email Service, error adding email: %s", err.Error())
+		log.Errorf("Email Service, error adding email: %s", err.Error())
 		return err
 	}
 
@@ -99,20 +99,20 @@ func (es *EmailService) SendEmailActivationCode(emailAddress string) error {
 	// get userId from email
 	email, err := es.RepositoriesGroup.EmailRepository.GetByAddress(emailAddress)
 	if err != nil {
-		fmt.Printf("Error sending email activation code, get email: %s", err.Error())
+		log.Errorf("Error sending email activation code, get email: %s", err.Error())
 		return err
 	}
 
 	if email.IsVerified {
 		err = errors.NewToUser("Email already activated.")
-		fmt.Printf("Error sending email activation code, %s\n", err.Error())
+		log.Errorf("Error sending email activation code, %s\n", err.Error())
 		return err
 	}
 
 	// create reset code
 	code, hashedCode, err := es.AuthService.GetRandomCode(32)
 	if err != nil {
-		fmt.Printf("Error sending email activation code, get random code: %s\n", err.Error())
+		log.Errorf("Error sending email activation code, get random code: %s\n", err.Error())
 		return err
 	}
 
@@ -123,7 +123,7 @@ func (es *EmailService) SendEmailActivationCode(emailAddress string) error {
 		Code:   hashedCode,
 	})
 	if err != nil {
-		fmt.Printf("Error sending email activation code, add secure code: %s\n", err.Error())
+		log.Errorf("Error sending email activation code, add secure code: %s\n", err.Error())
 		return err
 	}
 
@@ -139,18 +139,18 @@ func (es *EmailService) SendEmailActivationCode(emailAddress string) error {
 		BodyHTML: fmt.Sprintf("<h1>Account Verification Required</h1><h2>Click on the link below to activate your account:</h2><p><a href='%v'>Activate Link</a></h3></p><p>The link will expire at: <b>%v</b></p>", activationLink, expTimeStr),
 	})
 	if err != nil {
-		log.Println("Error sending email activation code, sending mail: " + err.Error())
+		log.Errorf("Error sending email activation code, sending mail: " + err.Error())
 	}
 
 	return nil
 }
 
-func (es *EmailService) VerifyEmailActivationCode(id int, code string) bool {
+func (es *EmailService) VerifyEmailActivationCode(id int64, code string) bool {
 
 	// get code
 	secureCode, err := es.RepositoriesGroup.SecureCodeRepository.GetLatestForUserByType(id, security_code_model.Code_VerifyEmail)
 	if err != nil {
-		log.Printf("error getting latest password reset code: %s", err.Error())
+		log.Errorf("error getting latest password reset code: %s", err.Error())
 		return false
 	}
 
@@ -176,35 +176,35 @@ func (es *EmailService) PromoteEmail(email *email_model.Email) error {
 	// get email for verification
 	dbEmail, err := es.RepositoriesGroup.EmailRepository.GetByAddress(email.Email)
 	if err != nil {
-		log.Printf("email service, promote email, get by address, error: %s", err.Error())
+		log.Errorf("email service, promote email, get by address, error: %s", err.Error())
 		return err
 	}
 
 	// verify email owner
 	if email.UserId != dbEmail.UserId {
 		err = errors.NewToUser("You can only promote email address owned by you.")
-		log.Printf("email service, promote email, get by address, error: %s", err.Error())
+		log.Errorf("email service, promote email, get by address, error: %s", err.Error())
 		return err
 	}
 
 	// email must be verified
 	if !dbEmail.IsVerified {
 		err = errors.NewToUser("You can only promote an email address after it has been validated.")
-		log.Printf("email service, promote email, get by address, error: %s", err.Error())
+		log.Errorf("email service, promote email, get by address, error: %s", err.Error())
 		return err
 	}
 
 	// get user primary email to send notification too first
 	oldPrimaryEmail, err := es.RepositoriesGroup.EmailRepository.GetPrimaryByUserId(email.UserId)
 	if err != nil {
-		log.Printf("email service, promote email, get primary by userId, error: %s", err.Error())
+		log.Errorf("email service, promote email, get primary by userId, error: %s", err.Error())
 		return err
 	}
 
 	// promote email
 	err = es.RepositoriesGroup.EmailRepository.PromoteEmail(dbEmail.Id, dbEmail.UserId)
 	if err != nil {
-		log.Printf("email service, promote email, promoting email, errors:%s", err.Error())
+		log.Errorf("email service, promote email, promoting email, errors:%s", err.Error())
 		return err
 	}
 
@@ -221,12 +221,12 @@ func (es *EmailService) PromoteEmail(email *email_model.Email) error {
 	return nil
 }
 
-func (es *EmailService) GetEmailsByUserId(userId int) ([]email_model.Email, error) {
+func (es *EmailService) GetEmailsByUserId(userId int64) ([]email_model.Email, error) {
 
 	// get all emails
 	emails, err := es.RepositoriesGroup.EmailRepository.GetByUserId(userId)
 	if err != nil {
-		log.Printf("email service, get emails by user id, error: %s", err.Error())
+		log.Errorf("email service, get emails by user id, error: %s", err.Error())
 		return nil, err
 	}
 
@@ -238,35 +238,35 @@ func (es *EmailService) DeleteEmail(email *email_model.Email) error {
 	// get email for verification
 	dbEmail, err := es.RepositoriesGroup.EmailRepository.GetByAddress(email.Email)
 	if err != nil {
-		log.Printf("email service, promote email, get by address, error: %s", err.Error())
+		log.Errorf("email service, promote email, get by address, error: %s", err.Error())
 		return err
 	}
 
 	// verify email owner
 	if email.UserId != dbEmail.UserId {
 		err = errors.NewToUser("You can only delete email address owned by you.")
-		log.Printf("email service, delete email, get by address, error: %s", err.Error())
+		log.Errorf("email service, delete email, get by address, error: %s", err.Error())
 		return err
 	}
 
 	// email cannot be primary
 	if dbEmail.IsPrimary {
 		err = errors.NewToUser("You can't delete the primary email address from an account.")
-		log.Printf("email service, delete email, get by address, error: %s", err.Error())
+		log.Errorf("email service, delete email, get by address, error: %s", err.Error())
 		return err
 	}
 
 	// delete email
 	err = es.RepositoriesGroup.EmailRepository.Delete(dbEmail.Id)
 	if err != nil {
-		log.Printf("email service, delete email, deleting email, errors:%s", err.Error())
+		log.Errorf("email service, delete email, deleting email, errors:%s", err.Error())
 		return err
 	}
 
 	// get user primary email to send notification too
 	primaryEmail, err := es.RepositoriesGroup.EmailRepository.GetPrimaryByUserId(email.UserId)
 	if err != nil {
-		log.Printf("email service, delete email, get primary by userId, error: %s", err.Error())
+		log.Errorf("email service, delete email, get primary by userId, error: %s", err.Error())
 		return err
 	}
 

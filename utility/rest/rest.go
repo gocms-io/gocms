@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"github.com/gocms-io/gocms/utility/errors"
 	"io/ioutil"
-	"log"
 	"net/http"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 var GET string = "GET"
@@ -40,7 +40,7 @@ func (rr *Request) do() (*RestResponse, error) {
 	// create request
 	req, err := http.NewRequest(rr.method, rr.Url, bytes.NewBuffer(rr.Body))
 	if err != nil {
-		log.Printf("Error creating new request: %s", err.Error())
+		log.Errorf("Error creating new request: %s", err.Error())
 		return nil, err
 	}
 
@@ -55,19 +55,19 @@ func (rr *Request) do() (*RestResponse, error) {
 	client := http.DefaultClient
 	res, err := client.Do(req)
 	if err != nil {
-		log.Printf("Error making request: %s", err.Error())
+		log.Errorf("Error making request: %s", err.Error())
 		return nil, err
 	}
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.Printf("Error parsing request body: %s", err.Error())
+		log.Errorf("Error parsing request body: %s", err.Error())
 		return nil, err
 	}
 
 	// check status code
 	if res.StatusCode != 200 && res.StatusCode != 203 {
-		log.Printf("Request was not ok: %s", body)
+		log.Errorf("Request was not ok: %s", body)
 		return nil, errors.New(string(body))
 	}
 

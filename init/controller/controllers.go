@@ -5,7 +5,6 @@ import (
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_middleware"
 	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_controller"
 	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_middleware"
 	"github.com/gocms-io/gocms/domain/content/documentation"
@@ -20,6 +19,7 @@ import (
 	"github.com/gocms-io/gocms/init/service"
 	"github.com/gocms-io/gocms/routes"
 	"strings"
+	"github.com/gocms-io/gocms/domain/acl/cors"
 )
 
 type ControllersGroup struct {
@@ -37,7 +37,7 @@ type ContentControllers struct {
 
 type ApiControllers struct {
 	AuthController      *authentication_controller.AuthController
-	HealthyController   *health_controller.HealthyController
+	HealthyController   *health_controller.HealthController
 	AdminUserController *user_admin_controller.UserAdminController
 	UserController      *user_controller.UserController
 	EmailController     *email_controller.EmailController
@@ -51,7 +51,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 
 	// top level middleware
 	r.Use(user_middleware.UUID())
-	r.Use(access_control_middleware.CORS())
+	r.Use(cors.CORS())
 	r.Use(user_middleware.Timezone())
 	am := authentication_middleware.DefaultAuthMiddleware(sg)
 	r.Use(am.AddUserToContextIfValidToken())
@@ -73,7 +73,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 	apiControllers := &ApiControllers{
 		AuthController:      authentication_controller.DefaultAuthController(routes, sg),
 		AdminUserController: user_admin_controller.DefaultUserAdminController(routes, sg),
-		HealthyController:   health_controller.DefaultHealthyController(routes),
+		HealthyController:   health_controller.DefaultHealthController(routes, sg),
 		UserController:      user_controller.DefaultUserController(routes, sg),
 		EmailController:     email_controller.DefaultEmailController(routes, sg),
 	}

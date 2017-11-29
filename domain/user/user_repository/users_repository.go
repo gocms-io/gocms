@@ -4,20 +4,20 @@ import (
 	"database/sql"
 	"github.com/gocms-io/gocms/domain/user/user_model"
 	"github.com/gocms-io/gocms/utility/errors"
+	"github.com/gocms-io/gocms/utility/log"
 	"github.com/jmoiron/sqlx"
-	"log"
 	"time"
 )
 
 type IUserRepository interface {
-	Get(int) (*user_model.User, error)
+	Get(int64) (*user_model.User, error)
 	GetByEmail(string) (*user_model.User, error)
 	GetAll() (*[]user_model.User, error)
 	Add(*user_model.User) error
-	Update(int, *user_model.User) error
-	UpdatePassword(int, string) error
-	Delete(int) error
-	SetEnabled(int, bool) error
+	Update(int64, *user_model.User) error
+	UpdatePassword(int64, string) error
+	Delete(int64) error
+	SetEnabled(int64, bool) error
 }
 
 type UserRepository struct {
@@ -33,7 +33,7 @@ func DefaultUserRepository(dbx *sqlx.DB) *UserRepository {
 }
 
 // get user by id
-func (ur *UserRepository) Get(id int) (*user_model.User, error) {
+func (ur *UserRepository) Get(id int64) (*user_model.User, error) {
 	var user user_model.User
 	err := ur.database.Get(&user, `
 	SELECT gocms_users.*, gocms_emails.email, gocms_emails.isVerified
@@ -45,7 +45,7 @@ func (ur *UserRepository) Get(id int) (*user_model.User, error) {
 	Limit 1;
 	`, id)
 	if err != nil {
-		log.Printf("Error getting all user from database: %s", err.Error())
+		log.Errorf("Error getting all user from database: %s", err.Error())
 		return nil, err
 	}
 
@@ -70,7 +70,7 @@ func (ur *UserRepository) GetByEmail(email string) (*user_model.User, error) {
 	Limit 1;
 	`, email)
 	if err != nil {
-		log.Printf("Error mapping user by email from database: %s", err.Error())
+		log.Errorf("Error mapping user by email from database: %s", err.Error())
 		return nil, err
 	}
 
@@ -87,7 +87,7 @@ func (ur *UserRepository) GetAll() (*[]user_model.User, error) {
 	ON gocms_users.id=gocms_emails.userId AND gocms_emails.isPrimary=1;
 	`)
 	if err != nil {
-		log.Printf("Error getting all users from database: %s", err.Error())
+		log.Errorf("Error getting all users from database: %s", err.Error())
 		return nil, err
 	}
 	return &users, nil
@@ -107,35 +107,35 @@ func (ur *UserRepository) Add(user *user_model.User) error {
 	INSERT INTO gocms_users (fullName, gender, photo, minAge, maxAge, password, enabled, created) VALUES (:fullName, :gender, :photo, :minAge, :maxAge, :password, :enabled, :created)
 	`, user)
 	if err != nil {
-		log.Printf("Error adding user to db: %s", err.Error())
+		log.Errorf("Error adding user to db: %s", err.Error())
 		return err
 	}
 	id, _ := result.LastInsertId()
-	user.Id = int(id)
+	user.Id = id
 
 	return nil
 }
 
-func (ur *UserRepository) Update(id int, user *user_model.User) error {
+func (ur *UserRepository) Update(id int64, user *user_model.User) error {
 	// insert row
 	user.Id = id
 	_, err := ur.database.NamedExec(`
 	UPDATE gocms_users SET fullName=:fullName, gender=:gender, photo=:photo, maxAge=:maxAge, minAge=:minAge WHERE id=:id
 	`, user)
 	if err != nil {
-		log.Printf("Error updating user in database: %s", err.Error())
+		log.Errorf("Error updating user in database: %s", err.Error())
 		return err
 	}
 
 	return nil
 }
 
-func (ur *UserRepository) SetEnabled(id int, enabled bool) error {
+func (ur *UserRepository) SetEnabled(id int64, enabled bool) error {
 	_, err := ur.database.NamedExec(`
 	UPDATE gocms_users SET enabled=:enabled WHERE id=:id
 	`, map[string]interface{}{"enabled": enabled, "id": id})
 	if err != nil {
-		log.Printf("Error setting enabled for user in database: %s", err.Error())
+		log.Errorf("Error setting enabled for user in database: %s", err.Error())
 
 		return err
 	}
@@ -143,7 +143,7 @@ func (ur *UserRepository) SetEnabled(id int, enabled bool) error {
 	return nil
 }
 
-func (ur *UserRepository) UpdatePassword(id int, hash string) error {
+func (ur *UserRepository) UpdatePassword(id int64, hash string) error {
 	// insert row
 	user := user_model.User{
 		Id:       id,
@@ -153,14 +153,14 @@ func (ur *UserRepository) UpdatePassword(id int, hash string) error {
 	UPDATE gocms_users SET password=:password WHERE id=:id
 	`, user)
 	if err != nil {
-		log.Printf("Error getting updating password for user in database: %s", err.Error())
+		log.Errorf("Error getting updating password for user in database: %s", err.Error())
 		return err
 	}
 
 	return nil
 }
 
-func (ur *UserRepository) Delete(id int) error {
+func (ur *UserRepository) Delete(id int64) error {
 
 	if id == 0 {
 		return errors.New("Missing user id. Can't delete user from database")
@@ -170,7 +170,7 @@ func (ur *UserRepository) Delete(id int) error {
 	DELETE FROM gocms_users WHERE id=?
 	`, id)
 	if err != nil {
-		log.Printf("Error deleting users from database: %s", err.Error())
+		log.Errorf("Error deleting users from database: %s", err.Error())
 		return err
 	}
 
@@ -183,7 +183,7 @@ func (ur *UserRepository) userExistsByEmail(email string) bool {
 	SELECT email FROM gocms_emails WHERE email = ?
 	`, email).Scan(&user.Email)
 	if err != nil && err != sql.ErrNoRows {
-		log.Printf("Error checking if user exists by email in database: %s", err.Error())
+		log.Errorf("Error checking if user exists by email in database: %s", err.Error())
 		return true
 	}
 	return false

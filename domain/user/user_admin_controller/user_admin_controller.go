@@ -2,18 +2,20 @@ package user_admin_controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_middleware"
+	"github.com/gocms-io/gocms/domain/acl/permissions"
 	"github.com/gocms-io/gocms/domain/user/user_model"
 	"github.com/gocms-io/gocms/init/service"
 	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/utility/errors"
 	"net/http"
 	"strconv"
-	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_middleware"
 )
 
 type UserAdminController struct {
 	routes        *routes.Routes
 	ServicesGroup *service.ServicesGroup
+	adminRoutes   *gin.RouterGroup
 }
 
 func DefaultUserAdminController(routes *routes.Routes, sg *service.ServicesGroup) *UserAdminController {
@@ -22,15 +24,8 @@ func DefaultUserAdminController(routes *routes.Routes, sg *service.ServicesGroup
 		ServicesGroup: sg,
 	}
 
-	// create acl object
-	acl := access_control_middleware.AclMiddleware{
-		ServicesGroup: sg,
-	}
-
 	// add acl rules to route
-	routes.Admin = routes.Auth.Group("/admin", acl.RequirePermission("admin"))
-
-	//routes.Admin.Use(acl.RequirePermission("admin"))
+	adminUserController.adminRoutes = routes.Auth.Group("/admin", access_control_middleware.RequirePermission(sg.AclService, permissions.SUPER_ADMIN))
 
 	adminUserController.Default()
 	return adminUserController
@@ -43,11 +38,11 @@ func DefaultUserAdminController(routes *routes.Routes, sg *service.ServicesGroup
  */
 func (auc *UserAdminController) Default() {
 
-	auc.routes.Admin.GET("/user", auc.getAll)
-	auc.routes.Admin.GET("/user/:userId", auc.get)
-	auc.routes.Admin.PUT("/user/:userId", auc.update)
-	auc.routes.Admin.POST("/user", auc.add)
-	auc.routes.Admin.DELETE("/user/:userId", auc.delete)
+	auc.adminRoutes.GET("/user", auc.getAll)
+	auc.adminRoutes.GET("/user/:userId", auc.get)
+	auc.adminRoutes.PUT("/user/:userId", auc.update)
+	auc.adminRoutes.POST("/user", auc.add)
+	auc.adminRoutes.DELETE("/user/:userId", auc.delete)
 }
 
 func (auc *UserAdminController) add(c *gin.Context) {
@@ -88,7 +83,7 @@ func (auc *UserAdminController) add(c *gin.Context) {
  */
 func (auc *UserAdminController) get(c *gin.Context) {
 
-	userId, err := strconv.Atoi(c.Param("userId"))
+	userId, err := strconv.ParseInt(c.Param("userId"), 10, 64)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, err.Error(), err)
 	}
@@ -130,7 +125,7 @@ func (auc *UserAdminController) getAll(c *gin.Context) {
 
 func (auc *UserAdminController) update(c *gin.Context) {
 	// get user to update
-	userId, err := strconv.Atoi(c.Param("userId"))
+	userId, err := strconv.ParseInt(c.Param("userId"), 10, 64)
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, "Missing Id Field", err)
 		return
@@ -156,7 +151,7 @@ func (auc *UserAdminController) update(c *gin.Context) {
 }
 
 func (auc *UserAdminController) delete(c *gin.Context) {
-	userId, err := strconv.Atoi(c.Param("userId"))
+	userId, err := strconv.ParseInt(c.Param("userId"), 10, 64)
 	if err != nil {
 		errors.Response(c, http.StatusBadRequest, "Missing Id Field", err)
 		return

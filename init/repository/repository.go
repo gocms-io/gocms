@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"github.com/gocms-io/gocms/domain/acl/group/group_repository"
 	"github.com/gocms-io/gocms/domain/acl/permissions/permission_repository"
 	"github.com/gocms-io/gocms/domain/email/email_respository"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_repository"
@@ -18,6 +19,7 @@ type RepositoriesGroup struct {
 	EmailRepository       email_respository.IEmailRepository
 	SecureCodeRepository  secure_code_repository.ISecureCodeRepository
 	PermissionsRepository permission_repository.IPermissionsRepository
+	GroupsRepository      group_repository.IGroupsRepository
 	PluginRepository      plugin_repository.IPluginRepository
 	dbx                   *sqlx.DB
 }
@@ -33,6 +35,7 @@ func DefaultRepositoriesGroup(dbx *sqlx.DB) *RepositoriesGroup {
 		EmailRepository:       email_respository.DefaultEmailRepository(dbx),
 		SecureCodeRepository:  secure_code_repository.DefaultSecureCodeRepository(dbx),
 		PermissionsRepository: permission_repository.DefaultPermissionsRepository(dbx),
+		GroupsRepository:      group_repository.DefaultGroupsRepository(dbx),
 		PluginRepository:      plugin_repository.DefaultPluginRepository(dbx),
 	}
 	return rg

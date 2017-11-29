@@ -2,10 +2,11 @@ package plugin_services
 
 import (
 	"database/sql"
-	"fmt"
-	"github.com/gocms-io/gocms/routes"
+	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_service"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
 	"github.com/gocms-io/gocms/init/repository"
+	"github.com/gocms-io/gocms/routes"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type IPluginsService interface {
@@ -20,14 +21,16 @@ type PluginsService struct {
 	repositoriesGroup *repository.RepositoriesGroup
 	installedPlugins  map[string]*plugin_model.Plugin
 	activePlugins     map[string]*plugin_model.Plugin
+	aclService        access_control_service.IAclService
 }
 
-func DefaultPluginsService(rg *repository.RepositoriesGroup) *PluginsService {
+func DefaultPluginsService(rg *repository.RepositoriesGroup, aclService access_control_service.IAclService) *PluginsService {
 
 	pluginsService := &PluginsService{
 		repositoriesGroup: rg,
 		installedPlugins:  make(map[string]*plugin_model.Plugin),
 		activePlugins:     make(map[string]*plugin_model.Plugin),
+		aclService:        aclService,
 	}
 
 	return pluginsService
@@ -38,10 +41,10 @@ func (ps *PluginsService) GetDatabasePlugins() (map[string]*plugin_model.PluginD
 	databasePluginRecords, err := ps.repositoriesGroup.PluginRepository.GetDatabasePlugins()
 	if err != nil {
 		if err == sql.ErrNoRows {
-			fmt.Printf("No plugins referenced in database.\n")
+			log.Debugf("No plugins referenced in database.\n")
 			return nil, err
 		}
-		fmt.Printf("Error getting database plugins: %v\n", err.Error())
+		log.Errorf("Error getting database plugins: %v\n", err.Error())
 		return nil, err
 	}
 

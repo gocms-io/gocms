@@ -2,7 +2,7 @@ package context
 
 import (
 	"github.com/gocms-io/gocms/domain/setting/setting_model"
-	"log"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type envVars struct {
@@ -11,15 +11,13 @@ type envVars struct {
 	DbUser     string
 	DbPassword string
 	DbServer   string
+
+	// Dev & Debug
+	DevMode bool
+	LogLevel   int64
 }
 
 type dbVars struct {
-	// DB (GET FROM ENV)
-	DbName     string
-	DbUser     string
-	DbPassword string
-	DbServer   string
-
 	// Debug
 	Debug         bool
 	DebugSecurity bool
@@ -44,6 +42,7 @@ type dbVars struct {
 	TwoFactorCodeTimeout   int64
 	UseTwoFactor           bool
 	PasswordComplexity     int64
+	PermissionsCacheLife   int64
 
 	// SMTP
 	SMTPServer      string
@@ -61,7 +60,7 @@ type dbVars struct {
 }
 
 func (dbVars *dbVars) LoadDbVars(settings map[string]setting_model.Setting) {
-	log.Printf("Refresh GoCMS Settings\n")
+	log.Debugf("Refresh GoCMS Settings\n")
 
 	// Debug
 	dbVars.Debug = GetBoolOrFail("DEBUG", settings)
@@ -84,6 +83,7 @@ func (dbVars *dbVars) LoadDbVars(settings map[string]setting_model.Setting) {
 	dbVars.UseTwoFactor = GetBoolOrFail("USE_TWO_FACTOR", settings)
 	dbVars.PasswordComplexity = GetIntOrFail("PASSWORD_COMPLEXITY", settings)
 	dbVars.OpenRegistration = GetBoolOrFail("OPEN_REGISTRATION", settings)
+	dbVars.PermissionsCacheLife = GetIntOrFail("PERMISSIONS_CACHE_LIFE", settings)
 
 	// SMTP
 	dbVars.SMTPServer = GetStringOrFail("SMTP_SERVER", settings)

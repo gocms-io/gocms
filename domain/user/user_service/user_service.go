@@ -12,13 +12,13 @@ import (
 
 type IUserService interface {
 	Add(*user_model.User) error
-	Get(int) (*user_model.User, error)
+	Get(int64) (*user_model.User, error)
 	GetByEmail(string) (*user_model.User, error)
 	GetAll() (*[]user_model.User, error)
-	Delete(int) error
-	Update(int, *user_model.User) error
-	UpdatePassword(int, string) error
-	SetEnabled(int, bool) error
+	Delete(int64) error
+	Update(int64, *user_model.User) error
+	UpdatePassword(int64, string) error
+	SetEnabled(int64, bool) error
 }
 
 type UserService struct {
@@ -37,7 +37,7 @@ func DefaultUserService(rg *repository.RepositoriesGroup, authService *authentic
 	return userService
 }
 
-func (us *UserService) Get(id int) (*user_model.User, error) {
+func (us *UserService) Get(id int64) (*user_model.User, error) {
 
 	user, err := us.RepositoriesGroup.UsersRepository.Get(id)
 
@@ -112,7 +112,7 @@ func (us *UserService) Add(user *user_model.User) error {
 	return nil
 }
 
-func (us *UserService) Delete(id int) error {
+func (us *UserService) Delete(id int64) error {
 
 	err := us.RepositoriesGroup.UsersRepository.Delete(id)
 	if err != nil {
@@ -121,7 +121,7 @@ func (us *UserService) Delete(id int) error {
 	return nil
 }
 
-func (us *UserService) Update(id int, userForUpdate *user_model.User) error {
+func (us *UserService) Update(id int64, userForUpdate *user_model.User) error {
 	err := us.RepositoriesGroup.UsersRepository.Update(id, userForUpdate)
 	if err != nil {
 		return err
@@ -129,7 +129,7 @@ func (us *UserService) Update(id int, userForUpdate *user_model.User) error {
 
 	return nil
 }
-func (us *UserService) UpdatePassword(id int, password string) error {
+func (us *UserService) UpdatePassword(id int64, password string) error {
 
 	//check complexity
 	if !us.AuthService.PasswordIsComplex(password) {
@@ -151,6 +151,6 @@ func (us *UserService) UpdatePassword(id int, password string) error {
 	return nil
 }
 
-func (us *UserService) SetEnabled(id int, enabled bool) error {
+func (us *UserService) SetEnabled(id int64, enabled bool) error {
 	return us.RepositoriesGroup.UsersRepository.SetEnabled(id, enabled)
 }
