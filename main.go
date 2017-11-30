@@ -9,7 +9,6 @@ import (
 	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/init/service"
 	"github.com/gocms-io/gocms/utility/log"
-	_ "github.com/joho/godotenv/autoload"
 	"net/http"
 	"os"
 )
@@ -28,9 +27,6 @@ type Engine struct {
 
 //go:generate apidoc -c ./ -i ./models -i ./controllers/ -o ./content/docs/ -f ".*\\.go$" -f ".*\\.js$"
 func Default() *Engine {
-
-	// init config environment vars
-	context.Init()
 
 	// setup database
 	db := database.DefaultSQL()
