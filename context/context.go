@@ -2,6 +2,8 @@ package context
 
 import (
 	"github.com/gocms-io/gocms/utility/log"
+	_ "github.com/joho/godotenv/autoload"
+	"os"
 	"strconv"
 	"time"
 )
@@ -13,16 +15,16 @@ type Context struct {
 	DbVars  *dbVars
 }
 
-func Init() {
+func init() {
 
 	// log level
-	logLevel, err := strconv.ParseInt(GetEnvVarOrFail("LOG_LEVEL"), 10, 32)
+	logLevel, err := strconv.ParseInt(os.Getenv("LOG_LEVEL"), 10, 32)
 	if err != nil {
 		logLevel = 4
 	}
 	log.LogLevel = logLevel
 
-	devMode, err := strconv.ParseBool(GetEnvVarOrFail("DEV_MODE"))
+	devMode, err := strconv.ParseBool(os.Getenv("DEV_MODE"))
 	if err != nil {
 		devMode = false
 	}
