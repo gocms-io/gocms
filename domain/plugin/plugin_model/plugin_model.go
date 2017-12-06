@@ -1,21 +1,23 @@
 package plugin_model
 
 import (
-	"github.com/gocms-io/gocms/domain/plugin/plugin_middleware/plugin_proxy_middleware"
 	"os/exec"
 	"time"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_proxies/plugin_routes_proxy"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_proxies/plugin_middleware_proxy"
 )
 
 // Plugin is the default plugin object used by GoCMS. For a default plugin look at:
 // github.com/gocms-io/plugin-contact-form
 type Plugin struct {
-	PluginRoot string
-	BinaryFile string
-	Schema     string
-	Manifest   *PluginManifest
-	Proxy      *plugin_proxy_middleware.PluginProxyMiddleware
-	Cmd        *exec.Cmd
-	Running    bool
+	PluginRoot  string
+	BinaryFile  string
+	Schema      string
+	Manifest    *PluginManifest
+	RoutesProxy *plugin_routes_proxy.PluginRoutesProxy
+	MiddlewareProxy *plugin_middleware_proxy.PluginMiddlewareProxy
+	Cmd         *exec.Cmd
+	Running     bool
 }
 
 // PluginManifest is the root manifest object.
@@ -45,10 +47,11 @@ type PluginManifest struct {
 // PluginServices should the plugin provide backend services, like an API, that configuration is done in this section.
 type PluginServices struct {
 	// Routes See "Plugin ManifestRoute"
-	Routes      []*PluginManifestRoute `json:"routes"`
-	Bin         string                 `json:"bin"`
-	Docs        string                 `json:"docs"`
-	HealthCheck bool                   `json:"healthCheck"`
+	Routes      []*PluginManifestRoute      `json:"routes"`
+	Middleware  []*PluginManifestMiddleware `json:"middleware"`
+	Bin         string                      `json:"bin"`
+	Docs        string                      `json:"docs"`
+	HealthCheck bool                        `json:"healthCheck"`
 }
 
 // PluginManifestRoute routes for the api services are defined here. Currently only HTTP Request are supported through a reverse proxy provided by the GoCMS Parent Service
@@ -70,6 +73,30 @@ type PluginManifestRoute struct {
 	// look here:
 	// github.com/gocms-io/gocms/tree/alpha-release/domain/acl/permissions/permissions.go
 	Permissions []string `json:"permissions,omitempty"`
+}
+
+// PluginManifestRoute manifest for the api services are defined here. Currently only HTTP Request are supported through a reverse proxy provided by the GoCMS Parent Service
+// Request go out to the plugin over a reserved <HOST>:<PLUGIN PORT>/middleware/ request
+type PluginManifestMiddleware struct {
+	// Name the name of the middleware. This will be used in the future for logging and other items.
+	Name string `json:"name"`
+	// ExecutionRank order lower numbers execute first. Based on a 1k scale.
+	// 0 middleware doesn't run
+	// 1-999 is pre-gocms middleware [not implement].
+	// 1000-1999 post gocms middlware but pre gocms acl
+	// 2000-2999 post gocms post gocms acl [not implemented].
+	// 3000 -> [not implemented]
+	ExecutionRank int64 `json:"executionRank"`
+	// URL the path for the proxy to request of the plugin.
+	Url string `json:"url"`
+	// If the middleware should modify the headers of the original request
+	Headers bool `json:"headers"`
+	// If the middleware should modify the body of the original request
+	Body bool `json:"body"`
+	// If the middleware should set the status on an error. Defaults to return 500 on error.
+	Status bool `json:"status"`
+	// If the middleware should pass along error messages to the user on error responses.
+	ErrorMsg bool `json:"error"`
 }
 
 // PluginInterface when plugins provide front-end functionality they must serve specific files. More details on this later. For now see the Contact Form Plugin Example:

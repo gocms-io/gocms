@@ -4,13 +4,13 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/domain/plugin/plugin_middleware/plugin_proxy_middleware"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
 	"github.com/gocms-io/gocms/utility"
 	"github.com/gocms-io/gocms/utility/log"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_proxies/plugin_routes_proxy"
 )
 
 func (ps *PluginsService) StartActivePlugins() (err error) {
@@ -78,7 +78,7 @@ func (ps *PluginsService) startPlugin(plugin *plugin_model.Plugin) error {
 
 	started := make(chan error)
 	done := make(chan error)
-	newPpmChan := make(chan *plugin_proxy_middleware.PluginProxyMiddleware) // this channel is used to update the port if plugin is restarted
+	newPpmChan := make(chan *plugin_routes_proxy.PluginRoutesProxy) // this channel is used to update the port if plugin is restarted
 
 	// find port and start microservice
 	log.Infof("Microservice Starting :%v\n", plugin.Manifest.Id)
@@ -103,7 +103,7 @@ func (ps *PluginsService) startPlugin(plugin *plugin_model.Plugin) error {
 	plugin.Cmd = cmd
 
 	// create proxy for use during registration
-	plugin.Proxy = &plugin_proxy_middleware.PluginProxyMiddleware{
+	plugin.RoutesProxy = &plugin_routes_proxy.PluginRoutesProxy{
 		Port:            pluginPort,
 		Schema:          "http",
 		Host:            "localhost",
@@ -126,12 +126,12 @@ func (ps *PluginsService) startPlugin(plugin *plugin_model.Plugin) error {
 				err = ps.startPlugin(plugin)
 			}
 			if err != nil {
-				plugin.Proxy.Disabled = true
-				newPpmChan <- plugin.Proxy
+				plugin.RoutesProxy.Disabled = true
+				newPpmChan <- plugin.RoutesProxy
 				log.Errorf("Microservice, %v, failed to restart: %v\n", plugin.Manifest.Id, err.Error())
 			} else {
-				newPpmChan <- plugin.Proxy
-				log.Infof("Hot swapped new plugin. Running on port %v\n", plugin.Proxy.Port)
+				newPpmChan <- plugin.RoutesProxy
+				log.Infof("Hot swapped new plugin. Running on port %v\n", plugin.RoutesProxy.Port)
 			}
 		} else {
 			// no error it just quit
