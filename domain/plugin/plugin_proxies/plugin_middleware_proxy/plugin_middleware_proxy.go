@@ -18,6 +18,7 @@ type PluginMiddlewareProxy struct {
 	Port            int
 	Host            string
 	PluginId        string
+	ExecutionRank int64
 	UpdateProxyChan chan (*PluginMiddlewareProxy)
 	Disabled        bool
 }
@@ -42,26 +43,33 @@ func (ppm *PluginMiddlewareProxy) middlewareProxy(c *gin.Context) {
 	// transfer headers and user context as needed
 	ppm.handleHeadersAndUserContext(c)
 
-	req.c
+	// copy to be safe
+	cRequest := c.Copy().Request
 
-	// do actual request handling
-	director := func(req *http.Request) {
-		// check new port channel in case the plugin has moved ports
-		req.URL.Scheme = ppm.Schema
-		req.URL.Host = fmt.Sprintf("%v:%v", ppm.Host, ppm.Port)
+	// take namespace away from app unless it asks for it in the manifest
+	nonNamespacedRequestUrl := strings.Replace(cRequest.URL.Path, fmt.Sprintf("%v/", ppm.PluginId), "", 1)
 
-		// take namespace away from app unless it asks for it in the manifest
-		nonNamespacedRequestUrl := strings.Replace(req.URL.Path, fmt.Sprintf("%v/", ppm.PluginId), "", 1)
+	// create a new url from the raw RequestURI sent by the client
+	url := fmt.Sprintf("%v://%v:%v/%v/%v/%v", ppm.Schema, ppm.Host, ppm.Port, "middleware", ppm.ExecutionRank, nonNamespacedRequestUrl)
+	proxyReq, err := http.NewRequest(cRequest.Method, url, cRequest.Body)
+	if err != nil {
+		// handle err
+	}
+	proxyReq.Header.Set("Host", cRequest.Host)
+	proxyReq.Header.Add("X-Forwarded-For", cRequest.RemoteAddr)
 
-		req.URL.Path = singleJoiningSlash("", nonNamespacedRequestUrl)
-		if _, ok := req.Header["User-Agent"]; !ok {
-			// explicitly disable User-Agent so it's not set to default value
-			req.Header.Set("User-Agent", "")
+	for header, values := range cRequest.Header {
+		for _, value := range values {
+			proxyReq.Header.Add(header, value)
 		}
 	}
 
-	proxy := &httputil.ReverseProxy{Director: director}
-	proxy.ServeHTTP(c.Writer, c.Request)
+	client := &http.Client{}
+	proxyRes, err := client.Do(proxyReq)
+	log.Infof("Proxy Req: %v\n", proxyRes)
+
+	c.Next()
+
 }
 
 func (ppm *PluginMiddlewareProxy) handleProxyUpdate(c *gin.Context) {

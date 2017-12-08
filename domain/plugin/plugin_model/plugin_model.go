@@ -87,8 +87,6 @@ type PluginManifestMiddleware struct {
 	// 2000-2999 post gocms post gocms acl [not implemented].
 	// 3000 -> [not implemented]
 	ExecutionRank int64 `json:"executionRank"`
-	// URL the path for the proxy to request of the plugin.
-	Url string `json:"url"`
 	// If the middleware should modify the headers of the original request
 	Headers bool `json:"headers"`
 	// If the middleware should modify the body of the original request
@@ -96,7 +94,10 @@ type PluginManifestMiddleware struct {
 	// If the middleware should set the status on an error. Defaults to return 500 on error.
 	Status bool `json:"status"`
 	// If the middleware should pass along error messages to the user on error responses.
-	ErrorMsg bool `json:"error"`
+	ErrorMsg bool `json:"errorMsg"`
+	// DisableNamespace GoCMS will utilize the plugin id and prepend it to the URL to guarantee that all plugins play nice. This can cause for ugly api endpoints.
+	// this functionality can be disabled. When disabled the URL will be only what is specified. If there is a conflict with another plugin GoCMS will crash.
+	DisableNamespace bool `json:"disableNamespace"`
 }
 
 // PluginInterface when plugins provide front-end functionality they must serve specific files. More details on this later. For now see the Contact Form Plugin Example:
