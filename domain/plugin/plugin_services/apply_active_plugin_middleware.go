@@ -14,23 +14,42 @@ const MIDDLEWARE_RANK_1000 MiddlewareRank = "1000-1999"
 const MIDDLEWARE_RANK_2000 MiddlewareRank = "2000-2999"
 const MIDDLEWARE_RANK_3000 MiddlewareRank = "3000+"
 
-type MiddlewareByRank struct {
+type PluginMiddlewareProxyMiddleware struct {
 	Middleware0    []*plugin_middleware_proxy.PluginMiddlewareProxy
 	Middleware1    []*plugin_middleware_proxy.PluginMiddlewareProxy
 	Middleware1000 []*plugin_middleware_proxy.PluginMiddlewareProxy
 	Middleware2000 []*plugin_middleware_proxy.PluginMiddlewareProxy
 	Middleware3000 []*plugin_middleware_proxy.PluginMiddlewareProxy
 }
+// todo add a "NewPluginMiddleware" that sorts the middleware into the correct categories. Then use apply to sort and apply them
+func (ps *PluginsService) NewPluginMiddlewareProxyMiddlewareFromActivePlugins() {
 
-func (ps *PluginsService) ApplyPluginMiddleware(executionRank int) error {
+	m0 := []*plugin_middleware_proxy.PluginMiddlewareProxy{}
+	m1 := []*plugin_middleware_proxy.PluginMiddlewareProxy{}
+	m1000 := []*plugin_middleware_proxy.PluginMiddlewareProxy{}
+	m2000 := []*plugin_middleware_proxy.PluginMiddlewareProxy{}
+	m3000 := []*plugin_middleware_proxy.PluginMiddlewareProxy{}
 
 	// loop through all plugins
 	for _, plugin := range ps.GetActivePlugins() {
 		// loop through all middleware per plugin
-		for _, middleware := range plugin {
-			if middleware.
+		for _, mProxy := range plugin.MiddlewareProxies {
+			if mProxy.ExecutionRank == 0 { // set proxies of rank 0
+				m0 = append(m0, mProxy)
+			} else if mProxy.ExecutionRank <= 999 { // set proxies of rank 1-999
+				m1 = append(m1, mProxy)
+			}else if mProxy.ExecutionRank <= 1999 { // set proxies of rank 1000-1999
+				m1000 = append(m1000, mProxy)
+			}else if mProxy.ExecutionRank <= 2999 { // set proxies of rank 2000-2999
+				m2000 = append(m2000, mProxy)
+			}else if mProxy.ExecutionRank >= 3000 { // set proxies of rank 3000 +
+				m3000 = append(m3000, mProxy)
+			}
 		}
 	}
+
+	// sort via execution order
+	sort.Sort() 
 
 	sort.Ints(ps.activeMiddlewareByRank)
 
