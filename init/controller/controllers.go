@@ -48,6 +48,8 @@ var (
 )
 
 func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *ControllersGroup {
+	// create plugin middleware handle
+	sg.PluginsService.
 
 	// top level middleware
 	r.Use(user_middleware.UUID())

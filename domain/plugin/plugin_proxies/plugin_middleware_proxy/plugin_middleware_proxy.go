@@ -9,8 +9,8 @@ import (
 	"github.com/gocms-io/gocms/utility/errors"
 	"github.com/gocms-io/gocms/utility/log"
 	"net/http"
-	"net/http/httputil"
 	"strings"
+	"io"
 )
 
 type PluginMiddlewareProxy struct {
@@ -18,9 +18,14 @@ type PluginMiddlewareProxy struct {
 	Port            int
 	Host            string
 	PluginId        string
-	ExecutionRank int64
+	ExecutionRank   int64
 	UpdateProxyChan chan (*PluginMiddlewareProxy)
 	Disabled        bool
+
+	HeadersToReceive map[string]string
+	PassAlongError     bool
+	ContinueOnError  bool
+	CopyBody bool
 }
 
 func (ppm *PluginMiddlewareProxy) MiddlewareProxy() gin.HandlerFunc {
@@ -43,22 +48,20 @@ func (ppm *PluginMiddlewareProxy) middlewareProxy(c *gin.Context) {
 	// transfer headers and user context as needed
 	ppm.handleHeadersAndUserContext(c)
 
-	// copy to be safe
-	cRequest := c.Copy().Request
-
 	// take namespace away from app unless it asks for it in the manifest
-	nonNamespacedRequestUrl := strings.Replace(cRequest.URL.Path, fmt.Sprintf("%v/", ppm.PluginId), "", 1)
+	// todo actually check for namespace. Right now, it just assumes and strips.
+	nonNamespacedRequestUrl := strings.Replace(c.Request.URL.Path, fmt.Sprintf("%v/", ppm.PluginId), "", 1)
 
 	// create a new url from the raw RequestURI sent by the client
 	url := fmt.Sprintf("%v://%v:%v/%v/%v/%v", ppm.Schema, ppm.Host, ppm.Port, "middleware", ppm.ExecutionRank, nonNamespacedRequestUrl)
-	proxyReq, err := http.NewRequest(cRequest.Method, url, cRequest.Body)
+	proxyReq, err := http.NewRequest(c.Request.Method, url, c.Request.Body)
 	if err != nil {
 		// handle err
 	}
-	proxyReq.Header.Set("Host", cRequest.Host)
-	proxyReq.Header.Add("X-Forwarded-For", cRequest.RemoteAddr)
+	proxyReq.Header.Set("Host", c.Request.Host)
+	proxyReq.Header.Add("X-Forwarded-For", c.Request.RemoteAddr)
 
-	for header, values := range cRequest.Header {
+	for header, values := range c.Request.Header {
 		for _, value := range values {
 			proxyReq.Header.Add(header, value)
 		}
@@ -66,7 +69,61 @@ func (ppm *PluginMiddlewareProxy) middlewareProxy(c *gin.Context) {
 
 	client := &http.Client{}
 	proxyRes, err := client.Do(proxyReq)
-	log.Infof("Proxy Req: %v\n", proxyRes)
+	if err != nil {
+		log.Errorf("Error proxying request %v, to middleware %v: %v\n", nonNamespacedRequestUrl, ppm.PluginId, err.Error())
+		if ppm.ContinueOnError {
+			c.Next()
+			return
+		} else {
+			errors.Response(c, http.StatusBadRequest, errors.ApiError_Server, err)
+			return
+		}
+	}
+
+	// transfer response items as desired from plugin response
+	// check for error
+	if proxyRes.StatusCode < 200 || proxyRes.StatusCode > 299 {
+		// if middleware handles error code and response just pass it along
+		if ppm.PassAlongError {
+			resHeaders := c.Writer.Header()
+			resHeaders["Content-Type"] = proxyRes.Header["Content-Type"]
+			resHeaders["Content-Length"] = proxyRes.Header["Content-Length"]
+			c.Status(proxyRes.StatusCode)
+			_, err = io.Copy(c.Writer, proxyRes.Body)
+			// error with copying body
+			if err != nil {
+				log.Errorf("Error writing proxied response body into response: %v\n", err.Error())
+			}
+			return
+		}
+	}
+
+	// first check for headers to receive
+	for _, headerToReceive := range ppm.HeadersToReceive {
+		if resHeaderVal := proxyRes.Header.Get(headerToReceive); resHeaderVal != "" {
+			c.Request.Header.Set(headerToReceive, resHeaderVal)
+		}
+	}
+
+	// check the body next
+	if ppm.CopyBody {
+		_, err = io.Copy(c.Writer, proxyRes.Body)
+		if err != nil {
+			log.Errorf("Error writing proxied response body into response: %v\n", err.Error())
+			// if we continue on error then do so
+			if !ppm.ContinueOnError {
+				c.Next()
+				return
+			}
+			// otherwise respond with error
+			errors.Response(c, http.StatusBadRequest, errors.ApiError_Server, err)
+			return
+		}
+
+		// add headers that relate to body
+		c.Request.Header["Content-Type"] = proxyRes.Header["Content-Type"]
+		c.Request.Header["Content-Length"] = proxyRes.Header["Content-Length"]
+	}
 
 	c.Next()
 
@@ -83,6 +140,11 @@ func (ppm *PluginMiddlewareProxy) handleProxyUpdate(c *gin.Context) {
 			ppm.Schema = newppm.Schema
 			ppm.PluginId = newppm.PluginId
 			ppm.UpdateProxyChan = newppm.UpdateProxyChan
+
+			ppm.CopyBody = newppm.CopyBody
+			ppm.ContinueOnError = newppm.ContinueOnError
+			ppm.PassAlongError = newppm.PassAlongError
+			ppm.HeadersToReceive = newppm.HeadersToReceive
 		}
 	default:
 	}

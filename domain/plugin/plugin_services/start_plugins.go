@@ -11,6 +11,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_proxies/plugin_routes_proxy"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_proxies/plugin_middleware_proxy"
 )
 
 func (ps *PluginsService) StartActivePlugins() (err error) {
@@ -78,7 +79,8 @@ func (ps *PluginsService) startPlugin(plugin *plugin_model.Plugin) error {
 
 	started := make(chan error)
 	done := make(chan error)
-	newPpmChan := make(chan *plugin_routes_proxy.PluginRoutesProxy) // this channel is used to update the port if plugin is restarted
+	newPpmRouteChan := make(chan *plugin_routes_proxy.PluginRoutesProxy)              // this channel is used to update the port if plugin is restarted
+	newPpmMiddlewareChan := make(chan *plugin_middleware_proxy.PluginMiddlewareProxy) // this channel is used to update the port if plugin is restarted
 
 	// find port and start microservice
 	log.Infof("Microservice Starting :%v\n", plugin.Manifest.Id)
@@ -108,8 +110,28 @@ func (ps *PluginsService) startPlugin(plugin *plugin_model.Plugin) error {
 		Schema:          "http",
 		Host:            "localhost",
 		PluginId:        plugin.Manifest.Id,
-		UpdateProxyChan: newPpmChan,
+		UpdateProxyChan: newPpmRouteChan,
 		Disabled:        false,
+	}
+
+	// create proxies for middleware use
+	for _, middleware := range plugin.Manifest.Services.Middleware {
+		middleProxy := plugin_middleware_proxy.PluginMiddlewareProxy{
+			UpdateProxyChan:  newPpmMiddlewareChan,
+			ExecutionRank:    middleware.ExecutionRank,
+			CopyBody:         middleware.CopyBody,
+			HeadersToReceive: middleware.HeadersToReceive,
+			PassAlongError:   middleware.PassAlongError,
+			ContinueOnError:  middleware.ContinueOnError,
+			PluginId:         plugin.Manifest.Id,
+			Port:             pluginPort,
+			Host:             "localhost",
+			Schema:           "http",
+			Disabled:         false,
+		}
+
+		// add middleware to slice
+		plugin.MiddlewareProxies = append(plugin.MiddlewareProxies, &middleProxy)
 	}
 
 	// add plugin to active list for monitoring and other things
@@ -127,10 +149,10 @@ func (ps *PluginsService) startPlugin(plugin *plugin_model.Plugin) error {
 			}
 			if err != nil {
 				plugin.RoutesProxy.Disabled = true
-				newPpmChan <- plugin.RoutesProxy
+				newPpmRouteChan <- plugin.RoutesProxy
 				log.Errorf("Microservice, %v, failed to restart: %v\n", plugin.Manifest.Id, err.Error())
 			} else {
-				newPpmChan <- plugin.RoutesProxy
+				newPpmRouteChan <- plugin.RoutesProxy
 				log.Infof("Hot swapped new plugin. Running on port %v\n", plugin.RoutesProxy.Port)
 			}
 		} else {
@@ -159,7 +181,7 @@ func (ps *PluginsService) getPluginsToStart() (map[string]*plugin_model.Plugin, 
 			if ps.installedPlugins[dbPluginId] != nil {
 				pluginsToStart[dbPluginId] = ps.installedPlugins[dbPluginId]
 			} else {
-				log.Debugf("Skiping %v, plugin active in database but not installed\n", dbPlugin.PluginId)
+				log.Debugf("Skipping %v, plugin active in database but not installed\n", dbPlugin.PluginId)
 			}
 		}
 	}

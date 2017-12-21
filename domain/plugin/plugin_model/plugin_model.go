@@ -15,7 +15,7 @@ type Plugin struct {
 	Schema      string
 	Manifest    *PluginManifest
 	RoutesProxy *plugin_routes_proxy.PluginRoutesProxy
-	MiddlewareProxy *plugin_middleware_proxy.PluginMiddlewareProxy
+	MiddlewareProxies []*plugin_middleware_proxy.PluginMiddlewareProxy
 	Cmd         *exec.Cmd
 	Running     bool
 }
@@ -87,14 +87,14 @@ type PluginManifestMiddleware struct {
 	// 2000-2999 post gocms post gocms acl [not implemented].
 	// 3000 -> [not implemented]
 	ExecutionRank int64 `json:"executionRank"`
-	// If the middleware should modify the headers of the original request
-	Headers bool `json:"headers"`
+	// Headers that the middleware should respond to the proxy with
+	HeadersToReceive map[string]string `json:"headersToReceive"`
 	// If the middleware should modify the body of the original request
-	Body bool `json:"body"`
-	// If the middleware should set the status on an error. Defaults to return 500 on error.
-	Status bool `json:"status"`
-	// If the middleware should pass along error messages to the user on error responses.
-	ErrorMsg bool `json:"errorMsg"`
+	CopyBody bool `json:"copyBody"`
+	// Continue executing request on error
+	ContinueOnError bool `json:"continueOnError"`
+	// If the middleware error response should be passed along
+	PassAlongError bool `json:"passAlongError"`
 	// DisableNamespace GoCMS will utilize the plugin id and prepend it to the URL to guarantee that all plugins play nice. This can cause for ugly api endpoints.
 	// this functionality can be disabled. When disabled the URL will be only what is specified. If there is a conflict with another plugin GoCMS will crash.
 	DisableNamespace bool `json:"disableNamespace"`

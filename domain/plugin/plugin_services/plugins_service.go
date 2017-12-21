@@ -7,6 +7,7 @@ import (
 	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/utility/log"
+	"plugin"
 )
 
 type IPluginsService interface {
