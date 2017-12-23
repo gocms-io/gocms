@@ -88,7 +88,7 @@ type PluginManifestMiddleware struct {
 	// 3000 -> [not implemented]
 	ExecutionRank int64 `json:"executionRank"`
 	// Headers that the middleware should respond to the proxy with
-	HeadersToReceive map[string]string `json:"headersToReceive"`
+	HeadersToReceive []string `json:"headersToReceive"`
 	// If the middleware should modify the body of the original request
 	CopyBody bool `json:"copyBody"`
 	// Continue executing request on error

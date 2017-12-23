@@ -22,7 +22,7 @@ type PluginMiddlewareProxy struct {
 	UpdateProxyChan chan (*PluginMiddlewareProxy)
 	Disabled        bool
 
-	HeadersToReceive map[string]string
+	HeadersToReceive []string
 	PassAlongError     bool
 	ContinueOnError  bool
 	CopyBody bool

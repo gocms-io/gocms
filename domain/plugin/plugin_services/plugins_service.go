@@ -7,7 +7,6 @@ import (
 	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/utility/log"
-	"plugin"
 )
 
 type IPluginsService interface {
@@ -16,6 +15,7 @@ type IPluginsService interface {
 	GetDatabasePlugins() (map[string]*plugin_model.PluginDatabaseRecord, error)
 	RefreshInstalledPlugins() error
 	GetActivePlugins() map[string]*plugin_model.Plugin
+	NewPluginMiddlewareProxyByRank() *PluginMiddlewareProxyByRank
 }
 
 type PluginsService struct {
