@@ -114,7 +114,7 @@ func (ppm *PluginMiddlewareProxy) middlewareProxy(c *gin.Context) {
 
 	// check the body next
 	if ppm.CopyBody {
-		_, err = io.Copy(c.Writer, proxyRes.Body)
+		c.Request.Body = proxyRes.Body
 		if err != nil {
 			log.Errorf("Error writing proxied response body into response: %v\n", err.Error())
 			// if we continue on error then do so
