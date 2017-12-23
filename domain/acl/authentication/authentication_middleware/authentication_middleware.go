@@ -10,6 +10,7 @@ import (
 	"github.com/gocms-io/gocms/utility/errors"
 	"net/http"
 	"github.com/gocms-io/gocms/utility/api_utility"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 type AuthMiddleware struct {
@@ -26,6 +27,7 @@ func DefaultAuthMiddleware(sg *service.ServicesGroup) *AuthMiddleware {
 }
 
 func (am *AuthMiddleware) ApplyAuthToRoutes(routes *routes.Routes) {
+	log.Debugf("Adding Authentication Middleware\n")
 	routes.Auth.Use(am.RequireAuthenticatedUser())
 	routes.PreTwofactor = routes.Auth
 	if context.Config.DbVars.UseTwoFactor {
@@ -35,6 +37,7 @@ func (am *AuthMiddleware) ApplyAuthToRoutes(routes *routes.Routes) {
 
 // middleware
 func (am *AuthMiddleware) AddUserToContextIfValidToken() gin.HandlerFunc {
+	log.Debugf("Adding USER Context Middleware\n")
 	return am.addUserToContextIfValidToken
 }
 func (am *AuthMiddleware) RequireAuthenticatedUser() gin.HandlerFunc {

@@ -15,6 +15,7 @@ type IPluginsService interface {
 	GetDatabasePlugins() (map[string]*plugin_model.PluginDatabaseRecord, error)
 	RefreshInstalledPlugins() error
 	GetActivePlugins() map[string]*plugin_model.Plugin
+	NewPluginMiddlewareProxyByRank() *PluginMiddlewareProxyByRank
 }
 
 type PluginsService struct {

@@ -60,7 +60,7 @@ func (sql *SQL) MigrateSql() error {
 		}
 	}
 	if n > 0 {
-		log.Errorf("Applied %d migrations to %s. Database up to date.\n", n, tableName)
+		log.Infof("Applied %d migrations to %s. Database up to date.\n", n, tableName)
 	}
 	return nil
 }
