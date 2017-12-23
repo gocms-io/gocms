@@ -1,4 +1,4 @@
-package plugin_proxy_middleware
+package plugin_routes_proxy
 
 import (
 	"fmt"
@@ -13,20 +13,20 @@ import (
 	"strings"
 )
 
-type PluginProxyMiddleware struct {
+type PluginRoutesProxy struct {
 	Schema          string
 	Port            int
 	Host            string
 	PluginId        string
-	UpdateProxyChan chan (*PluginProxyMiddleware)
+	UpdateProxyChan chan (*PluginRoutesProxy)
 	Disabled        bool
 }
 
-func (ppm *PluginProxyMiddleware) ReverseProxy() gin.HandlerFunc {
+func (ppm *PluginRoutesProxy) ReverseProxy() gin.HandlerFunc {
 	return ppm.reverseProxy
 }
 
-func (ppm *PluginProxyMiddleware) reverseProxy(c *gin.Context) {
+func (ppm *PluginRoutesProxy) reverseProxy(c *gin.Context) {
 
 	// check if proxy should be updated and apply if needed
 	// check if proxy is disabled and skip with error if it is
@@ -62,7 +62,7 @@ func (ppm *PluginProxyMiddleware) reverseProxy(c *gin.Context) {
 	proxy.ServeHTTP(c.Writer, c.Request)
 }
 
-func (ppm *PluginProxyMiddleware) handleProxyUpdate(c *gin.Context) {
+func (ppm *PluginRoutesProxy) handleProxyUpdate(c *gin.Context) {
 	// check for updates to proxy settings
 	select {
 	case newppm, ok := <-ppm.UpdateProxyChan:
@@ -78,7 +78,7 @@ func (ppm *PluginProxyMiddleware) handleProxyUpdate(c *gin.Context) {
 	}
 }
 
-func (ppm *PluginProxyMiddleware) handleHeadersAndUserContext(c *gin.Context) {
+func (ppm *PluginRoutesProxy) handleHeadersAndUserContext(c *gin.Context) {
 	authUser, _ := api_utility.GetUserFromContext(c)
 	timezone, _ := user_middleware.GetTimezoneFromContext(c)
 	if authUser != nil {

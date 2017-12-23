@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 	"runtime/debug"
+	"encoding/json"
+	"fmt"
 )
 
 var LogLevel int64 = 3
@@ -61,4 +63,13 @@ func Infof(msg string, args ...interface{}) {
 	color.Set(color.FgBlue)
 	defer color.Unset()
 	log.Printf("[INFO] - "+msg, args...)
+}
+
+func PrettyPrint(v interface{}) string {
+	b, err := json.MarshalIndent(v, "", "  ")
+	if err != nil {
+		Errorf("Error trying to pretty print output: %v\n", err)
+	}
+	s := fmt.Sprint(string(b))
+	return  s
 }

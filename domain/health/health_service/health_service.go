@@ -78,7 +78,7 @@ func (healthService *HealthService) checkActivePluginHealth() {
 				}
 
 				// otherwise we need make a health check request first
-				healthUrl := fmt.Sprintf("%v://%v:%v/api/healthy", plugin.Proxy.Schema, plugin.Proxy.Host, plugin.Proxy.Port)
+				healthUrl := fmt.Sprintf("%v://%v:%v/api/healthy", plugin.RoutesProxy.Schema, plugin.RoutesProxy.Host, plugin.RoutesProxy.Port)
 				request := rest.Request{
 					Url: healthUrl,
 				}

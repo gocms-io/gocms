@@ -45,7 +45,9 @@ func (ur *UserRepository) Get(id int64) (*user_model.User, error) {
 	Limit 1;
 	`, id)
 	if err != nil {
-		log.Errorf("Error getting all user from database: %s", err.Error())
+		if err != sql.ErrNoRows {
+			log.Errorf("Error getting all user from database: %s", err.Error())
+		}
 		return nil, err
 	}
 
@@ -70,7 +72,9 @@ func (ur *UserRepository) GetByEmail(email string) (*user_model.User, error) {
 	Limit 1;
 	`, email)
 	if err != nil {
-		log.Errorf("Error mapping user by email from database: %s", err.Error())
+		if err != sql.ErrNoRows {
+			log.Errorf("Error mapping user by email from database: %s", err.Error())
+		}
 		return nil, err
 	}
 

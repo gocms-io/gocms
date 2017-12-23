@@ -35,12 +35,12 @@ func (ps *PluginsService) RegisterActivePluginRoutes(routes *routes.Routes) erro
 
 		// check if there is interface routes that need to be registered
 		if plugin.Manifest.Interface.Public != "" {
-			routes.Root.Handle("GET", fmt.Sprintf("/content/%v/*filepath", plugin.Manifest.Id), plugin.Proxy.ReverseProxy())
+			routes.Root.Handle("GET", fmt.Sprintf("/content/%v/*filepath", plugin.Manifest.Id), plugin.RoutesProxy.ReverseProxy())
 		}
 
 		//
 		if plugin.Manifest.Services.Docs != "" {
-			routes.Root.Handle("GET", fmt.Sprintf("/docs/%v/*filepath", plugin.Manifest.Id), plugin.Proxy.ReverseProxy())
+			routes.Root.Handle("GET", fmt.Sprintf("/docs/%v/*filepath", plugin.Manifest.Id), plugin.RoutesProxy.ReverseProxy())
 		}
 
 	}
@@ -66,7 +66,7 @@ func (ps *PluginsService) registerPluginProxyOnRoute(route *gin.RouterGroup, plu
 	}
 
 	// add reverse proxy handler
-	handlers = append(handlers, plugin.Proxy.ReverseProxy())
+	handlers = append(handlers, plugin.RoutesProxy.ReverseProxy())
 
 	// register route
 	route.Handle(routeManifest.Method, url, handlers...)
