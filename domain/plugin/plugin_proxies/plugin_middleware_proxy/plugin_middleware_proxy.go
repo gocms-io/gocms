@@ -53,10 +53,17 @@ func (ppm *PluginMiddlewareProxy) middlewareProxy(c *gin.Context) {
 	nonNamespacedRequestUrl := strings.Replace(c.Request.URL.Path, fmt.Sprintf("%v/", ppm.PluginId), "", 1)
 
 	// create a new url from the raw RequestURI sent by the client
-	url := fmt.Sprintf("%v://%v:%v/%v/%v/%v", ppm.Schema, ppm.Host, ppm.Port, "middleware", ppm.ExecutionRank, nonNamespacedRequestUrl)
+	url := fmt.Sprintf("%v://%v:%v/%v/%v%v", ppm.Schema, ppm.Host, ppm.Port, "middleware", ppm.ExecutionRank, nonNamespacedRequestUrl)
 	proxyReq, err := http.NewRequest(c.Request.Method, url, c.Request.Body)
 	if err != nil {
-		// handle err
+		log.Debugf("Error creating plugin middleware proxy request %v: %v\n", url, err.Error())
+		if ppm.ContinueOnError {
+			c.Next()
+			return
+		} else {
+			errors.Response(c, http.StatusBadRequest, errors.ApiError_Server, err)
+			return
+		}
 	}
 	proxyReq.Header.Set("Host", c.Request.Host)
 	proxyReq.Header.Add("X-Forwarded-For", c.Request.RemoteAddr)
@@ -80,7 +87,6 @@ func (ppm *PluginMiddlewareProxy) middlewareProxy(c *gin.Context) {
 		}
 	}
 
-	// transfer response items as desired from plugin response
 	// check for error
 	if proxyRes.StatusCode < 200 || proxyRes.StatusCode > 299 {
 		// if middleware handles error code and response just pass it along
@@ -94,6 +100,7 @@ func (ppm *PluginMiddlewareProxy) middlewareProxy(c *gin.Context) {
 			if err != nil {
 				log.Errorf("Error writing proxied response body into response: %v\n", err.Error())
 			}
+			c.Abort()
 			return
 		}
 	}

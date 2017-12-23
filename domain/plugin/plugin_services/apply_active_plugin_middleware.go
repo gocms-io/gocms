@@ -82,6 +82,8 @@ func sortByRank(a []*plugin_middleware_proxy.PluginMiddlewareProxy) {
 }
 
 func (pmpr *PluginMiddlewareProxyByRank) ApplyForRank(rank MiddlewareRank) []gin.HandlerFunc {
+	log.Debugf("Adding Plugin Middleware Rank: %v\n", rank)
+
 	var proxies []*plugin_middleware_proxy.PluginMiddlewareProxy
 
 	// get correct proxy group to apply
@@ -103,9 +105,9 @@ func (pmpr *PluginMiddlewareProxyByRank) ApplyForRank(rank MiddlewareRank) []gin
 	var handlers []gin.HandlerFunc
 	// apply proxies in group
 	for _, proxy := range proxies {
+		log.Debugf("\t  [%v]:%v", proxy.ExecutionRank, proxy.PluginId)
 		handlers = append(handlers, proxy.MiddlewareProxy())
 	}
 
-	log.Debugf("Adding Plugin Middleware Rank: %v\n", rank)
 	return handlers
 }
