@@ -3,9 +3,11 @@ package cors
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/context"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 func CORS() gin.HandlerFunc {
+	log.Debugf("Adding CORS Middleware\n")
 	return corsMiddleware
 }
 

@@ -12,6 +12,7 @@ const TIMEZONE_MIDDLEWARE_KEY = "TIMEZONE_MIDDLEWARE_KEY"
 // to extract a timezone out of the header or default to Local
 // utilize timezones as defined here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 func Timezone() gin.HandlerFunc {
+	log.Debugf("Adding Timezone Middleware\n")
 	return timezoneMiddleware
 }
 

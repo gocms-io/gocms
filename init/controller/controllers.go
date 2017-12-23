@@ -20,6 +20,7 @@ import (
 	"github.com/gocms-io/gocms/init/service"
 	"github.com/gocms-io/gocms/routes"
 	"strings"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_services"
 )
 
 type ControllersGroup struct {
@@ -48,9 +49,12 @@ var (
 )
 
 func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *ControllersGroup {
+
 	// create plugin middleware handle
-	//pluginMiddlewareProxy := sg.PluginsService.NewPluginMiddlewareProxyByRank()
-	sg.PluginsService.NewPluginMiddlewareProxyByRank()
+	pluginMiddlewareProxy := sg.PluginsService.NewPluginMiddlewareProxyByRank()
+	// apply plugin middleware rank 1
+	r.Use(pluginMiddlewareProxy.ApplyForRank(plugin_services.MIDDLEWARE_RANK_1)...)
+
 
 	// top level middleware
 	r.Use(user_middleware.UUID())
@@ -58,6 +62,9 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 	r.Use(user_middleware.Timezone())
 	am := authentication_middleware.DefaultAuthMiddleware(sg)
 	r.Use(am.AddUserToContextIfValidToken())
+
+	// apply plugin middleware rank 1000
+	r.Use(pluginMiddlewareProxy.ApplyForRank(plugin_services.MIDDLEWARE_RANK_1000)...)
 
 	//r.LoadHTMLGlob("./content/templates/*.tmpl")
 	r.HTMLRender = createMyRender()
@@ -71,6 +78,9 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 
 	// apply auth middleware
 	am.ApplyAuthToRoutes(routes)
+
+	// apply plugin middleware rank 2000
+	r.Use(pluginMiddlewareProxy.ApplyForRank(plugin_services.MIDDLEWARE_RANK_2000)...)
 
 	// define routes and apply middleware
 	apiControllers := &ApiControllers{
@@ -89,10 +99,14 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 		ReactControllers:        react_controller.DefaultReactController(routes, sg),
 	}
 
-	// plugin middleware
+	// apply plugin middleware rank 3000
+	r.Use(pluginMiddlewareProxy.ApplyForRank(plugin_services.MIDDLEWARE_RANK_3000)...)
 
 	// register plugin routes
 	sg.PluginsService.RegisterActivePluginRoutes(routes)
+
+	// apply plugin middleware rank 4000
+	r.Use(pluginMiddlewareProxy.ApplyForRank(plugin_services.MIDDLEWARE_RANK_4000)...)
 
 	// add no route controller
 	routes.NoRoute(func(c *gin.Context) {

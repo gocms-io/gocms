@@ -82,10 +82,11 @@ type PluginManifestMiddleware struct {
 	Name string `json:"name"`
 	// ExecutionRank order lower numbers execute first. Based on a 1k scale.
 	// 0 middleware doesn't run
-	// 1-999 is pre-gocms middleware [not implement].
-	// 1000-1999 post gocms middlware but pre gocms acl
-	// 2000-2999 post gocms post gocms acl [not implemented].
-	// 3000 -> [not implemented]
+	// 1-999 is pre-gocms middleware.
+	// 1000-1999 post gocms middlware but pre gocms auth
+	// 2000-2999 post gocms auth but before gocms routes
+	// 3000 -3999 after gocms routes before plugin routes
+	// 4000 -> after plugin routes but before gocms no routes handler
 	ExecutionRank int64 `json:"executionRank"`
 	// Headers that the middleware should respond to the proxy with
 	HeadersToReceive []string `json:"headersToReceive"`
