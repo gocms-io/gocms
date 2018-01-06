@@ -63,7 +63,7 @@ func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup, db *d
 	if pluginRelatedErr != nil {
 		log.Errorf("Error finding plugins. Can't start plugin microservice: %s\n", pluginRelatedErr.Error())
 	} else {
-		pluginRelatedErr = pluginsService.StartActivePlugins()
+		pluginRelatedErr = pluginsService.StartPluginsService()
 	}
 
 	// heath service

@@ -67,7 +67,8 @@ func (healthService *HealthService) GetHealthStatus() (ok bool, context []string
 func (healthService *HealthService) checkActivePluginHealth() {
 	go func() {
 		for _, plugin := range healthService.pluginService.GetActivePlugins() {
-			if !plugin.Running {
+			// if plugin is not running and it is not external
+			if !plugin.Running && !plugin.IsExternal {
 				log.Errorf("[Health Service] - Plugin %v, failed to start or is no longer running\n", plugin.Manifest.Id)
 				healthService.health.Plugin[plugin.Manifest.Id] = false
 			} else {

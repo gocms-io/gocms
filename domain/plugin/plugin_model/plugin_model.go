@@ -5,19 +5,25 @@ import (
 	"time"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_proxies/plugin_routes_proxy"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_proxies/plugin_middleware_proxy"
+	"database/sql"
 )
 
 // Plugin is the default plugin object used by GoCMS. For a default plugin look at:
 // github.com/gocms-io/plugin-contact-form
 type Plugin struct {
-	PluginRoot  string
-	BinaryFile  string
-	Schema      string
-	Manifest    *PluginManifest
-	RoutesProxy *plugin_routes_proxy.PluginRoutesProxy
+	PluginRoot        string
+	BinaryFile        string
+	Schema            string
+	Manifest          *PluginManifest
+	RoutesProxy       *plugin_routes_proxy.PluginRoutesProxy
 	MiddlewareProxies []*plugin_middleware_proxy.PluginMiddlewareProxy
-	Cmd         *exec.Cmd
-	Running     bool
+	Cmd               *exec.Cmd
+	Running           bool
+	Database          *PluginDatabaseRecord
+	IsExternal     bool           `db:"isExternal"`
+	ExternalSchema sql.NullString `db:"externalSchema"`
+	ExternalHost   sql.NullString `db:"externalHost"`
+	ExternalPort   sql.NullInt64 `db:"externalPort"`
 }
 
 // PluginManifest is the root manifest object.
@@ -114,11 +120,17 @@ type PluginInterface struct {
 
 // PluginDatabaseRecord is utilized internally by GoCMS. This is NOT part of the manifest.
 type PluginDatabaseRecord struct {
-	Id           int       `db:"id"`
-	PluginId     string    `db:"pluginId"`
-	Name         string    `db:"name"`
-	Build        int       `db:"build"`
-	IsActive     bool      `db:"isActive"`
-	Created      time.Time `db:"created"`
-	LastModified time.Time `db:"lastModified"`
+	Id             int            `db:"id"`
+	PluginId       string         `db:"pluginId"`
+	Name           string         `db:"name"`
+	Build          int            `db:"build"`
+	IsActive       bool           `db:"isActive"`
+	IsExternal     bool           `db:"isExternal"`
+	ExternalSchema sql.NullString `db:"externalSchema"`
+	ExternalHost   sql.NullString `db:"externalHost"`
+	ExternalPort   sql.NullInt64 `db:"externalPort"`
+	ManifestData   sql.NullString `db:"manifest"`
+	Manifest       *PluginManifest `db:"-"`
+	Created        time.Time      `db:"created"`
+	LastModified   time.Time      `db:"lastModified"`
 }
