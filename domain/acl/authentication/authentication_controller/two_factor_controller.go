@@ -55,10 +55,11 @@ func (ac *AuthController) verifyDevice(c *gin.Context) {
 
 	// generate device token
 	expire := time.Now().Add(time.Minute * utility.GetTimeout(context.Config.DbVars.DeviceAuthTimeout))
-	deviceToken := jwt.New(jwt.SigningMethodHS256)
-	deviceToken.Claims["exp"] = expire.Unix()
-	deviceTokenString, err := deviceToken.SignedString([]byte(context.Config.DbVars.AuthKey))
-
+	deviceToken := jwt.NewWithClaims(jwt.SigningMethodRS256, jwt.MapClaims{
+		"iat": time.Now().Unix(),
+		"exp": expire.Unix() * 1000, // get milliseconds,
+	})
+	deviceTokenString, err := deviceToken.SignedString(context.Config.DbVars.GetRsaPrivateKey(true))
 	if err != nil {
 		errors.ResponseWithSoftRedirect(c, http.StatusUnauthorized, "Error generating device token.", REDIRECT_LOGIN)
 		return

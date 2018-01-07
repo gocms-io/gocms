@@ -11,6 +11,7 @@ import (
 	"github.com/gocms-io/gocms/utility/log"
 	"net/http"
 	"os"
+	"github.com/gocms-io/gocms/utility/security"
 )
 
 var app *Engine
@@ -33,6 +34,9 @@ func Default() *Engine {
 
 	// migrate cms db
 	db.SQL.MigrateSql()
+
+	// check for rsa keys
+	security.CheckOrGenRSAKeys(db.SQL.Dbx)
 
 	// setup log level
 	switch context.Config.EnvVars.LogLevel {

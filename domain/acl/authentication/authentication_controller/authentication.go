@@ -7,6 +7,7 @@ import (
 	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/utility"
 	"time"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 const (
@@ -52,10 +53,25 @@ func (ac *AuthController) Default() {
 	}
 }
 
+type MyCustomClaims struct {
+	userId string `json:"userId"`
+	jwt.StandardClaims
+}
+
 func (ac *AuthController) createToken(userId int64) (string, error) {
 	expire := time.Now().Add(time.Minute * utility.GetTimeout(context.Config.DbVars.UserAuthTimeout))
-	userToken := jwt.New(jwt.SigningMethodHS256)
-	userToken.Claims["userId"] = userId
-	userToken.Claims["exp"] = expire.Unix() * 1000 // get milliseconds
-	return userToken.SignedString([]byte(context.Config.DbVars.AuthKey))
+
+	token := jwt.NewWithClaims(jwt.SigningMethodRS256, jwt.MapClaims{
+		"userId": userId,
+		"iat": time.Now().Unix(),
+		"exp": expire.Unix() * 1000, // get milliseconds,
+
+	})
+	tokenString, err := token.SignedString(context.Config.DbVars.GetRsaPrivateKey(true))
+	if err != nil {
+		log.Errorf("Error signing token for account %v: %v\n", userId, err.Error())
+		return "", err
+	}
+
+	return tokenString, nil
 }

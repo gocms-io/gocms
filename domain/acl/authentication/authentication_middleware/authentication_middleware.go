@@ -63,13 +63,11 @@ func (am *AuthMiddleware) addUserToContextIfValidToken(c *gin.Context) {
 			c.Next()
 			return
 		} else {
-
-			userId, ok := token.Claims["userId"].(float64)
+			userId, ok := token.Claims.(jwt.MapClaims)["userId"].(float64)
 			if !ok {
 				c.Next()
 				return
 			} else {
-
 				// get user
 				user, err := am.ServicesGroup.UserService.Get(int64(userId))
 				if err != nil {
@@ -135,14 +133,14 @@ func (am *AuthMiddleware) requireAuthedDevice(c *gin.Context) {
 // verifyToken
 func (am *AuthMiddleware) verifyToken(authHeader string) (*jwt.Token, error) {
 	token, err := jwt.Parse(authHeader, func(token *jwt.Token) (interface{}, error) {
-		if jwt.SigningMethodHS256 != token.Method {
+		if jwt.SigningMethodRS256 != token.Method {
 			return nil, errors.New("Token signing method does not match.")
 		}
 
-		return []byte(context.Config.DbVars.AuthKey), nil
+		return context.Config.DbVars.RSAPub, nil
 	})
 
-	// check for parsing erorr
+	// check for parsing error
 	if err != nil {
 		return nil, err
 	}
