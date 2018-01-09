@@ -28,10 +28,10 @@ func (ihc *InternalHealthController) DefaultInternal() {
 }
 
 /**
-* @api {get} /healthy Service Health Status
-* @apiDescription Used to verify that the services are up and running.
-* @apiName GetHealthy
-* @apiGroup Utility
+* @api {get} (internal)/healthy (Internal) Service Health Status
+* @apiDescription (Internal) Used to verify that the services are up and running.
+* @apiName Internal-GetHealthy
+* @apiGroup (Internal) Utility
  */
 func (hc *InternalHealthController) internalHealth(c *gin.Context) {
 
