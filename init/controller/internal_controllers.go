@@ -27,7 +27,7 @@ func DefaultInternalControllerGroup(ir *gin.Engine, sg *service.ServicesGroup) *
 
 	// setup route groups
 	internalRoutes := &routes.InternalRoutes{
-		InternalRoot:   ir.Group(defaultRoutePrefix),
+		InternalRoot:   ir.Group(defaultInternalRoutePrefix),
 	}
 
 	// define after for 404 catcher

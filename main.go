@@ -38,10 +38,10 @@ type InternalEngine struct {
 }
 
 type gocmsRuntimeSettings struct {
-	port               string
-	msPort             string
-	noExtneralServices bool
-	noInternalServices bool
+	port                string
+	msPort              string
+	noExtneralServices  bool
+	runInternalServices bool
 }
 
 // todo write an optimizer for requirejs
@@ -113,7 +113,7 @@ func (engine *Engine) Listen(uri string) error {
 
 func (engine *InternalEngine) Listen(uri string) error {
 
-	log.Infof("Listening on: %v\n", uri)
+	log.Infof("(Internal API) Listening on: %v\n", uri)
 	err := http.ListenAndServe(uri, engine.Gin)
 	return err
 
@@ -127,15 +127,15 @@ func main() {
 	// get ports
 	rs := getRuntimeSettings()
 
-	// no external if needed
+	// skip external if needed
 	if !rs.noExtneralServices {
 		g.Go(func() error {
 			return egocms.Listen(":" + rs.port)
 		})
 	}
 
-	// no internal if needed
-	if !rs.noInternalServices {
+	// run internal if needed
+	if rs.runInternalServices {
 		g.Go(func() error {
 			return igocms.Listen(":" + rs.msPort)
 		})
@@ -151,11 +151,11 @@ func getRuntimeSettings() *gocmsRuntimeSettings {
 	portFlag := flag.String("port", "", "port to run on. Overrides all.")
 	msPortFlag := flag.String("msPort", "", "msPort to run on. Overrides all.")
 	noExternalServiceFlag := flag.Bool("noExternal", false, "noExternal when this flag is set gocms will not run external services.")
-	noInternalServiceFlag := flag.Bool("noInternal", false, "noInternal when this flag is set gocms will not run internal services.")
+	runIternalServiceFlag := flag.Bool("runInternal", false, "runInternal when this flag is set gocms will run internal services.")
 	flag.Parse()
 
 	noExternalService := *noExternalServiceFlag
-	noInternalService := *noInternalServiceFlag
+	runInternalService := *runIternalServiceFlag
 
 	///////// PORT ///////////
 	// get server port in order of importance
@@ -195,9 +195,9 @@ func getRuntimeSettings() *gocmsRuntimeSettings {
 	}
 
 	return &gocmsRuntimeSettings{
-		port:   port,
-		msPort: msPort,
-		noExtneralServices: noExternalService,
-		noInternalServices: noInternalService,
+		port:                port,
+		msPort:              msPort,
+		noExtneralServices:  noExternalService,
+		runInternalServices: runInternalService,
 	}
 }
