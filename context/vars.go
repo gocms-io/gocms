@@ -26,6 +26,7 @@ type dbVars struct {
 
 	// App Config
 	Port                string
+	MsPort                string
 	PublicApiUrl        string
 	RedirectRootUrl     string
 	CorsHost            string
@@ -73,6 +74,7 @@ func (dbVars *dbVars) LoadDbVars(settings map[string]setting_model.Setting) {
 
 	// App Config
 	dbVars.Port = GetStringOrFail("PORT", settings)
+	dbVars.MsPort = GetStringOrFail("MS_PORT", settings)
 	dbVars.PublicApiUrl = GetStringOrFail("PUBLIC_API_URL", settings)
 	dbVars.RedirectRootUrl = GetStringOrFail("REDIRECT_ROOT_URL", settings)
 	dbVars.CorsHost = GetStringOrFail("CORS_HOST", settings)

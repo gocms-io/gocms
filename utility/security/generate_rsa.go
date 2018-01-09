@@ -10,7 +10,7 @@ import (
 	"encoding/pem"
 )
 
-func CheckOrGenRSAKeys(db *sqlx.DB) bool {
+func rsaPrivKey(db *sqlx.DB) bool {
 
 	var rsaPriv setting_model.Setting
 
