@@ -23,6 +23,7 @@ func DefaultHealthController(routes *routes.Routes, serviceGroup *service.Servic
 	return hc
 }
 
+
 func (hc *HealthController) Default() {
 	hc.routes.Public.GET("/healthy", hc.health)
 }

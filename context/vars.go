@@ -45,6 +45,7 @@ type dbVars struct {
 	UseTwoFactor           bool
 	PasswordComplexity     int64
 	PermissionsCacheLife   int64
+	MicroserviceSecret	string
 
 	// rsa
 	rsaPriv             *rsa.PrivateKey
@@ -90,6 +91,7 @@ func (dbVars *dbVars) LoadDbVars(settings map[string]setting_model.Setting) {
 	dbVars.PasswordComplexity = GetIntOrFail("PASSWORD_COMPLEXITY", settings)
 	dbVars.OpenRegistration = GetBoolOrFail("OPEN_REGISTRATION", settings)
 	dbVars.PermissionsCacheLife = GetIntOrFail("PERMISSIONS_CACHE_LIFE", settings)
+	dbVars.MicroserviceSecret = GetStringOrFail("MS_SECRET_KEY", settings)
 
 	// RSA
 	// rsa priv privKey
