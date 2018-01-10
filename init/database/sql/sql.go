@@ -10,6 +10,7 @@ import (
 	"github.com/rubenv/sql-migrate"
 )
 
+
 type SQL struct {
 	Dbx        *sqlx.DB
 	migrations *migrate.MemoryMigrationSource

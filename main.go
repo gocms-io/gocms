@@ -37,7 +37,12 @@ type InternalEngine struct {
 	Database          *database.Database
 }
 
+type gocmsFlags struct {
+
+}
+
 type gocmsRuntimeSettings struct {
+	help bool
 	port                string
 	msPort              string
 	noExtneralServices  bool
@@ -105,16 +110,20 @@ func Default() (e *Engine, ie *InternalEngine) {
 
 func (engine *Engine) Listen(uri string) error {
 
-	log.Infof("Listening on: %v\n", uri)
 	err := http.ListenAndServe(uri, engine.Gin)
+	if err == nil {
+		log.Infof("Listening on: %v\n", uri)
+	}
 	return err
 
 }
 
 func (engine *InternalEngine) Listen(uri string) error {
 
-	log.Infof("(Internal API) Listening on: %v\n", uri)
 	err := http.ListenAndServe(uri, engine.Gin)
+	if err == nil {
+		log.Infof("(Internal API) Listening on: %v\n", uri)
+	}
 	return err
 
 }
@@ -146,16 +155,20 @@ func main() {
 	}
 }
 
+
 func getRuntimeSettings() *gocmsRuntimeSettings {
+
+
 	// define flags
 	portFlag := flag.String("port", "", "port to run on. Overrides all.")
 	msPortFlag := flag.String("msPort", "", "msPort to run on. Overrides all.")
 	noExternalServiceFlag := flag.Bool("noExternal", false, "noExternal when this flag is set gocms will not run external services.")
-	runIternalServiceFlag := flag.Bool("runInternal", false, "runInternal when this flag is set gocms will run internal services.")
+	runInternalServiceFlag := flag.Bool("runInternal", false, "runInternal when this flag is set gocms will run internal services.")
 	flag.Parse()
 
+
 	noExternalService := *noExternalServiceFlag
-	runInternalService := *runIternalServiceFlag
+	runInternalService := *runInternalServiceFlag
 
 	///////// PORT ///////////
 	// get server port in order of importance
