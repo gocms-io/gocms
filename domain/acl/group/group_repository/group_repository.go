@@ -12,8 +12,10 @@ type IGroupsRepository interface {
 	GetAll() (*[]group_model.Group, error)
 
 	GetUserGroups(userId int64) ([]*group_model.Group, error)
-	AddUserToGroup(userId int64, groupId int64) error
-	RemoveUserFromGroup(userId int64, groupId int64) error
+	AddUserToGroupById(userId int64, groupId int64) error
+	AddUserToGroupByName(userId int64, groupName string) error
+	RemoveUserFromGroupById(userId int64, groupId int64) error
+	RemoveUserFromGroupByName(userId int64, groupName string) error
 }
 
 type GroupsRepository struct {
@@ -91,12 +93,12 @@ func (pr *GroupsRepository) GetUserGroups(userId int64) ([]*group_model.Group, e
 	return userGroups, nil
 }
 
-// AddUserToGroup adds a user to the group via userId and groupId
-func (pr *GroupsRepository) AddUserToGroup(userId int64, groupId int64) error {
+// AddUserToGroupById adds a user to the group via userId and groupId
+func (pr *GroupsRepository) AddUserToGroupById(userId int64, groupId int64) error {
 
 	// insert user
 	_, err := pr.database.NamedExec(`
-	INSERT INTO gocms_users_to_groups (userId, groupId) VALUES (:userId, :groupId)
+	INSERT INTO gocms_users_to_groups (userId, groupId) VALUES (?, :groupId)
 	`, map[string]interface{}{"userId": userId, "groupId": groupId})
 	if err != nil {
 		log.Errorf("Error adding user %v to group %v: %s\n", userId, groupId, err.Error())
@@ -106,8 +108,28 @@ func (pr *GroupsRepository) AddUserToGroup(userId int64, groupId int64) error {
 
 }
 
-// RemoveUserFromGroup removes a user from the group via userId and groupId
-func (pr *GroupsRepository) RemoveUserFromGroup(userId int64, groupId int64) error {
+// AddUserToGroupByName adds a user to the group via userId and groupName
+func (pr *GroupsRepository) AddUserToGroupByName(userId int64, groupName string) error {
+
+	// insert user
+	_, err := pr.database.Exec(`
+	INSERT INTO gocms_users_to_groups (userId, groupId) VALUES (?, (
+    	SELECT g.id
+    	FROM gocms_groups as g
+    	WHERE g.name = ?
+		)
+	);
+	`, userId, groupName)
+	if err != nil {
+		log.Errorf("Error adding user %v to group %v: %s\n", userId, groupName, err.Error())
+		return err
+	}
+	return nil
+
+}
+
+// RemoveUserFromGroupById removes a user from the group via userId and groupId
+func (pr *GroupsRepository) RemoveUserFromGroupById(userId int64, groupId int64) error {
 
 	_, err := pr.database.NamedExec(`
 	DELETE FROM gocms_users_to_groups
@@ -116,6 +138,26 @@ func (pr *GroupsRepository) RemoveUserFromGroup(userId int64, groupId int64) err
 	`, map[string]interface{}{"userId": userId, "groupId": groupId})
 	if err != nil {
 		log.Errorf("Error deleting user %v to group %v: %s\n", userId, groupId, err.Error())
+		return err
+	}
+
+	return nil
+}
+
+// RemoveUserFromGroupByName removes a user from the group via userId and groupName
+func (pr *GroupsRepository) RemoveUserFromGroupByName(userId int64, groupName string) error {
+
+	_, err := pr.database.Exec(`
+	DELETE FROM gocms_users_to_groups
+	WHERE userId = ?
+	AND groupId = (
+		SELECT g.id
+		FROM gocms_groups as g
+		WHERE g.name = ?
+	);
+	`, userId, groupName)
+	if err != nil {
+		log.Errorf("Error deleting user %v to group %v: %s\n", userId, groupName, err.Error())
 		return err
 	}
 

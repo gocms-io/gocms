@@ -11,6 +11,8 @@ func Default() *migrate.MemoryMigrationSource {
 			CreateInitial(),
 			AddLastModified(),
 			AddACL(),
+			AddExternalPlugin(),
+			MigrateToRSAKeys(),
 		},
 	}
 	return &migrationsList

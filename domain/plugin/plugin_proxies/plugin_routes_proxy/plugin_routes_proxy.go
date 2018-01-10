@@ -20,6 +20,7 @@ type PluginRoutesProxy struct {
 	PluginId        string
 	UpdateProxyChan chan (*PluginRoutesProxy)
 	Disabled        bool
+	IsExternal bool
 }
 
 func (ppm *PluginRoutesProxy) ReverseProxy() gin.HandlerFunc {

@@ -10,13 +10,14 @@ import (
 )
 
 type IPluginsService interface {
-	StartActivePlugins() error
+	StartPluginsService() error
 	RegisterActivePluginRoutes(routes *routes.Routes) error
 	GetDatabasePlugins() (map[string]*plugin_model.PluginDatabaseRecord, error)
 	RefreshInstalledPlugins() error
 	GetActivePlugins() map[string]*plugin_model.Plugin
 	NewPluginMiddlewareProxyByRank() *PluginMiddlewareProxyByRank
 }
+
 
 type PluginsService struct {
 	repositoriesGroup *repository.RepositoriesGroup

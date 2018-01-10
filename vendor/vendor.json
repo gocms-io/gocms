@@ -81,12 +81,10 @@
 			"revisionTime": "2016-11-09T13:10:55Z"
 		},
 		{
-			"checksumSHA1": "CMfwCFcZRDJeIVVbIHa6t4Aewl8=",
+			"checksumSHA1": "+TKtBzv23ywvmmqRiGEjUba4YmI=",
 			"path": "github.com/dgrijalva/jwt-go",
-			"revision": "268038b363c7a8d7306b8e35bf77a1fde4b0c402",
-			"revisionTime": "2016-06-16T19:14:24Z",
-			"version": "v2",
-			"versionExact": "v2.7.0"
+			"revision": "dbeaa9332f19a944acb5736b4456cfcc02140e29",
+			"revisionTime": "2017-10-19T21:57:19Z"
 		},
 		{
 			"checksumSHA1": "f47hKP/6lP8vN9tirOj1O+dHTXQ=",
@@ -382,6 +380,12 @@
 			"path": "golang.org/x/net/context/ctxhttp",
 			"revision": "10c134ea0df15f7e34d789338c7a2d76cc7a3ab9",
 			"revisionTime": "2017-02-23T22:05:28Z"
+		},
+		{
+			"checksumSHA1": "S0DP7Pn7sZUmXc55IzZnNvERu6s=",
+			"path": "golang.org/x/sync/errgroup",
+			"revision": "fd80eb99c8f653c847d294a001bdf2a3a6f768f5",
+			"revisionTime": "2017-11-01T19:49:15Z"
 		},
 		{
 			"checksumSHA1": "oVd5OHIvNHR5bhUvnBMPLVjaL6E=",

@@ -2,7 +2,9 @@ package context
 
 import (
 	"github.com/gocms-io/gocms/domain/setting/setting_model"
+	"crypto/rsa"
 	"github.com/gocms-io/gocms/utility/log"
+	"github.com/dgrijalva/jwt-go"
 )
 
 type envVars struct {
@@ -24,6 +26,7 @@ type dbVars struct {
 
 	// App Config
 	Port                string
+	MsPort                string
 	PublicApiUrl        string
 	RedirectRootUrl     string
 	CorsHost            string
@@ -34,7 +37,6 @@ type dbVars struct {
 	DisableDefaultLoginPage bool
 
 	// Authentication
-	AuthKey                string
 	UserAuthTimeout        int64
 	PasswordResetTimeout   int64
 	EmailActivationTimeout int64
@@ -43,6 +45,11 @@ type dbVars struct {
 	UseTwoFactor           bool
 	PasswordComplexity     int64
 	PermissionsCacheLife   int64
+	MicroserviceSecret	string
+
+	// rsa
+	rsaPriv             *rsa.PrivateKey
+	RSAPub              *rsa.PublicKey
 
 	// SMTP
 	SMTPServer      string
@@ -68,13 +75,13 @@ func (dbVars *dbVars) LoadDbVars(settings map[string]setting_model.Setting) {
 
 	// App Config
 	dbVars.Port = GetStringOrFail("PORT", settings)
+	dbVars.MsPort = GetStringOrFail("MS_PORT", settings)
 	dbVars.PublicApiUrl = GetStringOrFail("PUBLIC_API_URL", settings)
 	dbVars.RedirectRootUrl = GetStringOrFail("REDIRECT_ROOT_URL", settings)
 	dbVars.CorsHost = GetStringOrFail("CORS_HOST", settings)
 	dbVars.SettingsRefreshRate = GetIntOrFail("SETTINGS_REFRESH_RATE", settings)
 
 	// Authentication
-	dbVars.AuthKey = GetStringOrFail("AUTHENTICATION_KEY", settings)
 	dbVars.UserAuthTimeout = GetIntOrFail("USER_AUTHENTICATION_TIMEOUT", settings)
 	dbVars.PasswordResetTimeout = GetIntOrFail("PASSWORD_RESET_TIMEOUT", settings)
 	dbVars.DeviceAuthTimeout = GetIntOrFail("DEVICE_AUTHENTICATION_TIMEOUT", settings)
@@ -84,6 +91,24 @@ func (dbVars *dbVars) LoadDbVars(settings map[string]setting_model.Setting) {
 	dbVars.PasswordComplexity = GetIntOrFail("PASSWORD_COMPLEXITY", settings)
 	dbVars.OpenRegistration = GetBoolOrFail("OPEN_REGISTRATION", settings)
 	dbVars.PermissionsCacheLife = GetIntOrFail("PERMISSIONS_CACHE_LIFE", settings)
+	dbVars.MicroserviceSecret = GetStringOrFail("MS_SECRET_KEY", settings)
+
+	// RSA
+	// rsa priv privKey
+	rsaPrivStr := GetStringOrFail("RSA_PRIV", settings)
+	privKey, err := jwt.ParseRSAPrivateKeyFromPEM([]byte(rsaPrivStr))
+	if err !=nil {
+		log.Criticalf("Can't parse rsa privKey: %v\n", err.Error())
+	}
+	dbVars.rsaPriv = privKey
+
+	// rsa pub privKey
+	rsaPubStr := GetStringOrFail("RSA_PUB", settings)
+	pubKey, err := jwt.ParseRSAPublicKeyFromPEM([]byte(rsaPubStr))
+	if err !=nil {
+		log.Criticalf("Can't parse rsa pubKey: %v\n", err.Error())
+	}
+	dbVars.RSAPub = pubKey
 
 	// SMTP
 	dbVars.SMTPServer = GetStringOrFail("SMTP_SERVER", settings)
@@ -99,4 +124,12 @@ func (dbVars *dbVars) LoadDbVars(settings map[string]setting_model.Setting) {
 	dbVars.LoginTitle = GetStringOrFail("GOCMS_LOGIN_TITLE", settings)
 	dbVars.LoginSuccessRedirect = GetStringOrFail("GOCMS_LOGIN_SUCCESS_REDIRECT", settings)
 
+}
+
+func (dbVars *dbVars) GetRsaPrivateKey(iWillBeSecure bool) *rsa.PrivateKey {
+	if iWillBeSecure {
+		return dbVars.rsaPriv
+	}
+
+	return nil
 }

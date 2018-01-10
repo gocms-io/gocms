@@ -15,6 +15,7 @@ import (
 	"github.com/gocms-io/gocms/init/repository"
 	"github.com/gocms-io/gocms/utility/log"
 	"time"
+	"github.com/gocms-io/gocms/domain/acl/group/group_service"
 )
 
 type ServicesGroup struct {
@@ -22,6 +23,7 @@ type ServicesGroup struct {
 	MailService       mail_service.IMailService
 	AuthService       authentication_service.IAuthService
 	PermissionService permission_service.IPermissionService
+	GroupService      group_service.IGroupService
 	UserService       user_service.IUserService
 	AclService        access_control_service.IAclService
 	EmailService      email_service.IEmailService
@@ -50,6 +52,7 @@ func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup, db *d
 	aclService.RefreshPermissionsCache()
 
 	permissionService := permission_service.DefaultPermissionService(repositoriesGroup)
+	groupService := group_service.DefaultGroupService(repositoriesGroup)
 
 	authService := authentication_service.DefaultAuthService(repositoriesGroup, mailService)
 	userService := user_service.DefaultUserService(repositoriesGroup, authService, mailService)
@@ -63,7 +66,7 @@ func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup, db *d
 	if pluginRelatedErr != nil {
 		log.Errorf("Error finding plugins. Can't start plugin microservice: %s\n", pluginRelatedErr.Error())
 	} else {
-		pluginRelatedErr = pluginsService.StartActivePlugins()
+		pluginRelatedErr = pluginsService.StartPluginsService()
 	}
 
 	// heath service
@@ -74,6 +77,7 @@ func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup, db *d
 		MailService:       mailService,
 		AuthService:       authService,
 		PermissionService: permissionService,
+		GroupService:      groupService,
 		UserService:       userService,
 		AclService:        aclService,
 		EmailService:      emailService,

@@ -11,9 +11,15 @@ import (
 	"github.com/gocms-io/gocms/utility/log"
 	"net/http"
 	"os"
+	"github.com/gocms-io/gocms/utility/security"
+	"golang.org/x/sync/errgroup"
 )
 
-var app *Engine
+var (
+	egocms *Engine
+	igocms *InternalEngine
+	g      errgroup.Group
+)
 
 type Engine struct {
 	Gin               *gin.Engine
@@ -23,16 +29,39 @@ type Engine struct {
 	Database          *database.Database
 }
 
+type InternalEngine struct {
+	Gin               *gin.Engine
+	InternalControllersGroup  *controller.InternalControllersGroup
+	ServicesGroup     *service.ServicesGroup
+	RepositoriesGroup *repository.RepositoriesGroup
+	Database          *database.Database
+}
+
+type gocmsFlags struct {
+
+}
+
+type gocmsRuntimeSettings struct {
+	help bool
+	port                string
+	msPort              string
+	noExtneralServices  bool
+	runInternalServices bool
+}
+
 // todo write an optimizer for requirejs
 
 //go:generate apidoc -c ./ -i ./models -i ./controllers/ -o ./content/docs/ -f ".*\\.go$" -f ".*\\.js$"
-func Default() *Engine {
+func Default() (e *Engine, ie *InternalEngine) {
 
 	// setup database
 	db := database.DefaultSQL()
 
 	// migrate cms db
 	db.SQL.MigrateSql()
+
+	// check for rsa keys
+	security.CheckOrGenRSAKeysAndSecrets(db.SQL.Dbx)
 
 	// setup log level
 	switch context.Config.EnvVars.LogLevel {
@@ -46,6 +75,7 @@ func Default() *Engine {
 		gin.SetMode(gin.DebugMode)
 	}
 	r := gin.Default()
+	ir := gin.Default()
 
 	// setup repositories
 	rg := repository.DefaultRepositoriesGroup(db.SQL.Dbx)
@@ -55,50 +85,132 @@ func Default() *Engine {
 
 	// setup controllers
 	cg := controller.DefaultControllerGroup(r, sg)
+	icg := controller.DefaultInternalControllerGroup(ir, sg)
 
 	// create engine
-	engine := Engine{
+	e = &Engine{
 		Gin:               r,
 		ControllersGroup:  cg,
 		ServicesGroup:     sg,
 		RepositoriesGroup: rg,
 		Database:          db,
 	}
-	return &engine
+
+	// create engine
+	ie = &InternalEngine{
+		Gin:               ir,
+		InternalControllersGroup: icg,
+		ServicesGroup:     sg,
+		RepositoriesGroup: rg,
+		Database:          db,
+	}
+
+	return e, ie
 }
 
-func (engine *Engine) Listen(uri string) {
+func (engine *Engine) Listen(uri string) error {
 
-	log.Infof("Listening on: %v\n", uri)
 	err := http.ListenAndServe(uri, engine.Gin)
-	log.Debugf(err.Error())
+	if err == nil {
+		log.Infof("Listening on: %v\n", uri)
+	}
+	return err
+
+}
+
+func (engine *InternalEngine) Listen(uri string) error {
+
+	err := http.ListenAndServe(uri, engine.Gin)
+	if err == nil {
+		log.Infof("(Internal API) Listening on: %v\n", uri)
+	}
+	return err
 
 }
 
 func main() {
 
 	// startup defaults
-	app = Default()
+	egocms, igocms = Default()
 
-	// start server and listen
+	// get ports
+	rs := getRuntimeSettings()
+
+	// skip external if needed
+	if !rs.noExtneralServices {
+		g.Go(func() error {
+			return egocms.Listen(":" + rs.port)
+		})
+	}
+
+	// run internal if needed
+	if rs.runInternalServices {
+		g.Go(func() error {
+			return igocms.Listen(":" + rs.msPort)
+		})
+	}
+
+	if err := g.Wait(); err != nil {
+		log.Criticalf("Error launching services: %v\n", err.Error())
+	}
+}
+
+
+func getRuntimeSettings() *gocmsRuntimeSettings {
+
+
+	// define flags
+	portFlag := flag.String("port", "", "port to run on. Overrides all.")
+	msPortFlag := flag.String("msPort", "", "msPort to run on. Overrides all.")
+	noExternalServiceFlag := flag.Bool("noExternal", false, "noExternal when this flag is set gocms will not run external services.")
+	runInternalServiceFlag := flag.Bool("runInternal", false, "runInternal when this flag is set gocms will run internal services.")
+	flag.Parse()
+
+
+	noExternalService := *noExternalServiceFlag
+	runInternalService := *runInternalServiceFlag
+
+	///////// PORT ///////////
+	// get server port in order of importance
+	// 3. db
 	port := context.Config.DbVars.Port
-
-	// check if env is set and override
+	// 2. env
 	portEnv := os.Getenv("PORT")
 	if portEnv != "" {
 		port = portEnv
 	}
-
-	// check for port flag and override all
-	portFlag := flag.String("port", "", "port to run on. Overrides all.")
-	flag.Parse()
+	// 1. flag
 	if *portFlag != "" {
 		port = *portFlag
 	}
-
+	// 0. if still unset
 	if port == "" {
 		port = "8080"
 	}
 
-	app.Listen(":" + port)
+	///////// MS PORT ///////////
+	// get server port in order of importance
+	// 3. db
+	msPort := context.Config.DbVars.MsPort
+	// 2. env
+	msPortEnv := os.Getenv("msPort")
+	if msPortEnv != "" {
+		msPort = msPortEnv
+	}
+	// 1. flag
+	// check for msPort flag and override all
+	if *msPortFlag != "" {
+		msPort = *msPortFlag
+	}
+	// 0. if still unset
+	if msPort == "" {
+		msPort = "8081"
+	}
+
+	return &gocmsRuntimeSettings{
+		port:                port,
+		msPort:              msPort,
+		noExtneralServices:  noExternalService,
+		runInternalServices: runInternalService,
+	}
 }

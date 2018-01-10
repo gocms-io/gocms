@@ -4,6 +4,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
 	"github.com/gocms-io/gocms/utility/log"
+	"encoding/json"
 )
 
 type IPluginRepository interface {
@@ -29,8 +30,21 @@ func (pr *PluginRepository) GetDatabasePlugins() ([]*plugin_model.PluginDatabase
 	SELECT * from gocms_plugins
 	`)
 	if err != nil {
-		log.Errorf("Error getting getting latest security code for user from database: %s", err.Error())
+		log.Errorf("Error getting getting database plugins from database: %s", err.Error())
 		return nil, err
 	}
+
+	// parse manifest if it exists
+	for _, pluginRecord := range pluginRecords {
+		var manifest plugin_model.PluginManifest
+		if pluginRecord.ManifestData.String != "" {
+			err := json.Unmarshal([]byte(pluginRecord.ManifestData.String), &manifest)
+			if err != nil {
+				log.Errorf("Error getting plugin %v manifest: %v\n", pluginRecord.PluginId, err.Error())
+			}
+			pluginRecord.Manifest = &manifest
+		}
+	}
+
 	return pluginRecords, nil
 }
