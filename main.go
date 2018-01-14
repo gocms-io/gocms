@@ -51,7 +51,7 @@ type gocmsRuntimeSettings struct {
 
 // todo write an optimizer for requirejs
 
-//go:generate apidoc -c ./ -i ./models -i ./controllers/ -o ./content/docs/ -f ".*\\.go$" -f ".*\\.js$"
+//go:generate apidoc -c ./ -i ./domain -o ./content/docs/ -f ".*\\.go$" -f ".*\\.js$"
 func Default() (e *Engine, ie *InternalEngine) {
 
 	// setup database
@@ -119,13 +119,7 @@ func (engine *Engine) Listen(uri string) error {
 }
 
 func (engine *InternalEngine) Listen(uri string) error {
-
-	err := http.ListenAndServe(uri, engine.Gin)
-	if err == nil {
-		log.Infof("(Internal API) Listening on: %v\n", uri)
-	}
-	return err
-
+	return http.ListenAndServe(uri, engine.Gin)
 }
 
 func main() {
@@ -139,6 +133,7 @@ func main() {
 	// skip external if needed
 	if !rs.noExtneralServices {
 		g.Go(func() error {
+			log.Infof("Listening On: %v\n", rs.port)
 			return egocms.Listen(":" + rs.port)
 		})
 	}
@@ -146,6 +141,7 @@ func main() {
 	// run internal if needed
 	if rs.runInternalServices {
 		g.Go(func() error {
+			log.Infof("(Internal) Listening On: %v\n", rs.msPort)
 			return igocms.Listen(":" + rs.msPort)
 		})
 	}
@@ -153,6 +149,7 @@ func main() {
 	if err := g.Wait(); err != nil {
 		log.Criticalf("Error launching services: %v\n", err.Error())
 	}
+
 }
 
 

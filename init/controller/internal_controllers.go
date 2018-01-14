@@ -10,32 +10,35 @@ import (
 	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/domain/health/health_controller"
 	"github.com/gocms-io/gocms/domain/acl/group/group_controller"
+	"github.com/gocms-io/gocms/domain/user/user_admin_controller"
 )
 
 type InternalControllersGroup struct {
-	InternalRoutes            *routes.InternalRoutes
-	InternalHealthyController *health_controller.InternalHealthController
-	InternalGroupController *group_controller.InternalGroupController
+	routes            *routes.Routes
+	InternalHealthyController *health_controller.HealthController
+	InternalGroupController *group_controller.GroupController
+	UserAdminController *user_admin_controller.UserAdminController
 }
 
 var (
 	defaultInternalRoutePrefix = "/internal/api"
 )
 
-func DefaultInternalControllerGroup(ir *gin.Engine, sg *service.ServicesGroup) *InternalControllersGroup {
+func DefaultInternalControllerGroup(ie *gin.Engine, sg *service.ServicesGroup) *InternalControllersGroup {
 
 	// require microservice secret to use internal api
-	ir.Use(RequireMicroserviceSecretMiddleware())
+	ie.Use(RequireMicroserviceSecretMiddleware())
 
 	// setup route groups
-	internalRoutes := &routes.InternalRoutes{
-		InternalRoot:   ir.Group(defaultInternalRoutePrefix),
+	ir := &routes.Routes{
+		InternalRoot:   ie.Group(defaultInternalRoutePrefix),
 	}
 
 	// define after for 404 catcher
 	icg := &InternalControllersGroup{
-		InternalHealthyController: health_controller.DefaultInternalHealthController(internalRoutes, sg),
-		InternalGroupController: group_controller.DefaultInternalGroupController(internalRoutes, sg),
+		InternalHealthyController: health_controller.InternalHealthController(ir, sg),
+		InternalGroupController: group_controller.InternalGroupController(ir, sg),
+		UserAdminController: user_admin_controller.InternalUserAdminController(ir, sg),
 	}
 
 	return icg

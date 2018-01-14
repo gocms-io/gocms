@@ -2,6 +2,7 @@ package errors
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/aws/aws-sdk-go/aws"
 )
 
 const (
@@ -44,8 +45,6 @@ func (e *apiError) Include() bool {
 }
 
 // An Error Response is the default error that is used for api responses.
-//
-// swagger:model error
 type ErrorResponse struct {
 	Code     int         `json:"code,string"`
 	Message  string      `json:"message,string"`

@@ -8,16 +8,19 @@ import (
 	"github.com/gocms-io/gocms/utility/log"
 )
 
-var GET string = "GET"
-var POST string = "POST"
-var PUT string = "PUT"
-var DELETE string = "DELETE"
+type RequestMethod string
+
+
+const GET RequestMethod = "GET"
+const POST RequestMethod = "POST"
+const PUT RequestMethod = "PUT"
+const DELETE RequestMethod = "DELETE"
 
 type Request struct {
 	Url     string
 	Headers map[string]string
 	Body    []byte
-	method  string
+	method  RequestMethod
 }
 
 type RestResponse struct {
@@ -36,9 +39,19 @@ func (rr *Request) Post() (*RestResponse, error) {
 	return rr.do()
 }
 
+func (rr *Request) Put() (*RestResponse, error) {
+	rr.method = PUT
+	return rr.do()
+}
+
+func (rr *Request) Delete() (*RestResponse, error) {
+	rr.method = DELETE
+	return rr.do()
+}
+
 func (rr *Request) do() (*RestResponse, error) {
 	// create request
-	req, err := http.NewRequest(rr.method, rr.Url, bytes.NewBuffer(rr.Body))
+	req, err := http.NewRequest(string(rr.method), rr.Url, bytes.NewBuffer(rr.Body))
 	if err != nil {
 		log.Errorf("Error creating new request: %s", err.Error())
 		return nil, err

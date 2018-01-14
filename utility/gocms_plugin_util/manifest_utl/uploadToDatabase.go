@@ -25,7 +25,7 @@ func InsertManifest(filePath string, iDriver interface{}) error {
 	}
 	drvr, ok := iDriver.(sql.DB)
 	if !ok {
-		err = errors.New(fmt.Sprintf("SQL interface for plugin %v resolved as %T", manifest.Id, drvr))
+		err = errors.New(fmt.Sprintf("Error SQL interface for plugin %v resolved as %T", manifest.Id, drvr))
 		log.Errorf("%v\n", err.Error())
 		return err
 	}

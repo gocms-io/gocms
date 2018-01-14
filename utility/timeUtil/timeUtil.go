@@ -2,6 +2,11 @@ package timeUtil
 
 import "time"
 
+var MYSQL_TIME_STAMP_FORMAT = "2006-01-02 15:04:05"
+var INPUT_DATETIME_STAMP_FORMAT = "01-02-2006 15:04:05"
+var INPUT_TIME_STAMP_FORMAT = "15:04:05"
+var INPUT_DATE_STAMP_FORMAT = "01-02-2006"
+
 // for available timezones see
 // https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 

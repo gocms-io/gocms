@@ -12,6 +12,7 @@ var GENDER_MALE int64 = 1
 var GENDER_FEMALE int64 = 2
 
 // TODO remove user json binding and create a user input.
+
 type User struct {
 	Id           int64  `json:"id" db:"id"`
 	FullName     string `json:"fullName" db:"fullName"`

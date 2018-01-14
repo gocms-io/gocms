@@ -1,7 +1,7 @@
 {
   "name": "goCMS API",
   "version": "0.0.1",
-  "description": "Core API functionality for goCMS.<br/><br/><h5>All requests accept the header: 'X-TIMEZONE' for localization. <a href='https://en.wikipedia.org/wiki/List_of_tz_database_time_zones'>See accepted values.</a></h5>",
+  "description": "Core API functionality for goCMS.<br/><br/><p>Api requests marked with (*I) indicate that they are also available via the internal api</p><p>Api requests marked with (*IO) indicate that they are only available via the internal api</p><p>All requests accept the header: 'X-TIMEZONE' for localization. <a href='https://en.wikipedia.org/wiki/List_of_tz_database_time_zones'>See accepted values.</a></p>",
   "title": "GoCMS",
   "url": "{protocol}://{host}/api"
 }

@@ -13,6 +13,7 @@ func Default() *migrate.MemoryMigrationSource {
 			AddACL(),
 			AddExternalPlugin(),
 			MigrateToRSAKeys(),
+			ConvertDatetimeToTimestamp(),
 		},
 	}
 	return &migrationsList

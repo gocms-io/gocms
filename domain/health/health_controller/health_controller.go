@@ -19,17 +19,24 @@ func DefaultHealthController(routes *routes.Routes, serviceGroup *service.Servic
 		serviceGroup: serviceGroup,
 	}
 
-	hc.Default()
+	hc.routes.Public.GET("/healthy", hc.health)
+
 	return hc
 }
 
+func InternalHealthController(routes *routes.Routes, serviceGroup *service.ServicesGroup) *HealthController {
+	hc := &HealthController{
+		routes:       routes,
+		serviceGroup: serviceGroup,
+	}
 
-func (hc *HealthController) Default() {
-	hc.routes.Public.GET("/healthy", hc.health)
+	hc.routes.InternalRoot.GET("/healthy", hc.health)
+
+	return hc
 }
 
 /**
-* @api {get} /healthy Service Health Status
+* @api {get} /healthy Service Health Status (*I)
 * @apiDescription Used to verify that the services are up and running.
 * @apiName GetHealthy
 * @apiGroup Utility

@@ -8,34 +8,52 @@ import (
 	"strconv"
 	"github.com/gocms-io/gocms/utility/errors"
 	"github.com/gocms-io/gocms/utility/sqlUtl"
+	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_middleware"
+	"github.com/gocms-io/gocms/domain/acl/permissions"
 )
 
-type InternalGroupController struct {
-	internalRoutes *routes.InternalRoutes
+type GroupController struct {
+	routes *routes.Routes
 	servicesGroup  *service.ServicesGroup
 }
 
-func DefaultInternalGroupController(iRoutes *routes.InternalRoutes, sg *service.ServicesGroup) *InternalGroupController {
-	internalGroupController := &InternalGroupController{
-		internalRoutes: iRoutes,
+func DefaultGroupAdminController(routes *routes.Routes, sg *service.ServicesGroup) *GroupController {
+	gc := &GroupController{
+		routes:        routes,
 		servicesGroup:  sg,
 	}
-	internalGroupController.InternalDefault()
-	return internalGroupController
+
+	// add acl rules to route
+	adminRoutes := routes.Auth.Group("/admin", access_control_middleware.RequirePermission(sg.AclService, permissions.SUPER_ADMIN))
+
+
+	adminRoutes.POST("/acl/addUser/:userId/toGroupByName/:groupName", gc.addUserToGroupByName)
+	adminRoutes.DELETE("/acl/removeUser/:userId/fromGroupByName/:groupName", gc.removeUserFromGroupByName)
+
+
+	return gc
+
 }
 
-func (ec *InternalGroupController) InternalDefault() {
-	ec.internalRoutes.InternalRoot.POST("/acl/addUser/:userId/toGroupByName/:groupName", ec.addUserToGroupByName)
-	ec.internalRoutes.InternalRoot.DELETE("/acl/removeUser/:userId/fromGroupByName/:groupName", ec.removeUserFromGroupByName)
+func InternalGroupController(routes *routes.Routes, sg *service.ServicesGroup) *GroupController {
+	igc := &GroupController{
+		routes:        routes,
+		servicesGroup:  sg,
+	}
+
+	igc.routes.InternalRoot.POST("/acl/addUser/:userId/toGroupByName/:groupName", igc.addUserToGroupByName)
+	igc.routes.InternalRoot.DELETE("/acl/removeUser/:userId/fromGroupByName/:groupName", igc.removeUserFromGroupByName)
+
+	return igc
 }
 
 /**
-* @api {post} (internal)/acl/addUser/:userId/toGroupByName/:groupName (Internal) Add User To Group By Name
+* @api {post} (internal)/acl/addUser/:userId/toGroupByName/:groupName Add User To Group By Name (*IO)
 * @apiName AddUserToGroup
-* @apiGroup (Internal) ACL
+* @apiGroup ACL
 * @apiDescription (Internal) add a user to an acl group by userId and groupName
  */
-func (ec *InternalGroupController) addUserToGroupByName(c *gin.Context) {
+func (igc *GroupController) addUserToGroupByName(c *gin.Context) {
 
 	userIdStr := c.Param("userId")
 	userId, err := strconv.ParseInt(userIdStr,10,64)
@@ -50,7 +68,7 @@ func (ec *InternalGroupController) addUserToGroupByName(c *gin.Context) {
 		return
 	}
 
-	err = ec.servicesGroup.GroupService.AddUserToGroupByName(userId, groupName)
+	err = igc.servicesGroup.GroupService.AddUserToGroupByName(userId, groupName)
 	if err != nil {
 		if sqlUtl.ErrDupEtry(err) {
 			errors.Response(c, http.StatusBadRequest, "User is already a member of this group", err)
@@ -64,12 +82,12 @@ func (ec *InternalGroupController) addUserToGroupByName(c *gin.Context) {
 }
 
 /**
-* @api {delete} (internal)/acl/removeUser/:userId/fromGroupByName/:groupName (Internal) Remove User From Group By Name
+* @api {delete} (internal)/acl/removeUser/:userId/fromGroupByName/:groupName Remove User From Group By Name (*IO)
 * @apiName RemoveUserFromGroup
-* @apiGroup (Internal) ACL
+* @apiGroup ACL
 * @apiDescription (Internal) remove a user from an acl group by userId and groupName
  */
-func (ec *InternalGroupController) removeUserFromGroupByName(c *gin.Context) {
+func (igc *GroupController) removeUserFromGroupByName(c *gin.Context) {
 
 	userIdStr := c.Param("userId")
 	userId, err := strconv.ParseInt(userIdStr,10,64)
@@ -84,7 +102,7 @@ func (ec *InternalGroupController) removeUserFromGroupByName(c *gin.Context) {
 		return
 	}
 
-	err = ec.servicesGroup.GroupService.RemoveUserFromGroupByName(userId, groupName)
+	err = igc.servicesGroup.GroupService.RemoveUserFromGroupByName(userId, groupName)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, "There was an error remove the user to the group specified", err)
 		return

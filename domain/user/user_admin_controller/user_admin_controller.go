@@ -14,37 +14,59 @@ import (
 
 type UserAdminController struct {
 	routes        *routes.Routes
-	ServicesGroup *service.ServicesGroup
-	adminRoutes   *gin.RouterGroup
-}
-
-func DefaultUserAdminController(routes *routes.Routes, sg *service.ServicesGroup) *UserAdminController {
-	adminUserController := &UserAdminController{
-		routes:        routes,
-		ServicesGroup: sg,
-	}
-
-	// add acl rules to route
-	adminUserController.adminRoutes = routes.Auth.Group("/admin", access_control_middleware.RequirePermission(sg.AclService, permissions.SUPER_ADMIN))
-
-	adminUserController.Default()
-	return adminUserController
-
+	servicesGroup *service.ServicesGroup
 }
 
 /**
 * @apiDefine Admin Admin User
 * User must be logged in and have the role of Admin.
  */
-func (auc *UserAdminController) Default() {
+func DefaultUserAdminController(routes *routes.Routes, sg *service.ServicesGroup) *UserAdminController {
+	auc := &UserAdminController{
+		routes:        routes,
+		servicesGroup: sg,
+	}
 
-	auc.adminRoutes.GET("/user", auc.getAll)
-	auc.adminRoutes.GET("/user/:userId", auc.get)
-	auc.adminRoutes.PUT("/user/:userId", auc.update)
-	auc.adminRoutes.POST("/user", auc.add)
-	auc.adminRoutes.DELETE("/user/:userId", auc.delete)
+	// add acl rules to route
+	adminRoutes := routes.Auth.Group("/admin", access_control_middleware.RequirePermission(sg.AclService, permissions.SUPER_ADMIN))
+
+
+	adminRoutes.GET("/user", auc.getAll)
+	adminRoutes.GET("/user/:userId", auc.get)
+	adminRoutes.PUT("/user/:userId", auc.update)
+	adminRoutes.POST("/user", auc.add)
+	adminRoutes.DELETE("/user/:userId", auc.delete)
+
+	return auc
+
 }
 
+func InternalUserAdminController(routes *routes.Routes, sg *service.ServicesGroup) *UserAdminController {
+	auc := &UserAdminController{
+		routes:        routes,
+		servicesGroup: sg,
+	}
+
+	routes.InternalRoot.GET("/user", auc.getAll)
+	routes.InternalRoot.GET("/user/:userId", auc.get)
+	routes.InternalRoot.PUT("/user/:userId", auc.update)
+	routes.InternalRoot.POST("/user", auc.add)
+	routes.InternalRoot.DELETE("/user/:userId", auc.delete)
+
+	return auc
+
+}
+
+/**
+* @api {post} /admin/user Add User (*I)
+* @apiDescription Add a new user.
+* @apiName AddUser
+* @apiGroup Admin
+*
+* @apiUse UserAuthHeader
+* @apiUse UserAdminInput
+* @apiPermission Admin
+ */
 func (auc *UserAdminController) add(c *gin.Context) {
 
 	user := &user_model.User{}
@@ -55,14 +77,8 @@ func (auc *UserAdminController) add(c *gin.Context) {
 		return
 	}
 
-	// get password
-	if user.Password == "" {
-		errors.Response(c, http.StatusBadRequest, "New Password Field Required.", err)
-		return
-	}
-
 	// add user
-	err = auc.ServicesGroup.UserService.Add(user)
+	err = auc.servicesGroup.UserService.Add(user)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, err.Error(), err)
 		return
@@ -72,7 +88,7 @@ func (auc *UserAdminController) add(c *gin.Context) {
 }
 
 /**
-* @api {get} /admin/user/:userId Get User By Id
+* @api {get} /admin/user/:userId Get User By Id (*I)
 * @apiDescription Get a user by their Id.
 * @apiName GetUserById
 * @apiGroup Admin
@@ -88,7 +104,7 @@ func (auc *UserAdminController) get(c *gin.Context) {
 		errors.Response(c, http.StatusInternalServerError, err.Error(), err)
 	}
 
-	user, err := auc.ServicesGroup.UserService.Get(userId)
+	user, err := auc.servicesGroup.UserService.Get(userId)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, "Couldn't find user.", err)
 		return
@@ -98,7 +114,7 @@ func (auc *UserAdminController) get(c *gin.Context) {
 }
 
 /**
-* @api {get} /admin/user Get All Users
+* @api {get} /admin/user Get All Users (*I)
 * @apiDescription Used to get a list of all users.
 * @apiName GetAllUsers
 * @apiGroup Admin
@@ -108,7 +124,7 @@ func (auc *UserAdminController) get(c *gin.Context) {
 * @apiPermission Admin
  */
 func (auc *UserAdminController) getAll(c *gin.Context) {
-	users, err := auc.ServicesGroup.UserService.GetAll()
+	users, err := auc.servicesGroup.UserService.GetAll()
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, "Couldn't get users", err)
 		return
@@ -123,6 +139,16 @@ func (auc *UserAdminController) getAll(c *gin.Context) {
 	c.JSON(http.StatusOK, usersAdminDisplays)
 }
 
+/**
+* @api {put} /admin/user/:userId Put User By Id (*I)
+* @apiDescription Put user by id.
+* @apiName UpdateUser
+* @apiGroup Admin
+*
+* @apiUse UserAuthHeader
+* @apiUse UserAddInput
+* @apiPermission Admin
+ */
 func (auc *UserAdminController) update(c *gin.Context) {
 	// get user to update
 	userId, err := strconv.ParseInt(c.Param("userId"), 10, 64)
@@ -141,7 +167,7 @@ func (auc *UserAdminController) update(c *gin.Context) {
 	}
 
 	// do update
-	err = auc.ServicesGroup.UserService.Update(userId, user)
+	err = auc.servicesGroup.UserService.Update(userId, user)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, "Couldn't update user.", err)
 		return
@@ -150,6 +176,15 @@ func (auc *UserAdminController) update(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
+/**
+* @api {delete} /admin/user/:userId Delete User By Id (*I)
+* @apiDescription Delete user by id.
+* @apiName DeleteUser
+* @apiGroup Admin
+*
+* @apiUse UserAuthHeader
+* @apiPermission Admin
+ */
 func (auc *UserAdminController) delete(c *gin.Context) {
 	userId, err := strconv.ParseInt(c.Param("userId"), 10, 64)
 	if err != nil {
@@ -158,7 +193,7 @@ func (auc *UserAdminController) delete(c *gin.Context) {
 	}
 
 	// delete user
-	err = auc.ServicesGroup.UserService.Delete(userId)
+	err = auc.servicesGroup.UserService.Delete(userId)
 	if err != nil {
 		errors.Response(c, http.StatusInternalServerError, "Couldn't delete user.", err)
 		return

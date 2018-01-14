@@ -59,6 +59,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 	// top level middleware
 	r.Use(user_middleware.UUID())
 	r.Use(cors.CORS())
+	r.Use(cors.CORS())
 	r.Use(user_middleware.Timezone())
 	am := authentication_middleware.DefaultAuthMiddleware(sg)
 	r.Use(am.AddUserToContextIfValidToken())
