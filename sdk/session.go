@@ -14,28 +14,22 @@ type Session interface {
 	Do(method rest.RequestMethod, endpoint string, body interface{}) (*rest.RestResponse, error)
 }
 
-
-
 type target struct {
-	Schema string
-	Host   string
-	Port   int64
+	Url    string
 	Secret string
 }
 
-func New(schema string, host string, port int64, secret string) Session {
+func New(url string, secret string) Session {
 
 	return &target{
-		Schema: schema,
-		Host:   host,
-		Port:   port,
+		Url:    url,
 		Secret: secret,
 	}
 
 }
 
 func (s *target) getUrl(endpoint string) string {
-	return fmt.Sprintf("%v://%v:%v%v", s.Schema, s.Host, s.Port, endpoint)
+	return fmt.Sprintf("%v%v", s.Url, endpoint)
 }
 
 func (s *target) getAuthHeader() map[string]string {
@@ -89,7 +83,6 @@ func (s *target) NewSdkErrorFromMessage(statusCode int, funcName string, body []
 	return errors.New(fmt.Sprintf("Gocms SDK Error [%v] - %v: %v", statusCode, funcName, errorObj.Message))
 }
 
-
 func (s *target) NewSdkError(funcName string, message string) error {
-		return errors.New(fmt.Sprintf("Gocms SDK Error - %v: %v", funcName, message))
+	return errors.New(fmt.Sprintf("Gocms SDK Error - %v: %v", funcName, message))
 }

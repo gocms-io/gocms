@@ -2,7 +2,6 @@ package errors
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/aws/aws-sdk-go/aws"
 )
 
 const (
