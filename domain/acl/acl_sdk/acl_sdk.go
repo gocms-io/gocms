@@ -7,7 +7,6 @@ import (
 	"strconv"
 	"net/http"
 	"github.com/gocms-io/gocms/utility/rest"
-	"github.com/gocms-io/gocms/utility/log"
 )
 
 
