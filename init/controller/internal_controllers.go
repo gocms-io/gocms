@@ -11,11 +11,13 @@ import (
 	"github.com/gocms-io/gocms/domain/health/health_controller"
 	"github.com/gocms-io/gocms/domain/acl/group/group_controller"
 	"github.com/gocms-io/gocms/domain/user/user_admin_controller"
+	"github.com/gocms-io/gocms/domain/acl/access_control_controller"
 )
 
 type InternalControllersGroup struct {
 	routes            *routes.Routes
 	InternalHealthyController *health_controller.HealthController
+	InternalAccessControlController *access_control_controller.AccessControlController
 	InternalGroupController *group_controller.GroupController
 	UserAdminController *user_admin_controller.UserAdminController
 }
@@ -37,6 +39,7 @@ func DefaultInternalControllerGroup(ie *gin.Engine, sg *service.ServicesGroup) *
 	// define after for 404 catcher
 	icg := &InternalControllersGroup{
 		InternalHealthyController: health_controller.InternalHealthController(ir, sg),
+		InternalAccessControlController: access_control_controller.InternalAccessControlController(ir, sg),
 		InternalGroupController: group_controller.InternalGroupController(ir, sg),
 		UserAdminController: user_admin_controller.InternalUserAdminController(ir, sg),
 	}
