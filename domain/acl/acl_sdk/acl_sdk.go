@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"net/http"
 	"github.com/gocms-io/gocms/utility/rest"
+	"github.com/gocms-io/gocms/utility/log"
 )
 
 
@@ -28,8 +29,8 @@ func (s *AclSDK) IsAuthorized(userId int64, permission string) (bool, error) {
 	endpointWithData = strings.Replace(endpointWithData, ":permission", permission, -1)
 
 
-	res, err := s.Do(rest.GET, endpointWithData, nil)
-	if err != nil {
+	res, err := s.SkipHttpStatusError().Do(rest.GET, endpointWithData, nil)
+	if err != nil && res.StatusCode != http.StatusUnauthorized{
 		return false, s.NewSdkError( "IsAuthorized", err.Error())
 	}
 

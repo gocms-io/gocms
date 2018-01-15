@@ -12,11 +12,13 @@ type Session interface {
 	NewSdkErrorFromMessage(statusCode int, funcName string, body []byte) error
 	NewSdkError(funcName string, message string) error
 	Do(method rest.RequestMethod, endpoint string, body interface{}) (*rest.RestResponse, error)
+	SkipHttpStatusError() Session
 }
 
 type target struct {
 	Url    string
 	Secret string
+	skipStatusError bool
 }
 
 func New(url string, secret string) Session {
@@ -24,6 +26,7 @@ func New(url string, secret string) Session {
 	return &target{
 		Url:    url,
 		Secret: secret,
+		skipStatusError: false,
 	}
 
 }
@@ -51,6 +54,10 @@ func (s *target) Do(method rest.RequestMethod, endpoint string, body interface{}
 		Body:    bodyData,
 	}
 
+	if s.skipStatusError {
+		req.SkipStatusError()
+	}
+
 	// do based on type
 	var res *rest.RestResponse
 	switch method {
@@ -70,6 +77,11 @@ func (s *target) Do(method rest.RequestMethod, endpoint string, body interface{}
 
 	return res, nil
 
+}
+
+func (s *target) SkipHttpStatusError() Session{
+	s.skipStatusError = true
+	return s
 }
 
 func (s *target) NewSdkErrorFromMessage(statusCode int, funcName string, body []byte) error {

@@ -21,6 +21,7 @@ type Request struct {
 	Headers map[string]string
 	Body    []byte
 	method  RequestMethod
+	skipStatusError bool
 }
 
 type RestResponse struct {
@@ -47,6 +48,10 @@ func (rr *Request) Put() (*RestResponse, error) {
 func (rr *Request) Delete() (*RestResponse, error) {
 	rr.method = DELETE
 	return rr.do()
+}
+
+func (rr *Request) SkipStatusError() {
+	rr.skipStatusError = true
 }
 
 func (rr *Request) do() (*RestResponse, error) {
@@ -79,7 +84,7 @@ func (rr *Request) do() (*RestResponse, error) {
 	}
 
 	// check status code
-	if res.StatusCode != 200 && res.StatusCode != 203 {
+	if res.StatusCode != 200 && res.StatusCode != 203 && !rr.skipStatusError {
 		log.Errorf("Request was not ok: %s", body)
 		return nil, errors.New(string(body))
 	}
