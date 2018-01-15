@@ -62,7 +62,6 @@ func InternalUserAdminController(routes *routes.Routes, sg *service.ServicesGrou
 * @apiDescription Add a new user.
 * @apiName AddUser
 * @apiGroup Admin
-*
 * @apiUse UserAuthHeader
 * @apiUse UserAdminInput
 * @apiPermission Admin
@@ -144,9 +143,8 @@ func (auc *UserAdminController) getAll(c *gin.Context) {
 * @apiDescription Put user by id.
 * @apiName UpdateUser
 * @apiGroup Admin
-*
 * @apiUse UserAuthHeader
-* @apiUse UserAddInput
+* @apiUse UserAdminInput
 * @apiPermission Admin
  */
 func (auc *UserAdminController) update(c *gin.Context) {
