@@ -1,1590 +1,248 @@
-(function() {
-  'use strict';
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(typeof self !== 'undefined' ? self : this, function() {
+return webpackJsonp([1],{
+
+/***/ 133:
+/*!******************************************!*\
+  !*** ./admin/services/authentication.js ***!
+  \******************************************/
+/*! exports provided: AUTH_TOKEN_HEADER, DEVICE_TOKEN_HEADER, USER_DATA_STORAGE_KEY, syncSessionUserToState, addUserToSession, getUserFromSession, removeUserFromSession, logout, requireAuthUser */
+/*! exports used: addUserToSession, logout, requireAuthUser, syncSessionUserToState */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-  var globals = typeof global === 'undefined' ? self : global;
-  if (typeof globals.require === 'function') return;
-
-  var modules = {};
-  var cache = {};
-  var aliases = {};
-  var has = {}.hasOwnProperty;
-
-  var expRe = /^\.\.?(\/|$)/;
-  var expand = function(root, name) {
-    var results = [], part;
-    var parts = (expRe.test(name) ? root + '/' + name : name).split('/');
-    for (var i = 0, length = parts.length; i < length; i++) {
-      part = parts[i];
-      if (part === '..') {
-        results.pop();
-      } else if (part !== '.' && part !== '') {
-        results.push(part);
-      }
-    }
-    return results.join('/');
-  };
-
-  var dirname = function(path) {
-    return path.split('/').slice(0, -1).join('/');
-  };
-
-  var localRequire = function(path) {
-    return function expanded(name) {
-      var absolute = expand(dirname(path), name);
-      return globals.require(absolute, path);
-    };
-  };
-
-  var initModule = function(name, definition) {
-    var hot = hmr && hmr.createHot(name);
-    var module = {id: name, exports: {}, hot: hot};
-    cache[name] = module;
-    definition(module.exports, localRequire(name), module);
-    return module.exports;
-  };
-
-  var expandAlias = function(name) {
-    return aliases[name] ? expandAlias(aliases[name]) : name;
-  };
-
-  var _resolve = function(name, dep) {
-    return expandAlias(expand(dirname(name), dep));
-  };
-
-  var require = function(name, loaderPath) {
-    if (loaderPath == null) loaderPath = '/';
-    var path = expandAlias(name);
-
-    if (has.call(cache, path)) return cache[path].exports;
-    if (has.call(modules, path)) return initModule(path, modules[path]);
-
-    throw new Error("Cannot find module '" + name + "' from '" + loaderPath + "'");
-  };
-
-  require.alias = function(from, to) {
-    aliases[to] = from;
-  };
-
-  var extRe = /\.[^.\/]+$/;
-  var indexRe = /\/index(\.[^\/]+)?$/;
-  var addExtensions = function(bundle) {
-    if (extRe.test(bundle)) {
-      var alias = bundle.replace(extRe, '');
-      if (!has.call(aliases, alias) || aliases[alias].replace(extRe, '') === alias + '/index') {
-        aliases[alias] = bundle;
-      }
-    }
-
-    if (indexRe.test(bundle)) {
-      var iAlias = bundle.replace(indexRe, '');
-      if (!has.call(aliases, iAlias)) {
-        aliases[iAlias] = bundle;
-      }
-    }
-  };
-
-  require.register = require.define = function(bundle, fn) {
-    if (bundle && typeof bundle === 'object') {
-      for (var key in bundle) {
-        if (has.call(bundle, key)) {
-          require.register(key, bundle[key]);
-        }
-      }
-    } else {
-      modules[bundle] = fn;
-      delete cache[bundle];
-      addExtensions(bundle);
-    }
-  };
-
-  require.list = function() {
-    var list = [];
-    for (var item in modules) {
-      if (has.call(modules, item)) {
-        list.push(item);
-      }
-    }
-    return list;
-  };
-
-  var hmr = globals._hmr && new globals._hmr(_resolve, require, modules, cache);
-  require._cache = cache;
-  require.hmr = hmr && hmr.wrap;
-  require.brunch = true;
-  globals.require = require;
-})();
-
-(function() {
-var global = typeof window === 'undefined' ? this : window;
-var process;
-var __makeRelativeRequire = function(require, mappings, pref) {
-  var none = {};
-  var tryReq = function(name, pref) {
-    var val;
-    try {
-      val = require(pref + '/node_modules/' + name);
-      return val;
-    } catch (e) {
-      if (e.toString().indexOf('Cannot find module') === -1) {
-        throw e;
-      }
-
-      if (pref.indexOf('node_modules') !== -1) {
-        var s = pref.split('/');
-        var i = s.lastIndexOf('node_modules');
-        var newPref = s.slice(0, i).join('/');
-        return tryReq(name, newPref);
-      }
-    }
-    return none;
-  };
-  return function(name) {
-    if (name in mappings) name = mappings[name];
-    if (!name) return;
-    if (name[0] !== '.' && pref) {
-      var val = tryReq(name, pref);
-      if (val !== none) return val;
-    }
-    return require(name);
-  }
-};
-require.register("gocms/admin/components/basicComponent/BasicComponent.js", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
-
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = require('react-redux');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var BasicComponent = function (_React$Component) {
-    (0, _inherits3.default)(BasicComponent, _React$Component);
-
-    function BasicComponent(props) {
-        (0, _classCallCheck3.default)(this, BasicComponent);
-
-        var _this = (0, _possibleConstructorReturn3.default)(this, (BasicComponent.__proto__ || (0, _getPrototypeOf2.default)(BasicComponent)).call(this, props));
-
-        _this.state = {};
-        return _this;
-    }
-
-    (0, _createClass3.default)(BasicComponent, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {}
-    }, {
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'p',
-                { className: 'basic-component' },
-                'Basic Component'
-            );
-        }
-    }]);
-    return BasicComponent;
-}(_react2.default.Component);
-
-function mapStateToProps(state) {
-    return {};
-}
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, {})(BasicComponent);
-
-});
-
-require.register("gocms/admin/config/actions/authenticationActions.js", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.saveUserToState = saveUserToState;
-exports.removeUserFromState = removeUserFromState;
-var SAVE_USER_TO_STATE = exports.SAVE_USER_TO_STATE = 'SAVE_USER_TO_STATE';
-var REMOVE_USER_FROM_STATE = exports.REMOVE_USER_FROM_STATE = 'REMOVE_USER_FROM_STATE';
-
-function saveUserToState(user) {
-    return {
-        type: SAVE_USER_TO_STATE,
-        user: user,
-        loggedInAt: Date.now()
-    };
-}
-
-function removeUserFromState() {
-    return {
-        type: REMOVE_USER_FROM_STATE
-    };
-}
-
-});
-
-;require.register("gocms/admin/config/reducers/authenticationReducers.js", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _redux = require('redux');
-
-var _authenticationActions = require('../actions/authenticationActions');
-
-var actions = _interopRequireWildcard(_authenticationActions);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function authenticationReducer() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var action = arguments[1];
-
-    switch (action.type) {
-        case actions.SAVE_USER_TO_STATE:
-            return (0, _extends3.default)({}, state, action.user, {
-                loggedInAt: action.loggedInAt
-            });
-        case actions.REMOVE_USER_FROM_STATE:
-            var s = (0, _extends3.default)({}, state);
-            delete s['user'];
-            return s;
-        default:
-            return state;
-    }
-}
-
-var authenticationReducers = (0, _redux.combineReducers)({
-    user: authenticationReducer
-});
-
-exports.default = authenticationReducers;
-
-});
-
-require.register("gocms/admin/config/reducers/reducers.js", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _assign = require('babel-runtime/core-js/object/assign');
-
-var _assign2 = _interopRequireDefault(_assign);
-
-exports.injectReducers = injectReducers;
-exports.registeredReducers = registeredReducers;
-
-var _reactRouterRedux = require('react-router-redux');
-
-var _authenticationReducers = require('./authenticationReducers');
-
-var _authenticationReducers2 = _interopRequireDefault(_authenticationReducers);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var injectedReducers = {};
-
-function injectReducers(r) {
-    injectedReducers = (0, _assign2.default)({}, r, injectedReducers);
-}
-
-function registeredReducers() {
-    return (0, _extends3.default)({
-        auth: _authenticationReducers2.default
-    }, injectedReducers, {
-        routing: _reactRouterRedux.routerReducer
-    });
-}
-
-});
-
-;require.register("gocms/admin/config/router/routes.js", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.injectAuthedRoutes = injectAuthedRoutes;
-exports.registeredRoutes = registeredRoutes;
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRouter = require('react-router');
-
-var _loginPage = require('../../containers/loginPage/loginPage.routes');
-
-var _adminPages = require('../../containers/adminPages/adminPages.routes');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function injectAuthedRoutes(r) {
-    (0, _adminPages.injectAdminRoutes)(r);
-}
-
-function registeredRoutes() {
-    return _react2.default.createElement(
-        _reactRouter.Route,
-        null,
-        (0, _loginPage.registeredLoginRoutes)(),
-        (0, _adminPages.registeredAdminRoutes)()
-    );
-}
-
-});
-
-;require.register("gocms/admin/config/sagas.js", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _regenerator = require('babel-runtime/regenerator');
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
-exports.rootSaga = rootSaga;
-exports.injectSagas = injectSagas;
-
-var _effects = require('redux-saga/effects');
-
-var _loginPage = require('../containers/loginPage/loginPage.sagas');
-
-var _loginPage2 = _interopRequireDefault(_loginPage);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _marked = /*#__PURE__*/_regenerator2.default.mark(rootSaga);
-
-var injectedSagas = [];
-
-function rootSaga() {
-    return _regenerator2.default.wrap(function rootSaga$(_context) {
-        while (1) {
-            switch (_context.prev = _context.next) {
-                case 0:
-                    _context.next = 2;
-                    return [(0, _effects.fork)(_loginPage2.default)].concat(injectedSagas);
-
-                case 2:
-                case 'end':
-                    return _context.stop();
-            }
-        }
-    }, _marked, this);
-}
-
-function injectSagas(s) {
-    injectedSagas.push((0, _effects.fork)(s));
-}
-
-});
-
-;require.register("gocms/admin/containers/adminPages/adminPages.routes.js", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.injectAdminRoutes = injectAdminRoutes;
-exports.registeredAdminRoutes = registeredAdminRoutes;
-
-var _authentication = require('../../services/authentication');
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _dashboardPage = require('./dashboardPage/dashboardPage.routes');
-
-var _dashboardPage2 = _interopRequireDefault(_dashboardPage);
-
-var _admin_tmpl = require('../../templates/admin_tmpl');
-
-var _admin_tmpl2 = _interopRequireDefault(_admin_tmpl);
-
-var _reactRouter = require('react-router');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var injectedRoutes = [];
-
-var routes = _react2.default.createElement(
-    _reactRouter.Route,
-    null,
-    _react2.default.createElement(_reactRouter.Redirect, { from: 'admin', to: GOCMS_LOGIN_SUCCESS_REDIRECT }),
-    _react2.default.createElement(
-        _reactRouter.Route,
-        { path: 'admin', component: _admin_tmpl2.default, onEnter: _authentication.requireAuthUser },
-        _dashboardPage2.default,
-        injectedRoutes
-    )
-);
-
-function injectAdminRoutes(r) {
-    injectedRoutes.push(r);
-}
-
-function registeredAdminRoutes() {
-    return routes;
-}
-
-});
-
-;require.register("gocms/admin/containers/adminPages/components/mainMenu/MainMenu.js", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
-
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = require('react-redux');
-
-var _authentication = require('../../../../services/authentication');
-
-var _reactRouter = require('react-router');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var BasicComponent = function (_React$Component) {
-    (0, _inherits3.default)(BasicComponent, _React$Component);
-
-    function BasicComponent(props) {
-        (0, _classCallCheck3.default)(this, BasicComponent);
-
-        var _this = (0, _possibleConstructorReturn3.default)(this, (BasicComponent.__proto__ || (0, _getPrototypeOf2.default)(BasicComponent)).call(this, props));
-
-        _this.handleMenuOpenCloseClick = _this.handleMenuOpenCloseClick.bind(_this);
-        _this.handleSignOut = _this.handleSignOut.bind(_this);
-
-        _this.state = {
-            menuIsOpen: true
-        };
-        return _this;
-    }
-
-    (0, _createClass3.default)(BasicComponent, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {}
-    }, {
-        key: 'handleSignOut',
-        value: function handleSignOut(e) {
-            e.preventDefault();
-            (0, _authentication.logout)();
-            _reactRouter.browserHistory.push("/login");
-        }
-    }, {
-        key: 'handleMenuOpenCloseClick',
-        value: function handleMenuOpenCloseClick(e) {
-            this.setState({ menuIsOpen: !this.state.menuIsOpen });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            // console.log("user: ", this.state.user);
-            return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'div',
-                    {
-                        className: "g-container g-a-main-menu-container" + (this.state.menuIsOpen ? " g-a-main-menu-container-open" : " g-a-main-menu-container-close") },
-                    _react2.default.createElement(
-                        'div',
-                        {
-                            className: "g-container g-a-main-menu-title-container" + (this.state.menuIsOpen ? " g-a-main-menu-title-container-open" : " g-a-main-menu-title-container-close") },
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'g-a-main-menu-profile-img-container' },
-                            _react2.default.createElement(
-                                'a',
-                                { href: '', className: 'g-a-main-menu-profile-img' },
-                                _react2.default.createElement('i', { className: 'gocms-icon-user' })
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'g-container-col' },
-                            _react2.default.createElement(
-                                'h1',
-                                { className: 'g-a-main-menu-title' },
-                                GOCMS_LOGIN_TITLE
-                            ),
-                            _react2.default.createElement(
-                                'h2',
-                                { className: 'g-a-main-menu-sub-title' },
-                                _react2.default.createElement(
-                                    'a',
-                                    { className: '', href: '' },
-                                    this.props.user.fullName
-                                ),
-                                _react2.default.createElement(
-                                    'span',
-                                    { className: 'g-a-main-menu-sign-out' },
-                                    _react2.default.createElement(
-                                        'a',
-                                        { href: '', onClick: this.handleSignOut },
-                                        'Sign Out'
-                                    )
-                                )
-                            )
-                        )
-                    )
-                ),
-                _react2.default.createElement(
-                    'button',
-                    {
-                        className: "g-a-main-menu-btn" + (this.state.menuIsOpen ? " g-a-main-menu-btn-open" : " g-a-main-menu-btn-close"),
-                        onClick: this.handleMenuOpenCloseClick },
-                    _react2.default.createElement('i', { className: 'gocms-icon-menu' })
-                )
-            );
-        }
-    }]);
-    return BasicComponent;
-}(_react2.default.Component);
-
-function mapStateToProps(state) {
-    return {
-        user: state.auth.user
-    };
-}
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, {})(BasicComponent);
-
-});
-
-require.register("gocms/admin/containers/adminPages/dashboardPage/dashboardPage.actions.js", function(exports, require, module) {
 "use strict";
+eval("/* unused harmony export AUTH_TOKEN_HEADER */\n/* unused harmony export DEVICE_TOKEN_HEADER */\n/* unused harmony export USER_DATA_STORAGE_KEY */\n/* harmony export (immutable) */ __webpack_exports__[\"d\"] = syncSessionUserToState;\n/* harmony export (immutable) */ __webpack_exports__[\"a\"] = addUserToSession;\n/* unused harmony export getUserFromSession */\n/* unused harmony export removeUserFromSession */\n/* harmony export (immutable) */ __webpack_exports__[\"b\"] = logout;\n/* harmony export (immutable) */ __webpack_exports__[\"c\"] = requireAuthUser;\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_json_stringify__ = __webpack_require__(/*! babel-runtime/core-js/json/stringify */ 216);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_json_stringify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_json_stringify__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jwt_decode__ = __webpack_require__(/*! jwt-decode */ 449);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jwt_decode___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jwt_decode__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_actions_authenticationActions__ = __webpack_require__(/*! ../config/actions/authenticationActions */ 223);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__base_init__ = __webpack_require__(/*! ../../base/init */ 192);\n\n\n\n\n\nvar AUTH_TOKEN_HEADER = 'X-Auth-Token';\nvar DEVICE_TOKEN_HEADER = 'X-Device-Token';\nvar USER_DATA_STORAGE_KEY = 'USER_DATA_STORAGE_KEY';\n\nfunction syncSessionUserToState() {\n    var sessionUser = getUserFromSession();\n    Object(__WEBPACK_IMPORTED_MODULE_3__base_init__[\"getStore\"])().dispatch(Object(__WEBPACK_IMPORTED_MODULE_2__config_actions_authenticationActions__[\"d\" /* saveUserToState */])(sessionUser));\n}\n\nfunction addUserToSession(userData) {\n    sessionStorage.setItem(USER_DATA_STORAGE_KEY, __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_json_stringify___default()(userData));\n}\n\nfunction getUserFromSession() {\n    return JSON.parse(sessionStorage.getItem(USER_DATA_STORAGE_KEY));\n}\n\nfunction removeUserFromSession() {\n    sessionStorage.removeItem(AUTH_TOKEN_HEADER);\n}\n\nfunction logout() {\n    Object(__WEBPACK_IMPORTED_MODULE_3__base_init__[\"getStore\"])().dispatch(Object(__WEBPACK_IMPORTED_MODULE_2__config_actions_authenticationActions__[\"c\" /* removeUserFromState */])());\n    removeUserFromSession();\n}\n\nfunction requireAuthUser(nextState, replace) {\n    // look for token in session\n    var token = sessionStorage.getItem(AUTH_TOKEN_HEADER);\n\n    // verify token exists\n    if (!token) {\n        logout();\n        replace({\n            pathname: '/login'\n        });\n        return;\n    }\n\n    // verify token has not expired\n    var jwtData = __WEBPACK_IMPORTED_MODULE_1_jwt_decode___default()(token);\n    var timeDif = jwtData.exp - new Date().getTime();\n    if (timeDif <= 0) {\n        logout();\n        replace({\n            pathname: '/login'\n        });\n        return;\n    }\n\n    // verify token matches users\n    var authUser = getUserFromSession();\n    if (jwtData.userId !== authUser.id) {\n        logout();\n        replace({\n            pathname: '/login'\n        });\n    }\n\n    syncSessionUserToState();\n}//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTMzLmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL2FkbWluL3NlcnZpY2VzL2F1dGhlbnRpY2F0aW9uLmpzPzc1NjEiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IGp3dERlY29kZSBmcm9tICdqd3QtZGVjb2RlJztcbmltcG9ydCB7cmVtb3ZlVXNlckZyb21TdGF0ZSwgc2F2ZVVzZXJUb1N0YXRlfSBmcm9tICcuLi9jb25maWcvYWN0aW9ucy9hdXRoZW50aWNhdGlvbkFjdGlvbnMnXG5pbXBvcnQge2dldFN0b3JlfSBmcm9tICcuLi8uLi9iYXNlL2luaXQnXG5cbmV4cG9ydCBjb25zdCBBVVRIX1RPS0VOX0hFQURFUiA9ICdYLUF1dGgtVG9rZW4nO1xuZXhwb3J0IGNvbnN0IERFVklDRV9UT0tFTl9IRUFERVIgPSAnWC1EZXZpY2UtVG9rZW4nO1xuZXhwb3J0IGNvbnN0IFVTRVJfREFUQV9TVE9SQUdFX0tFWSA9ICdVU0VSX0RBVEFfU1RPUkFHRV9LRVknO1xuXG5leHBvcnQgZnVuY3Rpb24gc3luY1Nlc3Npb25Vc2VyVG9TdGF0ZSgpIHtcbiAgICBsZXQgc2Vzc2lvblVzZXIgPSBnZXRVc2VyRnJvbVNlc3Npb24oKTtcbiAgICBnZXRTdG9yZSgpLmRpc3BhdGNoKHNhdmVVc2VyVG9TdGF0ZShzZXNzaW9uVXNlcikpO1xufVxuXG5leHBvcnQgZnVuY3Rpb24gYWRkVXNlclRvU2Vzc2lvbih1c2VyRGF0YSkge1xuICAgIHNlc3Npb25TdG9yYWdlLnNldEl0ZW0oVVNFUl9EQVRBX1NUT1JBR0VfS0VZLCBKU09OLnN0cmluZ2lmeSh1c2VyRGF0YSkpO1xufVxuXG5leHBvcnQgZnVuY3Rpb24gZ2V0VXNlckZyb21TZXNzaW9uKCkge1xuICAgIHJldHVybiBKU09OLnBhcnNlKHNlc3Npb25TdG9yYWdlLmdldEl0ZW0oVVNFUl9EQVRBX1NUT1JBR0VfS0VZKSk7XG59XG5cbmV4cG9ydCBmdW5jdGlvbiByZW1vdmVVc2VyRnJvbVNlc3Npb24oKSB7XG4gICAgc2Vzc2lvblN0b3JhZ2UucmVtb3ZlSXRlbShBVVRIX1RPS0VOX0hFQURFUik7XG59XG5cbmV4cG9ydCBmdW5jdGlvbiBsb2dvdXQoKSB7XG4gICAgZ2V0U3RvcmUoKS5kaXNwYXRjaChyZW1vdmVVc2VyRnJvbVN0YXRlKCkpO1xuICAgIHJlbW92ZVVzZXJGcm9tU2Vzc2lvbigpXG59XG5cbmV4cG9ydCBmdW5jdGlvbiByZXF1aXJlQXV0aFVzZXIobmV4dFN0YXRlLCByZXBsYWNlKSB7XG4gICAgLy8gbG9vayBmb3IgdG9rZW4gaW4gc2Vzc2lvblxuICAgIGxldCB0b2tlbiA9IHNlc3Npb25TdG9yYWdlLmdldEl0ZW0oQVVUSF9UT0tFTl9IRUFERVIpO1xuXG4gICAgLy8gdmVyaWZ5IHRva2VuIGV4aXN0c1xuICAgIGlmICghdG9rZW4pIHtcbiAgICAgICAgbG9nb3V0KCk7XG4gICAgICAgIHJlcGxhY2Uoe1xuICAgICAgICAgICAgcGF0aG5hbWU6ICcvbG9naW4nXG4gICAgICAgIH0pO1xuICAgICAgICByZXR1cm47XG4gICAgfVxuXG4gICAgLy8gdmVyaWZ5IHRva2VuIGhhcyBub3QgZXhwaXJlZFxuICAgIGxldCBqd3REYXRhID0gand0RGVjb2RlKHRva2VuKTtcbiAgICBsZXQgdGltZURpZiA9IGp3dERhdGEuZXhwIC0gbmV3IERhdGUoKS5nZXRUaW1lKCk7XG4gICAgaWYgKHRpbWVEaWYgPD0gMCkge1xuICAgICAgICBsb2dvdXQoKTtcbiAgICAgICAgcmVwbGFjZSh7XG4gICAgICAgICAgICBwYXRobmFtZTogJy9sb2dpbidcbiAgICAgICAgfSk7XG4gICAgICAgIHJldHVybjtcbiAgICB9XG5cbiAgICAvLyB2ZXJpZnkgdG9rZW4gbWF0Y2hlcyB1c2Vyc1xuICAgIGxldCBhdXRoVXNlciA9IGdldFVzZXJGcm9tU2Vzc2lvbigpO1xuICAgIGlmIChqd3REYXRhLnVzZXJJZCAhPT0gYXV0aFVzZXIuaWQpIHtcbiAgICAgICAgbG9nb3V0KCk7XG4gICAgICAgIHJlcGxhY2Uoe1xuICAgICAgICAgICAgcGF0aG5hbWU6ICcvbG9naW4nXG4gICAgICAgIH0pO1xuICAgIH1cblxuICAgIHN5bmNTZXNzaW9uVXNlclRvU3RhdGUoKTtcbn1cblxuXG5cbi8vIFdFQlBBQ0sgRk9PVEVSIC8vXG4vLyBhZG1pbi9zZXJ2aWNlcy9hdXRoZW50aWNhdGlvbi5qcyJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7OztBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQURBO0FBR0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFEQTtBQUdBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQURBO0FBR0E7QUFDQTtBQUNBO0FBQ0EiLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///133\n");
 
-});
+/***/ }),
 
-require.register("gocms/admin/containers/adminPages/dashboardPage/dashboardPage.container.js", function(exports, require, module) {
-'use strict';
+/***/ 222:
+/*!*********************************************************!*\
+  !*** ./admin/containers/loginPage/loginPage.actions.js ***!
+  \*********************************************************/
+/*! exports provided: GOCMS_LOGIN, gocms_login */
+/*! exports used: GOCMS_LOGIN, gocms_login */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
-
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _CSSTransitionGroup = require('react-transition-group/CSSTransitionGroup');
-
-var _CSSTransitionGroup2 = _interopRequireDefault(_CSSTransitionGroup);
-
-var _reactRedux = require('react-redux');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var DashboardPage = function (_React$Component) {
-    (0, _inherits3.default)(DashboardPage, _React$Component);
-
-    function DashboardPage(props) {
-        (0, _classCallCheck3.default)(this, DashboardPage);
-
-        var _this = (0, _possibleConstructorReturn3.default)(this, (DashboardPage.__proto__ || (0, _getPrototypeOf2.default)(DashboardPage)).call(this, props));
-
-        _this.state = {};
-        return _this;
-    }
-
-    (0, _createClass3.default)(DashboardPage, [{
-        key: 'componentWillMount',
-        value: function componentWillMount() {}
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {}
-    }, {
-        key: 'render',
-        value: function render() {
-
-            return _react2.default.createElement(
-                'h1',
-                null,
-                'dashboard'
-            );
-        }
-    }]);
-    return DashboardPage;
-}(_react2.default.Component);
-
-function mapStateToProps(state) {
-    return {};
-}
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, {})(DashboardPage);
-
-});
-
-require.register("gocms/admin/containers/adminPages/dashboardPage/dashboardPage.reducers.js", function(exports, require, module) {
-// import {combineReducers} from 'redux'
-// import {REQUEST_PAGE, RECEIVE_PAGE} from './home.actions';
-//
-//
-// const initialState = {};
-//
-// function page(state = {
-//     isFetching: false,
-//     items: []
-// }, action) {
-//     switch (action.type) {
-//         case REQUEST_PAGE:
-//             return {...state, isFetching: true};
-//
-//         case RECEIVE_PAGE:
-//             return {
-//                 ...state,
-//                 isFetching: false,
-//                 content: action.content,
-//                 lastUpdated: action.receivedAt
-//             };
-//         default:
-//             return state
-//     }
-// }
-//
-// function pageByUri(state = initialState, action) {
-//     switch (action.type) {
-//         case REQUEST_PAGE:
-//         case RECEIVE_PAGE:
-//             return {
-//                 ...state,
-//                 [action.uri]: page(state[action.uri], action)
-//             };
-//         default:
-//             return state
-//     }
-// }
-//
-// const rootReducer = combineReducers({
-//     pageByUri,
-// });
-//
-// export default rootReducer
 "use strict";
+eval("/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"a\", function() { return GOCMS_LOGIN; });\n/* harmony export (immutable) */ __webpack_exports__[\"b\"] = gocms_login;\nvar GOCMS_LOGIN = 'GOCMS_LOGIN';\n\nfunction gocms_login(key, data) {\n    return {\n        type: GOCMS_LOGIN,\n        key: key,\n        data: data,\n        requestedAt: Date.now()\n    };\n}//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMjIyLmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL2FkbWluL2NvbnRhaW5lcnMvbG9naW5QYWdlL2xvZ2luUGFnZS5hY3Rpb25zLmpzP2YxYjUiXSwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IGNvbnN0IEdPQ01TX0xPR0lOID0gJ0dPQ01TX0xPR0lOJztcblxuZXhwb3J0IGZ1bmN0aW9uIGdvY21zX2xvZ2luKGtleSwgZGF0YSkge1xuICAgIHJldHVybiB7XG4gICAgICAgIHR5cGU6IEdPQ01TX0xPR0lOLFxuICAgICAgICBrZXksXG4gICAgICAgIGRhdGEsXG4gICAgICAgIHJlcXVlc3RlZEF0OiBEYXRlLm5vdygpXG4gICAgfVxufVxuXG5cbi8vIFdFQlBBQ0sgRk9PVEVSIC8vXG4vLyBhZG1pbi9jb250YWluZXJzL2xvZ2luUGFnZS9sb2dpblBhZ2UuYWN0aW9ucy5qcyJdLCJtYXBwaW5ncyI6IkFBQUE7QUFBQTtBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFKQTtBQU1BIiwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///222\n");
 
-});
+/***/ }),
 
-require.register("gocms/admin/containers/adminPages/dashboardPage/dashboardPage.reducers.selectors.js", function(exports, require, module) {
-// import {combineReducers} from 'redux'
-// import * as actions from '../../config/actions/form';
-//
-// function _formRequestReducer(state = {}, action) {
-//     let key = action.key;
-//     switch (action.type) {
-//         case actions.REQUEST:
-//             return {
-//                 ...state,
-//                 [key]: {
-//                     ...state[key],
-//                     key: action.key,
-//                     isFetching: true,
-//                     requestedAt: action.requestedAt
-//                 }
-//             };
-//         case actions.SUCCESS:
-//             return {
-//                 ...state,
-//                 [key]: {
-//                     ...state[key],
-//                     key: action.key,
-//                     isFetching: false,
-//                     receivedAt: action.receivedAt,
-//                     data: action.data
-//                 }
-//             };
-//         case actions.FAILURE:
-//             return {
-//                 ...state,
-//                 [key]: {
-//                     ...state[key],
-//                     key: action.key,
-//                     isFetching: false,
-//                     receivedAt: action.receivedAt,
-//                     err: action.err
-//                 }
-//             };
-//         default:
-//             return state
-//     }
-// }
-//
-//
-// const formRequestReducer = combineReducers({
-//     _formRequestReducer,
-// });
-//
-// export default formRequestReducer
+/***/ 223:
+/*!*******************************************************!*\
+  !*** ./admin/config/actions/authenticationActions.js ***!
+  \*******************************************************/
+/*! exports provided: SAVE_USER_TO_STATE, REMOVE_USER_FROM_STATE, saveUserToState, removeUserFromState */
+/*! exports used: REMOVE_USER_FROM_STATE, SAVE_USER_TO_STATE, removeUserFromState, saveUserToState */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
 "use strict";
+eval("/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"b\", function() { return SAVE_USER_TO_STATE; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"a\", function() { return REMOVE_USER_FROM_STATE; });\n/* harmony export (immutable) */ __webpack_exports__[\"d\"] = saveUserToState;\n/* harmony export (immutable) */ __webpack_exports__[\"c\"] = removeUserFromState;\nvar SAVE_USER_TO_STATE = 'SAVE_USER_TO_STATE';\nvar REMOVE_USER_FROM_STATE = 'REMOVE_USER_FROM_STATE';\n\nfunction saveUserToState(user) {\n    return {\n        type: SAVE_USER_TO_STATE,\n        user: user,\n        loggedInAt: Date.now()\n    };\n}\n\nfunction removeUserFromState() {\n    return {\n        type: REMOVE_USER_FROM_STATE\n    };\n}//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMjIzLmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL2FkbWluL2NvbmZpZy9hY3Rpb25zL2F1dGhlbnRpY2F0aW9uQWN0aW9ucy5qcz9jNDEzIl0sInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBjb25zdCBTQVZFX1VTRVJfVE9fU1RBVEUgPSAnU0FWRV9VU0VSX1RPX1NUQVRFJztcbmV4cG9ydCBjb25zdCBSRU1PVkVfVVNFUl9GUk9NX1NUQVRFID0gJ1JFTU9WRV9VU0VSX0ZST01fU1RBVEUnO1xuXG5leHBvcnQgZnVuY3Rpb24gc2F2ZVVzZXJUb1N0YXRlKHVzZXIpIHtcbiAgICByZXR1cm4ge1xuICAgICAgICB0eXBlOiBTQVZFX1VTRVJfVE9fU1RBVEUsXG4gICAgICAgIHVzZXI6IHVzZXIsXG4gICAgICAgIGxvZ2dlZEluQXQ6IERhdGUubm93KClcbiAgICB9XG59XG5cbmV4cG9ydCBmdW5jdGlvbiByZW1vdmVVc2VyRnJvbVN0YXRlKCkge1xuICAgIHJldHVybiB7XG4gICAgICAgIHR5cGU6IFJFTU9WRV9VU0VSX0ZST01fU1RBVEVcbiAgICB9XG59XG5cblxuLy8gV0VCUEFDSyBGT09URVIgLy9cbi8vIGFkbWluL2NvbmZpZy9hY3Rpb25zL2F1dGhlbnRpY2F0aW9uQWN0aW9ucy5qcyJdLCJtYXBwaW5ncyI6IkFBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBSEE7QUFLQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBREE7QUFHQSIsInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///223\n");
 
-});
+/***/ }),
 
-require.register("gocms/admin/containers/adminPages/dashboardPage/dashboardPage.routes.js", function(exports, require, module) {
-'use strict';
+/***/ 224:
+/*!********************************************************!*\
+  !*** ./admin/containers/loginPage/loginPage.routes.js ***!
+  \********************************************************/
+/*! exports provided: registeredLoginRoutes, injectLoginRoutes */
+/*! exports used: injectLoginRoutes, registeredLoginRoutes */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRouter = require('react-router');
-
-var _dashboardPage = require('./dashboardPage.container');
-
-var _dashboardPage2 = _interopRequireDefault(_dashboardPage);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _react2.default.createElement(
-    _reactRouter.Route,
-    null,
-    _react2.default.createElement(_reactRouter.Route, { path: 'dashboard', component: _dashboardPage2.default })
-);
-
-});
-
-require.register("gocms/admin/containers/adminPages/dashboardPage/dashboardPage.sagas.js", function(exports, require, module) {
-// import {fork, takeEvery, put, call} from 'redux-saga/effects';
-// import * as apiActions from '../../../base/actions/apiRequestActions'; // importing our action
-// import {login} from '../../config/actions/authenticationActions'
-// import {Post, ENDPOINTS} from '../../../base/services/api';
-// import { browserHistory } from 'react-router'
-//
-//
-// // watch for login requests
-// function* watchLoginSaga() {
-//     yield takeEvery(apiActions.REQUEST, handleLoginSaga); // see details what is REQUEST param below
-// }
-//
-// function* handleLoginSaga(action) {
-//     let {res, err} = yield call(Post, ENDPOINTS.login, action.data); // calling our api method
-//     if (res) {
-//         // push user info to store
-//         yield put(login(res.json));
-//         yield put(apiActions.purge(action.key));
-//         browserHistory.push(GOCMS_LOGIN_SUCCESS_REDIRECT);
-//     }
-//     else if (err) {
-//         // fetch page data based on uri
-//         yield put(apiActions.failure(action.key, err));
-//     }
-// }
-//
-// export default function* loginPageSagas() {
-//     yield [
-//         fork(watchLoginSaga),
-//     ];
-// }
 "use strict";
+eval("/* harmony export (immutable) */ __webpack_exports__[\"b\"] = registeredLoginRoutes;\n/* harmony export (immutable) */ __webpack_exports__[\"a\"] = injectLoginRoutes;\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(/*! react */ 1);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router__ = __webpack_require__(/*! react-router */ 27);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__loginPage_container__ = __webpack_require__(/*! ./loginPage.container */ 453);\n\n\n\n\nvar injectedRoutes = [];\n\nvar routes = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(\n    __WEBPACK_IMPORTED_MODULE_1_react_router__[\"b\" /* Route */],\n    null,\n    injectedRoutes\n);\n\nfunction registeredLoginRoutes() {\n    if (injectedRoutes.length != 0) {\n        return routes;\n    } else {\n        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router__[\"b\" /* Route */], { path: 'login', component: __WEBPACK_IMPORTED_MODULE_2__loginPage_container__[\"a\" /* default */] });\n    }\n}\n\nfunction injectLoginRoutes(r) {\n    injectedRoutes.push(r);\n}//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMjI0LmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL2FkbWluL2NvbnRhaW5lcnMvbG9naW5QYWdlL2xvZ2luUGFnZS5yb3V0ZXMuanM/ODkzZiJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSAncmVhY3QnXG5pbXBvcnQge1JvdXRlfSBmcm9tICdyZWFjdC1yb3V0ZXInXG5pbXBvcnQgTG9naW5QYWdlIGZyb20gJy4vbG9naW5QYWdlLmNvbnRhaW5lcic7XG5cbmxldCBpbmplY3RlZFJvdXRlcyA9IFtdO1xuXG5sZXQgcm91dGVzID1cbiAgICA8Um91dGU+XG4gICAgICAgIHtpbmplY3RlZFJvdXRlc31cbiAgICA8L1JvdXRlPjtcblxuXG5leHBvcnQgZnVuY3Rpb24gcmVnaXN0ZXJlZExvZ2luUm91dGVzKCkge1xuICAgIGlmIChpbmplY3RlZFJvdXRlcy5sZW5ndGggIT0gMCkge1xuICAgICAgICByZXR1cm4gcm91dGVzO1xuICAgIH1cbiAgICBlbHNlIHtcbiAgICAgICAgcmV0dXJuIDxSb3V0ZSBwYXRoPVwibG9naW5cIiBjb21wb25lbnQ9e0xvZ2luUGFnZX0vPlxuICAgIH1cbn1cblxuZXhwb3J0IGZ1bmN0aW9uIGluamVjdExvZ2luUm91dGVzKHIpIHtcbiAgICBpbmplY3RlZFJvdXRlcy5wdXNoKHIpO1xufVxuXG5cbi8vIFdFQlBBQ0sgRk9PVEVSIC8vXG4vLyBhZG1pbi9jb250YWluZXJzL2xvZ2luUGFnZS9sb2dpblBhZ2Uucm91dGVzLmpzIl0sIm1hcHBpbmdzIjoiQUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQUE7QUFDQTtBQURBO0FBQ0E7QUFJQTtBQUNBO0FBQ0E7QUFDQTtBQUVBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBIiwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///224\n");
 
-});
+/***/ }),
 
-require.register("gocms/admin/containers/devTools/DevTools.js", function(exports, require, module) {
-'use strict';
+/***/ 445:
+/*!**************************************************************!*\
+  !*** multi ./admin/init.js ./admin/config/styles/index.scss ***!
+  \**************************************************************/
+/*! dynamic exports provided */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
+__webpack_require__(/*! /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/init.js */446);
+module.exports = __webpack_require__(/*! /Users/justin.menkveld/go/src/github.com/gocms-io/gocms/content/gocms/src/admin/config/styles/index.scss */461);
 
-var _react = require('react');
 
-var _react2 = _interopRequireDefault(_react);
+/***/ }),
 
-var _reduxDevtools = require('redux-devtools');
+/***/ 446:
+/*!***********************!*\
+  !*** ./admin/init.js ***!
+  \***********************/
+/*! exports provided: getModule, injectModule */
+/*! all exports used */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-var _reduxDevtoolsLogMonitor = require('redux-devtools-log-monitor');
-
-var _reduxDevtoolsLogMonitor2 = _interopRequireDefault(_reduxDevtoolsLogMonitor);
-
-var _reduxDevtoolsDockMonitor = require('redux-devtools-dock-monitor');
-
-var _reduxDevtoolsDockMonitor2 = _interopRequireDefault(_reduxDevtoolsDockMonitor);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// DOCS: https://github.com/gaearon/redux-devtools
-
-// createDevTools takes a monitor and produces a DevTools component
-var DevTools = (0, _reduxDevtools.createDevTools)(_react2.default.createElement(
-    _reduxDevtoolsDockMonitor2.default,
-    { toggleVisibilityKey: 'ctrl-h',
-        changePositionKey: 'ctrl-q',
-        defaultPosition: 'left' },
-    _react2.default.createElement(_reduxDevtoolsLogMonitor2.default, { theme: 'tomorrow' })
-));
-
-exports.default = DevTools;
-
-});
-
-require.register("gocms/admin/containers/loginPage/loginPage.actions.js", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.gocms_login = gocms_login;
-var GOCMS_LOGIN = exports.GOCMS_LOGIN = 'GOCMS_LOGIN';
-
-function gocms_login(key, data) {
-    return {
-        type: GOCMS_LOGIN,
-        key: key,
-        data: data,
-        requestedAt: Date.now()
-    };
-}
-
-});
-
-;require.register("gocms/admin/containers/loginPage/loginPage.container.js", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
-
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _CSSTransitionGroup = require('react-transition-group/CSSTransitionGroup');
-
-var _CSSTransitionGroup2 = _interopRequireDefault(_CSSTransitionGroup);
-
-var _reactRedux = require('react-redux');
-
-var _loginPage = require('./loginPage.actions');
-
-var _GForm = require('../../../base/components/gForm/GForm');
-
-var _GForm2 = _interopRequireDefault(_GForm);
-
-var _GInput = require('../../../base/components/gForm/GInput');
-
-var _GInput2 = _interopRequireDefault(_GInput);
-
-var _GError = require('../../../base/components/gForm/GError');
-
-var _GError2 = _interopRequireDefault(_GError);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var LOGIN_FORM = "GOCMS_LOGIN_FORM";
-
-var LoginPage = function (_React$Component) {
-    (0, _inherits3.default)(LoginPage, _React$Component);
-
-    function LoginPage(props) {
-        (0, _classCallCheck3.default)(this, LoginPage);
-
-        var _this = (0, _possibleConstructorReturn3.default)(this, (LoginPage.__proto__ || (0, _getPrototypeOf2.default)(LoginPage)).call(this, props));
-
-        _this.state = {
-            shake: false
-        };
-        _this.handleSubmit = _this.handleSubmit.bind(_this); //bind function once
-        return _this;
-    }
-
-    (0, _createClass3.default)(LoginPage, [{
-        key: 'componentWillMount',
-        value: function componentWillMount() {}
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {}
-    }, {
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            if (!!nextProps.err && nextProps.reqTime != this.props.reqTime) {
-                this.setState({ shake: true });
-            }
-            if (!!nextProps.errMessage && nextProps.errMessage != this.state.errMessage) {
-                this.setState({ errMessage: nextProps.errMessage });
-            }
-        }
-    }, {
-        key: 'handleSubmit',
-        value: function handleSubmit(model) {
-            this.props.gocms_login(LOGIN_FORM, model);
-            this.setState({ errMessage: null });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'g-a' },
-                _react2.default.createElement(
-                    'div',
-                    { id: 'container-login-page' },
-                    _react2.default.createElement(
-                        'div',
-                        { id: 'container-login-page-form', className: 'g-container-col' },
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'wrapper-login-form', noValidate: true },
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'g-container-col' },
-                                _react2.default.createElement(
-                                    'h1',
-                                    { className: 'text-center no-padding no-margin' },
-                                    GOCMS_LOGIN_TITLE
-                                ),
-                                _react2.default.createElement(
-                                    _GForm2.default,
-                                    { id: 'main-login-form', className: 'main-login-form', name: 'main-login-form',
-                                        onSubmit: this.handleSubmit,
-                                        submitBtn: 'Log In',
-                                        submitBtnClassName: "btn-default",
-                                        submitBtnShake: this.state.shake },
-                                    _react2.default.createElement(_GInput2.default, { id: 'email', name: 'email', type: 'text', label: 'Email', validations: 'isEmail',
-                                        validationError: 'Please enter a valid email.', required: true }),
-                                    _react2.default.createElement(_GInput2.default, { id: 'password', name: 'password', type: 'password', label: 'Password',
-                                        required: true })
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'g-col' },
-                                    _react2.default.createElement(_GError2.default, {
-                                        className: 'error-message-login',
-                                        errMessage: this.state.errMessage
-                                    })
-                                )
-                            )
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-    return LoginPage;
-}(_react2.default.Component);
-
-function mapStateToProps(state) {
-    var errMessage = void 0;
-    var err = void 0;
-    var reqTime = void 0;
-    var req = state.api.request[LOGIN_FORM];
-    if (!!req) {
-        reqTime = req.receivedAt;
-        if (!!req.err) {
-            err = req.err;
-            if (!!err.json && !!err.json.message) {
-                errMessage = err.json.message;
-            }
-        }
-    }
-    return {
-        reqTime: reqTime,
-        err: err,
-        errMessage: errMessage
-    };
-}
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, {
-    gocms_login: _loginPage.gocms_login
-})(LoginPage);
-
-});
-
-require.register("gocms/admin/containers/loginPage/loginPage.reducers.js", function(exports, require, module) {
-// import {combineReducers} from 'redux'
-// import {REQUEST_PAGE, RECEIVE_PAGE} from './home.actions';
-//
-//
-// const initialState = {};
-//
-// function page(state = {
-//     isFetching: false,
-//     items: []
-// }, action) {
-//     switch (action.type) {
-//         case REQUEST_PAGE:
-//             return {...state, isFetching: true};
-//
-//         case RECEIVE_PAGE:
-//             return {
-//                 ...state,
-//                 isFetching: false,
-//                 content: action.content,
-//                 lastUpdated: action.receivedAt
-//             };
-//         default:
-//             return state
-//     }
-// }
-//
-// function pageByUri(state = initialState, action) {
-//     switch (action.type) {
-//         case REQUEST_PAGE:
-//         case RECEIVE_PAGE:
-//             return {
-//                 ...state,
-//                 [action.uri]: page(state[action.uri], action)
-//             };
-//         default:
-//             return state
-//     }
-// }
-//
-// const rootReducer = combineReducers({
-//     pageByUri,
-// });
-//
-// export default rootReducer
 "use strict";
+eval("Object.defineProperty(__webpack_exports__, \"__esModule\", { value: true });\n/* harmony export (immutable) */ __webpack_exports__[\"getModule\"] = getModule;\n/* harmony export (immutable) */ __webpack_exports__[\"injectModule\"] = injectModule;\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config_sagas__ = __webpack_require__(/*! ./config/sagas */ 447);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__config_router_routes__ = __webpack_require__(/*! ./config/router/routes */ 452);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_reducers_reducers__ = __webpack_require__(/*! ./config/reducers/reducers */ 459);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__containers_loginPage_loginPage_routes__ = __webpack_require__(/*! ./containers/loginPage/loginPage.routes */ 224);\n\n\n\n\n\nfunction getModule() {\n    return {\n        name: \"goCMS Admin\",\n        sagas: __WEBPACK_IMPORTED_MODULE_0__config_sagas__[\"b\" /* rootSaga */],\n        routes: Object(__WEBPACK_IMPORTED_MODULE_1__config_router_routes__[\"b\" /* registeredRoutes */])(),\n        reducers: Object(__WEBPACK_IMPORTED_MODULE_2__config_reducers_reducers__[\"b\" /* registeredReducers */])()\n    };\n};\n\nfunction injectModule(a) {\n    Object(__WEBPACK_IMPORTED_MODULE_0__config_sagas__[\"a\" /* injectSagas */])(a.sagas);\n    Object(__WEBPACK_IMPORTED_MODULE_1__config_router_routes__[\"a\" /* injectAuthedRoutes */])(a.routes);\n    Object(__WEBPACK_IMPORTED_MODULE_2__config_reducers_reducers__[\"a\" /* injectReducers */])(a.reducers);\n\n    // if not null inject custom login route\n    if (a.loginRoutes != \"\" && a.loginRoutes != null && a.loginRoutes != [] && a.loginRoutes != {}) {\n        Object(__WEBPACK_IMPORTED_MODULE_3__containers_loginPage_loginPage_routes__[\"a\" /* injectLoginRoutes */])(a.loginRoutes);\n    }\n}//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNDQ2LmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL2FkbWluL2luaXQuanM/ZWMxNSJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQge2luamVjdFNhZ2FzLCByb290U2FnYX0gZnJvbSAnLi9jb25maWcvc2FnYXMnO1xuaW1wb3J0IHtpbmplY3RBdXRoZWRSb3V0ZXMsIHJlZ2lzdGVyZWRSb3V0ZXN9IGZyb20gJy4vY29uZmlnL3JvdXRlci9yb3V0ZXMnO1xuaW1wb3J0IHtpbmplY3RSZWR1Y2VycywgcmVnaXN0ZXJlZFJlZHVjZXJzfSBmcm9tICcuL2NvbmZpZy9yZWR1Y2Vycy9yZWR1Y2Vycyc7XG5pbXBvcnQge2luamVjdExvZ2luUm91dGVzfSBmcm9tICcuL2NvbnRhaW5lcnMvbG9naW5QYWdlL2xvZ2luUGFnZS5yb3V0ZXMnO1xuXG5leHBvcnQgZnVuY3Rpb24gZ2V0TW9kdWxlKCkge1xuICAgIHJldHVybiB7XG4gICAgICAgIG5hbWU6IFwiZ29DTVMgQWRtaW5cIixcbiAgICAgICAgc2FnYXM6IHJvb3RTYWdhLFxuICAgICAgICByb3V0ZXM6IHJlZ2lzdGVyZWRSb3V0ZXMoKSxcbiAgICAgICAgcmVkdWNlcnM6IHJlZ2lzdGVyZWRSZWR1Y2VycygpLFxuICAgIH1cbn07XG5cblxuZXhwb3J0IGZ1bmN0aW9uIGluamVjdE1vZHVsZShhKSB7XG4gICAgaW5qZWN0U2FnYXMoYS5zYWdhcyk7XG4gICAgaW5qZWN0QXV0aGVkUm91dGVzKGEucm91dGVzKTtcbiAgICBpbmplY3RSZWR1Y2VycyhhLnJlZHVjZXJzKTtcblxuICAgIC8vIGlmIG5vdCBudWxsIGluamVjdCBjdXN0b20gbG9naW4gcm91dGVcbiAgICBpZiAoYS5sb2dpblJvdXRlcyAhPSBcIlwiICYmIGEubG9naW5Sb3V0ZXMgIT0gbnVsbCAmJiBhLmxvZ2luUm91dGVzICE9IFtdICYmIGEubG9naW5Sb3V0ZXMgIT0ge30pIHtcbiAgICAgICAgaW5qZWN0TG9naW5Sb3V0ZXMoYS5sb2dpblJvdXRlcyk7XG4gICAgfVxufVxuXG5cbi8vIFdFQlBBQ0sgRk9PVEVSIC8vXG4vLyBhZG1pbi9pbml0LmpzIl0sIm1hcHBpbmdzIjoiQUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFKQTtBQU1BO0FBQ0E7QUFFQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSIsInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///446\n");
 
-});
+/***/ }),
 
-require.register("gocms/admin/containers/loginPage/loginPage.reducers.selectors.js", function(exports, require, module) {
-// import {combineReducers} from 'redux'
-// import * as actions from '../../config/actions/form';
-//
-// function _formRequestReducer(state = {}, action) {
-//     let key = action.key;
-//     switch (action.type) {
-//         case actions.REQUEST:
-//             return {
-//                 ...state,
-//                 [key]: {
-//                     ...state[key],
-//                     key: action.key,
-//                     isFetching: true,
-//                     requestedAt: action.requestedAt
-//                 }
-//             };
-//         case actions.SUCCESS:
-//             return {
-//                 ...state,
-//                 [key]: {
-//                     ...state[key],
-//                     key: action.key,
-//                     isFetching: false,
-//                     receivedAt: action.receivedAt,
-//                     data: action.data
-//                 }
-//             };
-//         case actions.FAILURE:
-//             return {
-//                 ...state,
-//                 [key]: {
-//                     ...state[key],
-//                     key: action.key,
-//                     isFetching: false,
-//                     receivedAt: action.receivedAt,
-//                     err: action.err
-//                 }
-//             };
-//         default:
-//             return state
-//     }
-// }
-//
-//
-// const formRequestReducer = combineReducers({
-//     _formRequestReducer,
-// });
-//
-// export default formRequestReducer
+/***/ 447:
+/*!*******************************!*\
+  !*** ./admin/config/sagas.js ***!
+  \*******************************/
+/*! exports provided: rootSaga, injectSagas */
+/*! exports used: injectSagas, rootSaga */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
 "use strict";
+eval("/* harmony export (immutable) */ __webpack_exports__[\"b\"] = rootSaga;\n/* harmony export (immutable) */ __webpack_exports__[\"a\"] = injectSagas;\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(/*! babel-runtime/regenerator */ 120);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__ = __webpack_require__(/*! redux-saga/effects */ 121);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux_saga_effects___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__containers_loginPage_loginPage_sagas__ = __webpack_require__(/*! ../containers/loginPage/loginPage.sagas */ 448);\n\n\nvar _marked = /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(rootSaga);\n\n\n\n\nvar injectedSagas = [];\n\nfunction rootSaga() {\n    return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function rootSaga$(_context) {\n        while (1) {\n            switch (_context.prev = _context.next) {\n                case 0:\n                    _context.next = 2;\n                    return [Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__[\"fork\"])(__WEBPACK_IMPORTED_MODULE_2__containers_loginPage_loginPage_sagas__[\"a\" /* default */])].concat(injectedSagas);\n\n                case 2:\n                case 'end':\n                    return _context.stop();\n            }\n        }\n    }, _marked, this);\n}\n\nfunction injectSagas(s) {\n    injectedSagas.push(Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__[\"fork\"])(s));\n}//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNDQ3LmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL2FkbWluL2NvbmZpZy9zYWdhcy5qcz9mMmU1Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IGZvcmssIHRha2VFdmVyeSwgcHV0LCBjYWxsIH0gZnJvbSAncmVkdXgtc2FnYS9lZmZlY3RzJztcbmltcG9ydCBsb2dpblBhZ2VTYWdhcyAgZnJvbSAnLi4vY29udGFpbmVycy9sb2dpblBhZ2UvbG9naW5QYWdlLnNhZ2FzJ1xuXG5sZXQgaW5qZWN0ZWRTYWdhcyA9IFtdO1xuXG5leHBvcnQgZnVuY3Rpb24qIHJvb3RTYWdhKCkge1xuICAgIHlpZWxkIFtcbiAgICAgICAgZm9yayhsb2dpblBhZ2VTYWdhcyksXG4gICAgICAgIC4uLmluamVjdGVkU2FnYXNcbiAgICBdO1xufVxuXG5leHBvcnQgZnVuY3Rpb24gaW5qZWN0U2FnYXMocykge1xuICAgIGluamVjdGVkU2FnYXMucHVzaChmb3JrKHMpKTtcbn1cblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gYWRtaW4vY29uZmlnL3NhZ2FzLmpzIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7QUFLQTtBQUNBO0FBTkE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQ0E7QUFEQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUNBO0FBTUE7QUFDQTtBQUNBIiwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///447\n");
 
+/***/ }),
+
+/***/ 448:
+/*!*******************************************************!*\
+  !*** ./admin/containers/loginPage/loginPage.sagas.js ***!
+  \*******************************************************/
+/*! exports provided: default */
+/*! exports used: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("/* harmony export (immutable) */ __webpack_exports__[\"a\"] = loginPageSagas;\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(/*! babel-runtime/regenerator */ 120);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__ = __webpack_require__(/*! redux-saga/effects */ 121);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux_saga_effects___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__loginPage_actions__ = __webpack_require__(/*! ./loginPage.actions */ 222);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__base_actions_apiRequestActions__ = __webpack_require__(/*! ../../../base/actions/apiRequestActions */ 82);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__base_services_api__ = __webpack_require__(/*! ../../../base/services/api */ 215);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_authentication__ = __webpack_require__(/*! ../../services/authentication */ 133);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_router__ = __webpack_require__(/*! react-router */ 27);\n\n\nvar _marked = /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(watchLoginSaga),\n    _marked2 = /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(handleLoginSaga),\n    _marked3 = /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(loginPageSagas);\n\n\n\n\n\n\n\n\n// watch for login requests\nfunction watchLoginSaga() {\n    return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function watchLoginSaga$(_context) {\n        while (1) {\n            switch (_context.prev = _context.next) {\n                case 0:\n                    _context.next = 2;\n                    return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__[\"takeEvery\"])(__WEBPACK_IMPORTED_MODULE_2__loginPage_actions__[\"a\" /* GOCMS_LOGIN */], handleLoginSaga);\n\n                case 2:\n                case 'end':\n                    return _context.stop();\n            }\n        }\n    }, _marked, this);\n}\n\nfunction handleLoginSaga(action) {\n    var _ref, res, err;\n\n    return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function handleLoginSaga$(_context2) {\n        while (1) {\n            switch (_context2.prev = _context2.next) {\n                case 0:\n                    _context2.next = 2;\n                    return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__[\"call\"])(__WEBPACK_IMPORTED_MODULE_4__base_services_api__[\"Post\"], __WEBPACK_IMPORTED_MODULE_4__base_services_api__[\"ENDPOINTS\"].login, action.data);\n\n                case 2:\n                    _ref = _context2.sent;\n                    res = _ref.res;\n                    err = _ref.err;\n\n                    if (!res) {\n                        _context2.next = 15;\n                        break;\n                    }\n\n                    _context2.next = 8;\n                    return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__[\"call\"])(__WEBPACK_IMPORTED_MODULE_5__services_authentication__[\"a\" /* addUserToSession */], res.json);\n\n                case 8:\n                    _context2.next = 10;\n                    return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__[\"call\"])(__WEBPACK_IMPORTED_MODULE_5__services_authentication__[\"d\" /* syncSessionUserToState */]);\n\n                case 10:\n                    _context2.next = 12;\n                    return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__[\"put\"])(__WEBPACK_IMPORTED_MODULE_3__base_actions_apiRequestActions__[\"purge\"](action.key));\n\n                case 12:\n                    __WEBPACK_IMPORTED_MODULE_6_react_router__[\"d\" /* browserHistory */].push(GOCMS_LOGIN_SUCCESS_REDIRECT);\n                    _context2.next = 18;\n                    break;\n\n                case 15:\n                    if (!err) {\n                        _context2.next = 18;\n                        break;\n                    }\n\n                    _context2.next = 18;\n                    return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__[\"put\"])(__WEBPACK_IMPORTED_MODULE_3__base_actions_apiRequestActions__[\"failure\"](action.key, err));\n\n                case 18:\n                case 'end':\n                    return _context2.stop();\n            }\n        }\n    }, _marked2, this);\n}\n\nfunction loginPageSagas() {\n    return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function loginPageSagas$(_context3) {\n        while (1) {\n            switch (_context3.prev = _context3.next) {\n                case 0:\n                    _context3.next = 2;\n                    return [Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__[\"fork\"])(watchLoginSaga)];\n\n                case 2:\n                case 'end':\n                    return _context3.stop();\n            }\n        }\n    }, _marked3, this);\n}//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNDQ4LmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL2FkbWluL2NvbnRhaW5lcnMvbG9naW5QYWdlL2xvZ2luUGFnZS5zYWdhcy5qcz84MmYzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7Zm9yaywgdGFrZUV2ZXJ5LCBwdXQsIGNhbGx9IGZyb20gJ3JlZHV4LXNhZ2EvZWZmZWN0cyc7XG5pbXBvcnQgKiBhcyBsb2dpbkFjdGlvbnMgZnJvbSAnLi9sb2dpblBhZ2UuYWN0aW9ucyc7XG5pbXBvcnQgKiBhcyBhcGlBY3Rpb25zIGZyb20gJy4uLy4uLy4uL2Jhc2UvYWN0aW9ucy9hcGlSZXF1ZXN0QWN0aW9ucyc7XG5pbXBvcnQge1Bvc3QsIEVORFBPSU5UU30gZnJvbSAnLi4vLi4vLi4vYmFzZS9zZXJ2aWNlcy9hcGknO1xuaW1wb3J0IHthZGRVc2VyVG9TZXNzaW9uLCBzeW5jU2Vzc2lvblVzZXJUb1N0YXRlfSBmcm9tICcuLi8uLi9zZXJ2aWNlcy9hdXRoZW50aWNhdGlvbidcbmltcG9ydCB7IGJyb3dzZXJIaXN0b3J5IH0gZnJvbSAncmVhY3Qtcm91dGVyJ1xuXG5cblxuLy8gd2F0Y2ggZm9yIGxvZ2luIHJlcXVlc3RzXG5mdW5jdGlvbiogd2F0Y2hMb2dpblNhZ2EoKSB7XG4gICAgeWllbGQgdGFrZUV2ZXJ5KGxvZ2luQWN0aW9ucy5HT0NNU19MT0dJTiwgaGFuZGxlTG9naW5TYWdhKTsgLy8gc2VlIGRldGFpbHMgd2hhdCBpcyBSRVFVRVNUIHBhcmFtIGJlbG93XG59XG5cbmZ1bmN0aW9uKiBoYW5kbGVMb2dpblNhZ2EoYWN0aW9uKSB7XG4gICAgbGV0IHtyZXMsIGVycn0gPSB5aWVsZCBjYWxsKFBvc3QsIEVORFBPSU5UUy5sb2dpbiwgYWN0aW9uLmRhdGEpOyAvLyBjYWxsaW5nIG91ciBhcGkgbWV0aG9kXG4gICAgaWYgKHJlcykge1xuICAgICAgICAvLyBwdXNoIHVzZXIgaW5mbyB0byBzdG9yZSBhbmQgc3RvcmFnZVxuICAgICAgICB5aWVsZCBjYWxsKGFkZFVzZXJUb1Nlc3Npb24sIHJlcy5qc29uKTtcbiAgICAgICAgeWllbGQgY2FsbChzeW5jU2Vzc2lvblVzZXJUb1N0YXRlKTtcbiAgICAgICAgeWllbGQgcHV0KGFwaUFjdGlvbnMucHVyZ2UoYWN0aW9uLmtleSkpO1xuICAgICAgICBicm93c2VySGlzdG9yeS5wdXNoKEdPQ01TX0xPR0lOX1NVQ0NFU1NfUkVESVJFQ1QpO1xuICAgIH1cbiAgICBlbHNlIGlmIChlcnIpIHtcbiAgICAgICAgLy8gZmV0Y2ggcGFnZSBkYXRhIGJhc2VkIG9uIHVyaVxuICAgICAgICB5aWVsZCBwdXQoYXBpQWN0aW9ucy5mYWlsdXJlKGFjdGlvbi5rZXksIGVycikpO1xuICAgIH1cbn1cblxuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24qIGxvZ2luUGFnZVNhZ2FzKCkge1xuICAgIHlpZWxkIFtcbiAgICAgICAgZm9yayh3YXRjaExvZ2luU2FnYSksXG4gICAgXTtcbn1cblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gYWRtaW4vY29udGFpbmVycy9sb2dpblBhZ2UvbG9naW5QYWdlLnNhZ2FzLmpzIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7QUFVQTtBQUlBO0FBZUE7QUFDQTtBQTlCQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUdBO0FBQ0E7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFDQTtBQURBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQ0E7QUFHQTtBQUFBO0FBQ0E7QUFEQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFDQTtBQURBO0FBQUE7QUFDQTtBQUFBO0FBQ0E7QUFGQTtBQUFBO0FBQUE7QUFBQTtBQUNBO0FBREE7QUFBQTtBQUNBO0FBREE7QUFBQTtBQUFBO0FBQ0E7QUFEQTtBQUFBO0FBQUE7QUFDQTtBQURBO0FBT0E7QUFQQTtBQUFBO0FBQ0E7QUFEQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQ0E7QUFEQTtBQUFBO0FBQ0E7QUFEQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUNBO0FBY0E7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFDQTtBQURBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBIiwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///448\n");
+
+/***/ }),
+
+/***/ 452:
+/*!***************************************!*\
+  !*** ./admin/config/router/routes.js ***!
+  \***************************************/
+/*! exports provided: injectAuthedRoutes, registeredRoutes */
+/*! exports used: injectAuthedRoutes, registeredRoutes */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("/* harmony export (immutable) */ __webpack_exports__[\"a\"] = injectAuthedRoutes;\n/* harmony export (immutable) */ __webpack_exports__[\"b\"] = registeredRoutes;\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(/*! react */ 1);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router__ = __webpack_require__(/*! react-router */ 27);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__containers_loginPage_loginPage_routes__ = __webpack_require__(/*! ../../containers/loginPage/loginPage.routes */ 224);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__containers_adminPages_adminPages_routes__ = __webpack_require__(/*! ../../containers/adminPages/adminPages.routes */ 454);\n\n\n\n\n\nfunction injectAuthedRoutes(r) {\n    Object(__WEBPACK_IMPORTED_MODULE_3__containers_adminPages_adminPages_routes__[\"a\" /* injectAdminRoutes */])(r);\n}\n\nfunction registeredRoutes() {\n    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(\n        __WEBPACK_IMPORTED_MODULE_1_react_router__[\"b\" /* Route */],\n        null,\n        Object(__WEBPACK_IMPORTED_MODULE_2__containers_loginPage_loginPage_routes__[\"b\" /* registeredLoginRoutes */])(),\n        Object(__WEBPACK_IMPORTED_MODULE_3__containers_adminPages_adminPages_routes__[\"b\" /* registeredAdminRoutes */])()\n    );\n}//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNDUyLmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL2FkbWluL2NvbmZpZy9yb3V0ZXIvcm91dGVzLmpzPzY4MWMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0J1xuaW1wb3J0IHtSb3V0ZX0gZnJvbSAncmVhY3Qtcm91dGVyJ1xuaW1wb3J0IHtyZWdpc3RlcmVkTG9naW5Sb3V0ZXN9IGZyb20gJy4uLy4uL2NvbnRhaW5lcnMvbG9naW5QYWdlL2xvZ2luUGFnZS5yb3V0ZXMnXG5pbXBvcnQge2luamVjdEFkbWluUm91dGVzLCByZWdpc3RlcmVkQWRtaW5Sb3V0ZXN9IGZyb20gJy4uLy4uL2NvbnRhaW5lcnMvYWRtaW5QYWdlcy9hZG1pblBhZ2VzLnJvdXRlcydcblxuXG5leHBvcnQgZnVuY3Rpb24gaW5qZWN0QXV0aGVkUm91dGVzKHIpIHtcbiAgICBpbmplY3RBZG1pblJvdXRlcyhyKTtcbn1cblxuXG5cbmV4cG9ydCBmdW5jdGlvbiByZWdpc3RlcmVkUm91dGVzKCkge1xuICAgIHJldHVybiA8Um91dGU+XG4gICAgICAgIHtyZWdpc3RlcmVkTG9naW5Sb3V0ZXMoKX1cbiAgICAgICAge3JlZ2lzdGVyZWRBZG1pblJvdXRlcygpfVxuICAgIDwvUm91dGU+O1xufVxuXG5cbi8vIFdFQlBBQ0sgRk9PVEVSIC8vXG4vLyBhZG1pbi9jb25maWcvcm91dGVyL3JvdXRlcy5qcyJdLCJtYXBwaW5ncyI6IkFBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBRUE7QUFDQTtBQUNBO0FBQ0E7QUFHQTtBQUNBO0FBQUE7QUFBQTtBQUNBO0FBQ0E7QUFGQTtBQUlBIiwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///452\n");
+
+/***/ }),
+
+/***/ 453:
+/*!***********************************************************!*\
+  !*** ./admin/containers/loginPage/loginPage.container.js ***!
+  \***********************************************************/
+/*! exports provided: default */
+/*! exports used: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__ = __webpack_require__(/*! babel-runtime/core-js/object/get-prototype-of */ 16);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(/*! babel-runtime/helpers/classCallCheck */ 11);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__ = __webpack_require__(/*! babel-runtime/helpers/createClass */ 12);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(/*! babel-runtime/helpers/possibleConstructorReturn */ 17);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(/*! babel-runtime/helpers/inherits */ 18);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(/*! react */ 1);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_transition_group_CSSTransitionGroup__ = __webpack_require__(/*! react-transition-group/CSSTransitionGroup */ 39);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_transition_group_CSSTransitionGroup___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_transition_group_CSSTransitionGroup__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_redux__ = __webpack_require__(/*! react-redux */ 30);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react_redux__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__loginPage_actions__ = __webpack_require__(/*! ./loginPage.actions */ 222);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__base_components_gForm_GForm__ = __webpack_require__(/*! ../../../base/components/gForm/GForm */ 188);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__base_components_gForm_GInput__ = __webpack_require__(/*! ../../../base/components/gForm/GInput */ 119);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__base_components_gForm_GError__ = __webpack_require__(/*! ../../../base/components/gForm/GError */ 187);\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nvar LOGIN_FORM = \"GOCMS_LOGIN_FORM\";\n\nvar LoginPage = function (_React$Component) {\n    __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(LoginPage, _React$Component);\n\n    function LoginPage(props) {\n        __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, LoginPage);\n\n        var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (LoginPage.__proto__ || __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default()(LoginPage)).call(this, props));\n\n        _this.state = {\n            shake: false\n        };\n        _this.handleSubmit = _this.handleSubmit.bind(_this); //bind function once\n        return _this;\n    }\n\n    __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(LoginPage, [{\n        key: 'componentWillMount',\n        value: function componentWillMount() {}\n    }, {\n        key: 'componentDidMount',\n        value: function componentDidMount() {}\n    }, {\n        key: 'componentWillReceiveProps',\n        value: function componentWillReceiveProps(nextProps) {\n            if (!!nextProps.err && nextProps.reqTime != this.props.reqTime) {\n                this.setState({ shake: true });\n            }\n            if (!!nextProps.errMessage && nextProps.errMessage != this.state.errMessage) {\n                this.setState({ errMessage: nextProps.errMessage });\n            }\n        }\n    }, {\n        key: 'handleSubmit',\n        value: function handleSubmit(model) {\n            this.props.gocms_login(LOGIN_FORM, model);\n            this.setState({ errMessage: null });\n        }\n    }, {\n        key: 'render',\n        value: function render() {\n\n            return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                'div',\n                { className: 'g-a' },\n                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                    'div',\n                    { id: 'container-login-page' },\n                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                        'div',\n                        { id: 'container-login-page-form', className: 'g-container-col' },\n                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                            'div',\n                            { className: 'wrapper-login-form', noValidate: true },\n                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                                'div',\n                                { className: 'g-container-col' },\n                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                                    'h1',\n                                    { className: 'text-center no-padding no-margin' },\n                                    GOCMS_LOGIN_TITLE\n                                ),\n                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                                    __WEBPACK_IMPORTED_MODULE_9__base_components_gForm_GForm__[\"default\"],\n                                    { id: 'main-login-form', className: 'main-login-form', name: 'main-login-form',\n                                        onSubmit: this.handleSubmit,\n                                        submitBtn: 'Log In',\n                                        submitBtnClassName: \"btn-default\",\n                                        submitBtnShake: this.state.shake },\n                                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__base_components_gForm_GInput__[\"default\"], { id: 'email', name: 'email', type: 'text', label: 'Email', validations: 'isEmail',\n                                        validationError: 'Please enter a valid email.', required: true }),\n                                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__base_components_gForm_GInput__[\"default\"], { id: 'password', name: 'password', type: 'password', label: 'Password',\n                                        required: true })\n                                ),\n                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                                    'div',\n                                    { className: 'g-col' },\n                                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__base_components_gForm_GError__[\"default\"], {\n                                        className: 'error-message-login',\n                                        errMessage: this.state.errMessage\n                                    })\n                                )\n                            )\n                        )\n                    )\n                )\n            );\n        }\n    }]);\n\n    return LoginPage;\n}(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);\n\nfunction mapStateToProps(state) {\n    var errMessage = void 0;\n    var err = void 0;\n    var reqTime = void 0;\n    var req = state.api.request[LOGIN_FORM];\n    if (!!req) {\n        reqTime = req.receivedAt;\n        if (!!req.err) {\n            err = req.err;\n            if (!!err.json && !!err.json.message) {\n                errMessage = err.json.message;\n            }\n        }\n    }\n    return {\n        reqTime: reqTime,\n        err: err,\n        errMessage: errMessage\n    };\n}\n\n/* harmony default export */ __webpack_exports__[\"a\"] = (Object(__WEBPACK_IMPORTED_MODULE_7_react_redux__[\"connect\"])(mapStateToProps, {\n    gocms_login: __WEBPACK_IMPORTED_MODULE_8__loginPage_actions__[\"b\" /* gocms_login */]\n})(LoginPage));//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNDUzLmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL2FkbWluL2NvbnRhaW5lcnMvbG9naW5QYWdlL2xvZ2luUGFnZS5jb250YWluZXIuanM/Y2E2ZiJdLCJzb3VyY2VzQ29udGVudCI6WyIndXNlIHN0cmljdCc7XG5cbmltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCc7XG5pbXBvcnQgQ1NTVHJhbnNpdGlvbkdyb3VwIGZyb20gJ3JlYWN0LXRyYW5zaXRpb24tZ3JvdXAvQ1NTVHJhbnNpdGlvbkdyb3VwJ1xuaW1wb3J0IHtjb25uZWN0fSBmcm9tICdyZWFjdC1yZWR1eCdcbmltcG9ydCB7Z29jbXNfbG9naW59IGZyb20gJy4vbG9naW5QYWdlLmFjdGlvbnMnO1xuaW1wb3J0IEdGb3JtIGZyb20gJy4uLy4uLy4uL2Jhc2UvY29tcG9uZW50cy9nRm9ybS9HRm9ybSdcbmltcG9ydCBHSW5wdXQgZnJvbSAnLi4vLi4vLi4vYmFzZS9jb21wb25lbnRzL2dGb3JtL0dJbnB1dCdcbmltcG9ydCBHRXJyb3IgZnJvbSAnLi4vLi4vLi4vYmFzZS9jb21wb25lbnRzL2dGb3JtL0dFcnJvcidcblxuY29uc3QgTE9HSU5fRk9STSA9IFwiR09DTVNfTE9HSU5fRk9STVwiO1xuXG5cbmNsYXNzIExvZ2luUGFnZSBleHRlbmRzIFJlYWN0LkNvbXBvbmVudCB7XG4gICAgY29uc3RydWN0b3IocHJvcHMpIHtcbiAgICAgICAgc3VwZXIocHJvcHMpO1xuICAgICAgICB0aGlzLnN0YXRlID0ge1xuICAgICAgICAgICAgc2hha2U6IGZhbHNlXG4gICAgICAgIH07XG4gICAgICAgIHRoaXMuaGFuZGxlU3VibWl0ID0gdGhpcy5oYW5kbGVTdWJtaXQuYmluZCh0aGlzKTsgLy9iaW5kIGZ1bmN0aW9uIG9uY2VcbiAgICB9XG5cblxuICAgIGNvbXBvbmVudFdpbGxNb3VudCgpIHtcbiAgICB9XG5cbiAgICBjb21wb25lbnREaWRNb3VudCgpIHtcbiAgICB9XG5cbiAgICBjb21wb25lbnRXaWxsUmVjZWl2ZVByb3BzKG5leHRQcm9wcykge1xuICAgICAgICBpZiAoISFuZXh0UHJvcHMuZXJyICYmIG5leHRQcm9wcy5yZXFUaW1lICE9IHRoaXMucHJvcHMucmVxVGltZSkge1xuICAgICAgICAgICAgdGhpcy5zZXRTdGF0ZSh7c2hha2U6IHRydWV9KTtcbiAgICAgICAgfVxuICAgICAgICBpZiAoISFuZXh0UHJvcHMuZXJyTWVzc2FnZSAmJiBuZXh0UHJvcHMuZXJyTWVzc2FnZSAhPSB0aGlzLnN0YXRlLmVyck1lc3NhZ2UpIHtcbiAgICAgICAgICAgIHRoaXMuc2V0U3RhdGUoe2Vyck1lc3NhZ2U6IG5leHRQcm9wcy5lcnJNZXNzYWdlfSk7XG4gICAgICAgIH1cbiAgICB9XG5cbiAgICBoYW5kbGVTdWJtaXQobW9kZWwpIHtcbiAgICAgICAgdGhpcy5wcm9wcy5nb2Ntc19sb2dpbihMT0dJTl9GT1JNLCBtb2RlbCk7XG4gICAgICAgIHRoaXMuc2V0U3RhdGUoe2Vyck1lc3NhZ2U6IG51bGx9KTtcbiAgICB9XG5cblxuICAgIHJlbmRlcigpIHtcblxuXG4gICAgICAgIHJldHVybiAoXG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImctYVwiPlxuICAgICAgICAgICAgICAgIDxkaXYgaWQ9XCJjb250YWluZXItbG9naW4tcGFnZVwiPlxuICAgICAgICAgICAgICAgICAgICA8ZGl2IGlkPVwiY29udGFpbmVyLWxvZ2luLXBhZ2UtZm9ybVwiIGNsYXNzTmFtZT1cImctY29udGFpbmVyLWNvbFwiPlxuICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ3cmFwcGVyLWxvZ2luLWZvcm1cIiBub1ZhbGlkYXRlPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZy1jb250YWluZXItY29sXCI+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxoMSBjbGFzc05hbWU9XCJ0ZXh0LWNlbnRlciBuby1wYWRkaW5nIG5vLW1hcmdpblwiPntHT0NNU19MT0dJTl9USVRMRX08L2gxPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8R0Zvcm0gaWQ9XCJtYWluLWxvZ2luLWZvcm1cIiBjbGFzc05hbWU9XCJtYWluLWxvZ2luLWZvcm1cIiBuYW1lPVwibWFpbi1sb2dpbi1mb3JtXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG9uU3VibWl0PXt0aGlzLmhhbmRsZVN1Ym1pdH1cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN1Ym1pdEJ0bj1cIkxvZyBJblwiXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzdWJtaXRCdG5DbGFzc05hbWU9e1wiYnRuLWRlZmF1bHRcIn1cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN1Ym1pdEJ0blNoYWtlPXt0aGlzLnN0YXRlLnNoYWtlfT5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxHSW5wdXQgaWQ9XCJlbWFpbFwiIG5hbWU9XCJlbWFpbFwiIHR5cGU9XCJ0ZXh0XCIgbGFiZWw9XCJFbWFpbFwiIHZhbGlkYXRpb25zPVwiaXNFbWFpbFwiXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZhbGlkYXRpb25FcnJvcj1cIlBsZWFzZSBlbnRlciBhIHZhbGlkIGVtYWlsLlwiIHJlcXVpcmVkLz5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxHSW5wdXQgaWQ9XCJwYXNzd29yZFwiIG5hbWU9XCJwYXNzd29yZFwiIHR5cGU9XCJwYXNzd29yZFwiIGxhYmVsPVwiUGFzc3dvcmRcIlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZXF1aXJlZC8+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvR0Zvcm0+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZy1jb2xcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxHRXJyb3JcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9XCJlcnJvci1tZXNzYWdlLWxvZ2luXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBlcnJNZXNzYWdlPXt0aGlzLnN0YXRlLmVyck1lc3NhZ2V9XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICApO1xuICAgIH1cblxufVxuXG5cbmZ1bmN0aW9uIG1hcFN0YXRlVG9Qcm9wcyhzdGF0ZSkge1xuICAgIGxldCBlcnJNZXNzYWdlO1xuICAgIGxldCBlcnI7XG4gICAgbGV0IHJlcVRpbWU7XG4gICAgbGV0IHJlcSA9IHN0YXRlLmFwaS5yZXF1ZXN0W0xPR0lOX0ZPUk1dO1xuICAgIGlmICghIXJlcSkge1xuICAgICAgICByZXFUaW1lID0gcmVxLnJlY2VpdmVkQXQ7XG4gICAgICAgIGlmICghIXJlcS5lcnIpIHtcbiAgICAgICAgICAgIGVyciA9IHJlcS5lcnI7XG4gICAgICAgICAgICBpZiAoISFlcnIuanNvbiAmJiAhIWVyci5qc29uLm1lc3NhZ2UpIHtcbiAgICAgICAgICAgICAgICBlcnJNZXNzYWdlID0gZXJyLmpzb24ubWVzc2FnZTtcbiAgICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgIH1cbiAgICByZXR1cm4ge1xuICAgICAgICByZXFUaW1lOiByZXFUaW1lLFxuICAgICAgICBlcnI6IGVycixcbiAgICAgICAgZXJyTWVzc2FnZTogZXJyTWVzc2FnZSxcbiAgICB9XG59XG5cbmV4cG9ydCBkZWZhdWx0IGNvbm5lY3QobWFwU3RhdGVUb1Byb3BzLCB7XG4gICAgZ29jbXNfbG9naW5cbn0pKExvZ2luUGFnZSk7XG5cblxuLy8gV0VCUEFDSyBGT09URVIgLy9cbi8vIGFkbWluL2NvbnRhaW5lcnMvbG9naW5QYWdlL2xvZ2luUGFnZS5jb250YWluZXIuanMiXSwibWFwcGluZ3MiOiJBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUNBOzs7Ozs7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUVBOzs7QUFDQTtBQUFBO0FBQ0E7QUFEQTtBQUNBO0FBQ0E7QUFDQTtBQURBO0FBR0E7QUFMQTtBQU1BO0FBQ0E7OztBQUVBOzs7QUFHQTs7O0FBR0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7O0FBRUE7QUFDQTtBQUNBO0FBQ0E7OztBQUdBO0FBQ0E7QUFFQTtBQUNBO0FBQUE7QUFDQTtBQUFBO0FBQUE7QUFDQTtBQUFBO0FBQUE7QUFDQTtBQUFBO0FBQUE7QUFDQTtBQUFBO0FBQUE7QUFDQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQ0E7QUFBQTtBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQVJBO0FBVUE7QUFBQTtBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBRkE7QUFEQTtBQVpBO0FBREE7QUFEQTtBQURBO0FBREE7QUE0QkE7Ozs7QUEvREE7QUFDQTtBQW1FQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFIQTtBQUtBO0FBQ0E7QUFDQTtBQUNBO0FBREEiLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///453\n");
+
+/***/ }),
+
+/***/ 454:
+/*!**********************************************************!*\
+  !*** ./admin/containers/adminPages/adminPages.routes.js ***!
+  \**********************************************************/
+/*! exports provided: injectAdminRoutes, registeredAdminRoutes */
+/*! exports used: injectAdminRoutes, registeredAdminRoutes */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("/* harmony export (immutable) */ __webpack_exports__[\"a\"] = injectAdminRoutes;\n/* harmony export (immutable) */ __webpack_exports__[\"b\"] = registeredAdminRoutes;\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_authentication__ = __webpack_require__(/*! ../../services/authentication */ 133);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(/*! react */ 1);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dashboardPage_dashboardPage_routes__ = __webpack_require__(/*! ./dashboardPage/dashboardPage.routes */ 455);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__templates_admin_tmpl__ = __webpack_require__(/*! ../../templates/admin_tmpl */ 457);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_router__ = __webpack_require__(/*! react-router */ 27);\n\n\n\n\n\n\nvar injectedRoutes = [];\n\nvar routes = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(\n    __WEBPACK_IMPORTED_MODULE_4_react_router__[\"b\" /* Route */],\n    null,\n    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_router__[\"a\" /* Redirect */], { from: 'admin', to: GOCMS_LOGIN_SUCCESS_REDIRECT }),\n    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(\n        __WEBPACK_IMPORTED_MODULE_4_react_router__[\"b\" /* Route */],\n        { path: 'admin', component: __WEBPACK_IMPORTED_MODULE_3__templates_admin_tmpl__[\"a\" /* default */], onEnter: __WEBPACK_IMPORTED_MODULE_0__services_authentication__[\"c\" /* requireAuthUser */] },\n        __WEBPACK_IMPORTED_MODULE_2__dashboardPage_dashboardPage_routes__[\"a\" /* default */],\n        injectedRoutes\n    )\n);\n\nfunction injectAdminRoutes(r) {\n    injectedRoutes.push(r);\n}\n\nfunction registeredAdminRoutes() {\n    return routes;\n}//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNDU0LmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL2FkbWluL2NvbnRhaW5lcnMvYWRtaW5QYWdlcy9hZG1pblBhZ2VzLnJvdXRlcy5qcz9hZjNjIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7cmVxdWlyZUF1dGhVc2VyfSBmcm9tICcuLi8uLi9zZXJ2aWNlcy9hdXRoZW50aWNhdGlvbidcbmltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCdcbmltcG9ydCBEYXNoYm9hcmRSb3V0ZXMgZnJvbSAnLi9kYXNoYm9hcmRQYWdlL2Rhc2hib2FyZFBhZ2Uucm91dGVzJztcbmltcG9ydCBBZG1pblRlbXBsYXRlIGZyb20gJy4uLy4uL3RlbXBsYXRlcy9hZG1pbl90bXBsJ1xuaW1wb3J0IHtSb3V0ZSwgUmVkaXJlY3R9IGZyb20gJ3JlYWN0LXJvdXRlcidcblxuXG5sZXQgaW5qZWN0ZWRSb3V0ZXMgPSBbXTtcblxubGV0IHJvdXRlcyA9XG4gICAgPFJvdXRlPlxuICAgICAgICA8UmVkaXJlY3QgZnJvbT1cImFkbWluXCIgdG89e0dPQ01TX0xPR0lOX1NVQ0NFU1NfUkVESVJFQ1R9Lz5cbiAgICAgICAgPFJvdXRlIHBhdGg9XCJhZG1pblwiIGNvbXBvbmVudD17QWRtaW5UZW1wbGF0ZX0gb25FbnRlcj17cmVxdWlyZUF1dGhVc2VyfT5cbiAgICAgICAgICAgIHtEYXNoYm9hcmRSb3V0ZXN9XG4gICAgICAgICAgICB7aW5qZWN0ZWRSb3V0ZXN9XG4gICAgICAgIDwvUm91dGU+XG4gICAgPC9Sb3V0ZT47XG5cblxuZXhwb3J0IGZ1bmN0aW9uIGluamVjdEFkbWluUm91dGVzKHIpIHtcbiAgICBpbmplY3RlZFJvdXRlcy5wdXNoKHIpO1xufVxuXG5leHBvcnQgZnVuY3Rpb24gcmVnaXN0ZXJlZEFkbWluUm91dGVzKCkge1xuICAgIHJldHVybiByb3V0ZXM7XG59XG5cblxuLy8gV0VCUEFDSyBGT09URVIgLy9cbi8vIGFkbWluL2NvbnRhaW5lcnMvYWRtaW5QYWdlcy9hZG1pblBhZ2VzLnJvdXRlcy5qcyJdLCJtYXBwaW5ncyI6IkFBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUVBO0FBQ0E7QUFDQTtBQUNBO0FBQUE7QUFDQTtBQUNBO0FBQUE7QUFBQTtBQUNBO0FBQ0E7QUFGQTtBQUZBO0FBQ0E7QUFRQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSIsInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///454\n");
+
+/***/ }),
+
+/***/ 455:
+/*!***************************************************************************!*\
+  !*** ./admin/containers/adminPages/dashboardPage/dashboardPage.routes.js ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/*! exports used: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(/*! react */ 1);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router__ = __webpack_require__(/*! react-router */ 27);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dashboardPage_container__ = __webpack_require__(/*! ./dashboardPage.container */ 456);\n\n\n\n\n/* harmony default export */ __webpack_exports__[\"a\"] = (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(\n    __WEBPACK_IMPORTED_MODULE_1_react_router__[\"b\" /* Route */],\n    null,\n    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router__[\"b\" /* Route */], { path: 'dashboard', component: __WEBPACK_IMPORTED_MODULE_2__dashboardPage_container__[\"a\" /* default */] })\n));//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNDU1LmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL2FkbWluL2NvbnRhaW5lcnMvYWRtaW5QYWdlcy9kYXNoYm9hcmRQYWdlL2Rhc2hib2FyZFBhZ2Uucm91dGVzLmpzPzMzMTciXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0J1xuaW1wb3J0IHtSb3V0ZX0gZnJvbSAncmVhY3Qtcm91dGVyJ1xuaW1wb3J0IERhc2hib2FyZFBhZ2UgZnJvbSAnLi9kYXNoYm9hcmRQYWdlLmNvbnRhaW5lcic7XG5cbmV4cG9ydCBkZWZhdWx0IChcbiAgICA8Um91dGU+XG4gICAgICAgIDxSb3V0ZSBwYXRoPVwiZGFzaGJvYXJkXCIgY29tcG9uZW50PXtEYXNoYm9hcmRQYWdlfS8+XG4gICAgPC9Sb3V0ZT5cbilcblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gYWRtaW4vY29udGFpbmVycy9hZG1pblBhZ2VzL2Rhc2hib2FyZFBhZ2UvZGFzaGJvYXJkUGFnZS5yb3V0ZXMuanMiXSwibWFwcGluZ3MiOiJBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQUE7QUFDQTtBQURBIiwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///455\n");
+
+/***/ }),
+
+/***/ 456:
+/*!******************************************************************************!*\
+  !*** ./admin/containers/adminPages/dashboardPage/dashboardPage.container.js ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/*! exports used: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__ = __webpack_require__(/*! babel-runtime/core-js/object/get-prototype-of */ 16);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(/*! babel-runtime/helpers/classCallCheck */ 11);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__ = __webpack_require__(/*! babel-runtime/helpers/createClass */ 12);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(/*! babel-runtime/helpers/possibleConstructorReturn */ 17);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(/*! babel-runtime/helpers/inherits */ 18);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(/*! react */ 1);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_transition_group_CSSTransitionGroup__ = __webpack_require__(/*! react-transition-group/CSSTransitionGroup */ 39);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_transition_group_CSSTransitionGroup___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_transition_group_CSSTransitionGroup__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_redux__ = __webpack_require__(/*! react-redux */ 30);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react_redux__);\n\n\n\n\n\n\n\n\n\n\n\nvar DashboardPage = function (_React$Component) {\n    __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(DashboardPage, _React$Component);\n\n    function DashboardPage(props) {\n        __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, DashboardPage);\n\n        var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (DashboardPage.__proto__ || __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default()(DashboardPage)).call(this, props));\n\n        _this.state = {};\n        return _this;\n    }\n\n    __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(DashboardPage, [{\n        key: 'componentWillMount',\n        value: function componentWillMount() {}\n    }, {\n        key: 'componentDidMount',\n        value: function componentDidMount() {}\n    }, {\n        key: 'render',\n        value: function render() {\n\n            return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                'h1',\n                null,\n                'dashboard'\n            );\n        }\n    }]);\n\n    return DashboardPage;\n}(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);\n\nfunction mapStateToProps(state) {\n    return {};\n}\n\n/* harmony default export */ __webpack_exports__[\"a\"] = (Object(__WEBPACK_IMPORTED_MODULE_7_react_redux__[\"connect\"])(mapStateToProps, {})(DashboardPage));//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNDU2LmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL2FkbWluL2NvbnRhaW5lcnMvYWRtaW5QYWdlcy9kYXNoYm9hcmRQYWdlL2Rhc2hib2FyZFBhZ2UuY29udGFpbmVyLmpzP2NjNDciXSwic291cmNlc0NvbnRlbnQiOlsiJ3VzZSBzdHJpY3QnO1xuXG5pbXBvcnQgUmVhY3QgZnJvbSAncmVhY3QnO1xuaW1wb3J0IENTU1RyYW5zaXRpb25Hcm91cCBmcm9tICdyZWFjdC10cmFuc2l0aW9uLWdyb3VwL0NTU1RyYW5zaXRpb25Hcm91cCdcbmltcG9ydCB7Y29ubmVjdH0gZnJvbSAncmVhY3QtcmVkdXgnXG5cblxuXG5jbGFzcyBEYXNoYm9hcmRQYWdlIGV4dGVuZHMgUmVhY3QuQ29tcG9uZW50IHtcbiAgICBjb25zdHJ1Y3Rvcihwcm9wcykge1xuICAgICAgICBzdXBlcihwcm9wcyk7XG4gICAgICAgIHRoaXMuc3RhdGUgPSB7XG4gICAgICAgIH07XG4gICAgfVxuXG5cbiAgICBjb21wb25lbnRXaWxsTW91bnQoKSB7XG4gICAgfVxuXG4gICAgY29tcG9uZW50RGlkTW91bnQoKSB7XG4gICAgfVxuXG5cbiAgICByZW5kZXIoKSB7XG5cbiAgICAgICAgcmV0dXJuIChcbiAgICAgICAgICA8aDE+ZGFzaGJvYXJkPC9oMT5cbiAgICAgICAgKTtcbiAgICB9XG5cbn1cblxuXG5mdW5jdGlvbiBtYXBTdGF0ZVRvUHJvcHMoc3RhdGUpIHtcbiAgICByZXR1cm4ge31cbn1cblxuZXhwb3J0IGRlZmF1bHQgY29ubmVjdChtYXBTdGF0ZVRvUHJvcHMsIHtcbn0pKERhc2hib2FyZFBhZ2UpO1xuXG5cbi8vIFdFQlBBQ0sgRk9PVEVSIC8vXG4vLyBhZG1pbi9jb250YWluZXJzL2FkbWluUGFnZXMvZGFzaGJvYXJkUGFnZS9kYXNoYm9hcmRQYWdlLmNvbnRhaW5lci5qcyJdLCJtYXBwaW5ncyI6IkFBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUNBOzs7Ozs7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUdBOzs7QUFDQTtBQUFBO0FBQ0E7QUFEQTtBQUNBO0FBQ0E7QUFGQTtBQUlBO0FBQ0E7OztBQUVBOzs7QUFHQTs7O0FBSUE7QUFDQTtBQUNBO0FBQ0E7QUFBQTtBQUFBO0FBQUE7QUFFQTs7OztBQXBCQTtBQUNBO0FBd0JBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EiLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///456\n");
+
+/***/ }),
+
+/***/ 457:
+/*!***************************************!*\
+  !*** ./admin/templates/admin_tmpl.js ***!
+  \***************************************/
+/*! exports provided: default */
+/*! exports used: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__ = __webpack_require__(/*! babel-runtime/core-js/object/get-prototype-of */ 16);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(/*! babel-runtime/helpers/classCallCheck */ 11);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__ = __webpack_require__(/*! babel-runtime/helpers/createClass */ 12);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(/*! babel-runtime/helpers/possibleConstructorReturn */ 17);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(/*! babel-runtime/helpers/inherits */ 18);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(/*! react */ 1);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_redux__ = __webpack_require__(/*! react-redux */ 30);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_redux__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__containers_adminPages_components_mainMenu_MainMenu__ = __webpack_require__(/*! ../containers/adminPages/components/mainMenu/MainMenu */ 458);\n\n\n\n\n\n\n\n\n\nvar AdminTemplate = function (_React$Component) {\n    __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(AdminTemplate, _React$Component);\n\n    function AdminTemplate(props) {\n        __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, AdminTemplate);\n\n        return __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (AdminTemplate.__proto__ || __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default()(AdminTemplate)).call(this, props));\n    }\n\n    __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(AdminTemplate, [{\n        key: 'componentDidMount',\n        value: function componentDidMount() {}\n    }, {\n        key: 'render',\n        value: function render() {\n            return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                'div',\n                { className: 'g-a' },\n                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__containers_adminPages_components_mainMenu_MainMenu__[\"a\" /* default */], null),\n                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                    'div',\n                    { id: 'g-a-main-container' },\n                    this.props.children\n                )\n            );\n        }\n    }]);\n\n    return AdminTemplate;\n}(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);\n\nAdminTemplate.propTypes = {\n    children: __WEBPACK_IMPORTED_MODULE_5_react__[\"PropTypes\"].node\n};\n\nfunction mapStateToProps(state, ownProps) {\n    return {};\n}\n\n/* harmony default export */ __webpack_exports__[\"a\"] = (Object(__WEBPACK_IMPORTED_MODULE_6_react_redux__[\"connect\"])(mapStateToProps, {})(AdminTemplate));//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNDU3LmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL2FkbWluL3RlbXBsYXRlcy9hZG1pbl90bXBsLmpzP2VhNWUiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0LCB7UHJvcFR5cGVzfSBmcm9tICdyZWFjdCdcbmltcG9ydCB7Y29ubmVjdH0gZnJvbSAncmVhY3QtcmVkdXgnXG5pbXBvcnQgTWFpbk1lbnUgZnJvbSAnLi4vY29udGFpbmVycy9hZG1pblBhZ2VzL2NvbXBvbmVudHMvbWFpbk1lbnUvTWFpbk1lbnUnXG5cblxuY2xhc3MgQWRtaW5UZW1wbGF0ZSBleHRlbmRzIFJlYWN0LkNvbXBvbmVudCB7XG4gICAgY29uc3RydWN0b3IocHJvcHMpIHtcbiAgICAgICAgc3VwZXIocHJvcHMpO1xuICAgIH1cblxuICAgIGNvbXBvbmVudERpZE1vdW50KCkge1xuICAgIH1cblxuICAgIHJlbmRlcigpIHtcbiAgICAgICAgcmV0dXJuIChcbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZy1hXCI+XG4gICAgICAgICAgICAgICA8TWFpbk1lbnUgLz5cbiAgICAgICAgICAgICAgICA8ZGl2IGlkPVwiZy1hLW1haW4tY29udGFpbmVyXCI+XG4gICAgICAgICAgICAgICAgICAgIHt0aGlzLnByb3BzLmNoaWxkcmVufVxuICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgKVxuICAgIH1cbn1cblxuQWRtaW5UZW1wbGF0ZS5wcm9wVHlwZXMgPSB7XG4gICAgY2hpbGRyZW46IFByb3BUeXBlcy5ub2RlXG59O1xuXG5mdW5jdGlvbiBtYXBTdGF0ZVRvUHJvcHMoc3RhdGUsIG93blByb3BzKSB7XG4gICAgcmV0dXJuIHt9XG59XG5cbmV4cG9ydCBkZWZhdWx0IGNvbm5lY3QobWFwU3RhdGVUb1Byb3BzLCB7fSkoQWRtaW5UZW1wbGF0ZSlcblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gYWRtaW4vdGVtcGxhdGVzL2FkbWluX3RtcGwuanMiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFFQTs7O0FBQ0E7QUFBQTtBQUNBO0FBREE7QUFFQTtBQUNBOzs7QUFDQTs7O0FBR0E7QUFDQTtBQUNBO0FBQUE7QUFDQTtBQUNBO0FBQUE7QUFBQTtBQUNBO0FBREE7QUFGQTtBQVFBOzs7O0FBbEJBO0FBQ0E7QUFvQkE7QUFDQTtBQURBO0FBQ0E7QUFHQTtBQUNBO0FBQ0E7QUFDQTtBQUNBIiwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///457\n");
+
+/***/ }),
+
+/***/ 458:
+/*!*********************************************************************!*\
+  !*** ./admin/containers/adminPages/components/mainMenu/MainMenu.js ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/*! exports used: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__ = __webpack_require__(/*! babel-runtime/core-js/object/get-prototype-of */ 16);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(/*! babel-runtime/helpers/classCallCheck */ 11);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__ = __webpack_require__(/*! babel-runtime/helpers/createClass */ 12);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(/*! babel-runtime/helpers/possibleConstructorReturn */ 17);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(/*! babel-runtime/helpers/inherits */ 18);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(/*! react */ 1);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_redux__ = __webpack_require__(/*! react-redux */ 30);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_redux__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_authentication__ = __webpack_require__(/*! ../../../../services/authentication */ 133);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_router__ = __webpack_require__(/*! react-router */ 27);\n\n\n\n\n\n\n\n\n\n\n\n\nvar BasicComponent = function (_React$Component) {\n    __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(BasicComponent, _React$Component);\n\n    function BasicComponent(props) {\n        __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, BasicComponent);\n\n        var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (BasicComponent.__proto__ || __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default()(BasicComponent)).call(this, props));\n\n        _this.handleMenuOpenCloseClick = _this.handleMenuOpenCloseClick.bind(_this);\n        _this.handleSignOut = _this.handleSignOut.bind(_this);\n\n        _this.state = {\n            menuIsOpen: true\n        };\n        return _this;\n    }\n\n    __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(BasicComponent, [{\n        key: 'componentDidMount',\n        value: function componentDidMount() {}\n    }, {\n        key: 'handleSignOut',\n        value: function handleSignOut(e) {\n            e.preventDefault();\n            Object(__WEBPACK_IMPORTED_MODULE_7__services_authentication__[\"b\" /* logout */])();\n            __WEBPACK_IMPORTED_MODULE_8_react_router__[\"d\" /* browserHistory */].push(\"/login\");\n        }\n    }, {\n        key: 'handleMenuOpenCloseClick',\n        value: function handleMenuOpenCloseClick(e) {\n            this.setState({ menuIsOpen: !this.state.menuIsOpen });\n        }\n    }, {\n        key: 'render',\n        value: function render() {\n            // console.log(\"user: \", this.state.user);\n            return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                'div',\n                null,\n                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                    'div',\n                    {\n                        className: \"g-container g-a-main-menu-container\" + (this.state.menuIsOpen ? \" g-a-main-menu-container-open\" : \" g-a-main-menu-container-close\") },\n                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                        'div',\n                        {\n                            className: \"g-container g-a-main-menu-title-container\" + (this.state.menuIsOpen ? \" g-a-main-menu-title-container-open\" : \" g-a-main-menu-title-container-close\") },\n                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                            'div',\n                            { className: 'g-a-main-menu-profile-img-container' },\n                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                                'a',\n                                { href: '', className: 'g-a-main-menu-profile-img' },\n                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('i', { className: 'gocms-icon-user' })\n                            )\n                        ),\n                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                            'div',\n                            { className: 'g-container-col' },\n                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                                'h1',\n                                { className: 'g-a-main-menu-title' },\n                                GOCMS_LOGIN_TITLE\n                            ),\n                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                                'h2',\n                                { className: 'g-a-main-menu-sub-title' },\n                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                                    'a',\n                                    { className: '', href: '' },\n                                    this.props.user.fullName\n                                ),\n                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                                    'span',\n                                    { className: 'g-a-main-menu-sign-out' },\n                                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                                        'a',\n                                        { href: '', onClick: this.handleSignOut },\n                                        'Sign Out'\n                                    )\n                                )\n                            )\n                        )\n                    )\n                ),\n                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(\n                    'button',\n                    {\n                        className: \"g-a-main-menu-btn\" + (this.state.menuIsOpen ? \" g-a-main-menu-btn-open\" : \" g-a-main-menu-btn-close\"),\n                        onClick: this.handleMenuOpenCloseClick },\n                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('i', { className: 'gocms-icon-menu' })\n                )\n            );\n        }\n    }]);\n\n    return BasicComponent;\n}(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);\n\nfunction mapStateToProps(state) {\n    return {\n        user: state.auth.user\n    };\n}\n\n/* harmony default export */ __webpack_exports__[\"a\"] = (Object(__WEBPACK_IMPORTED_MODULE_6_react_redux__[\"connect\"])(mapStateToProps, {})(BasicComponent));//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNDU4LmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL2FkbWluL2NvbnRhaW5lcnMvYWRtaW5QYWdlcy9jb21wb25lbnRzL21haW5NZW51L01haW5NZW51LmpzPzZjMDgiXSwic291cmNlc0NvbnRlbnQiOlsiJ3VzZSBzdHJpY3QnO1xuXG5pbXBvcnQgUmVhY3QgZnJvbSAncmVhY3QnO1xuaW1wb3J0IHtjb25uZWN0fSBmcm9tICdyZWFjdC1yZWR1eCdcbmltcG9ydCB7bG9nb3V0fSBmcm9tICcuLi8uLi8uLi8uLi9zZXJ2aWNlcy9hdXRoZW50aWNhdGlvbidcbmltcG9ydCB7YnJvd3Nlckhpc3Rvcnl9IGZyb20gJ3JlYWN0LXJvdXRlcidcblxuXG5jbGFzcyBCYXNpY0NvbXBvbmVudCBleHRlbmRzIFJlYWN0LkNvbXBvbmVudCB7XG4gICAgY29uc3RydWN0b3IocHJvcHMpIHtcbiAgICAgICAgc3VwZXIocHJvcHMpO1xuICAgICAgICB0aGlzLmhhbmRsZU1lbnVPcGVuQ2xvc2VDbGljayA9IHRoaXMuaGFuZGxlTWVudU9wZW5DbG9zZUNsaWNrLmJpbmQodGhpcyk7XG4gICAgICAgIHRoaXMuaGFuZGxlU2lnbk91dCA9IHRoaXMuaGFuZGxlU2lnbk91dC5iaW5kKHRoaXMpO1xuXG4gICAgICAgIHRoaXMuc3RhdGUgPSB7XG4gICAgICAgICAgICBtZW51SXNPcGVuOiB0cnVlXG4gICAgICAgIH07XG4gICAgfVxuXG4gICAgY29tcG9uZW50RGlkTW91bnQoKSB7XG4gICAgfVxuXG4gICAgaGFuZGxlU2lnbk91dChlKXtcbiAgICAgICAgZS5wcmV2ZW50RGVmYXVsdCgpO1xuICAgICAgICBsb2dvdXQoKTtcbiAgICAgICAgYnJvd3Nlckhpc3RvcnkucHVzaChcIi9sb2dpblwiKTtcblxuICAgIH1cblxuICAgIGhhbmRsZU1lbnVPcGVuQ2xvc2VDbGljayhlKSB7XG4gICAgICAgIHRoaXMuc2V0U3RhdGUoe21lbnVJc09wZW46ICF0aGlzLnN0YXRlLm1lbnVJc09wZW59KTtcbiAgICB9XG5cbiAgICByZW5kZXIoKSB7XG4gICAgICAgIC8vIGNvbnNvbGUubG9nKFwidXNlcjogXCIsIHRoaXMuc3RhdGUudXNlcik7XG4gICAgICAgIHJldHVybiAoXG4gICAgICAgICAgICA8ZGl2PlxuICAgICAgICAgICAgICAgIDxkaXZcbiAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPXtcImctY29udGFpbmVyIGctYS1tYWluLW1lbnUtY29udGFpbmVyXCIgKyAodGhpcy5zdGF0ZS5tZW51SXNPcGVuID8gXCIgZy1hLW1haW4tbWVudS1jb250YWluZXItb3BlblwiIDogXCIgZy1hLW1haW4tbWVudS1jb250YWluZXItY2xvc2VcIil9PlxuICAgICAgICAgICAgICAgICAgICA8ZGl2XG4gICAgICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9e1wiZy1jb250YWluZXIgZy1hLW1haW4tbWVudS10aXRsZS1jb250YWluZXJcIiArICh0aGlzLnN0YXRlLm1lbnVJc09wZW4gPyBcIiBnLWEtbWFpbi1tZW51LXRpdGxlLWNvbnRhaW5lci1vcGVuXCIgOiBcIiBnLWEtbWFpbi1tZW51LXRpdGxlLWNvbnRhaW5lci1jbG9zZVwiKX0+XG4gICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImctYS1tYWluLW1lbnUtcHJvZmlsZS1pbWctY29udGFpbmVyXCI+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgPGEgaHJlZj1cIlwiIGNsYXNzTmFtZT1cImctYS1tYWluLW1lbnUtcHJvZmlsZS1pbWdcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGkgY2xhc3NOYW1lPVwiZ29jbXMtaWNvbi11c2VyXCIvPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvYT5cbiAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJnLWNvbnRhaW5lci1jb2xcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8aDEgY2xhc3NOYW1lPVwiZy1hLW1haW4tbWVudS10aXRsZVwiPntHT0NNU19MT0dJTl9USVRMRX08L2gxPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxoMiBjbGFzc05hbWU9XCJnLWEtbWFpbi1tZW51LXN1Yi10aXRsZVwiPjxhIGNsYXNzTmFtZT1cIlwiIGhyZWY9XCJcIj57dGhpcy5wcm9wcy51c2VyLmZ1bGxOYW1lfTwvYT48c3BhbiBjbGFzc05hbWU9XCJnLWEtbWFpbi1tZW51LXNpZ24tb3V0XCI+PGEgaHJlZj1cIlwiIG9uQ2xpY2s9e3RoaXMuaGFuZGxlU2lnbk91dH0+U2lnbiBPdXQ8L2E+PC9zcGFuPjwvaDI+XG4gICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgPGJ1dHRvblxuICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9e1wiZy1hLW1haW4tbWVudS1idG5cIiArICh0aGlzLnN0YXRlLm1lbnVJc09wZW4gPyBcIiBnLWEtbWFpbi1tZW51LWJ0bi1vcGVuXCIgOiBcIiBnLWEtbWFpbi1tZW51LWJ0bi1jbG9zZVwiKX1cbiAgICAgICAgICAgICAgICAgICAgb25DbGljaz17dGhpcy5oYW5kbGVNZW51T3BlbkNsb3NlQ2xpY2t9PjxpIGNsYXNzTmFtZT1cImdvY21zLWljb24tbWVudVwiLz48L2J1dHRvbj5cbiAgICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICk7XG4gICAgfVxufVxuXG5mdW5jdGlvbiBtYXBTdGF0ZVRvUHJvcHMoc3RhdGUpIHtcbiAgICByZXR1cm4ge1xuICAgICAgICB1c2VyOiBzdGF0ZS5hdXRoLnVzZXJcbiAgICB9XG59XG5cbmV4cG9ydCBkZWZhdWx0IGNvbm5lY3QobWFwU3RhdGVUb1Byb3BzLCB7XG5cbn0pKEJhc2ljQ29tcG9uZW50KTtcblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gYWRtaW4vY29udGFpbmVycy9hZG1pblBhZ2VzL2NvbXBvbmVudHMvbWFpbk1lbnUvTWFpbk1lbnUuanMiXSwibWFwcGluZ3MiOiJBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFDQTs7Ozs7O0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUVBOzs7QUFDQTtBQUFBO0FBQ0E7QUFEQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQURBO0FBTEE7QUFRQTtBQUNBOzs7QUFDQTs7O0FBR0E7QUFDQTtBQUNBO0FBQ0E7QUFFQTs7O0FBRUE7QUFDQTtBQUNBOzs7QUFFQTtBQUNBO0FBQ0E7QUFDQTtBQUFBO0FBQ0E7QUFBQTtBQUFBO0FBQ0E7QUFDQTtBQUFBO0FBQUE7QUFDQTtBQUNBO0FBQUE7QUFBQTtBQUNBO0FBQUE7QUFBQTtBQUNBO0FBREE7QUFEQTtBQUtBO0FBQUE7QUFBQTtBQUNBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFDQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFGQTtBQVBBO0FBRkE7QUFlQTtBQUFBO0FBQUE7QUFDQTtBQUNBO0FBQUE7QUFGQTtBQWhCQTtBQXNCQTs7OztBQWxEQTtBQUNBO0FBb0RBO0FBQ0E7QUFDQTtBQURBO0FBR0E7QUFDQTtBQUNBIiwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///458\n");
+
+/***/ }),
+
+/***/ 459:
+/*!*******************************************!*\
+  !*** ./admin/config/reducers/reducers.js ***!
+  \*******************************************/
+/*! exports provided: injectReducers, registeredReducers */
+/*! exports used: injectReducers, registeredReducers */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("/* harmony export (immutable) */ __webpack_exports__[\"a\"] = injectReducers;\n/* harmony export (immutable) */ __webpack_exports__[\"b\"] = registeredReducers;\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(/*! babel-runtime/helpers/extends */ 80);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_object_assign__ = __webpack_require__(/*! babel-runtime/core-js/object/assign */ 81);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_object_assign___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_object_assign__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_redux__ = __webpack_require__(/*! react-router-redux */ 130);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_router_redux__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__authenticationReducers__ = __webpack_require__(/*! ./authenticationReducers */ 460);\n\n\n\n\n\nvar injectedReducers = {};\n\nfunction injectReducers(r) {\n    injectedReducers = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_object_assign___default()({}, r, injectedReducers);\n}\n\nfunction registeredReducers() {\n    return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({\n        auth: __WEBPACK_IMPORTED_MODULE_3__authenticationReducers__[\"a\" /* default */]\n    }, injectedReducers, {\n        routing: __WEBPACK_IMPORTED_MODULE_2_react_router_redux__[\"routerReducer\"]\n    });\n}//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNDU5LmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL2FkbWluL2NvbmZpZy9yZWR1Y2Vycy9yZWR1Y2Vycy5qcz80NTZhIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7cm91dGVyUmVkdWNlciBhcyByb3V0aW5nfSBmcm9tICdyZWFjdC1yb3V0ZXItcmVkdXgnXG5pbXBvcnQgYXV0aGVudGljYXRpb25SZWR1Y2VycyBmcm9tICcuL2F1dGhlbnRpY2F0aW9uUmVkdWNlcnMnXG5cblxubGV0IGluamVjdGVkUmVkdWNlcnMgPSB7fTtcblxuZXhwb3J0IGZ1bmN0aW9uIGluamVjdFJlZHVjZXJzKHIpIHtcbiAgICBpbmplY3RlZFJlZHVjZXJzID0gT2JqZWN0LmFzc2lnbih7fSwgciwgaW5qZWN0ZWRSZWR1Y2Vycyk7XG59XG5cbmV4cG9ydCBmdW5jdGlvbiByZWdpc3RlcmVkUmVkdWNlcnMoKSB7XG4gICAgcmV0dXJuICB7XG4gICAgICAgIGF1dGg6IGF1dGhlbnRpY2F0aW9uUmVkdWNlcnMsXG4gICAgICAgIC4uLmluamVjdGVkUmVkdWNlcnMsXG4gICAgICAgIHJvdXRpbmcsXG4gICAgfTtcbn1cblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gYWRtaW4vY29uZmlnL3JlZHVjZXJzL3JlZHVjZXJzLmpzIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7OztBQUFBO0FBQ0E7QUFDQTtBQUVBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQURBO0FBR0E7QUFIQTtBQUtBIiwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///459\n");
+
+/***/ }),
+
+/***/ 460:
+/*!*********************************************************!*\
+  !*** ./admin/config/reducers/authenticationReducers.js ***!
+  \*********************************************************/
+/*! exports provided: default */
+/*! exports used: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(/*! babel-runtime/helpers/extends */ 80);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux__ = __webpack_require__(/*! redux */ 54);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_redux__);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_authenticationActions__ = __webpack_require__(/*! ../actions/authenticationActions */ 223);\n\n\n\n\nfunction authenticationReducer() {\n    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};\n    var action = arguments[1];\n\n    switch (action.type) {\n        case __WEBPACK_IMPORTED_MODULE_2__actions_authenticationActions__[\"b\" /* SAVE_USER_TO_STATE */]:\n            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, state, action.user, {\n                loggedInAt: action.loggedInAt\n            });\n        case __WEBPACK_IMPORTED_MODULE_2__actions_authenticationActions__[\"a\" /* REMOVE_USER_FROM_STATE */]:\n            var s = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, state);\n            delete s['user'];\n            return s;\n        default:\n            return state;\n    }\n}\n\nvar authenticationReducers = Object(__WEBPACK_IMPORTED_MODULE_1_redux__[\"combineReducers\"])({\n    user: authenticationReducer\n});\n\n/* harmony default export */ __webpack_exports__[\"a\"] = (authenticationReducers);//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNDYwLmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL2FkbWluL2NvbmZpZy9yZWR1Y2Vycy9hdXRoZW50aWNhdGlvblJlZHVjZXJzLmpzP2Y4ZGQiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtjb21iaW5lUmVkdWNlcnN9IGZyb20gJ3JlZHV4J1xuaW1wb3J0ICogYXMgYWN0aW9ucyBmcm9tICcuLi9hY3Rpb25zL2F1dGhlbnRpY2F0aW9uQWN0aW9ucyc7XG5cbmZ1bmN0aW9uIGF1dGhlbnRpY2F0aW9uUmVkdWNlcihzdGF0ZSA9IHt9LCBhY3Rpb24pIHtcbiAgICBzd2l0Y2ggKGFjdGlvbi50eXBlKSB7XG4gICAgICAgIGNhc2UgYWN0aW9ucy5TQVZFX1VTRVJfVE9fU1RBVEU6XG4gICAgICAgICAgICByZXR1cm4ge1xuICAgICAgICAgICAgICAgIC4uLnN0YXRlLFxuICAgICAgICAgICAgICAgIC4uLmFjdGlvbi51c2VyLFxuICAgICAgICAgICAgICAgIGxvZ2dlZEluQXQ6IGFjdGlvbi5sb2dnZWRJbkF0XG4gICAgICAgICAgICB9O1xuICAgICAgICBjYXNlIGFjdGlvbnMuUkVNT1ZFX1VTRVJfRlJPTV9TVEFURTpcbiAgICAgICAgICAgIGxldCBzID0gey4uLnN0YXRlfTtcbiAgICAgICAgICAgIGRlbGV0ZSBzWyd1c2VyJ107XG4gICAgICAgICAgICByZXR1cm4gcztcbiAgICAgICAgZGVmYXVsdDpcbiAgICAgICAgICAgIHJldHVybiBzdGF0ZVxuICAgIH1cbn1cblxuXG5jb25zdCBhdXRoZW50aWNhdGlvblJlZHVjZXJzID0gY29tYmluZVJlZHVjZXJzKHtcbiAgICB1c2VyOiBhdXRoZW50aWNhdGlvblJlZHVjZXIsXG59KTtcblxuZXhwb3J0IGRlZmF1bHQgYXV0aGVudGljYXRpb25SZWR1Y2Vyc1xuXG5cbi8vIFdFQlBBQ0sgRk9PVEVSIC8vXG4vLyBhZG1pbi9jb25maWcvcmVkdWNlcnMvYXV0aGVudGljYXRpb25SZWR1Y2Vycy5qcyJdLCJtYXBwaW5ncyI6Ijs7Ozs7O0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFBQTtBQUFBO0FBQ0E7QUFBQTtBQUNBO0FBQ0E7QUFHQTtBQUhBO0FBS0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBWkE7QUFjQTtBQUNBO0FBRUE7QUFDQTtBQURBO0FBQ0E7QUFHQSIsInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///460\n");
+
+/***/ }),
+
+/***/ 461:
+/*!****************************************!*\
+  !*** ./admin/config/styles/index.scss ***!
+  \****************************************/
+/*! dynamic exports provided */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+eval("// removed by extract-text-webpack-plugin//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNDYxLmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vLy4vYWRtaW4vY29uZmlnL3N0eWxlcy9pbmRleC5zY3NzPzFjZDYiXSwic291cmNlc0NvbnRlbnQiOlsiLy8gcmVtb3ZlZCBieSBleHRyYWN0LXRleHQtd2VicGFjay1wbHVnaW5cblxuXG4vLy8vLy8vLy8vLy8vLy8vLy9cbi8vIFdFQlBBQ0sgRk9PVEVSXG4vLyAuL2FkbWluL2NvbmZpZy9zdHlsZXMvaW5kZXguc2Nzc1xuLy8gbW9kdWxlIGlkID0gNDYxXG4vLyBtb2R1bGUgY2h1bmtzID0gMSJdLCJtYXBwaW5ncyI6IkFBQUEiLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///461\n");
+
+/***/ })
+
+},[445]);
 });
-
-require.register("gocms/admin/containers/loginPage/loginPage.routes.js", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.registeredLoginRoutes = registeredLoginRoutes;
-exports.injectLoginRoutes = injectLoginRoutes;
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRouter = require('react-router');
-
-var _loginPage = require('./loginPage.container');
-
-var _loginPage2 = _interopRequireDefault(_loginPage);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var injectedRoutes = [];
-
-var routes = _react2.default.createElement(
-    _reactRouter.Route,
-    null,
-    injectedRoutes
-);
-
-function registeredLoginRoutes() {
-    if (injectedRoutes.length != 0) {
-        return routes;
-    } else {
-        return _react2.default.createElement(_reactRouter.Route, { path: 'login', component: _loginPage2.default });
-    }
-}
-
-function injectLoginRoutes(r) {
-    injectedRoutes.push(r);
-}
-
-});
-
-;require.register("gocms/admin/containers/loginPage/loginPage.sagas.js", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _regenerator = require('babel-runtime/regenerator');
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
-exports.default = loginPageSagas;
-
-var _effects = require('redux-saga/effects');
-
-var _loginPage = require('./loginPage.actions');
-
-var loginActions = _interopRequireWildcard(_loginPage);
-
-var _apiRequestActions = require('../../../base/actions/apiRequestActions');
-
-var apiActions = _interopRequireWildcard(_apiRequestActions);
-
-var _api = require('../../../base/services/api');
-
-var _authentication = require('../../services/authentication');
-
-var _reactRouter = require('react-router');
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _marked = /*#__PURE__*/_regenerator2.default.mark(watchLoginSaga),
-    _marked2 = /*#__PURE__*/_regenerator2.default.mark(handleLoginSaga),
-    _marked3 = /*#__PURE__*/_regenerator2.default.mark(loginPageSagas);
-
-// watch for login requests
-function watchLoginSaga() {
-    return _regenerator2.default.wrap(function watchLoginSaga$(_context) {
-        while (1) {
-            switch (_context.prev = _context.next) {
-                case 0:
-                    _context.next = 2;
-                    return (0, _effects.takeEvery)(loginActions.GOCMS_LOGIN, handleLoginSaga);
-
-                case 2:
-                case 'end':
-                    return _context.stop();
-            }
-        }
-    }, _marked, this);
-}
-
-function handleLoginSaga(action) {
-    var _ref, res, err;
-
-    return _regenerator2.default.wrap(function handleLoginSaga$(_context2) {
-        while (1) {
-            switch (_context2.prev = _context2.next) {
-                case 0:
-                    _context2.next = 2;
-                    return (0, _effects.call)(_api.Post, _api.ENDPOINTS.login, action.data);
-
-                case 2:
-                    _ref = _context2.sent;
-                    res = _ref.res;
-                    err = _ref.err;
-
-                    if (!res) {
-                        _context2.next = 15;
-                        break;
-                    }
-
-                    _context2.next = 8;
-                    return (0, _effects.call)(_authentication.addUserToSession, res.json);
-
-                case 8:
-                    _context2.next = 10;
-                    return (0, _effects.call)(_authentication.syncSessionUserToState);
-
-                case 10:
-                    _context2.next = 12;
-                    return (0, _effects.put)(apiActions.purge(action.key));
-
-                case 12:
-                    _reactRouter.browserHistory.push(GOCMS_LOGIN_SUCCESS_REDIRECT);
-                    _context2.next = 18;
-                    break;
-
-                case 15:
-                    if (!err) {
-                        _context2.next = 18;
-                        break;
-                    }
-
-                    _context2.next = 18;
-                    return (0, _effects.put)(apiActions.failure(action.key, err));
-
-                case 18:
-                case 'end':
-                    return _context2.stop();
-            }
-        }
-    }, _marked2, this);
-}
-
-function loginPageSagas() {
-    return _regenerator2.default.wrap(function loginPageSagas$(_context3) {
-        while (1) {
-            switch (_context3.prev = _context3.next) {
-                case 0:
-                    _context3.next = 2;
-                    return [(0, _effects.fork)(watchLoginSaga)];
-
-                case 2:
-                case 'end':
-                    return _context3.stop();
-            }
-        }
-    }, _marked3, this);
-}
-
-});
-
-;require.register("gocms/admin/init.js", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.getModule = getModule;
-exports.injectModule = injectModule;
-
-var _sagas = require('./config/sagas');
-
-var _routes = require('./config/router/routes');
-
-var _reducers = require('./config/reducers/reducers');
-
-var _loginPage = require('./containers/loginPage/loginPage.routes');
-
-function getModule() {
-    return {
-        name: "goCMS Admin",
-        sagas: _sagas.rootSaga,
-        routes: (0, _routes.registeredRoutes)(),
-        reducers: (0, _reducers.registeredReducers)()
-    };
-};
-
-function injectModule(a) {
-    (0, _sagas.injectSagas)(a.sagas);
-    (0, _routes.injectAuthedRoutes)(a.routes);
-    (0, _reducers.injectReducers)(a.reducers);
-
-    // if not null inject custom login route
-    if (a.loginRoutes != "" && a.loginRoutes != null && a.loginRoutes != [] && a.loginRoutes != {}) {
-        (0, _loginPage.injectLoginRoutes)(a.loginRoutes);
-    }
-}
-
-});
-
-;require.register("gocms/admin/services/authentication.js", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.USER_DATA_STORAGE_KEY = exports.DEVICE_TOKEN_HEADER = exports.AUTH_TOKEN_HEADER = undefined;
-
-var _stringify = require('babel-runtime/core-js/json/stringify');
-
-var _stringify2 = _interopRequireDefault(_stringify);
-
-exports.syncSessionUserToState = syncSessionUserToState;
-exports.addUserToSession = addUserToSession;
-exports.getUserFromSession = getUserFromSession;
-exports.removeUserFromSession = removeUserFromSession;
-exports.logout = logout;
-exports.requireAuthUser = requireAuthUser;
-
-var _jwtDecode = require('jwt-decode');
-
-var _jwtDecode2 = _interopRequireDefault(_jwtDecode);
-
-var _authenticationActions = require('../config/actions/authenticationActions');
-
-var _init = require('../../base/init');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var AUTH_TOKEN_HEADER = exports.AUTH_TOKEN_HEADER = 'X-Auth-Token';
-var DEVICE_TOKEN_HEADER = exports.DEVICE_TOKEN_HEADER = 'X-Device-Token';
-var USER_DATA_STORAGE_KEY = exports.USER_DATA_STORAGE_KEY = 'USER_DATA_STORAGE_KEY';
-
-function syncSessionUserToState() {
-    var sessionUser = getUserFromSession();
-    (0, _init.getStore)().dispatch((0, _authenticationActions.saveUserToState)(sessionUser));
-}
-
-function addUserToSession(userData) {
-    sessionStorage.setItem(USER_DATA_STORAGE_KEY, (0, _stringify2.default)(userData));
-}
-
-function getUserFromSession() {
-    return JSON.parse(sessionStorage.getItem(USER_DATA_STORAGE_KEY));
-}
-
-function removeUserFromSession() {
-    sessionStorage.removeItem(AUTH_TOKEN_HEADER);
-}
-
-function logout() {
-    (0, _init.getStore)().dispatch((0, _authenticationActions.removeUserFromState)());
-    removeUserFromSession();
-}
-
-function requireAuthUser(nextState, replace) {
-    // look for token in session
-    var token = sessionStorage.getItem(AUTH_TOKEN_HEADER);
-
-    // verify token exists
-    if (!token) {
-        logout();
-        replace({
-            pathname: '/login'
-        });
-        return;
-    }
-
-    // verify token has not expired
-    var jwtData = (0, _jwtDecode2.default)(token);
-    var timeDif = jwtData.exp - new Date().getTime();
-    if (timeDif <= 0) {
-        logout();
-        replace({
-            pathname: '/login'
-        });
-        return;
-    }
-
-    // verify token matches users
-    var authUser = getUserFromSession();
-    if (jwtData.userId !== authUser.id) {
-        logout();
-        replace({
-            pathname: '/login'
-        });
-    }
-
-    syncSessionUserToState();
-}
-
-});
-
-;require.register("gocms/admin/templates/admin_tmpl.js", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
-
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = require('react-redux');
-
-var _MainMenu = require('../containers/adminPages/components/mainMenu/MainMenu');
-
-var _MainMenu2 = _interopRequireDefault(_MainMenu);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var AdminTemplate = function (_React$Component) {
-    (0, _inherits3.default)(AdminTemplate, _React$Component);
-
-    function AdminTemplate(props) {
-        (0, _classCallCheck3.default)(this, AdminTemplate);
-        return (0, _possibleConstructorReturn3.default)(this, (AdminTemplate.__proto__ || (0, _getPrototypeOf2.default)(AdminTemplate)).call(this, props));
-    }
-
-    (0, _createClass3.default)(AdminTemplate, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {}
-    }, {
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'div',
-                { className: 'g-a' },
-                _react2.default.createElement(_MainMenu2.default, null),
-                _react2.default.createElement(
-                    'div',
-                    { id: 'g-a-main-container' },
-                    this.props.children
-                )
-            );
-        }
-    }]);
-    return AdminTemplate;
-}(_react2.default.Component);
-
-AdminTemplate.propTypes = {
-    children: _react.PropTypes.node
-};
-
-function mapStateToProps(state, ownProps) {
-    return {};
-}
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, {})(AdminTemplate);
-
-});
-
-require.alias("buffer/index.js", "buffer");
-require.alias("process/browser.js", "process");process = require('process');require.register("___globals___", function(exports, require, module) {
-  
-});})();require('___globals___');
-
-
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFkbWluL2NvbXBvbmVudHMvYmFzaWNDb21wb25lbnQvQmFzaWNDb21wb25lbnQuanMiLCJhZG1pbi9jb25maWcvYWN0aW9ucy9hdXRoZW50aWNhdGlvbkFjdGlvbnMuanMiLCJhZG1pbi9jb25maWcvcmVkdWNlcnMvYXV0aGVudGljYXRpb25SZWR1Y2Vycy5qcyIsImFkbWluL2NvbmZpZy9yZWR1Y2Vycy9yZWR1Y2Vycy5qcyIsImFkbWluL2NvbmZpZy9yb3V0ZXIvcm91dGVzLmpzIiwiYWRtaW4vY29uZmlnL3NhZ2FzLmpzIiwiYWRtaW4vY29udGFpbmVycy9hZG1pblBhZ2VzL2FkbWluUGFnZXMucm91dGVzLmpzIiwiYWRtaW4vY29udGFpbmVycy9hZG1pblBhZ2VzL2NvbXBvbmVudHMvbWFpbk1lbnUvTWFpbk1lbnUuanMiLCJhZG1pbi9jb250YWluZXJzL2FkbWluUGFnZXMvZGFzaGJvYXJkUGFnZS9kYXNoYm9hcmRQYWdlLmFjdGlvbnMuanMiLCJhZG1pbi9jb250YWluZXJzL2FkbWluUGFnZXMvZGFzaGJvYXJkUGFnZS9kYXNoYm9hcmRQYWdlLmNvbnRhaW5lci5qcyIsImFkbWluL2NvbnRhaW5lcnMvYWRtaW5QYWdlcy9kYXNoYm9hcmRQYWdlL2Rhc2hib2FyZFBhZ2UucmVkdWNlcnMuanMiLCJhZG1pbi9jb250YWluZXJzL2FkbWluUGFnZXMvZGFzaGJvYXJkUGFnZS9kYXNoYm9hcmRQYWdlLnJlZHVjZXJzLnNlbGVjdG9ycy5qcyIsImFkbWluL2NvbnRhaW5lcnMvYWRtaW5QYWdlcy9kYXNoYm9hcmRQYWdlL2Rhc2hib2FyZFBhZ2Uucm91dGVzLmpzIiwiYWRtaW4vY29udGFpbmVycy9hZG1pblBhZ2VzL2Rhc2hib2FyZFBhZ2UvZGFzaGJvYXJkUGFnZS5zYWdhcy5qcyIsImFkbWluL2NvbnRhaW5lcnMvZGV2VG9vbHMvRGV2VG9vbHMuanMiLCJhZG1pbi9jb250YWluZXJzL2xvZ2luUGFnZS9sb2dpblBhZ2UuYWN0aW9ucy5qcyIsImFkbWluL2NvbnRhaW5lcnMvbG9naW5QYWdlL2xvZ2luUGFnZS5jb250YWluZXIuanMiLCJhZG1pbi9jb250YWluZXJzL2xvZ2luUGFnZS9sb2dpblBhZ2UucmVkdWNlcnMuanMiLCJhZG1pbi9jb250YWluZXJzL2xvZ2luUGFnZS9sb2dpblBhZ2UucmVkdWNlcnMuc2VsZWN0b3JzLmpzIiwiYWRtaW4vY29udGFpbmVycy9sb2dpblBhZ2UvbG9naW5QYWdlLnJvdXRlcy5qcyIsImFkbWluL2NvbnRhaW5lcnMvbG9naW5QYWdlL2xvZ2luUGFnZS5zYWdhcy5qcyIsImFkbWluL2luaXQuanMiLCJhZG1pbi9zZXJ2aWNlcy9hdXRoZW50aWNhdGlvbi5qcyIsImFkbWluL3RlbXBsYXRlcy9hZG1pbl90bXBsLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBO0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQW5FQTtBQUFBO0FDQUE7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUF2QkE7QUFBQTtDQ0FBO0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQTNDQTtBQUFBO0FDQUE7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUF0Q0E7QUFBQTtDQ0FBO0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBaENBO0FBQUE7Q0NBQTtBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQTVDQTtBQUFBO0NDQUE7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUEvQ0E7QUFBQTtDQ0FBO0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBL0lBO0FBQUE7QUNBQTtBQUFBO0FBQ0E7QUFEQTtBQUFBO0FDQUE7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQTNFQTtBQUFBO0FDQUE7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQTdDQTtBQUFBO0FDQUE7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFsREE7QUFBQTtBQ0FBO0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBdkJBO0FBQUE7QUNBQTtBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQWhDQTtBQUFBO0FDQUE7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBbENBO0FBQUE7QUNBQTtBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFoQkE7QUFBQTtDQ0FBO0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQXpLQTtBQUFBO0FDQUE7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQTdDQTtBQUFBO0FDQUE7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFsREE7QUFBQTtBQ0FBO0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUF2Q0E7QUFBQTtDQ0FBO0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQXpIQTtBQUFBO0NDQUE7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFuQ0E7QUFBQTtDQ0FBO0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBekZBO0FBQUE7Q0NBQTtBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUE1RUE7QUFBQSIsImZpbGUiOiIuLi9hZG1pbi5qcyIsInNvdXJjZXNDb250ZW50IjpbIid1c2Ugc3RyaWN0JztcblxuT2JqZWN0LmRlZmluZVByb3BlcnR5KGV4cG9ydHMsIFwiX19lc01vZHVsZVwiLCB7XG4gICAgdmFsdWU6IHRydWVcbn0pO1xuXG52YXIgX2dldFByb3RvdHlwZU9mID0gcmVxdWlyZSgnYmFiZWwtcnVudGltZS9jb3JlLWpzL29iamVjdC9nZXQtcHJvdG90eXBlLW9mJyk7XG5cbnZhciBfZ2V0UHJvdG90eXBlT2YyID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfZ2V0UHJvdG90eXBlT2YpO1xuXG52YXIgX2NsYXNzQ2FsbENoZWNrMiA9IHJlcXVpcmUoJ2JhYmVsLXJ1bnRpbWUvaGVscGVycy9jbGFzc0NhbGxDaGVjaycpO1xuXG52YXIgX2NsYXNzQ2FsbENoZWNrMyA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX2NsYXNzQ2FsbENoZWNrMik7XG5cbnZhciBfY3JlYXRlQ2xhc3MyID0gcmVxdWlyZSgnYmFiZWwtcnVudGltZS9oZWxwZXJzL2NyZWF0ZUNsYXNzJyk7XG5cbnZhciBfY3JlYXRlQ2xhc3MzID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfY3JlYXRlQ2xhc3MyKTtcblxudmFyIF9wb3NzaWJsZUNvbnN0cnVjdG9yUmV0dXJuMiA9IHJlcXVpcmUoJ2JhYmVsLXJ1bnRpbWUvaGVscGVycy9wb3NzaWJsZUNvbnN0cnVjdG9yUmV0dXJuJyk7XG5cbnZhciBfcG9zc2libGVDb25zdHJ1Y3RvclJldHVybjMgPSBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KF9wb3NzaWJsZUNvbnN0cnVjdG9yUmV0dXJuMik7XG5cbnZhciBfaW5oZXJpdHMyID0gcmVxdWlyZSgnYmFiZWwtcnVudGltZS9oZWxwZXJzL2luaGVyaXRzJyk7XG5cbnZhciBfaW5oZXJpdHMzID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfaW5oZXJpdHMyKTtcblxudmFyIF9yZWFjdCA9IHJlcXVpcmUoJ3JlYWN0Jyk7XG5cbnZhciBfcmVhY3QyID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfcmVhY3QpO1xuXG52YXIgX3JlYWN0UmVkdXggPSByZXF1aXJlKCdyZWFjdC1yZWR1eCcpO1xuXG5mdW5jdGlvbiBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KG9iaikgeyByZXR1cm4gb2JqICYmIG9iai5fX2VzTW9kdWxlID8gb2JqIDogeyBkZWZhdWx0OiBvYmogfTsgfVxuXG52YXIgQmFzaWNDb21wb25lbnQgPSBmdW5jdGlvbiAoX1JlYWN0JENvbXBvbmVudCkge1xuICAgICgwLCBfaW5oZXJpdHMzLmRlZmF1bHQpKEJhc2ljQ29tcG9uZW50LCBfUmVhY3QkQ29tcG9uZW50KTtcblxuICAgIGZ1bmN0aW9uIEJhc2ljQ29tcG9uZW50KHByb3BzKSB7XG4gICAgICAgICgwLCBfY2xhc3NDYWxsQ2hlY2szLmRlZmF1bHQpKHRoaXMsIEJhc2ljQ29tcG9uZW50KTtcblxuICAgICAgICB2YXIgX3RoaXMgPSAoMCwgX3Bvc3NpYmxlQ29uc3RydWN0b3JSZXR1cm4zLmRlZmF1bHQpKHRoaXMsIChCYXNpY0NvbXBvbmVudC5fX3Byb3RvX18gfHwgKDAsIF9nZXRQcm90b3R5cGVPZjIuZGVmYXVsdCkoQmFzaWNDb21wb25lbnQpKS5jYWxsKHRoaXMsIHByb3BzKSk7XG5cbiAgICAgICAgX3RoaXMuc3RhdGUgPSB7fTtcbiAgICAgICAgcmV0dXJuIF90aGlzO1xuICAgIH1cblxuICAgICgwLCBfY3JlYXRlQ2xhc3MzLmRlZmF1bHQpKEJhc2ljQ29tcG9uZW50LCBbe1xuICAgICAgICBrZXk6ICdjb21wb25lbnREaWRNb3VudCcsXG4gICAgICAgIHZhbHVlOiBmdW5jdGlvbiBjb21wb25lbnREaWRNb3VudCgpIHt9XG4gICAgfSwge1xuICAgICAgICBrZXk6ICdyZW5kZXInLFxuICAgICAgICB2YWx1ZTogZnVuY3Rpb24gcmVuZGVyKCkge1xuICAgICAgICAgICAgcmV0dXJuIF9yZWFjdDIuZGVmYXVsdC5jcmVhdGVFbGVtZW50KFxuICAgICAgICAgICAgICAgICdwJyxcbiAgICAgICAgICAgICAgICB7IGNsYXNzTmFtZTogJ2Jhc2ljLWNvbXBvbmVudCcgfSxcbiAgICAgICAgICAgICAgICAnQmFzaWMgQ29tcG9uZW50J1xuICAgICAgICAgICAgKTtcbiAgICAgICAgfVxuICAgIH1dKTtcbiAgICByZXR1cm4gQmFzaWNDb21wb25lbnQ7XG59KF9yZWFjdDIuZGVmYXVsdC5Db21wb25lbnQpO1xuXG5mdW5jdGlvbiBtYXBTdGF0ZVRvUHJvcHMoc3RhdGUpIHtcbiAgICByZXR1cm4ge307XG59XG5cbmV4cG9ydHMuZGVmYXVsdCA9ICgwLCBfcmVhY3RSZWR1eC5jb25uZWN0KShtYXBTdGF0ZVRvUHJvcHMsIHt9KShCYXNpY0NvbXBvbmVudCk7XG4iLCIndXNlIHN0cmljdCc7XG5cbk9iamVjdC5kZWZpbmVQcm9wZXJ0eShleHBvcnRzLCBcIl9fZXNNb2R1bGVcIiwge1xuICAgIHZhbHVlOiB0cnVlXG59KTtcbmV4cG9ydHMuc2F2ZVVzZXJUb1N0YXRlID0gc2F2ZVVzZXJUb1N0YXRlO1xuZXhwb3J0cy5yZW1vdmVVc2VyRnJvbVN0YXRlID0gcmVtb3ZlVXNlckZyb21TdGF0ZTtcbnZhciBTQVZFX1VTRVJfVE9fU1RBVEUgPSBleHBvcnRzLlNBVkVfVVNFUl9UT19TVEFURSA9ICdTQVZFX1VTRVJfVE9fU1RBVEUnO1xudmFyIFJFTU9WRV9VU0VSX0ZST01fU1RBVEUgPSBleHBvcnRzLlJFTU9WRV9VU0VSX0ZST01fU1RBVEUgPSAnUkVNT1ZFX1VTRVJfRlJPTV9TVEFURSc7XG5cbmZ1bmN0aW9uIHNhdmVVc2VyVG9TdGF0ZSh1c2VyKSB7XG4gICAgcmV0dXJuIHtcbiAgICAgICAgdHlwZTogU0FWRV9VU0VSX1RPX1NUQVRFLFxuICAgICAgICB1c2VyOiB1c2VyLFxuICAgICAgICBsb2dnZWRJbkF0OiBEYXRlLm5vdygpXG4gICAgfTtcbn1cblxuZnVuY3Rpb24gcmVtb3ZlVXNlckZyb21TdGF0ZSgpIHtcbiAgICByZXR1cm4ge1xuICAgICAgICB0eXBlOiBSRU1PVkVfVVNFUl9GUk9NX1NUQVRFXG4gICAgfTtcbn1cbiIsIid1c2Ugc3RyaWN0JztcblxuT2JqZWN0LmRlZmluZVByb3BlcnR5KGV4cG9ydHMsIFwiX19lc01vZHVsZVwiLCB7XG4gICAgdmFsdWU6IHRydWVcbn0pO1xuXG52YXIgX2V4dGVuZHMyID0gcmVxdWlyZSgnYmFiZWwtcnVudGltZS9oZWxwZXJzL2V4dGVuZHMnKTtcblxudmFyIF9leHRlbmRzMyA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX2V4dGVuZHMyKTtcblxudmFyIF9yZWR1eCA9IHJlcXVpcmUoJ3JlZHV4Jyk7XG5cbnZhciBfYXV0aGVudGljYXRpb25BY3Rpb25zID0gcmVxdWlyZSgnLi4vYWN0aW9ucy9hdXRoZW50aWNhdGlvbkFjdGlvbnMnKTtcblxudmFyIGFjdGlvbnMgPSBfaW50ZXJvcFJlcXVpcmVXaWxkY2FyZChfYXV0aGVudGljYXRpb25BY3Rpb25zKTtcblxuZnVuY3Rpb24gX2ludGVyb3BSZXF1aXJlV2lsZGNhcmQob2JqKSB7IGlmIChvYmogJiYgb2JqLl9fZXNNb2R1bGUpIHsgcmV0dXJuIG9iajsgfSBlbHNlIHsgdmFyIG5ld09iaiA9IHt9OyBpZiAob2JqICE9IG51bGwpIHsgZm9yICh2YXIga2V5IGluIG9iaikgeyBpZiAoT2JqZWN0LnByb3RvdHlwZS5oYXNPd25Qcm9wZXJ0eS5jYWxsKG9iaiwga2V5KSkgbmV3T2JqW2tleV0gPSBvYmpba2V5XTsgfSB9IG5ld09iai5kZWZhdWx0ID0gb2JqOyByZXR1cm4gbmV3T2JqOyB9IH1cblxuZnVuY3Rpb24gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChvYmopIHsgcmV0dXJuIG9iaiAmJiBvYmouX19lc01vZHVsZSA/IG9iaiA6IHsgZGVmYXVsdDogb2JqIH07IH1cblxuZnVuY3Rpb24gYXV0aGVudGljYXRpb25SZWR1Y2VyKCkge1xuICAgIHZhciBzdGF0ZSA9IGFyZ3VtZW50cy5sZW5ndGggPiAwICYmIGFyZ3VtZW50c1swXSAhPT0gdW5kZWZpbmVkID8gYXJndW1lbnRzWzBdIDoge307XG4gICAgdmFyIGFjdGlvbiA9IGFyZ3VtZW50c1sxXTtcblxuICAgIHN3aXRjaCAoYWN0aW9uLnR5cGUpIHtcbiAgICAgICAgY2FzZSBhY3Rpb25zLlNBVkVfVVNFUl9UT19TVEFURTpcbiAgICAgICAgICAgIHJldHVybiAoMCwgX2V4dGVuZHMzLmRlZmF1bHQpKHt9LCBzdGF0ZSwgYWN0aW9uLnVzZXIsIHtcbiAgICAgICAgICAgICAgICBsb2dnZWRJbkF0OiBhY3Rpb24ubG9nZ2VkSW5BdFxuICAgICAgICAgICAgfSk7XG4gICAgICAgIGNhc2UgYWN0aW9ucy5SRU1PVkVfVVNFUl9GUk9NX1NUQVRFOlxuICAgICAgICAgICAgdmFyIHMgPSAoMCwgX2V4dGVuZHMzLmRlZmF1bHQpKHt9LCBzdGF0ZSk7XG4gICAgICAgICAgICBkZWxldGUgc1sndXNlciddO1xuICAgICAgICAgICAgcmV0dXJuIHM7XG4gICAgICAgIGRlZmF1bHQ6XG4gICAgICAgICAgICByZXR1cm4gc3RhdGU7XG4gICAgfVxufVxuXG52YXIgYXV0aGVudGljYXRpb25SZWR1Y2VycyA9ICgwLCBfcmVkdXguY29tYmluZVJlZHVjZXJzKSh7XG4gICAgdXNlcjogYXV0aGVudGljYXRpb25SZWR1Y2VyXG59KTtcblxuZXhwb3J0cy5kZWZhdWx0ID0gYXV0aGVudGljYXRpb25SZWR1Y2VycztcbiIsIid1c2Ugc3RyaWN0JztcblxuT2JqZWN0LmRlZmluZVByb3BlcnR5KGV4cG9ydHMsIFwiX19lc01vZHVsZVwiLCB7XG4gICAgdmFsdWU6IHRydWVcbn0pO1xuXG52YXIgX2V4dGVuZHMyID0gcmVxdWlyZSgnYmFiZWwtcnVudGltZS9oZWxwZXJzL2V4dGVuZHMnKTtcblxudmFyIF9leHRlbmRzMyA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX2V4dGVuZHMyKTtcblxudmFyIF9hc3NpZ24gPSByZXF1aXJlKCdiYWJlbC1ydW50aW1lL2NvcmUtanMvb2JqZWN0L2Fzc2lnbicpO1xuXG52YXIgX2Fzc2lnbjIgPSBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KF9hc3NpZ24pO1xuXG5leHBvcnRzLmluamVjdFJlZHVjZXJzID0gaW5qZWN0UmVkdWNlcnM7XG5leHBvcnRzLnJlZ2lzdGVyZWRSZWR1Y2VycyA9IHJlZ2lzdGVyZWRSZWR1Y2VycztcblxudmFyIF9yZWFjdFJvdXRlclJlZHV4ID0gcmVxdWlyZSgncmVhY3Qtcm91dGVyLXJlZHV4Jyk7XG5cbnZhciBfYXV0aGVudGljYXRpb25SZWR1Y2VycyA9IHJlcXVpcmUoJy4vYXV0aGVudGljYXRpb25SZWR1Y2VycycpO1xuXG52YXIgX2F1dGhlbnRpY2F0aW9uUmVkdWNlcnMyID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfYXV0aGVudGljYXRpb25SZWR1Y2Vycyk7XG5cbmZ1bmN0aW9uIF9pbnRlcm9wUmVxdWlyZURlZmF1bHQob2JqKSB7IHJldHVybiBvYmogJiYgb2JqLl9fZXNNb2R1bGUgPyBvYmogOiB7IGRlZmF1bHQ6IG9iaiB9OyB9XG5cbnZhciBpbmplY3RlZFJlZHVjZXJzID0ge307XG5cbmZ1bmN0aW9uIGluamVjdFJlZHVjZXJzKHIpIHtcbiAgICBpbmplY3RlZFJlZHVjZXJzID0gKDAsIF9hc3NpZ24yLmRlZmF1bHQpKHt9LCByLCBpbmplY3RlZFJlZHVjZXJzKTtcbn1cblxuZnVuY3Rpb24gcmVnaXN0ZXJlZFJlZHVjZXJzKCkge1xuICAgIHJldHVybiAoMCwgX2V4dGVuZHMzLmRlZmF1bHQpKHtcbiAgICAgICAgYXV0aDogX2F1dGhlbnRpY2F0aW9uUmVkdWNlcnMyLmRlZmF1bHRcbiAgICB9LCBpbmplY3RlZFJlZHVjZXJzLCB7XG4gICAgICAgIHJvdXRpbmc6IF9yZWFjdFJvdXRlclJlZHV4LnJvdXRlclJlZHVjZXJcbiAgICB9KTtcbn1cbiIsIid1c2Ugc3RyaWN0JztcblxuT2JqZWN0LmRlZmluZVByb3BlcnR5KGV4cG9ydHMsIFwiX19lc01vZHVsZVwiLCB7XG4gICAgdmFsdWU6IHRydWVcbn0pO1xuZXhwb3J0cy5pbmplY3RBdXRoZWRSb3V0ZXMgPSBpbmplY3RBdXRoZWRSb3V0ZXM7XG5leHBvcnRzLnJlZ2lzdGVyZWRSb3V0ZXMgPSByZWdpc3RlcmVkUm91dGVzO1xuXG52YXIgX3JlYWN0ID0gcmVxdWlyZSgncmVhY3QnKTtcblxudmFyIF9yZWFjdDIgPSBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KF9yZWFjdCk7XG5cbnZhciBfcmVhY3RSb3V0ZXIgPSByZXF1aXJlKCdyZWFjdC1yb3V0ZXInKTtcblxudmFyIF9sb2dpblBhZ2UgPSByZXF1aXJlKCcuLi8uLi9jb250YWluZXJzL2xvZ2luUGFnZS9sb2dpblBhZ2Uucm91dGVzJyk7XG5cbnZhciBfYWRtaW5QYWdlcyA9IHJlcXVpcmUoJy4uLy4uL2NvbnRhaW5lcnMvYWRtaW5QYWdlcy9hZG1pblBhZ2VzLnJvdXRlcycpO1xuXG5mdW5jdGlvbiBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KG9iaikgeyByZXR1cm4gb2JqICYmIG9iai5fX2VzTW9kdWxlID8gb2JqIDogeyBkZWZhdWx0OiBvYmogfTsgfVxuXG5mdW5jdGlvbiBpbmplY3RBdXRoZWRSb3V0ZXMocikge1xuICAgICgwLCBfYWRtaW5QYWdlcy5pbmplY3RBZG1pblJvdXRlcykocik7XG59XG5cbmZ1bmN0aW9uIHJlZ2lzdGVyZWRSb3V0ZXMoKSB7XG4gICAgcmV0dXJuIF9yZWFjdDIuZGVmYXVsdC5jcmVhdGVFbGVtZW50KFxuICAgICAgICBfcmVhY3RSb3V0ZXIuUm91dGUsXG4gICAgICAgIG51bGwsXG4gICAgICAgICgwLCBfbG9naW5QYWdlLnJlZ2lzdGVyZWRMb2dpblJvdXRlcykoKSxcbiAgICAgICAgKDAsIF9hZG1pblBhZ2VzLnJlZ2lzdGVyZWRBZG1pblJvdXRlcykoKVxuICAgICk7XG59XG4iLCIndXNlIHN0cmljdCc7XG5cbk9iamVjdC5kZWZpbmVQcm9wZXJ0eShleHBvcnRzLCBcIl9fZXNNb2R1bGVcIiwge1xuICAgIHZhbHVlOiB0cnVlXG59KTtcblxudmFyIF9yZWdlbmVyYXRvciA9IHJlcXVpcmUoJ2JhYmVsLXJ1bnRpbWUvcmVnZW5lcmF0b3InKTtcblxudmFyIF9yZWdlbmVyYXRvcjIgPSBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KF9yZWdlbmVyYXRvcik7XG5cbmV4cG9ydHMucm9vdFNhZ2EgPSByb290U2FnYTtcbmV4cG9ydHMuaW5qZWN0U2FnYXMgPSBpbmplY3RTYWdhcztcblxudmFyIF9lZmZlY3RzID0gcmVxdWlyZSgncmVkdXgtc2FnYS9lZmZlY3RzJyk7XG5cbnZhciBfbG9naW5QYWdlID0gcmVxdWlyZSgnLi4vY29udGFpbmVycy9sb2dpblBhZ2UvbG9naW5QYWdlLnNhZ2FzJyk7XG5cbnZhciBfbG9naW5QYWdlMiA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX2xvZ2luUGFnZSk7XG5cbmZ1bmN0aW9uIF9pbnRlcm9wUmVxdWlyZURlZmF1bHQob2JqKSB7IHJldHVybiBvYmogJiYgb2JqLl9fZXNNb2R1bGUgPyBvYmogOiB7IGRlZmF1bHQ6IG9iaiB9OyB9XG5cbnZhciBfbWFya2VkID0gLyojX19QVVJFX18qL19yZWdlbmVyYXRvcjIuZGVmYXVsdC5tYXJrKHJvb3RTYWdhKTtcblxudmFyIGluamVjdGVkU2FnYXMgPSBbXTtcblxuZnVuY3Rpb24gcm9vdFNhZ2EoKSB7XG4gICAgcmV0dXJuIF9yZWdlbmVyYXRvcjIuZGVmYXVsdC53cmFwKGZ1bmN0aW9uIHJvb3RTYWdhJChfY29udGV4dCkge1xuICAgICAgICB3aGlsZSAoMSkge1xuICAgICAgICAgICAgc3dpdGNoIChfY29udGV4dC5wcmV2ID0gX2NvbnRleHQubmV4dCkge1xuICAgICAgICAgICAgICAgIGNhc2UgMDpcbiAgICAgICAgICAgICAgICAgICAgX2NvbnRleHQubmV4dCA9IDI7XG4gICAgICAgICAgICAgICAgICAgIHJldHVybiBbKDAsIF9lZmZlY3RzLmZvcmspKF9sb2dpblBhZ2UyLmRlZmF1bHQpXS5jb25jYXQoaW5qZWN0ZWRTYWdhcyk7XG5cbiAgICAgICAgICAgICAgICBjYXNlIDI6XG4gICAgICAgICAgICAgICAgY2FzZSAnZW5kJzpcbiAgICAgICAgICAgICAgICAgICAgcmV0dXJuIF9jb250ZXh0LnN0b3AoKTtcbiAgICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgIH0sIF9tYXJrZWQsIHRoaXMpO1xufVxuXG5mdW5jdGlvbiBpbmplY3RTYWdhcyhzKSB7XG4gICAgaW5qZWN0ZWRTYWdhcy5wdXNoKCgwLCBfZWZmZWN0cy5mb3JrKShzKSk7XG59XG4iLCIndXNlIHN0cmljdCc7XG5cbk9iamVjdC5kZWZpbmVQcm9wZXJ0eShleHBvcnRzLCBcIl9fZXNNb2R1bGVcIiwge1xuICAgIHZhbHVlOiB0cnVlXG59KTtcbmV4cG9ydHMuaW5qZWN0QWRtaW5Sb3V0ZXMgPSBpbmplY3RBZG1pblJvdXRlcztcbmV4cG9ydHMucmVnaXN0ZXJlZEFkbWluUm91dGVzID0gcmVnaXN0ZXJlZEFkbWluUm91dGVzO1xuXG52YXIgX2F1dGhlbnRpY2F0aW9uID0gcmVxdWlyZSgnLi4vLi4vc2VydmljZXMvYXV0aGVudGljYXRpb24nKTtcblxudmFyIF9yZWFjdCA9IHJlcXVpcmUoJ3JlYWN0Jyk7XG5cbnZhciBfcmVhY3QyID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfcmVhY3QpO1xuXG52YXIgX2Rhc2hib2FyZFBhZ2UgPSByZXF1aXJlKCcuL2Rhc2hib2FyZFBhZ2UvZGFzaGJvYXJkUGFnZS5yb3V0ZXMnKTtcblxudmFyIF9kYXNoYm9hcmRQYWdlMiA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX2Rhc2hib2FyZFBhZ2UpO1xuXG52YXIgX2FkbWluX3RtcGwgPSByZXF1aXJlKCcuLi8uLi90ZW1wbGF0ZXMvYWRtaW5fdG1wbCcpO1xuXG52YXIgX2FkbWluX3RtcGwyID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfYWRtaW5fdG1wbCk7XG5cbnZhciBfcmVhY3RSb3V0ZXIgPSByZXF1aXJlKCdyZWFjdC1yb3V0ZXInKTtcblxuZnVuY3Rpb24gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChvYmopIHsgcmV0dXJuIG9iaiAmJiBvYmouX19lc01vZHVsZSA/IG9iaiA6IHsgZGVmYXVsdDogb2JqIH07IH1cblxudmFyIGluamVjdGVkUm91dGVzID0gW107XG5cbnZhciByb3V0ZXMgPSBfcmVhY3QyLmRlZmF1bHQuY3JlYXRlRWxlbWVudChcbiAgICBfcmVhY3RSb3V0ZXIuUm91dGUsXG4gICAgbnVsbCxcbiAgICBfcmVhY3QyLmRlZmF1bHQuY3JlYXRlRWxlbWVudChfcmVhY3RSb3V0ZXIuUmVkaXJlY3QsIHsgZnJvbTogJ2FkbWluJywgdG86IEdPQ01TX0xPR0lOX1NVQ0NFU1NfUkVESVJFQ1QgfSksXG4gICAgX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoXG4gICAgICAgIF9yZWFjdFJvdXRlci5Sb3V0ZSxcbiAgICAgICAgeyBwYXRoOiAnYWRtaW4nLCBjb21wb25lbnQ6IF9hZG1pbl90bXBsMi5kZWZhdWx0LCBvbkVudGVyOiBfYXV0aGVudGljYXRpb24ucmVxdWlyZUF1dGhVc2VyIH0sXG4gICAgICAgIF9kYXNoYm9hcmRQYWdlMi5kZWZhdWx0LFxuICAgICAgICBpbmplY3RlZFJvdXRlc1xuICAgIClcbik7XG5cbmZ1bmN0aW9uIGluamVjdEFkbWluUm91dGVzKHIpIHtcbiAgICBpbmplY3RlZFJvdXRlcy5wdXNoKHIpO1xufVxuXG5mdW5jdGlvbiByZWdpc3RlcmVkQWRtaW5Sb3V0ZXMoKSB7XG4gICAgcmV0dXJuIHJvdXRlcztcbn1cbiIsIid1c2Ugc3RyaWN0JztcblxuT2JqZWN0LmRlZmluZVByb3BlcnR5KGV4cG9ydHMsIFwiX19lc01vZHVsZVwiLCB7XG4gICAgdmFsdWU6IHRydWVcbn0pO1xuXG52YXIgX2dldFByb3RvdHlwZU9mID0gcmVxdWlyZSgnYmFiZWwtcnVudGltZS9jb3JlLWpzL29iamVjdC9nZXQtcHJvdG90eXBlLW9mJyk7XG5cbnZhciBfZ2V0UHJvdG90eXBlT2YyID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfZ2V0UHJvdG90eXBlT2YpO1xuXG52YXIgX2NsYXNzQ2FsbENoZWNrMiA9IHJlcXVpcmUoJ2JhYmVsLXJ1bnRpbWUvaGVscGVycy9jbGFzc0NhbGxDaGVjaycpO1xuXG52YXIgX2NsYXNzQ2FsbENoZWNrMyA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX2NsYXNzQ2FsbENoZWNrMik7XG5cbnZhciBfY3JlYXRlQ2xhc3MyID0gcmVxdWlyZSgnYmFiZWwtcnVudGltZS9oZWxwZXJzL2NyZWF0ZUNsYXNzJyk7XG5cbnZhciBfY3JlYXRlQ2xhc3MzID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfY3JlYXRlQ2xhc3MyKTtcblxudmFyIF9wb3NzaWJsZUNvbnN0cnVjdG9yUmV0dXJuMiA9IHJlcXVpcmUoJ2JhYmVsLXJ1bnRpbWUvaGVscGVycy9wb3NzaWJsZUNvbnN0cnVjdG9yUmV0dXJuJyk7XG5cbnZhciBfcG9zc2libGVDb25zdHJ1Y3RvclJldHVybjMgPSBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KF9wb3NzaWJsZUNvbnN0cnVjdG9yUmV0dXJuMik7XG5cbnZhciBfaW5oZXJpdHMyID0gcmVxdWlyZSgnYmFiZWwtcnVudGltZS9oZWxwZXJzL2luaGVyaXRzJyk7XG5cbnZhciBfaW5oZXJpdHMzID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfaW5oZXJpdHMyKTtcblxudmFyIF9yZWFjdCA9IHJlcXVpcmUoJ3JlYWN0Jyk7XG5cbnZhciBfcmVhY3QyID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfcmVhY3QpO1xuXG52YXIgX3JlYWN0UmVkdXggPSByZXF1aXJlKCdyZWFjdC1yZWR1eCcpO1xuXG52YXIgX2F1dGhlbnRpY2F0aW9uID0gcmVxdWlyZSgnLi4vLi4vLi4vLi4vc2VydmljZXMvYXV0aGVudGljYXRpb24nKTtcblxudmFyIF9yZWFjdFJvdXRlciA9IHJlcXVpcmUoJ3JlYWN0LXJvdXRlcicpO1xuXG5mdW5jdGlvbiBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KG9iaikgeyByZXR1cm4gb2JqICYmIG9iai5fX2VzTW9kdWxlID8gb2JqIDogeyBkZWZhdWx0OiBvYmogfTsgfVxuXG52YXIgQmFzaWNDb21wb25lbnQgPSBmdW5jdGlvbiAoX1JlYWN0JENvbXBvbmVudCkge1xuICAgICgwLCBfaW5oZXJpdHMzLmRlZmF1bHQpKEJhc2ljQ29tcG9uZW50LCBfUmVhY3QkQ29tcG9uZW50KTtcblxuICAgIGZ1bmN0aW9uIEJhc2ljQ29tcG9uZW50KHByb3BzKSB7XG4gICAgICAgICgwLCBfY2xhc3NDYWxsQ2hlY2szLmRlZmF1bHQpKHRoaXMsIEJhc2ljQ29tcG9uZW50KTtcblxuICAgICAgICB2YXIgX3RoaXMgPSAoMCwgX3Bvc3NpYmxlQ29uc3RydWN0b3JSZXR1cm4zLmRlZmF1bHQpKHRoaXMsIChCYXNpY0NvbXBvbmVudC5fX3Byb3RvX18gfHwgKDAsIF9nZXRQcm90b3R5cGVPZjIuZGVmYXVsdCkoQmFzaWNDb21wb25lbnQpKS5jYWxsKHRoaXMsIHByb3BzKSk7XG5cbiAgICAgICAgX3RoaXMuaGFuZGxlTWVudU9wZW5DbG9zZUNsaWNrID0gX3RoaXMuaGFuZGxlTWVudU9wZW5DbG9zZUNsaWNrLmJpbmQoX3RoaXMpO1xuICAgICAgICBfdGhpcy5oYW5kbGVTaWduT3V0ID0gX3RoaXMuaGFuZGxlU2lnbk91dC5iaW5kKF90aGlzKTtcblxuICAgICAgICBfdGhpcy5zdGF0ZSA9IHtcbiAgICAgICAgICAgIG1lbnVJc09wZW46IHRydWVcbiAgICAgICAgfTtcbiAgICAgICAgcmV0dXJuIF90aGlzO1xuICAgIH1cblxuICAgICgwLCBfY3JlYXRlQ2xhc3MzLmRlZmF1bHQpKEJhc2ljQ29tcG9uZW50LCBbe1xuICAgICAgICBrZXk6ICdjb21wb25lbnREaWRNb3VudCcsXG4gICAgICAgIHZhbHVlOiBmdW5jdGlvbiBjb21wb25lbnREaWRNb3VudCgpIHt9XG4gICAgfSwge1xuICAgICAgICBrZXk6ICdoYW5kbGVTaWduT3V0JyxcbiAgICAgICAgdmFsdWU6IGZ1bmN0aW9uIGhhbmRsZVNpZ25PdXQoZSkge1xuICAgICAgICAgICAgZS5wcmV2ZW50RGVmYXVsdCgpO1xuICAgICAgICAgICAgKDAsIF9hdXRoZW50aWNhdGlvbi5sb2dvdXQpKCk7XG4gICAgICAgICAgICBfcmVhY3RSb3V0ZXIuYnJvd3Nlckhpc3RvcnkucHVzaChcIi9sb2dpblwiKTtcbiAgICAgICAgfVxuICAgIH0sIHtcbiAgICAgICAga2V5OiAnaGFuZGxlTWVudU9wZW5DbG9zZUNsaWNrJyxcbiAgICAgICAgdmFsdWU6IGZ1bmN0aW9uIGhhbmRsZU1lbnVPcGVuQ2xvc2VDbGljayhlKSB7XG4gICAgICAgICAgICB0aGlzLnNldFN0YXRlKHsgbWVudUlzT3BlbjogIXRoaXMuc3RhdGUubWVudUlzT3BlbiB9KTtcbiAgICAgICAgfVxuICAgIH0sIHtcbiAgICAgICAga2V5OiAncmVuZGVyJyxcbiAgICAgICAgdmFsdWU6IGZ1bmN0aW9uIHJlbmRlcigpIHtcbiAgICAgICAgICAgIC8vIGNvbnNvbGUubG9nKFwidXNlcjogXCIsIHRoaXMuc3RhdGUudXNlcik7XG4gICAgICAgICAgICByZXR1cm4gX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoXG4gICAgICAgICAgICAgICAgJ2RpdicsXG4gICAgICAgICAgICAgICAgbnVsbCxcbiAgICAgICAgICAgICAgICBfcmVhY3QyLmRlZmF1bHQuY3JlYXRlRWxlbWVudChcbiAgICAgICAgICAgICAgICAgICAgJ2RpdicsXG4gICAgICAgICAgICAgICAgICAgIHtcbiAgICAgICAgICAgICAgICAgICAgICAgIGNsYXNzTmFtZTogXCJnLWNvbnRhaW5lciBnLWEtbWFpbi1tZW51LWNvbnRhaW5lclwiICsgKHRoaXMuc3RhdGUubWVudUlzT3BlbiA/IFwiIGctYS1tYWluLW1lbnUtY29udGFpbmVyLW9wZW5cIiA6IFwiIGctYS1tYWluLW1lbnUtY29udGFpbmVyLWNsb3NlXCIpIH0sXG4gICAgICAgICAgICAgICAgICAgIF9yZWFjdDIuZGVmYXVsdC5jcmVhdGVFbGVtZW50KFxuICAgICAgICAgICAgICAgICAgICAgICAgJ2RpdicsXG4gICAgICAgICAgICAgICAgICAgICAgICB7XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lOiBcImctY29udGFpbmVyIGctYS1tYWluLW1lbnUtdGl0bGUtY29udGFpbmVyXCIgKyAodGhpcy5zdGF0ZS5tZW51SXNPcGVuID8gXCIgZy1hLW1haW4tbWVudS10aXRsZS1jb250YWluZXItb3BlblwiIDogXCIgZy1hLW1haW4tbWVudS10aXRsZS1jb250YWluZXItY2xvc2VcIikgfSxcbiAgICAgICAgICAgICAgICAgICAgICAgIF9yZWFjdDIuZGVmYXVsdC5jcmVhdGVFbGVtZW50KFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICdkaXYnLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIHsgY2xhc3NOYW1lOiAnZy1hLW1haW4tbWVudS1wcm9maWxlLWltZy1jb250YWluZXInIH0sXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICdhJyxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeyBocmVmOiAnJywgY2xhc3NOYW1lOiAnZy1hLW1haW4tbWVudS1wcm9maWxlLWltZycgfSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoJ2knLCB7IGNsYXNzTmFtZTogJ2dvY21zLWljb24tdXNlcicgfSlcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICApXG4gICAgICAgICAgICAgICAgICAgICAgICApLFxuICAgICAgICAgICAgICAgICAgICAgICAgX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgJ2RpdicsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgeyBjbGFzc05hbWU6ICdnLWNvbnRhaW5lci1jb2wnIH0sXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICdoMScsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHsgY2xhc3NOYW1lOiAnZy1hLW1haW4tbWVudS10aXRsZScgfSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgR09DTVNfTE9HSU5fVElUTEVcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICApLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIF9yZWFjdDIuZGVmYXVsdC5jcmVhdGVFbGVtZW50KFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAnaDInLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB7IGNsYXNzTmFtZTogJ2ctYS1tYWluLW1lbnUtc3ViLXRpdGxlJyB9LFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBfcmVhY3QyLmRlZmF1bHQuY3JlYXRlRWxlbWVudChcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICdhJyxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHsgY2xhc3NOYW1lOiAnJywgaHJlZjogJycgfSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRoaXMucHJvcHMudXNlci5mdWxsTmFtZVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICApLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBfcmVhY3QyLmRlZmF1bHQuY3JlYXRlRWxlbWVudChcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICdzcGFuJyxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHsgY2xhc3NOYW1lOiAnZy1hLW1haW4tbWVudS1zaWduLW91dCcgfSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF9yZWFjdDIuZGVmYXVsdC5jcmVhdGVFbGVtZW50KFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICdhJyxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB7IGhyZWY6ICcnLCBvbkNsaWNrOiB0aGlzLmhhbmRsZVNpZ25PdXQgfSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAnU2lnbiBPdXQnXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICApXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIClcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICApXG4gICAgICAgICAgICAgICAgICAgICAgICApXG4gICAgICAgICAgICAgICAgICAgIClcbiAgICAgICAgICAgICAgICApLFxuICAgICAgICAgICAgICAgIF9yZWFjdDIuZGVmYXVsdC5jcmVhdGVFbGVtZW50KFxuICAgICAgICAgICAgICAgICAgICAnYnV0dG9uJyxcbiAgICAgICAgICAgICAgICAgICAge1xuICAgICAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lOiBcImctYS1tYWluLW1lbnUtYnRuXCIgKyAodGhpcy5zdGF0ZS5tZW51SXNPcGVuID8gXCIgZy1hLW1haW4tbWVudS1idG4tb3BlblwiIDogXCIgZy1hLW1haW4tbWVudS1idG4tY2xvc2VcIiksXG4gICAgICAgICAgICAgICAgICAgICAgICBvbkNsaWNrOiB0aGlzLmhhbmRsZU1lbnVPcGVuQ2xvc2VDbGljayB9LFxuICAgICAgICAgICAgICAgICAgICBfcmVhY3QyLmRlZmF1bHQuY3JlYXRlRWxlbWVudCgnaScsIHsgY2xhc3NOYW1lOiAnZ29jbXMtaWNvbi1tZW51JyB9KVxuICAgICAgICAgICAgICAgIClcbiAgICAgICAgICAgICk7XG4gICAgICAgIH1cbiAgICB9XSk7XG4gICAgcmV0dXJuIEJhc2ljQ29tcG9uZW50O1xufShfcmVhY3QyLmRlZmF1bHQuQ29tcG9uZW50KTtcblxuZnVuY3Rpb24gbWFwU3RhdGVUb1Byb3BzKHN0YXRlKSB7XG4gICAgcmV0dXJuIHtcbiAgICAgICAgdXNlcjogc3RhdGUuYXV0aC51c2VyXG4gICAgfTtcbn1cblxuZXhwb3J0cy5kZWZhdWx0ID0gKDAsIF9yZWFjdFJlZHV4LmNvbm5lY3QpKG1hcFN0YXRlVG9Qcm9wcywge30pKEJhc2ljQ29tcG9uZW50KTtcbiIsIlwidXNlIHN0cmljdFwiO1xuIiwiJ3VzZSBzdHJpY3QnO1xuXG5PYmplY3QuZGVmaW5lUHJvcGVydHkoZXhwb3J0cywgXCJfX2VzTW9kdWxlXCIsIHtcbiAgICB2YWx1ZTogdHJ1ZVxufSk7XG5cbnZhciBfZ2V0UHJvdG90eXBlT2YgPSByZXF1aXJlKCdiYWJlbC1ydW50aW1lL2NvcmUtanMvb2JqZWN0L2dldC1wcm90b3R5cGUtb2YnKTtcblxudmFyIF9nZXRQcm90b3R5cGVPZjIgPSBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KF9nZXRQcm90b3R5cGVPZik7XG5cbnZhciBfY2xhc3NDYWxsQ2hlY2syID0gcmVxdWlyZSgnYmFiZWwtcnVudGltZS9oZWxwZXJzL2NsYXNzQ2FsbENoZWNrJyk7XG5cbnZhciBfY2xhc3NDYWxsQ2hlY2szID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfY2xhc3NDYWxsQ2hlY2syKTtcblxudmFyIF9jcmVhdGVDbGFzczIgPSByZXF1aXJlKCdiYWJlbC1ydW50aW1lL2hlbHBlcnMvY3JlYXRlQ2xhc3MnKTtcblxudmFyIF9jcmVhdGVDbGFzczMgPSBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KF9jcmVhdGVDbGFzczIpO1xuXG52YXIgX3Bvc3NpYmxlQ29uc3RydWN0b3JSZXR1cm4yID0gcmVxdWlyZSgnYmFiZWwtcnVudGltZS9oZWxwZXJzL3Bvc3NpYmxlQ29uc3RydWN0b3JSZXR1cm4nKTtcblxudmFyIF9wb3NzaWJsZUNvbnN0cnVjdG9yUmV0dXJuMyA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX3Bvc3NpYmxlQ29uc3RydWN0b3JSZXR1cm4yKTtcblxudmFyIF9pbmhlcml0czIgPSByZXF1aXJlKCdiYWJlbC1ydW50aW1lL2hlbHBlcnMvaW5oZXJpdHMnKTtcblxudmFyIF9pbmhlcml0czMgPSBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KF9pbmhlcml0czIpO1xuXG52YXIgX3JlYWN0ID0gcmVxdWlyZSgncmVhY3QnKTtcblxudmFyIF9yZWFjdDIgPSBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KF9yZWFjdCk7XG5cbnZhciBfQ1NTVHJhbnNpdGlvbkdyb3VwID0gcmVxdWlyZSgncmVhY3QtdHJhbnNpdGlvbi1ncm91cC9DU1NUcmFuc2l0aW9uR3JvdXAnKTtcblxudmFyIF9DU1NUcmFuc2l0aW9uR3JvdXAyID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfQ1NTVHJhbnNpdGlvbkdyb3VwKTtcblxudmFyIF9yZWFjdFJlZHV4ID0gcmVxdWlyZSgncmVhY3QtcmVkdXgnKTtcblxuZnVuY3Rpb24gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChvYmopIHsgcmV0dXJuIG9iaiAmJiBvYmouX19lc01vZHVsZSA/IG9iaiA6IHsgZGVmYXVsdDogb2JqIH07IH1cblxudmFyIERhc2hib2FyZFBhZ2UgPSBmdW5jdGlvbiAoX1JlYWN0JENvbXBvbmVudCkge1xuICAgICgwLCBfaW5oZXJpdHMzLmRlZmF1bHQpKERhc2hib2FyZFBhZ2UsIF9SZWFjdCRDb21wb25lbnQpO1xuXG4gICAgZnVuY3Rpb24gRGFzaGJvYXJkUGFnZShwcm9wcykge1xuICAgICAgICAoMCwgX2NsYXNzQ2FsbENoZWNrMy5kZWZhdWx0KSh0aGlzLCBEYXNoYm9hcmRQYWdlKTtcblxuICAgICAgICB2YXIgX3RoaXMgPSAoMCwgX3Bvc3NpYmxlQ29uc3RydWN0b3JSZXR1cm4zLmRlZmF1bHQpKHRoaXMsIChEYXNoYm9hcmRQYWdlLl9fcHJvdG9fXyB8fCAoMCwgX2dldFByb3RvdHlwZU9mMi5kZWZhdWx0KShEYXNoYm9hcmRQYWdlKSkuY2FsbCh0aGlzLCBwcm9wcykpO1xuXG4gICAgICAgIF90aGlzLnN0YXRlID0ge307XG4gICAgICAgIHJldHVybiBfdGhpcztcbiAgICB9XG5cbiAgICAoMCwgX2NyZWF0ZUNsYXNzMy5kZWZhdWx0KShEYXNoYm9hcmRQYWdlLCBbe1xuICAgICAgICBrZXk6ICdjb21wb25lbnRXaWxsTW91bnQnLFxuICAgICAgICB2YWx1ZTogZnVuY3Rpb24gY29tcG9uZW50V2lsbE1vdW50KCkge31cbiAgICB9LCB7XG4gICAgICAgIGtleTogJ2NvbXBvbmVudERpZE1vdW50JyxcbiAgICAgICAgdmFsdWU6IGZ1bmN0aW9uIGNvbXBvbmVudERpZE1vdW50KCkge31cbiAgICB9LCB7XG4gICAgICAgIGtleTogJ3JlbmRlcicsXG4gICAgICAgIHZhbHVlOiBmdW5jdGlvbiByZW5kZXIoKSB7XG5cbiAgICAgICAgICAgIHJldHVybiBfcmVhY3QyLmRlZmF1bHQuY3JlYXRlRWxlbWVudChcbiAgICAgICAgICAgICAgICAnaDEnLFxuICAgICAgICAgICAgICAgIG51bGwsXG4gICAgICAgICAgICAgICAgJ2Rhc2hib2FyZCdcbiAgICAgICAgICAgICk7XG4gICAgICAgIH1cbiAgICB9XSk7XG4gICAgcmV0dXJuIERhc2hib2FyZFBhZ2U7XG59KF9yZWFjdDIuZGVmYXVsdC5Db21wb25lbnQpO1xuXG5mdW5jdGlvbiBtYXBTdGF0ZVRvUHJvcHMoc3RhdGUpIHtcbiAgICByZXR1cm4ge307XG59XG5cbmV4cG9ydHMuZGVmYXVsdCA9ICgwLCBfcmVhY3RSZWR1eC5jb25uZWN0KShtYXBTdGF0ZVRvUHJvcHMsIHt9KShEYXNoYm9hcmRQYWdlKTtcbiIsIi8vIGltcG9ydCB7Y29tYmluZVJlZHVjZXJzfSBmcm9tICdyZWR1eCdcbi8vIGltcG9ydCB7UkVRVUVTVF9QQUdFLCBSRUNFSVZFX1BBR0V9IGZyb20gJy4vaG9tZS5hY3Rpb25zJztcbi8vXG4vL1xuLy8gY29uc3QgaW5pdGlhbFN0YXRlID0ge307XG4vL1xuLy8gZnVuY3Rpb24gcGFnZShzdGF0ZSA9IHtcbi8vICAgICBpc0ZldGNoaW5nOiBmYWxzZSxcbi8vICAgICBpdGVtczogW11cbi8vIH0sIGFjdGlvbikge1xuLy8gICAgIHN3aXRjaCAoYWN0aW9uLnR5cGUpIHtcbi8vICAgICAgICAgY2FzZSBSRVFVRVNUX1BBR0U6XG4vLyAgICAgICAgICAgICByZXR1cm4gey4uLnN0YXRlLCBpc0ZldGNoaW5nOiB0cnVlfTtcbi8vXG4vLyAgICAgICAgIGNhc2UgUkVDRUlWRV9QQUdFOlxuLy8gICAgICAgICAgICAgcmV0dXJuIHtcbi8vICAgICAgICAgICAgICAgICAuLi5zdGF0ZSxcbi8vICAgICAgICAgICAgICAgICBpc0ZldGNoaW5nOiBmYWxzZSxcbi8vICAgICAgICAgICAgICAgICBjb250ZW50OiBhY3Rpb24uY29udGVudCxcbi8vICAgICAgICAgICAgICAgICBsYXN0VXBkYXRlZDogYWN0aW9uLnJlY2VpdmVkQXRcbi8vICAgICAgICAgICAgIH07XG4vLyAgICAgICAgIGRlZmF1bHQ6XG4vLyAgICAgICAgICAgICByZXR1cm4gc3RhdGVcbi8vICAgICB9XG4vLyB9XG4vL1xuLy8gZnVuY3Rpb24gcGFnZUJ5VXJpKHN0YXRlID0gaW5pdGlhbFN0YXRlLCBhY3Rpb24pIHtcbi8vICAgICBzd2l0Y2ggKGFjdGlvbi50eXBlKSB7XG4vLyAgICAgICAgIGNhc2UgUkVRVUVTVF9QQUdFOlxuLy8gICAgICAgICBjYXNlIFJFQ0VJVkVfUEFHRTpcbi8vICAgICAgICAgICAgIHJldHVybiB7XG4vLyAgICAgICAgICAgICAgICAgLi4uc3RhdGUsXG4vLyAgICAgICAgICAgICAgICAgW2FjdGlvbi51cmldOiBwYWdlKHN0YXRlW2FjdGlvbi51cmldLCBhY3Rpb24pXG4vLyAgICAgICAgICAgICB9O1xuLy8gICAgICAgICBkZWZhdWx0OlxuLy8gICAgICAgICAgICAgcmV0dXJuIHN0YXRlXG4vLyAgICAgfVxuLy8gfVxuLy9cbi8vIGNvbnN0IHJvb3RSZWR1Y2VyID0gY29tYmluZVJlZHVjZXJzKHtcbi8vICAgICBwYWdlQnlVcmksXG4vLyB9KTtcbi8vXG4vLyBleHBvcnQgZGVmYXVsdCByb290UmVkdWNlclxuXCJ1c2Ugc3RyaWN0XCI7XG4iLCIvLyBpbXBvcnQge2NvbWJpbmVSZWR1Y2Vyc30gZnJvbSAncmVkdXgnXG4vLyBpbXBvcnQgKiBhcyBhY3Rpb25zIGZyb20gJy4uLy4uL2NvbmZpZy9hY3Rpb25zL2Zvcm0nO1xuLy9cbi8vIGZ1bmN0aW9uIF9mb3JtUmVxdWVzdFJlZHVjZXIoc3RhdGUgPSB7fSwgYWN0aW9uKSB7XG4vLyAgICAgbGV0IGtleSA9IGFjdGlvbi5rZXk7XG4vLyAgICAgc3dpdGNoIChhY3Rpb24udHlwZSkge1xuLy8gICAgICAgICBjYXNlIGFjdGlvbnMuUkVRVUVTVDpcbi8vICAgICAgICAgICAgIHJldHVybiB7XG4vLyAgICAgICAgICAgICAgICAgLi4uc3RhdGUsXG4vLyAgICAgICAgICAgICAgICAgW2tleV06IHtcbi8vICAgICAgICAgICAgICAgICAgICAgLi4uc3RhdGVba2V5XSxcbi8vICAgICAgICAgICAgICAgICAgICAga2V5OiBhY3Rpb24ua2V5LFxuLy8gICAgICAgICAgICAgICAgICAgICBpc0ZldGNoaW5nOiB0cnVlLFxuLy8gICAgICAgICAgICAgICAgICAgICByZXF1ZXN0ZWRBdDogYWN0aW9uLnJlcXVlc3RlZEF0XG4vLyAgICAgICAgICAgICAgICAgfVxuLy8gICAgICAgICAgICAgfTtcbi8vICAgICAgICAgY2FzZSBhY3Rpb25zLlNVQ0NFU1M6XG4vLyAgICAgICAgICAgICByZXR1cm4ge1xuLy8gICAgICAgICAgICAgICAgIC4uLnN0YXRlLFxuLy8gICAgICAgICAgICAgICAgIFtrZXldOiB7XG4vLyAgICAgICAgICAgICAgICAgICAgIC4uLnN0YXRlW2tleV0sXG4vLyAgICAgICAgICAgICAgICAgICAgIGtleTogYWN0aW9uLmtleSxcbi8vICAgICAgICAgICAgICAgICAgICAgaXNGZXRjaGluZzogZmFsc2UsXG4vLyAgICAgICAgICAgICAgICAgICAgIHJlY2VpdmVkQXQ6IGFjdGlvbi5yZWNlaXZlZEF0LFxuLy8gICAgICAgICAgICAgICAgICAgICBkYXRhOiBhY3Rpb24uZGF0YVxuLy8gICAgICAgICAgICAgICAgIH1cbi8vICAgICAgICAgICAgIH07XG4vLyAgICAgICAgIGNhc2UgYWN0aW9ucy5GQUlMVVJFOlxuLy8gICAgICAgICAgICAgcmV0dXJuIHtcbi8vICAgICAgICAgICAgICAgICAuLi5zdGF0ZSxcbi8vICAgICAgICAgICAgICAgICBba2V5XToge1xuLy8gICAgICAgICAgICAgICAgICAgICAuLi5zdGF0ZVtrZXldLFxuLy8gICAgICAgICAgICAgICAgICAgICBrZXk6IGFjdGlvbi5rZXksXG4vLyAgICAgICAgICAgICAgICAgICAgIGlzRmV0Y2hpbmc6IGZhbHNlLFxuLy8gICAgICAgICAgICAgICAgICAgICByZWNlaXZlZEF0OiBhY3Rpb24ucmVjZWl2ZWRBdCxcbi8vICAgICAgICAgICAgICAgICAgICAgZXJyOiBhY3Rpb24uZXJyXG4vLyAgICAgICAgICAgICAgICAgfVxuLy8gICAgICAgICAgICAgfTtcbi8vICAgICAgICAgZGVmYXVsdDpcbi8vICAgICAgICAgICAgIHJldHVybiBzdGF0ZVxuLy8gICAgIH1cbi8vIH1cbi8vXG4vL1xuLy8gY29uc3QgZm9ybVJlcXVlc3RSZWR1Y2VyID0gY29tYmluZVJlZHVjZXJzKHtcbi8vICAgICBfZm9ybVJlcXVlc3RSZWR1Y2VyLFxuLy8gfSk7XG4vL1xuLy8gZXhwb3J0IGRlZmF1bHQgZm9ybVJlcXVlc3RSZWR1Y2VyXG5cInVzZSBzdHJpY3RcIjtcbiIsIid1c2Ugc3RyaWN0JztcblxuT2JqZWN0LmRlZmluZVByb3BlcnR5KGV4cG9ydHMsIFwiX19lc01vZHVsZVwiLCB7XG4gICAgdmFsdWU6IHRydWVcbn0pO1xuXG52YXIgX3JlYWN0ID0gcmVxdWlyZSgncmVhY3QnKTtcblxudmFyIF9yZWFjdDIgPSBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KF9yZWFjdCk7XG5cbnZhciBfcmVhY3RSb3V0ZXIgPSByZXF1aXJlKCdyZWFjdC1yb3V0ZXInKTtcblxudmFyIF9kYXNoYm9hcmRQYWdlID0gcmVxdWlyZSgnLi9kYXNoYm9hcmRQYWdlLmNvbnRhaW5lcicpO1xuXG52YXIgX2Rhc2hib2FyZFBhZ2UyID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfZGFzaGJvYXJkUGFnZSk7XG5cbmZ1bmN0aW9uIF9pbnRlcm9wUmVxdWlyZURlZmF1bHQob2JqKSB7IHJldHVybiBvYmogJiYgb2JqLl9fZXNNb2R1bGUgPyBvYmogOiB7IGRlZmF1bHQ6IG9iaiB9OyB9XG5cbmV4cG9ydHMuZGVmYXVsdCA9IF9yZWFjdDIuZGVmYXVsdC5jcmVhdGVFbGVtZW50KFxuICAgIF9yZWFjdFJvdXRlci5Sb3V0ZSxcbiAgICBudWxsLFxuICAgIF9yZWFjdDIuZGVmYXVsdC5jcmVhdGVFbGVtZW50KF9yZWFjdFJvdXRlci5Sb3V0ZSwgeyBwYXRoOiAnZGFzaGJvYXJkJywgY29tcG9uZW50OiBfZGFzaGJvYXJkUGFnZTIuZGVmYXVsdCB9KVxuKTtcbiIsIi8vIGltcG9ydCB7Zm9yaywgdGFrZUV2ZXJ5LCBwdXQsIGNhbGx9IGZyb20gJ3JlZHV4LXNhZ2EvZWZmZWN0cyc7XG4vLyBpbXBvcnQgKiBhcyBhcGlBY3Rpb25zIGZyb20gJy4uLy4uLy4uL2Jhc2UvYWN0aW9ucy9hcGlSZXF1ZXN0QWN0aW9ucyc7IC8vIGltcG9ydGluZyBvdXIgYWN0aW9uXG4vLyBpbXBvcnQge2xvZ2lufSBmcm9tICcuLi8uLi9jb25maWcvYWN0aW9ucy9hdXRoZW50aWNhdGlvbkFjdGlvbnMnXG4vLyBpbXBvcnQge1Bvc3QsIEVORFBPSU5UU30gZnJvbSAnLi4vLi4vLi4vYmFzZS9zZXJ2aWNlcy9hcGknO1xuLy8gaW1wb3J0IHsgYnJvd3Nlckhpc3RvcnkgfSBmcm9tICdyZWFjdC1yb3V0ZXInXG4vL1xuLy9cbi8vIC8vIHdhdGNoIGZvciBsb2dpbiByZXF1ZXN0c1xuLy8gZnVuY3Rpb24qIHdhdGNoTG9naW5TYWdhKCkge1xuLy8gICAgIHlpZWxkIHRha2VFdmVyeShhcGlBY3Rpb25zLlJFUVVFU1QsIGhhbmRsZUxvZ2luU2FnYSk7IC8vIHNlZSBkZXRhaWxzIHdoYXQgaXMgUkVRVUVTVCBwYXJhbSBiZWxvd1xuLy8gfVxuLy9cbi8vIGZ1bmN0aW9uKiBoYW5kbGVMb2dpblNhZ2EoYWN0aW9uKSB7XG4vLyAgICAgbGV0IHtyZXMsIGVycn0gPSB5aWVsZCBjYWxsKFBvc3QsIEVORFBPSU5UUy5sb2dpbiwgYWN0aW9uLmRhdGEpOyAvLyBjYWxsaW5nIG91ciBhcGkgbWV0aG9kXG4vLyAgICAgaWYgKHJlcykge1xuLy8gICAgICAgICAvLyBwdXNoIHVzZXIgaW5mbyB0byBzdG9yZVxuLy8gICAgICAgICB5aWVsZCBwdXQobG9naW4ocmVzLmpzb24pKTtcbi8vICAgICAgICAgeWllbGQgcHV0KGFwaUFjdGlvbnMucHVyZ2UoYWN0aW9uLmtleSkpO1xuLy8gICAgICAgICBicm93c2VySGlzdG9yeS5wdXNoKEdPQ01TX0xPR0lOX1NVQ0NFU1NfUkVESVJFQ1QpO1xuLy8gICAgIH1cbi8vICAgICBlbHNlIGlmIChlcnIpIHtcbi8vICAgICAgICAgLy8gZmV0Y2ggcGFnZSBkYXRhIGJhc2VkIG9uIHVyaVxuLy8gICAgICAgICB5aWVsZCBwdXQoYXBpQWN0aW9ucy5mYWlsdXJlKGFjdGlvbi5rZXksIGVycikpO1xuLy8gICAgIH1cbi8vIH1cbi8vXG4vLyBleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiogbG9naW5QYWdlU2FnYXMoKSB7XG4vLyAgICAgeWllbGQgW1xuLy8gICAgICAgICBmb3JrKHdhdGNoTG9naW5TYWdhKSxcbi8vICAgICBdO1xuLy8gfVxuXCJ1c2Ugc3RyaWN0XCI7XG4iLCIndXNlIHN0cmljdCc7XG5cbk9iamVjdC5kZWZpbmVQcm9wZXJ0eShleHBvcnRzLCBcIl9fZXNNb2R1bGVcIiwge1xuICAgIHZhbHVlOiB0cnVlXG59KTtcblxudmFyIF9yZWFjdCA9IHJlcXVpcmUoJ3JlYWN0Jyk7XG5cbnZhciBfcmVhY3QyID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfcmVhY3QpO1xuXG52YXIgX3JlZHV4RGV2dG9vbHMgPSByZXF1aXJlKCdyZWR1eC1kZXZ0b29scycpO1xuXG52YXIgX3JlZHV4RGV2dG9vbHNMb2dNb25pdG9yID0gcmVxdWlyZSgncmVkdXgtZGV2dG9vbHMtbG9nLW1vbml0b3InKTtcblxudmFyIF9yZWR1eERldnRvb2xzTG9nTW9uaXRvcjIgPSBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KF9yZWR1eERldnRvb2xzTG9nTW9uaXRvcik7XG5cbnZhciBfcmVkdXhEZXZ0b29sc0RvY2tNb25pdG9yID0gcmVxdWlyZSgncmVkdXgtZGV2dG9vbHMtZG9jay1tb25pdG9yJyk7XG5cbnZhciBfcmVkdXhEZXZ0b29sc0RvY2tNb25pdG9yMiA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX3JlZHV4RGV2dG9vbHNEb2NrTW9uaXRvcik7XG5cbmZ1bmN0aW9uIF9pbnRlcm9wUmVxdWlyZURlZmF1bHQob2JqKSB7IHJldHVybiBvYmogJiYgb2JqLl9fZXNNb2R1bGUgPyBvYmogOiB7IGRlZmF1bHQ6IG9iaiB9OyB9XG5cbi8vIERPQ1M6IGh0dHBzOi8vZ2l0aHViLmNvbS9nYWVhcm9uL3JlZHV4LWRldnRvb2xzXG5cbi8vIGNyZWF0ZURldlRvb2xzIHRha2VzIGEgbW9uaXRvciBhbmQgcHJvZHVjZXMgYSBEZXZUb29scyBjb21wb25lbnRcbnZhciBEZXZUb29scyA9ICgwLCBfcmVkdXhEZXZ0b29scy5jcmVhdGVEZXZUb29scykoX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoXG4gICAgX3JlZHV4RGV2dG9vbHNEb2NrTW9uaXRvcjIuZGVmYXVsdCxcbiAgICB7IHRvZ2dsZVZpc2liaWxpdHlLZXk6ICdjdHJsLWgnLFxuICAgICAgICBjaGFuZ2VQb3NpdGlvbktleTogJ2N0cmwtcScsXG4gICAgICAgIGRlZmF1bHRQb3NpdGlvbjogJ2xlZnQnIH0sXG4gICAgX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoX3JlZHV4RGV2dG9vbHNMb2dNb25pdG9yMi5kZWZhdWx0LCB7IHRoZW1lOiAndG9tb3Jyb3cnIH0pXG4pKTtcblxuZXhwb3J0cy5kZWZhdWx0ID0gRGV2VG9vbHM7XG4iLCIndXNlIHN0cmljdCc7XG5cbk9iamVjdC5kZWZpbmVQcm9wZXJ0eShleHBvcnRzLCBcIl9fZXNNb2R1bGVcIiwge1xuICAgIHZhbHVlOiB0cnVlXG59KTtcbmV4cG9ydHMuZ29jbXNfbG9naW4gPSBnb2Ntc19sb2dpbjtcbnZhciBHT0NNU19MT0dJTiA9IGV4cG9ydHMuR09DTVNfTE9HSU4gPSAnR09DTVNfTE9HSU4nO1xuXG5mdW5jdGlvbiBnb2Ntc19sb2dpbihrZXksIGRhdGEpIHtcbiAgICByZXR1cm4ge1xuICAgICAgICB0eXBlOiBHT0NNU19MT0dJTixcbiAgICAgICAga2V5OiBrZXksXG4gICAgICAgIGRhdGE6IGRhdGEsXG4gICAgICAgIHJlcXVlc3RlZEF0OiBEYXRlLm5vdygpXG4gICAgfTtcbn1cbiIsIid1c2Ugc3RyaWN0JztcblxuT2JqZWN0LmRlZmluZVByb3BlcnR5KGV4cG9ydHMsIFwiX19lc01vZHVsZVwiLCB7XG4gICAgdmFsdWU6IHRydWVcbn0pO1xuXG52YXIgX2dldFByb3RvdHlwZU9mID0gcmVxdWlyZSgnYmFiZWwtcnVudGltZS9jb3JlLWpzL29iamVjdC9nZXQtcHJvdG90eXBlLW9mJyk7XG5cbnZhciBfZ2V0UHJvdG90eXBlT2YyID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfZ2V0UHJvdG90eXBlT2YpO1xuXG52YXIgX2NsYXNzQ2FsbENoZWNrMiA9IHJlcXVpcmUoJ2JhYmVsLXJ1bnRpbWUvaGVscGVycy9jbGFzc0NhbGxDaGVjaycpO1xuXG52YXIgX2NsYXNzQ2FsbENoZWNrMyA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX2NsYXNzQ2FsbENoZWNrMik7XG5cbnZhciBfY3JlYXRlQ2xhc3MyID0gcmVxdWlyZSgnYmFiZWwtcnVudGltZS9oZWxwZXJzL2NyZWF0ZUNsYXNzJyk7XG5cbnZhciBfY3JlYXRlQ2xhc3MzID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfY3JlYXRlQ2xhc3MyKTtcblxudmFyIF9wb3NzaWJsZUNvbnN0cnVjdG9yUmV0dXJuMiA9IHJlcXVpcmUoJ2JhYmVsLXJ1bnRpbWUvaGVscGVycy9wb3NzaWJsZUNvbnN0cnVjdG9yUmV0dXJuJyk7XG5cbnZhciBfcG9zc2libGVDb25zdHJ1Y3RvclJldHVybjMgPSBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KF9wb3NzaWJsZUNvbnN0cnVjdG9yUmV0dXJuMik7XG5cbnZhciBfaW5oZXJpdHMyID0gcmVxdWlyZSgnYmFiZWwtcnVudGltZS9oZWxwZXJzL2luaGVyaXRzJyk7XG5cbnZhciBfaW5oZXJpdHMzID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfaW5oZXJpdHMyKTtcblxudmFyIF9yZWFjdCA9IHJlcXVpcmUoJ3JlYWN0Jyk7XG5cbnZhciBfcmVhY3QyID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfcmVhY3QpO1xuXG52YXIgX0NTU1RyYW5zaXRpb25Hcm91cCA9IHJlcXVpcmUoJ3JlYWN0LXRyYW5zaXRpb24tZ3JvdXAvQ1NTVHJhbnNpdGlvbkdyb3VwJyk7XG5cbnZhciBfQ1NTVHJhbnNpdGlvbkdyb3VwMiA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX0NTU1RyYW5zaXRpb25Hcm91cCk7XG5cbnZhciBfcmVhY3RSZWR1eCA9IHJlcXVpcmUoJ3JlYWN0LXJlZHV4Jyk7XG5cbnZhciBfbG9naW5QYWdlID0gcmVxdWlyZSgnLi9sb2dpblBhZ2UuYWN0aW9ucycpO1xuXG52YXIgX0dGb3JtID0gcmVxdWlyZSgnLi4vLi4vLi4vYmFzZS9jb21wb25lbnRzL2dGb3JtL0dGb3JtJyk7XG5cbnZhciBfR0Zvcm0yID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfR0Zvcm0pO1xuXG52YXIgX0dJbnB1dCA9IHJlcXVpcmUoJy4uLy4uLy4uL2Jhc2UvY29tcG9uZW50cy9nRm9ybS9HSW5wdXQnKTtcblxudmFyIF9HSW5wdXQyID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfR0lucHV0KTtcblxudmFyIF9HRXJyb3IgPSByZXF1aXJlKCcuLi8uLi8uLi9iYXNlL2NvbXBvbmVudHMvZ0Zvcm0vR0Vycm9yJyk7XG5cbnZhciBfR0Vycm9yMiA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX0dFcnJvcik7XG5cbmZ1bmN0aW9uIF9pbnRlcm9wUmVxdWlyZURlZmF1bHQob2JqKSB7IHJldHVybiBvYmogJiYgb2JqLl9fZXNNb2R1bGUgPyBvYmogOiB7IGRlZmF1bHQ6IG9iaiB9OyB9XG5cbnZhciBMT0dJTl9GT1JNID0gXCJHT0NNU19MT0dJTl9GT1JNXCI7XG5cbnZhciBMb2dpblBhZ2UgPSBmdW5jdGlvbiAoX1JlYWN0JENvbXBvbmVudCkge1xuICAgICgwLCBfaW5oZXJpdHMzLmRlZmF1bHQpKExvZ2luUGFnZSwgX1JlYWN0JENvbXBvbmVudCk7XG5cbiAgICBmdW5jdGlvbiBMb2dpblBhZ2UocHJvcHMpIHtcbiAgICAgICAgKDAsIF9jbGFzc0NhbGxDaGVjazMuZGVmYXVsdCkodGhpcywgTG9naW5QYWdlKTtcblxuICAgICAgICB2YXIgX3RoaXMgPSAoMCwgX3Bvc3NpYmxlQ29uc3RydWN0b3JSZXR1cm4zLmRlZmF1bHQpKHRoaXMsIChMb2dpblBhZ2UuX19wcm90b19fIHx8ICgwLCBfZ2V0UHJvdG90eXBlT2YyLmRlZmF1bHQpKExvZ2luUGFnZSkpLmNhbGwodGhpcywgcHJvcHMpKTtcblxuICAgICAgICBfdGhpcy5zdGF0ZSA9IHtcbiAgICAgICAgICAgIHNoYWtlOiBmYWxzZVxuICAgICAgICB9O1xuICAgICAgICBfdGhpcy5oYW5kbGVTdWJtaXQgPSBfdGhpcy5oYW5kbGVTdWJtaXQuYmluZChfdGhpcyk7IC8vYmluZCBmdW5jdGlvbiBvbmNlXG4gICAgICAgIHJldHVybiBfdGhpcztcbiAgICB9XG5cbiAgICAoMCwgX2NyZWF0ZUNsYXNzMy5kZWZhdWx0KShMb2dpblBhZ2UsIFt7XG4gICAgICAgIGtleTogJ2NvbXBvbmVudFdpbGxNb3VudCcsXG4gICAgICAgIHZhbHVlOiBmdW5jdGlvbiBjb21wb25lbnRXaWxsTW91bnQoKSB7fVxuICAgIH0sIHtcbiAgICAgICAga2V5OiAnY29tcG9uZW50RGlkTW91bnQnLFxuICAgICAgICB2YWx1ZTogZnVuY3Rpb24gY29tcG9uZW50RGlkTW91bnQoKSB7fVxuICAgIH0sIHtcbiAgICAgICAga2V5OiAnY29tcG9uZW50V2lsbFJlY2VpdmVQcm9wcycsXG4gICAgICAgIHZhbHVlOiBmdW5jdGlvbiBjb21wb25lbnRXaWxsUmVjZWl2ZVByb3BzKG5leHRQcm9wcykge1xuICAgICAgICAgICAgaWYgKCEhbmV4dFByb3BzLmVyciAmJiBuZXh0UHJvcHMucmVxVGltZSAhPSB0aGlzLnByb3BzLnJlcVRpbWUpIHtcbiAgICAgICAgICAgICAgICB0aGlzLnNldFN0YXRlKHsgc2hha2U6IHRydWUgfSk7XG4gICAgICAgICAgICB9XG4gICAgICAgICAgICBpZiAoISFuZXh0UHJvcHMuZXJyTWVzc2FnZSAmJiBuZXh0UHJvcHMuZXJyTWVzc2FnZSAhPSB0aGlzLnN0YXRlLmVyck1lc3NhZ2UpIHtcbiAgICAgICAgICAgICAgICB0aGlzLnNldFN0YXRlKHsgZXJyTWVzc2FnZTogbmV4dFByb3BzLmVyck1lc3NhZ2UgfSk7XG4gICAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICB9LCB7XG4gICAgICAgIGtleTogJ2hhbmRsZVN1Ym1pdCcsXG4gICAgICAgIHZhbHVlOiBmdW5jdGlvbiBoYW5kbGVTdWJtaXQobW9kZWwpIHtcbiAgICAgICAgICAgIHRoaXMucHJvcHMuZ29jbXNfbG9naW4oTE9HSU5fRk9STSwgbW9kZWwpO1xuICAgICAgICAgICAgdGhpcy5zZXRTdGF0ZSh7IGVyck1lc3NhZ2U6IG51bGwgfSk7XG4gICAgICAgIH1cbiAgICB9LCB7XG4gICAgICAgIGtleTogJ3JlbmRlcicsXG4gICAgICAgIHZhbHVlOiBmdW5jdGlvbiByZW5kZXIoKSB7XG5cbiAgICAgICAgICAgIHJldHVybiBfcmVhY3QyLmRlZmF1bHQuY3JlYXRlRWxlbWVudChcbiAgICAgICAgICAgICAgICAnZGl2JyxcbiAgICAgICAgICAgICAgICB7IGNsYXNzTmFtZTogJ2ctYScgfSxcbiAgICAgICAgICAgICAgICBfcmVhY3QyLmRlZmF1bHQuY3JlYXRlRWxlbWVudChcbiAgICAgICAgICAgICAgICAgICAgJ2RpdicsXG4gICAgICAgICAgICAgICAgICAgIHsgaWQ6ICdjb250YWluZXItbG9naW4tcGFnZScgfSxcbiAgICAgICAgICAgICAgICAgICAgX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoXG4gICAgICAgICAgICAgICAgICAgICAgICAnZGl2JyxcbiAgICAgICAgICAgICAgICAgICAgICAgIHsgaWQ6ICdjb250YWluZXItbG9naW4tcGFnZS1mb3JtJywgY2xhc3NOYW1lOiAnZy1jb250YWluZXItY29sJyB9LFxuICAgICAgICAgICAgICAgICAgICAgICAgX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgJ2RpdicsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgeyBjbGFzc05hbWU6ICd3cmFwcGVyLWxvZ2luLWZvcm0nLCBub1ZhbGlkYXRlOiB0cnVlIH0sXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICdkaXYnLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB7IGNsYXNzTmFtZTogJ2ctY29udGFpbmVyLWNvbCcgfSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAnaDEnLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeyBjbGFzc05hbWU6ICd0ZXh0LWNlbnRlciBuby1wYWRkaW5nIG5vLW1hcmdpbicgfSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEdPQ01TX0xPR0lOX1RJVExFXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICksXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF9yZWFjdDIuZGVmYXVsdC5jcmVhdGVFbGVtZW50KFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgX0dGb3JtMi5kZWZhdWx0LFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeyBpZDogJ21haW4tbG9naW4tZm9ybScsIGNsYXNzTmFtZTogJ21haW4tbG9naW4tZm9ybScsIG5hbWU6ICdtYWluLWxvZ2luLWZvcm0nLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG9uU3VibWl0OiB0aGlzLmhhbmRsZVN1Ym1pdCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzdWJtaXRCdG46ICdMb2cgSW4nLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN1Ym1pdEJ0bkNsYXNzTmFtZTogXCJidG4tZGVmYXVsdFwiLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN1Ym1pdEJ0blNoYWtlOiB0aGlzLnN0YXRlLnNoYWtlIH0sXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBfcmVhY3QyLmRlZmF1bHQuY3JlYXRlRWxlbWVudChfR0lucHV0Mi5kZWZhdWx0LCB7IGlkOiAnZW1haWwnLCBuYW1lOiAnZW1haWwnLCB0eXBlOiAndGV4dCcsIGxhYmVsOiAnRW1haWwnLCB2YWxpZGF0aW9uczogJ2lzRW1haWwnLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZhbGlkYXRpb25FcnJvcjogJ1BsZWFzZSBlbnRlciBhIHZhbGlkIGVtYWlsLicsIHJlcXVpcmVkOiB0cnVlIH0pLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoX0dJbnB1dDIuZGVmYXVsdCwgeyBpZDogJ3Bhc3N3b3JkJywgbmFtZTogJ3Bhc3N3b3JkJywgdHlwZTogJ3Bhc3N3b3JkJywgbGFiZWw6ICdQYXNzd29yZCcsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVxdWlyZWQ6IHRydWUgfSlcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAnZGl2JyxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHsgY2xhc3NOYW1lOiAnZy1jb2wnIH0sXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBfcmVhY3QyLmRlZmF1bHQuY3JlYXRlRWxlbWVudChfR0Vycm9yMi5kZWZhdWx0LCB7XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lOiAnZXJyb3ItbWVzc2FnZS1sb2dpbicsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZXJyTWVzc2FnZTogdGhpcy5zdGF0ZS5lcnJNZXNzYWdlXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB9KVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICApXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgKVxuICAgICAgICAgICAgICAgICAgICAgICAgKVxuICAgICAgICAgICAgICAgICAgICApXG4gICAgICAgICAgICAgICAgKVxuICAgICAgICAgICAgKTtcbiAgICAgICAgfVxuICAgIH1dKTtcbiAgICByZXR1cm4gTG9naW5QYWdlO1xufShfcmVhY3QyLmRlZmF1bHQuQ29tcG9uZW50KTtcblxuZnVuY3Rpb24gbWFwU3RhdGVUb1Byb3BzKHN0YXRlKSB7XG4gICAgdmFyIGVyck1lc3NhZ2UgPSB2b2lkIDA7XG4gICAgdmFyIGVyciA9IHZvaWQgMDtcbiAgICB2YXIgcmVxVGltZSA9IHZvaWQgMDtcbiAgICB2YXIgcmVxID0gc3RhdGUuYXBpLnJlcXVlc3RbTE9HSU5fRk9STV07XG4gICAgaWYgKCEhcmVxKSB7XG4gICAgICAgIHJlcVRpbWUgPSByZXEucmVjZWl2ZWRBdDtcbiAgICAgICAgaWYgKCEhcmVxLmVycikge1xuICAgICAgICAgICAgZXJyID0gcmVxLmVycjtcbiAgICAgICAgICAgIGlmICghIWVyci5qc29uICYmICEhZXJyLmpzb24ubWVzc2FnZSkge1xuICAgICAgICAgICAgICAgIGVyck1lc3NhZ2UgPSBlcnIuanNvbi5tZXNzYWdlO1xuICAgICAgICAgICAgfVxuICAgICAgICB9XG4gICAgfVxuICAgIHJldHVybiB7XG4gICAgICAgIHJlcVRpbWU6IHJlcVRpbWUsXG4gICAgICAgIGVycjogZXJyLFxuICAgICAgICBlcnJNZXNzYWdlOiBlcnJNZXNzYWdlXG4gICAgfTtcbn1cblxuZXhwb3J0cy5kZWZhdWx0ID0gKDAsIF9yZWFjdFJlZHV4LmNvbm5lY3QpKG1hcFN0YXRlVG9Qcm9wcywge1xuICAgIGdvY21zX2xvZ2luOiBfbG9naW5QYWdlLmdvY21zX2xvZ2luXG59KShMb2dpblBhZ2UpO1xuIiwiLy8gaW1wb3J0IHtjb21iaW5lUmVkdWNlcnN9IGZyb20gJ3JlZHV4J1xuLy8gaW1wb3J0IHtSRVFVRVNUX1BBR0UsIFJFQ0VJVkVfUEFHRX0gZnJvbSAnLi9ob21lLmFjdGlvbnMnO1xuLy9cbi8vXG4vLyBjb25zdCBpbml0aWFsU3RhdGUgPSB7fTtcbi8vXG4vLyBmdW5jdGlvbiBwYWdlKHN0YXRlID0ge1xuLy8gICAgIGlzRmV0Y2hpbmc6IGZhbHNlLFxuLy8gICAgIGl0ZW1zOiBbXVxuLy8gfSwgYWN0aW9uKSB7XG4vLyAgICAgc3dpdGNoIChhY3Rpb24udHlwZSkge1xuLy8gICAgICAgICBjYXNlIFJFUVVFU1RfUEFHRTpcbi8vICAgICAgICAgICAgIHJldHVybiB7Li4uc3RhdGUsIGlzRmV0Y2hpbmc6IHRydWV9O1xuLy9cbi8vICAgICAgICAgY2FzZSBSRUNFSVZFX1BBR0U6XG4vLyAgICAgICAgICAgICByZXR1cm4ge1xuLy8gICAgICAgICAgICAgICAgIC4uLnN0YXRlLFxuLy8gICAgICAgICAgICAgICAgIGlzRmV0Y2hpbmc6IGZhbHNlLFxuLy8gICAgICAgICAgICAgICAgIGNvbnRlbnQ6IGFjdGlvbi5jb250ZW50LFxuLy8gICAgICAgICAgICAgICAgIGxhc3RVcGRhdGVkOiBhY3Rpb24ucmVjZWl2ZWRBdFxuLy8gICAgICAgICAgICAgfTtcbi8vICAgICAgICAgZGVmYXVsdDpcbi8vICAgICAgICAgICAgIHJldHVybiBzdGF0ZVxuLy8gICAgIH1cbi8vIH1cbi8vXG4vLyBmdW5jdGlvbiBwYWdlQnlVcmkoc3RhdGUgPSBpbml0aWFsU3RhdGUsIGFjdGlvbikge1xuLy8gICAgIHN3aXRjaCAoYWN0aW9uLnR5cGUpIHtcbi8vICAgICAgICAgY2FzZSBSRVFVRVNUX1BBR0U6XG4vLyAgICAgICAgIGNhc2UgUkVDRUlWRV9QQUdFOlxuLy8gICAgICAgICAgICAgcmV0dXJuIHtcbi8vICAgICAgICAgICAgICAgICAuLi5zdGF0ZSxcbi8vICAgICAgICAgICAgICAgICBbYWN0aW9uLnVyaV06IHBhZ2Uoc3RhdGVbYWN0aW9uLnVyaV0sIGFjdGlvbilcbi8vICAgICAgICAgICAgIH07XG4vLyAgICAgICAgIGRlZmF1bHQ6XG4vLyAgICAgICAgICAgICByZXR1cm4gc3RhdGVcbi8vICAgICB9XG4vLyB9XG4vL1xuLy8gY29uc3Qgcm9vdFJlZHVjZXIgPSBjb21iaW5lUmVkdWNlcnMoe1xuLy8gICAgIHBhZ2VCeVVyaSxcbi8vIH0pO1xuLy9cbi8vIGV4cG9ydCBkZWZhdWx0IHJvb3RSZWR1Y2VyXG5cInVzZSBzdHJpY3RcIjtcbiIsIi8vIGltcG9ydCB7Y29tYmluZVJlZHVjZXJzfSBmcm9tICdyZWR1eCdcbi8vIGltcG9ydCAqIGFzIGFjdGlvbnMgZnJvbSAnLi4vLi4vY29uZmlnL2FjdGlvbnMvZm9ybSc7XG4vL1xuLy8gZnVuY3Rpb24gX2Zvcm1SZXF1ZXN0UmVkdWNlcihzdGF0ZSA9IHt9LCBhY3Rpb24pIHtcbi8vICAgICBsZXQga2V5ID0gYWN0aW9uLmtleTtcbi8vICAgICBzd2l0Y2ggKGFjdGlvbi50eXBlKSB7XG4vLyAgICAgICAgIGNhc2UgYWN0aW9ucy5SRVFVRVNUOlxuLy8gICAgICAgICAgICAgcmV0dXJuIHtcbi8vICAgICAgICAgICAgICAgICAuLi5zdGF0ZSxcbi8vICAgICAgICAgICAgICAgICBba2V5XToge1xuLy8gICAgICAgICAgICAgICAgICAgICAuLi5zdGF0ZVtrZXldLFxuLy8gICAgICAgICAgICAgICAgICAgICBrZXk6IGFjdGlvbi5rZXksXG4vLyAgICAgICAgICAgICAgICAgICAgIGlzRmV0Y2hpbmc6IHRydWUsXG4vLyAgICAgICAgICAgICAgICAgICAgIHJlcXVlc3RlZEF0OiBhY3Rpb24ucmVxdWVzdGVkQXRcbi8vICAgICAgICAgICAgICAgICB9XG4vLyAgICAgICAgICAgICB9O1xuLy8gICAgICAgICBjYXNlIGFjdGlvbnMuU1VDQ0VTUzpcbi8vICAgICAgICAgICAgIHJldHVybiB7XG4vLyAgICAgICAgICAgICAgICAgLi4uc3RhdGUsXG4vLyAgICAgICAgICAgICAgICAgW2tleV06IHtcbi8vICAgICAgICAgICAgICAgICAgICAgLi4uc3RhdGVba2V5XSxcbi8vICAgICAgICAgICAgICAgICAgICAga2V5OiBhY3Rpb24ua2V5LFxuLy8gICAgICAgICAgICAgICAgICAgICBpc0ZldGNoaW5nOiBmYWxzZSxcbi8vICAgICAgICAgICAgICAgICAgICAgcmVjZWl2ZWRBdDogYWN0aW9uLnJlY2VpdmVkQXQsXG4vLyAgICAgICAgICAgICAgICAgICAgIGRhdGE6IGFjdGlvbi5kYXRhXG4vLyAgICAgICAgICAgICAgICAgfVxuLy8gICAgICAgICAgICAgfTtcbi8vICAgICAgICAgY2FzZSBhY3Rpb25zLkZBSUxVUkU6XG4vLyAgICAgICAgICAgICByZXR1cm4ge1xuLy8gICAgICAgICAgICAgICAgIC4uLnN0YXRlLFxuLy8gICAgICAgICAgICAgICAgIFtrZXldOiB7XG4vLyAgICAgICAgICAgICAgICAgICAgIC4uLnN0YXRlW2tleV0sXG4vLyAgICAgICAgICAgICAgICAgICAgIGtleTogYWN0aW9uLmtleSxcbi8vICAgICAgICAgICAgICAgICAgICAgaXNGZXRjaGluZzogZmFsc2UsXG4vLyAgICAgICAgICAgICAgICAgICAgIHJlY2VpdmVkQXQ6IGFjdGlvbi5yZWNlaXZlZEF0LFxuLy8gICAgICAgICAgICAgICAgICAgICBlcnI6IGFjdGlvbi5lcnJcbi8vICAgICAgICAgICAgICAgICB9XG4vLyAgICAgICAgICAgICB9O1xuLy8gICAgICAgICBkZWZhdWx0OlxuLy8gICAgICAgICAgICAgcmV0dXJuIHN0YXRlXG4vLyAgICAgfVxuLy8gfVxuLy9cbi8vXG4vLyBjb25zdCBmb3JtUmVxdWVzdFJlZHVjZXIgPSBjb21iaW5lUmVkdWNlcnMoe1xuLy8gICAgIF9mb3JtUmVxdWVzdFJlZHVjZXIsXG4vLyB9KTtcbi8vXG4vLyBleHBvcnQgZGVmYXVsdCBmb3JtUmVxdWVzdFJlZHVjZXJcblwidXNlIHN0cmljdFwiO1xuIiwiJ3VzZSBzdHJpY3QnO1xuXG5PYmplY3QuZGVmaW5lUHJvcGVydHkoZXhwb3J0cywgXCJfX2VzTW9kdWxlXCIsIHtcbiAgICB2YWx1ZTogdHJ1ZVxufSk7XG5leHBvcnRzLnJlZ2lzdGVyZWRMb2dpblJvdXRlcyA9IHJlZ2lzdGVyZWRMb2dpblJvdXRlcztcbmV4cG9ydHMuaW5qZWN0TG9naW5Sb3V0ZXMgPSBpbmplY3RMb2dpblJvdXRlcztcblxudmFyIF9yZWFjdCA9IHJlcXVpcmUoJ3JlYWN0Jyk7XG5cbnZhciBfcmVhY3QyID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfcmVhY3QpO1xuXG52YXIgX3JlYWN0Um91dGVyID0gcmVxdWlyZSgncmVhY3Qtcm91dGVyJyk7XG5cbnZhciBfbG9naW5QYWdlID0gcmVxdWlyZSgnLi9sb2dpblBhZ2UuY29udGFpbmVyJyk7XG5cbnZhciBfbG9naW5QYWdlMiA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX2xvZ2luUGFnZSk7XG5cbmZ1bmN0aW9uIF9pbnRlcm9wUmVxdWlyZURlZmF1bHQob2JqKSB7IHJldHVybiBvYmogJiYgb2JqLl9fZXNNb2R1bGUgPyBvYmogOiB7IGRlZmF1bHQ6IG9iaiB9OyB9XG5cbnZhciBpbmplY3RlZFJvdXRlcyA9IFtdO1xuXG52YXIgcm91dGVzID0gX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoXG4gICAgX3JlYWN0Um91dGVyLlJvdXRlLFxuICAgIG51bGwsXG4gICAgaW5qZWN0ZWRSb3V0ZXNcbik7XG5cbmZ1bmN0aW9uIHJlZ2lzdGVyZWRMb2dpblJvdXRlcygpIHtcbiAgICBpZiAoaW5qZWN0ZWRSb3V0ZXMubGVuZ3RoICE9IDApIHtcbiAgICAgICAgcmV0dXJuIHJvdXRlcztcbiAgICB9IGVsc2Uge1xuICAgICAgICByZXR1cm4gX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoX3JlYWN0Um91dGVyLlJvdXRlLCB7IHBhdGg6ICdsb2dpbicsIGNvbXBvbmVudDogX2xvZ2luUGFnZTIuZGVmYXVsdCB9KTtcbiAgICB9XG59XG5cbmZ1bmN0aW9uIGluamVjdExvZ2luUm91dGVzKHIpIHtcbiAgICBpbmplY3RlZFJvdXRlcy5wdXNoKHIpO1xufVxuIiwiJ3VzZSBzdHJpY3QnO1xuXG5PYmplY3QuZGVmaW5lUHJvcGVydHkoZXhwb3J0cywgXCJfX2VzTW9kdWxlXCIsIHtcbiAgICB2YWx1ZTogdHJ1ZVxufSk7XG5cbnZhciBfcmVnZW5lcmF0b3IgPSByZXF1aXJlKCdiYWJlbC1ydW50aW1lL3JlZ2VuZXJhdG9yJyk7XG5cbnZhciBfcmVnZW5lcmF0b3IyID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfcmVnZW5lcmF0b3IpO1xuXG5leHBvcnRzLmRlZmF1bHQgPSBsb2dpblBhZ2VTYWdhcztcblxudmFyIF9lZmZlY3RzID0gcmVxdWlyZSgncmVkdXgtc2FnYS9lZmZlY3RzJyk7XG5cbnZhciBfbG9naW5QYWdlID0gcmVxdWlyZSgnLi9sb2dpblBhZ2UuYWN0aW9ucycpO1xuXG52YXIgbG9naW5BY3Rpb25zID0gX2ludGVyb3BSZXF1aXJlV2lsZGNhcmQoX2xvZ2luUGFnZSk7XG5cbnZhciBfYXBpUmVxdWVzdEFjdGlvbnMgPSByZXF1aXJlKCcuLi8uLi8uLi9iYXNlL2FjdGlvbnMvYXBpUmVxdWVzdEFjdGlvbnMnKTtcblxudmFyIGFwaUFjdGlvbnMgPSBfaW50ZXJvcFJlcXVpcmVXaWxkY2FyZChfYXBpUmVxdWVzdEFjdGlvbnMpO1xuXG52YXIgX2FwaSA9IHJlcXVpcmUoJy4uLy4uLy4uL2Jhc2Uvc2VydmljZXMvYXBpJyk7XG5cbnZhciBfYXV0aGVudGljYXRpb24gPSByZXF1aXJlKCcuLi8uLi9zZXJ2aWNlcy9hdXRoZW50aWNhdGlvbicpO1xuXG52YXIgX3JlYWN0Um91dGVyID0gcmVxdWlyZSgncmVhY3Qtcm91dGVyJyk7XG5cbmZ1bmN0aW9uIF9pbnRlcm9wUmVxdWlyZVdpbGRjYXJkKG9iaikgeyBpZiAob2JqICYmIG9iai5fX2VzTW9kdWxlKSB7IHJldHVybiBvYmo7IH0gZWxzZSB7IHZhciBuZXdPYmogPSB7fTsgaWYgKG9iaiAhPSBudWxsKSB7IGZvciAodmFyIGtleSBpbiBvYmopIHsgaWYgKE9iamVjdC5wcm90b3R5cGUuaGFzT3duUHJvcGVydHkuY2FsbChvYmosIGtleSkpIG5ld09ialtrZXldID0gb2JqW2tleV07IH0gfSBuZXdPYmouZGVmYXVsdCA9IG9iajsgcmV0dXJuIG5ld09iajsgfSB9XG5cbmZ1bmN0aW9uIF9pbnRlcm9wUmVxdWlyZURlZmF1bHQob2JqKSB7IHJldHVybiBvYmogJiYgb2JqLl9fZXNNb2R1bGUgPyBvYmogOiB7IGRlZmF1bHQ6IG9iaiB9OyB9XG5cbnZhciBfbWFya2VkID0gLyojX19QVVJFX18qL19yZWdlbmVyYXRvcjIuZGVmYXVsdC5tYXJrKHdhdGNoTG9naW5TYWdhKSxcbiAgICBfbWFya2VkMiA9IC8qI19fUFVSRV9fKi9fcmVnZW5lcmF0b3IyLmRlZmF1bHQubWFyayhoYW5kbGVMb2dpblNhZ2EpLFxuICAgIF9tYXJrZWQzID0gLyojX19QVVJFX18qL19yZWdlbmVyYXRvcjIuZGVmYXVsdC5tYXJrKGxvZ2luUGFnZVNhZ2FzKTtcblxuLy8gd2F0Y2ggZm9yIGxvZ2luIHJlcXVlc3RzXG5mdW5jdGlvbiB3YXRjaExvZ2luU2FnYSgpIHtcbiAgICByZXR1cm4gX3JlZ2VuZXJhdG9yMi5kZWZhdWx0LndyYXAoZnVuY3Rpb24gd2F0Y2hMb2dpblNhZ2EkKF9jb250ZXh0KSB7XG4gICAgICAgIHdoaWxlICgxKSB7XG4gICAgICAgICAgICBzd2l0Y2ggKF9jb250ZXh0LnByZXYgPSBfY29udGV4dC5uZXh0KSB7XG4gICAgICAgICAgICAgICAgY2FzZSAwOlxuICAgICAgICAgICAgICAgICAgICBfY29udGV4dC5uZXh0ID0gMjtcbiAgICAgICAgICAgICAgICAgICAgcmV0dXJuICgwLCBfZWZmZWN0cy50YWtlRXZlcnkpKGxvZ2luQWN0aW9ucy5HT0NNU19MT0dJTiwgaGFuZGxlTG9naW5TYWdhKTtcblxuICAgICAgICAgICAgICAgIGNhc2UgMjpcbiAgICAgICAgICAgICAgICBjYXNlICdlbmQnOlxuICAgICAgICAgICAgICAgICAgICByZXR1cm4gX2NvbnRleHQuc3RvcCgpO1xuICAgICAgICAgICAgfVxuICAgICAgICB9XG4gICAgfSwgX21hcmtlZCwgdGhpcyk7XG59XG5cbmZ1bmN0aW9uIGhhbmRsZUxvZ2luU2FnYShhY3Rpb24pIHtcbiAgICB2YXIgX3JlZiwgcmVzLCBlcnI7XG5cbiAgICByZXR1cm4gX3JlZ2VuZXJhdG9yMi5kZWZhdWx0LndyYXAoZnVuY3Rpb24gaGFuZGxlTG9naW5TYWdhJChfY29udGV4dDIpIHtcbiAgICAgICAgd2hpbGUgKDEpIHtcbiAgICAgICAgICAgIHN3aXRjaCAoX2NvbnRleHQyLnByZXYgPSBfY29udGV4dDIubmV4dCkge1xuICAgICAgICAgICAgICAgIGNhc2UgMDpcbiAgICAgICAgICAgICAgICAgICAgX2NvbnRleHQyLm5leHQgPSAyO1xuICAgICAgICAgICAgICAgICAgICByZXR1cm4gKDAsIF9lZmZlY3RzLmNhbGwpKF9hcGkuUG9zdCwgX2FwaS5FTkRQT0lOVFMubG9naW4sIGFjdGlvbi5kYXRhKTtcblxuICAgICAgICAgICAgICAgIGNhc2UgMjpcbiAgICAgICAgICAgICAgICAgICAgX3JlZiA9IF9jb250ZXh0Mi5zZW50O1xuICAgICAgICAgICAgICAgICAgICByZXMgPSBfcmVmLnJlcztcbiAgICAgICAgICAgICAgICAgICAgZXJyID0gX3JlZi5lcnI7XG5cbiAgICAgICAgICAgICAgICAgICAgaWYgKCFyZXMpIHtcbiAgICAgICAgICAgICAgICAgICAgICAgIF9jb250ZXh0Mi5uZXh0ID0gMTU7XG4gICAgICAgICAgICAgICAgICAgICAgICBicmVhaztcbiAgICAgICAgICAgICAgICAgICAgfVxuXG4gICAgICAgICAgICAgICAgICAgIF9jb250ZXh0Mi5uZXh0ID0gODtcbiAgICAgICAgICAgICAgICAgICAgcmV0dXJuICgwLCBfZWZmZWN0cy5jYWxsKShfYXV0aGVudGljYXRpb24uYWRkVXNlclRvU2Vzc2lvbiwgcmVzLmpzb24pO1xuXG4gICAgICAgICAgICAgICAgY2FzZSA4OlxuICAgICAgICAgICAgICAgICAgICBfY29udGV4dDIubmV4dCA9IDEwO1xuICAgICAgICAgICAgICAgICAgICByZXR1cm4gKDAsIF9lZmZlY3RzLmNhbGwpKF9hdXRoZW50aWNhdGlvbi5zeW5jU2Vzc2lvblVzZXJUb1N0YXRlKTtcblxuICAgICAgICAgICAgICAgIGNhc2UgMTA6XG4gICAgICAgICAgICAgICAgICAgIF9jb250ZXh0Mi5uZXh0ID0gMTI7XG4gICAgICAgICAgICAgICAgICAgIHJldHVybiAoMCwgX2VmZmVjdHMucHV0KShhcGlBY3Rpb25zLnB1cmdlKGFjdGlvbi5rZXkpKTtcblxuICAgICAgICAgICAgICAgIGNhc2UgMTI6XG4gICAgICAgICAgICAgICAgICAgIF9yZWFjdFJvdXRlci5icm93c2VySGlzdG9yeS5wdXNoKEdPQ01TX0xPR0lOX1NVQ0NFU1NfUkVESVJFQ1QpO1xuICAgICAgICAgICAgICAgICAgICBfY29udGV4dDIubmV4dCA9IDE4O1xuICAgICAgICAgICAgICAgICAgICBicmVhaztcblxuICAgICAgICAgICAgICAgIGNhc2UgMTU6XG4gICAgICAgICAgICAgICAgICAgIGlmICghZXJyKSB7XG4gICAgICAgICAgICAgICAgICAgICAgICBfY29udGV4dDIubmV4dCA9IDE4O1xuICAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7XG4gICAgICAgICAgICAgICAgICAgIH1cblxuICAgICAgICAgICAgICAgICAgICBfY29udGV4dDIubmV4dCA9IDE4O1xuICAgICAgICAgICAgICAgICAgICByZXR1cm4gKDAsIF9lZmZlY3RzLnB1dCkoYXBpQWN0aW9ucy5mYWlsdXJlKGFjdGlvbi5rZXksIGVycikpO1xuXG4gICAgICAgICAgICAgICAgY2FzZSAxODpcbiAgICAgICAgICAgICAgICBjYXNlICdlbmQnOlxuICAgICAgICAgICAgICAgICAgICByZXR1cm4gX2NvbnRleHQyLnN0b3AoKTtcbiAgICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgIH0sIF9tYXJrZWQyLCB0aGlzKTtcbn1cblxuZnVuY3Rpb24gbG9naW5QYWdlU2FnYXMoKSB7XG4gICAgcmV0dXJuIF9yZWdlbmVyYXRvcjIuZGVmYXVsdC53cmFwKGZ1bmN0aW9uIGxvZ2luUGFnZVNhZ2FzJChfY29udGV4dDMpIHtcbiAgICAgICAgd2hpbGUgKDEpIHtcbiAgICAgICAgICAgIHN3aXRjaCAoX2NvbnRleHQzLnByZXYgPSBfY29udGV4dDMubmV4dCkge1xuICAgICAgICAgICAgICAgIGNhc2UgMDpcbiAgICAgICAgICAgICAgICAgICAgX2NvbnRleHQzLm5leHQgPSAyO1xuICAgICAgICAgICAgICAgICAgICByZXR1cm4gWygwLCBfZWZmZWN0cy5mb3JrKSh3YXRjaExvZ2luU2FnYSldO1xuXG4gICAgICAgICAgICAgICAgY2FzZSAyOlxuICAgICAgICAgICAgICAgIGNhc2UgJ2VuZCc6XG4gICAgICAgICAgICAgICAgICAgIHJldHVybiBfY29udGV4dDMuc3RvcCgpO1xuICAgICAgICAgICAgfVxuICAgICAgICB9XG4gICAgfSwgX21hcmtlZDMsIHRoaXMpO1xufVxuIiwiJ3VzZSBzdHJpY3QnO1xuXG5PYmplY3QuZGVmaW5lUHJvcGVydHkoZXhwb3J0cywgXCJfX2VzTW9kdWxlXCIsIHtcbiAgICB2YWx1ZTogdHJ1ZVxufSk7XG5leHBvcnRzLmdldE1vZHVsZSA9IGdldE1vZHVsZTtcbmV4cG9ydHMuaW5qZWN0TW9kdWxlID0gaW5qZWN0TW9kdWxlO1xuXG52YXIgX3NhZ2FzID0gcmVxdWlyZSgnLi9jb25maWcvc2FnYXMnKTtcblxudmFyIF9yb3V0ZXMgPSByZXF1aXJlKCcuL2NvbmZpZy9yb3V0ZXIvcm91dGVzJyk7XG5cbnZhciBfcmVkdWNlcnMgPSByZXF1aXJlKCcuL2NvbmZpZy9yZWR1Y2Vycy9yZWR1Y2VycycpO1xuXG52YXIgX2xvZ2luUGFnZSA9IHJlcXVpcmUoJy4vY29udGFpbmVycy9sb2dpblBhZ2UvbG9naW5QYWdlLnJvdXRlcycpO1xuXG5mdW5jdGlvbiBnZXRNb2R1bGUoKSB7XG4gICAgcmV0dXJuIHtcbiAgICAgICAgbmFtZTogXCJnb0NNUyBBZG1pblwiLFxuICAgICAgICBzYWdhczogX3NhZ2FzLnJvb3RTYWdhLFxuICAgICAgICByb3V0ZXM6ICgwLCBfcm91dGVzLnJlZ2lzdGVyZWRSb3V0ZXMpKCksXG4gICAgICAgIHJlZHVjZXJzOiAoMCwgX3JlZHVjZXJzLnJlZ2lzdGVyZWRSZWR1Y2VycykoKVxuICAgIH07XG59O1xuXG5mdW5jdGlvbiBpbmplY3RNb2R1bGUoYSkge1xuICAgICgwLCBfc2FnYXMuaW5qZWN0U2FnYXMpKGEuc2FnYXMpO1xuICAgICgwLCBfcm91dGVzLmluamVjdEF1dGhlZFJvdXRlcykoYS5yb3V0ZXMpO1xuICAgICgwLCBfcmVkdWNlcnMuaW5qZWN0UmVkdWNlcnMpKGEucmVkdWNlcnMpO1xuXG4gICAgLy8gaWYgbm90IG51bGwgaW5qZWN0IGN1c3RvbSBsb2dpbiByb3V0ZVxuICAgIGlmIChhLmxvZ2luUm91dGVzICE9IFwiXCIgJiYgYS5sb2dpblJvdXRlcyAhPSBudWxsICYmIGEubG9naW5Sb3V0ZXMgIT0gW10gJiYgYS5sb2dpblJvdXRlcyAhPSB7fSkge1xuICAgICAgICAoMCwgX2xvZ2luUGFnZS5pbmplY3RMb2dpblJvdXRlcykoYS5sb2dpblJvdXRlcyk7XG4gICAgfVxufVxuIiwiJ3VzZSBzdHJpY3QnO1xuXG5PYmplY3QuZGVmaW5lUHJvcGVydHkoZXhwb3J0cywgXCJfX2VzTW9kdWxlXCIsIHtcbiAgICB2YWx1ZTogdHJ1ZVxufSk7XG5leHBvcnRzLlVTRVJfREFUQV9TVE9SQUdFX0tFWSA9IGV4cG9ydHMuREVWSUNFX1RPS0VOX0hFQURFUiA9IGV4cG9ydHMuQVVUSF9UT0tFTl9IRUFERVIgPSB1bmRlZmluZWQ7XG5cbnZhciBfc3RyaW5naWZ5ID0gcmVxdWlyZSgnYmFiZWwtcnVudGltZS9jb3JlLWpzL2pzb24vc3RyaW5naWZ5Jyk7XG5cbnZhciBfc3RyaW5naWZ5MiA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX3N0cmluZ2lmeSk7XG5cbmV4cG9ydHMuc3luY1Nlc3Npb25Vc2VyVG9TdGF0ZSA9IHN5bmNTZXNzaW9uVXNlclRvU3RhdGU7XG5leHBvcnRzLmFkZFVzZXJUb1Nlc3Npb24gPSBhZGRVc2VyVG9TZXNzaW9uO1xuZXhwb3J0cy5nZXRVc2VyRnJvbVNlc3Npb24gPSBnZXRVc2VyRnJvbVNlc3Npb247XG5leHBvcnRzLnJlbW92ZVVzZXJGcm9tU2Vzc2lvbiA9IHJlbW92ZVVzZXJGcm9tU2Vzc2lvbjtcbmV4cG9ydHMubG9nb3V0ID0gbG9nb3V0O1xuZXhwb3J0cy5yZXF1aXJlQXV0aFVzZXIgPSByZXF1aXJlQXV0aFVzZXI7XG5cbnZhciBfand0RGVjb2RlID0gcmVxdWlyZSgnand0LWRlY29kZScpO1xuXG52YXIgX2p3dERlY29kZTIgPSBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KF9qd3REZWNvZGUpO1xuXG52YXIgX2F1dGhlbnRpY2F0aW9uQWN0aW9ucyA9IHJlcXVpcmUoJy4uL2NvbmZpZy9hY3Rpb25zL2F1dGhlbnRpY2F0aW9uQWN0aW9ucycpO1xuXG52YXIgX2luaXQgPSByZXF1aXJlKCcuLi8uLi9iYXNlL2luaXQnKTtcblxuZnVuY3Rpb24gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChvYmopIHsgcmV0dXJuIG9iaiAmJiBvYmouX19lc01vZHVsZSA/IG9iaiA6IHsgZGVmYXVsdDogb2JqIH07IH1cblxudmFyIEFVVEhfVE9LRU5fSEVBREVSID0gZXhwb3J0cy5BVVRIX1RPS0VOX0hFQURFUiA9ICdYLUF1dGgtVG9rZW4nO1xudmFyIERFVklDRV9UT0tFTl9IRUFERVIgPSBleHBvcnRzLkRFVklDRV9UT0tFTl9IRUFERVIgPSAnWC1EZXZpY2UtVG9rZW4nO1xudmFyIFVTRVJfREFUQV9TVE9SQUdFX0tFWSA9IGV4cG9ydHMuVVNFUl9EQVRBX1NUT1JBR0VfS0VZID0gJ1VTRVJfREFUQV9TVE9SQUdFX0tFWSc7XG5cbmZ1bmN0aW9uIHN5bmNTZXNzaW9uVXNlclRvU3RhdGUoKSB7XG4gICAgdmFyIHNlc3Npb25Vc2VyID0gZ2V0VXNlckZyb21TZXNzaW9uKCk7XG4gICAgKDAsIF9pbml0LmdldFN0b3JlKSgpLmRpc3BhdGNoKCgwLCBfYXV0aGVudGljYXRpb25BY3Rpb25zLnNhdmVVc2VyVG9TdGF0ZSkoc2Vzc2lvblVzZXIpKTtcbn1cblxuZnVuY3Rpb24gYWRkVXNlclRvU2Vzc2lvbih1c2VyRGF0YSkge1xuICAgIHNlc3Npb25TdG9yYWdlLnNldEl0ZW0oVVNFUl9EQVRBX1NUT1JBR0VfS0VZLCAoMCwgX3N0cmluZ2lmeTIuZGVmYXVsdCkodXNlckRhdGEpKTtcbn1cblxuZnVuY3Rpb24gZ2V0VXNlckZyb21TZXNzaW9uKCkge1xuICAgIHJldHVybiBKU09OLnBhcnNlKHNlc3Npb25TdG9yYWdlLmdldEl0ZW0oVVNFUl9EQVRBX1NUT1JBR0VfS0VZKSk7XG59XG5cbmZ1bmN0aW9uIHJlbW92ZVVzZXJGcm9tU2Vzc2lvbigpIHtcbiAgICBzZXNzaW9uU3RvcmFnZS5yZW1vdmVJdGVtKEFVVEhfVE9LRU5fSEVBREVSKTtcbn1cblxuZnVuY3Rpb24gbG9nb3V0KCkge1xuICAgICgwLCBfaW5pdC5nZXRTdG9yZSkoKS5kaXNwYXRjaCgoMCwgX2F1dGhlbnRpY2F0aW9uQWN0aW9ucy5yZW1vdmVVc2VyRnJvbVN0YXRlKSgpKTtcbiAgICByZW1vdmVVc2VyRnJvbVNlc3Npb24oKTtcbn1cblxuZnVuY3Rpb24gcmVxdWlyZUF1dGhVc2VyKG5leHRTdGF0ZSwgcmVwbGFjZSkge1xuICAgIC8vIGxvb2sgZm9yIHRva2VuIGluIHNlc3Npb25cbiAgICB2YXIgdG9rZW4gPSBzZXNzaW9uU3RvcmFnZS5nZXRJdGVtKEFVVEhfVE9LRU5fSEVBREVSKTtcblxuICAgIC8vIHZlcmlmeSB0b2tlbiBleGlzdHNcbiAgICBpZiAoIXRva2VuKSB7XG4gICAgICAgIGxvZ291dCgpO1xuICAgICAgICByZXBsYWNlKHtcbiAgICAgICAgICAgIHBhdGhuYW1lOiAnL2xvZ2luJ1xuICAgICAgICB9KTtcbiAgICAgICAgcmV0dXJuO1xuICAgIH1cblxuICAgIC8vIHZlcmlmeSB0b2tlbiBoYXMgbm90IGV4cGlyZWRcbiAgICB2YXIgand0RGF0YSA9ICgwLCBfand0RGVjb2RlMi5kZWZhdWx0KSh0b2tlbik7XG4gICAgdmFyIHRpbWVEaWYgPSBqd3REYXRhLmV4cCAtIG5ldyBEYXRlKCkuZ2V0VGltZSgpO1xuICAgIGlmICh0aW1lRGlmIDw9IDApIHtcbiAgICAgICAgbG9nb3V0KCk7XG4gICAgICAgIHJlcGxhY2Uoe1xuICAgICAgICAgICAgcGF0aG5hbWU6ICcvbG9naW4nXG4gICAgICAgIH0pO1xuICAgICAgICByZXR1cm47XG4gICAgfVxuXG4gICAgLy8gdmVyaWZ5IHRva2VuIG1hdGNoZXMgdXNlcnNcbiAgICB2YXIgYXV0aFVzZXIgPSBnZXRVc2VyRnJvbVNlc3Npb24oKTtcbiAgICBpZiAoand0RGF0YS51c2VySWQgIT09IGF1dGhVc2VyLmlkKSB7XG4gICAgICAgIGxvZ291dCgpO1xuICAgICAgICByZXBsYWNlKHtcbiAgICAgICAgICAgIHBhdGhuYW1lOiAnL2xvZ2luJ1xuICAgICAgICB9KTtcbiAgICB9XG5cbiAgICBzeW5jU2Vzc2lvblVzZXJUb1N0YXRlKCk7XG59XG4iLCIndXNlIHN0cmljdCc7XG5cbk9iamVjdC5kZWZpbmVQcm9wZXJ0eShleHBvcnRzLCBcIl9fZXNNb2R1bGVcIiwge1xuICAgIHZhbHVlOiB0cnVlXG59KTtcblxudmFyIF9nZXRQcm90b3R5cGVPZiA9IHJlcXVpcmUoJ2JhYmVsLXJ1bnRpbWUvY29yZS1qcy9vYmplY3QvZ2V0LXByb3RvdHlwZS1vZicpO1xuXG52YXIgX2dldFByb3RvdHlwZU9mMiA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX2dldFByb3RvdHlwZU9mKTtcblxudmFyIF9jbGFzc0NhbGxDaGVjazIgPSByZXF1aXJlKCdiYWJlbC1ydW50aW1lL2hlbHBlcnMvY2xhc3NDYWxsQ2hlY2snKTtcblxudmFyIF9jbGFzc0NhbGxDaGVjazMgPSBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KF9jbGFzc0NhbGxDaGVjazIpO1xuXG52YXIgX2NyZWF0ZUNsYXNzMiA9IHJlcXVpcmUoJ2JhYmVsLXJ1bnRpbWUvaGVscGVycy9jcmVhdGVDbGFzcycpO1xuXG52YXIgX2NyZWF0ZUNsYXNzMyA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX2NyZWF0ZUNsYXNzMik7XG5cbnZhciBfcG9zc2libGVDb25zdHJ1Y3RvclJldHVybjIgPSByZXF1aXJlKCdiYWJlbC1ydW50aW1lL2hlbHBlcnMvcG9zc2libGVDb25zdHJ1Y3RvclJldHVybicpO1xuXG52YXIgX3Bvc3NpYmxlQ29uc3RydWN0b3JSZXR1cm4zID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfcG9zc2libGVDb25zdHJ1Y3RvclJldHVybjIpO1xuXG52YXIgX2luaGVyaXRzMiA9IHJlcXVpcmUoJ2JhYmVsLXJ1bnRpbWUvaGVscGVycy9pbmhlcml0cycpO1xuXG52YXIgX2luaGVyaXRzMyA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX2luaGVyaXRzMik7XG5cbnZhciBfcmVhY3QgPSByZXF1aXJlKCdyZWFjdCcpO1xuXG52YXIgX3JlYWN0MiA9IF9pbnRlcm9wUmVxdWlyZURlZmF1bHQoX3JlYWN0KTtcblxudmFyIF9yZWFjdFJlZHV4ID0gcmVxdWlyZSgncmVhY3QtcmVkdXgnKTtcblxudmFyIF9NYWluTWVudSA9IHJlcXVpcmUoJy4uL2NvbnRhaW5lcnMvYWRtaW5QYWdlcy9jb21wb25lbnRzL21haW5NZW51L01haW5NZW51Jyk7XG5cbnZhciBfTWFpbk1lbnUyID0gX2ludGVyb3BSZXF1aXJlRGVmYXVsdChfTWFpbk1lbnUpO1xuXG5mdW5jdGlvbiBfaW50ZXJvcFJlcXVpcmVEZWZhdWx0KG9iaikgeyByZXR1cm4gb2JqICYmIG9iai5fX2VzTW9kdWxlID8gb2JqIDogeyBkZWZhdWx0OiBvYmogfTsgfVxuXG52YXIgQWRtaW5UZW1wbGF0ZSA9IGZ1bmN0aW9uIChfUmVhY3QkQ29tcG9uZW50KSB7XG4gICAgKDAsIF9pbmhlcml0czMuZGVmYXVsdCkoQWRtaW5UZW1wbGF0ZSwgX1JlYWN0JENvbXBvbmVudCk7XG5cbiAgICBmdW5jdGlvbiBBZG1pblRlbXBsYXRlKHByb3BzKSB7XG4gICAgICAgICgwLCBfY2xhc3NDYWxsQ2hlY2szLmRlZmF1bHQpKHRoaXMsIEFkbWluVGVtcGxhdGUpO1xuICAgICAgICByZXR1cm4gKDAsIF9wb3NzaWJsZUNvbnN0cnVjdG9yUmV0dXJuMy5kZWZhdWx0KSh0aGlzLCAoQWRtaW5UZW1wbGF0ZS5fX3Byb3RvX18gfHwgKDAsIF9nZXRQcm90b3R5cGVPZjIuZGVmYXVsdCkoQWRtaW5UZW1wbGF0ZSkpLmNhbGwodGhpcywgcHJvcHMpKTtcbiAgICB9XG5cbiAgICAoMCwgX2NyZWF0ZUNsYXNzMy5kZWZhdWx0KShBZG1pblRlbXBsYXRlLCBbe1xuICAgICAgICBrZXk6ICdjb21wb25lbnREaWRNb3VudCcsXG4gICAgICAgIHZhbHVlOiBmdW5jdGlvbiBjb21wb25lbnREaWRNb3VudCgpIHt9XG4gICAgfSwge1xuICAgICAgICBrZXk6ICdyZW5kZXInLFxuICAgICAgICB2YWx1ZTogZnVuY3Rpb24gcmVuZGVyKCkge1xuICAgICAgICAgICAgcmV0dXJuIF9yZWFjdDIuZGVmYXVsdC5jcmVhdGVFbGVtZW50KFxuICAgICAgICAgICAgICAgICdkaXYnLFxuICAgICAgICAgICAgICAgIHsgY2xhc3NOYW1lOiAnZy1hJyB9LFxuICAgICAgICAgICAgICAgIF9yZWFjdDIuZGVmYXVsdC5jcmVhdGVFbGVtZW50KF9NYWluTWVudTIuZGVmYXVsdCwgbnVsbCksXG4gICAgICAgICAgICAgICAgX3JlYWN0Mi5kZWZhdWx0LmNyZWF0ZUVsZW1lbnQoXG4gICAgICAgICAgICAgICAgICAgICdkaXYnLFxuICAgICAgICAgICAgICAgICAgICB7IGlkOiAnZy1hLW1haW4tY29udGFpbmVyJyB9LFxuICAgICAgICAgICAgICAgICAgICB0aGlzLnByb3BzLmNoaWxkcmVuXG4gICAgICAgICAgICAgICAgKVxuICAgICAgICAgICAgKTtcbiAgICAgICAgfVxuICAgIH1dKTtcbiAgICByZXR1cm4gQWRtaW5UZW1wbGF0ZTtcbn0oX3JlYWN0Mi5kZWZhdWx0LkNvbXBvbmVudCk7XG5cbkFkbWluVGVtcGxhdGUucHJvcFR5cGVzID0ge1xuICAgIGNoaWxkcmVuOiBfcmVhY3QuUHJvcFR5cGVzLm5vZGVcbn07XG5cbmZ1bmN0aW9uIG1hcFN0YXRlVG9Qcm9wcyhzdGF0ZSwgb3duUHJvcHMpIHtcbiAgICByZXR1cm4ge307XG59XG5cbmV4cG9ydHMuZGVmYXVsdCA9ICgwLCBfcmVhY3RSZWR1eC5jb25uZWN0KShtYXBTdGF0ZVRvUHJvcHMsIHt9KShBZG1pblRlbXBsYXRlKTtcbiJdfQ==

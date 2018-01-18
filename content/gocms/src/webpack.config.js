@@ -3,9 +3,9 @@ const PROD = JSON.parse(process.env.PROD_ENV || '0');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const path = require('path');
-const glob = require('glob')
+const glob = require('glob');
 
-const BUILD_DIR = path.resolve(__dirname, 'TESTBUILD/');
+const BUILD_DIR = path.resolve(__dirname, '../');
 const APP_DIR = path.resolve(__dirname, 'base/');
 const ADMIN_DIR = path.resolve(__dirname, 'admin/');
 
@@ -20,7 +20,11 @@ const config = {
     output: {
         path: BUILD_DIR,
         filename: '[name].js',
-        publicPath: "/fonts/"
+        // filename: 'gocms.[name].js',
+        publicPath: "/fonts/",
+        // library: ["gocms", "[name]"],
+        libraryTarget: 'umd',
+        umdNamedDefine: true
     },
     module: {
         loaders: [

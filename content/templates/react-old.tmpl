@@ -127,6 +127,23 @@
 <script src="/gocms/vendor.js"></script>
 <script src="/gocms/base.js"></script>
 <link rel="stylesheet" href="/gocms/base.css">
-
-
-{{/*{{template "theme_footer.tmpl" .}}*/}}
+{{ if .Admin }}
+<link rel="stylesheet" href="/gocms/admin.css">
+{{ end }}
+{{ range $script := .PluginScripts }}
+<script src="{{ $script }}"></script>
+{{ end }}
+{{ range $style:= .PluginStyles }}
+<link rel="stylesheet" href="{{ $style }}">
+{{ end }}
+{{ if .Admin }}
+<script src="/gocms/admin.js"></script>
+{{ end }}
+{{template "theme_footer.tmpl" .}}
+<script>
+    var ASSET_BASE = {{ .AssetBase }};
+    var GOCMS_LOGIN_TITLE = {{ .LoginTitle }};
+    var GOCMS_LOGIN_SUCCESS_REDIRECT = {{ .LoginSuccessRedirect }};
+    var _app = require('gocms/initialize');
+    _app.run({{ .Admin }}, {{ .ActivePlugins }}, {{ .ActiveAdminPlugins }}, {{ .Theme }});
+</script>

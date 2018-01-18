@@ -4,7 +4,7 @@ import BaseTemplate from '../base_tmpl'
 
 let injectedRoutes = [];
 let routes =
-    <Route component={BaseTemplate}>
+    <Route path="/" component={BaseTemplate}>
             {injectedRoutes}
     </Route>;
 
