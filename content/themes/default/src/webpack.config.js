@@ -10,35 +10,17 @@ const THEME_DIR = path.resolve(__dirname, './theme');
 
 const config = {
     entry: {
-        theme: [THEME_DIR + "/config/init.js"]
+        theme: THEME_DIR + "/config/init.js"
     },
-    externals: [
-        'babel-polyfill',
-        'react',
-        'react-dom',
-        'redux',
-        'react-addons-css-transition-group',
-        'react-form',
-        'react-redux',
-        'react-router',
-        'react-router-redux',
-        'react-transition-group',
-        'redux-form',
-        'redux-logger',
-        'redux-saga',
-        'redux-saga/effects',
-        'es6-promise',
-        'formsy-react',
-        'isomorphic-fetch',
-        'jwt-decode'
-    ],
+    devtool: PROD ? false: "inline-sourcemap",
     output: {
         path: BUILD_DIR,
+        pathinfo: true,
         filename: '[name].js',
         publicPath: "/fonts/",
-        library: "theme",
-        libraryTarget: 'umd',
-        umdNamedDefine: true
+        // library: "theme",
+        // libraryTarget: 'umd',
+        // umdNamedDefine: true
 
     },
     module: {
@@ -81,11 +63,17 @@ const config = {
         new ExtractTextPlugin('[name].css', {
             allChunks: true
         }),
+        new webpack.NamedModulesPlugin(),
         // this assumes your vendor imports exist in the node_modules directory
         new webpack.optimize.CommonsChunkPlugin({
-            name: 'theme_vendor',
+            name: 'vendor',
+            // async: true,
             minChunks: module => module.context && module.context.indexOf('node_modules') !== -1
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "manifest",
         })
+
     ]
 };
 

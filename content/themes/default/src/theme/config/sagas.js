@@ -1,7 +1,7 @@
-import {fork, takeEvery, call, put} from 'redux-saga/effects';
+// import {fork, takeEvery, call, put} from 'redux-saga/effects';
 // import * as actions from './actions/page';
 // import {Get} from '../services/api';
-import { browserHistory } from 'react-router'
+// import { browserHistory } from 'react-router'
 
 
 // // fetch page content data based on uri from api

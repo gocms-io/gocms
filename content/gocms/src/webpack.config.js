@@ -8,19 +8,18 @@ const BUILD_DIR = path.resolve(__dirname, '../');
 const APP_DIR = path.resolve(__dirname, 'base/');
 
 const config = {
-    devtool: 'source-map',
+    devtool: PROD ? false: "inline-sourcemap",
     entry: {
         base: APP_DIR + "/init.js",
     },
-
     output: {
         path: BUILD_DIR,
         pathinfo: true,
         filename: '[name].js',
         publicPath: "/fonts/",
-        library: "gocms",
-        libraryTarget: 'umd',
-        umdNamedDefine: true
+        // library: "gocms",
+        // libraryTarget: 'umd',
+        // umdNamedDefine: true
     },
     module: {
         loaders: [
@@ -61,10 +60,15 @@ const config = {
         new ExtractTextPlugin('[name].css', {
             allChunks: true
         }),
+        new webpack.NamedModulesPlugin(),
         // this assumes your vendor imports exist in the node_modules directory
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
+            // async: true,
             minChunks: module => module.context && module.context.indexOf('node_modules') !== -1
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "manifest",
         })
 
     ]

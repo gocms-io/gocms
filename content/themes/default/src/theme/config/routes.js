@@ -1,5 +1,5 @@
 import React from 'react'
-import {Route, Redirect} from 'react-router'
+import {Route} from 'react-router'
 import DefaultTemplate from '../templates/default_tmpl'
 import HomePageRouter from '../containers/homePage/homePage.routes'
 import ClassroomPageRouter from '../containers/classroomPage/classroomPage.routes'
@@ -17,17 +17,17 @@ export default (
     <Route component={DefaultTemplate}>
 
         <Route path="/">
-            {/*{HomePageRouter}*/}
+            {HomePageRouter}
         </Route>
-        {/*{ClassroomPageRouter}*/}
-        {/*{AboutPageRouter}*/}
-        {/*{VideoPageRouter}*/}
-        {/*{ParentResourceRouter}*/}
-        {/*{ContactRouter}*/}
-        {/*{TuitionRouter}*/}
-        {/*{FieldTripRouter}*/}
-        {/*{MonthlyThemesRouter}*/}
-        {/*{MenuRouter}*/}
-        {/*{SampleLessonRouter}*/}
+        {ClassroomPageRouter}
+        {AboutPageRouter}
+        {VideoPageRouter}
+        {ParentResourceRouter}
+        {ContactRouter}
+        {TuitionRouter}
+        {FieldTripRouter}
+        {MonthlyThemesRouter}
+        {MenuRouter}
+        {SampleLessonRouter}
     </Route>
 )
