@@ -13,21 +13,24 @@ const config = {
         theme: [THEME_DIR + "/config/init.js"]
     },
     externals: [
-        // babel
-        /^babel-runtime/,
-        /^lodash/,
-        /^process/,
-        // react
-        {react: 'umd react'},
+        'babel-polyfill',
+        'react',
         'react-dom',
+        'redux',
+        'react-addons-css-transition-group',
+        'react-form',
         'react-redux',
-         'react-router',
-        'react-addons-css-transition-group', 'redux-saga/effects',
-        /^react-transition-group/,
-        // gocms
-        // /^gocms/,
-        // plugins
-        // /^contact-form.plugins.gocms.io/,
+        'react-router',
+        'react-router-redux',
+        'react-transition-group',
+        'redux-form',
+        'redux-logger',
+        'redux-saga',
+        'redux-saga/effects',
+        'es6-promise',
+        'formsy-react',
+        'isomorphic-fetch',
+        'jwt-decode'
     ],
     output: {
         path: BUILD_DIR,

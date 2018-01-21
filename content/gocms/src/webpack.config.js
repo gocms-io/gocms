@@ -10,7 +10,7 @@ const APP_DIR = path.resolve(__dirname, 'base/');
 const config = {
     devtool: 'source-map',
     entry: {
-        base: ["babel-polyfill", APP_DIR+"/init.js"]
+        base: APP_DIR + "/init.js",
     },
 
     output: {
@@ -66,6 +66,7 @@ const config = {
             name: 'vendor',
             minChunks: module => module.context && module.context.indexOf('node_modules') !== -1
         })
+
     ]
 };
 
