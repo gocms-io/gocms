@@ -1,0 +1,127 @@
+@import './components/index';
+
+.contact-page-title-wrapper {
+  margin-top: 36px;
+}
+
+.contact-page-title {
+  font-family: Archer, sans-serif;
+  font-size: 32px;
+  line-height: 32px;
+  font-weight: bold;
+  color: $gray;
+}
+
+.contact-page-col-left {
+  float: left;
+  width: 450px;
+}
+
+.contact-page-col-right {
+  float: right;
+  width: 451px;
+}
+
+.contact-page-content-title {
+  margin-top: 24px;
+  font-family: Archer, sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 18px;
+  color: $gray;
+}
+
+.contact-page-content {
+  font-family: Lato, sans-serif;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  color: $gray;
+}
+
+.contact-form-message-wrapper {
+  margin-top: 27px;
+}
+
+.contact-page-contact-from {
+  margin-top: 20px;
+
+  input, input:focus {
+    width: 100%;
+  }
+
+  textarea, textarea:focus {
+    width: 100%;
+    height: 152px;
+    font-family: Lato, sans-serif;
+    font-size: 12px;
+    line-height: 13px;
+    color: $gray;
+    padding: 5px;
+  }
+
+  .form .btn {
+    margin-top: 14px;
+    width: 227px;
+    float: right;
+  }
+
+  &-mobile {
+    margin-top: 0;
+
+    input[type=checkbox]:focus {
+      width: inherit;
+      position: relative;
+      left: 2px;
+      top: 2px;
+    }
+
+    textarea, textarea:focus {
+      font-size: 14px;
+      line-height: 16px;
+    }
+
+    .form .btn {
+      margin-top: 14px;
+      width: 100%;
+    }
+  }
+}
+
+.contact-form-age-range {
+  margin-top: 14px;
+}
+
+.contact-page-contact-info {
+  dl {
+    display: inline-grid;
+    margin: 32px 40px 0 0;
+  }
+  dt {
+    margin: 0;
+    font-family: Archer, sans-serif;
+    font-size: 18px;
+    line-height: 18px;
+    color: $gray;
+    font-weight: bold;
+  }
+  dd {
+    margin: 10px 0 26px 0;
+    font-family: Lato, sans-serif;
+    font-size: 14px;
+    line-height: 14px;
+    color: $gray;
+    font-weight: normal;
+  }
+}
+
+.contact-page-map-wrapper {
+  margin-top: 8px;
+}
+
+.contact-page-job-title-wrapper {
+  margin-top: 80px;
+}
+.contact-us-page-contact-form-age-range-container {
+  padding-left: 2px;
+}

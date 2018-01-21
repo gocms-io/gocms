@@ -1,0 +1,55 @@
+.menu-page-calendars-wrapper {
+  h3 {
+    font-family: Archer, sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    color: $gray;
+    margin-top: 30px;
+    line-height: 18px;
+  }
+}
+
+.menu-page-top-wrapper {
+
+  img {
+    float: right;
+  }
+
+  hr {
+    margin-top: 49px;
+  }
+}
+
+.menu-page-top-content {
+  float: left;
+  width: 448px;
+
+  p {
+    font-size: 12px;
+    line-height: 19px;
+    font-family: Lato, sans-serif;
+    font-weight: normal;
+    color: $gray;
+    margin-bottom: 40px;
+  }
+
+  &-mobile {
+    width: 100%;
+
+  }
+
+}
+
+a#menu-page-download-btn-mobile {
+  margin-top: 20px;
+  width: 100%;
+}
+
+img.menu-page-food-pic-mobile {
+  width: 100%;
+  height: auto;
+}
+
+#menu-page-download-btn {
+  padding: 13px 40px;
+}

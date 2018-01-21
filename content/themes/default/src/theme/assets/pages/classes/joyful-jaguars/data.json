@@ -1,0 +1,94 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "heightMobile": "150px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/joyful-jaguars/bslf_classroom_hero_jaguars.jpg"
+    }
+  },
+  "classroomDetails": {
+    "calloutBox": {
+      "cameraFeed": "http://old.bigstepslittlefeet.org/one/",
+      "icon": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/icons/jaguars.jpg",
+        "alt": "joyful jaguars icon"
+      },
+      "title": "Joyful Jaguars",
+      "subTitle": "43 months to 48 months",
+      "content": "Our Joyful Jaguars program has 15 children ranging from approximately 43 months to approximately 48 months old. We have two consistent and nurturing staff caring for our preschool children daily."
+    },
+    "mainContent": {
+      "title": "Program Details",
+      "content": "During their time in the Joyful Jaguars classroom, each child is given the opportunity to learn in a preschool rich environment. This experience consists of a morning circle time with calendar and our weekly theme, learning area activities centered around art, math, and science skills with a more pronounced focus on Zoophonics. Children will now be continuing to grow their handwriting skills through Handwriting Without Tears, supporting each child in aiming for Kindergarten Readiness. Our Joyful Jaguars classroom is taking one nap a day, playing outdoors twice a day, and enjoying our nutritional menu.",
+      "list": [
+        "Adult to child ratio: 1:10",
+        "Personal cot and storage area provided",
+        "Parents provide an extra set of clothes and a cot sheet",
+        "Center provides wipes",
+        "Comfortable shoes are required",
+        "Secure live video feed",
+        "Special art and various age development projects",
+        "Bi-Weekly Bible stories and prayers before each meal",
+        "Zoophonics and Handwriting Without Tears",
+        "Nutritious breakfast, lunch, and snack provided",
+        "Parent/Teacher Conferences twice a year"
+      ]
+    }
+  },
+  "boxCalloutSection": {
+    "title": "Meet the Joyful Jaguars Teachers",
+    "boxes": [
+      {
+        "title": "Ms. Nicole - Lead Teacher",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/joyful-jaguars/Nicole.jpg",
+          "alt": "Ms. Nicole"
+        },
+        "text": "I attended GRCC and earned my Associates Degree in Early Childhood Development. I have one brother and two dogs named Champ and Casper. I enjoy sports, being outside, and my favorite time of year is Summer because I love spending time fishing on the lake."
+      },
+      {
+        "title": "Ms. Athena",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/joyful-jaguars/ms_athena.jpg",
+          "alt": "Ms. Athena"
+        },
+        "text": "I attend GRCC for Early Childhood Education but I also enjoy business classes. I grew up in Lowell and am the middle child of 3 with an older brother and a younger sister. I am huge on the importance of family. I enjoy cooking, water activities, and the occasional spa day. My favorite time of year is Fall."
+      }
+    ]
+  },
+  "gallery": {
+    "title": "Classroom gallery",
+    "images": [
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/joyful-jaguars/jaguars_01.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/joyful-jaguars/jaguars_01.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/joyful-jaguars/jaguars_02.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/joyful-jaguars/jaguars_02.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/joyful-jaguars/jaguars_03.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/joyful-jaguars/jaguars_03.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/joyful-jaguars/jaguars_04.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/joyful-jaguars/jaguars_04.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/joyful-jaguars/jaguars_05.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/joyful-jaguars/jaguars_05.jpg",
+        "thumbnailAlt": "thumb alt"
+      }
+    ]
+  }
+}

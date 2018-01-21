@@ -1,0 +1,69 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/sample-lesson-plan/bslf_classroom_hero_lessonplan.jpg"
+    }
+  },
+  "pageTitle": "Sample Lesson Plan",
+  "plans": [
+    {
+      "title": "Friendly Frogs Lesson Plans",
+      "lessonDetails": [
+        {
+          "title": "Week Of:",
+          "subTitle": "March 6-10, 2017"
+        },
+        {
+          "title": "Teacher:",
+          "subTitle": "Ms. Kim"
+        },
+        {
+          "title": "Theme",
+          "subTitle": "Space"
+        }
+      ],
+      "lessons": [
+        ["","Monday","Tuesday","Wednesday","Thursday","Friday"],
+        ["Morning Circle 8:30-8:45","Book: Chicken in Space","Book: The Planets","Book: Moon Dreams","Book: Green Wilma: Frog in Space","Book: Astronaut Handbook"],
+        ["Number Activities 8:45-9:00","Rocket Counting", "Counting Stars", "I Have… Who Has… Numbers", "Star Number","Number 1-20 Recognition"],
+        ["Zoo Phonics 9:00-9:15","Word Family","Word Family Sounding and Building","Word Family Relay Race","I Have… Who Has….Word Family Words","Word Family Review"],
+        ["Learning Centers 9:15-10:15","- iPads/Texture Table - Writing -op Word Family - Space Color By Number - Monster Trucks","- iPads/Texture Table - op Word Family Worksheet - Space Tracing Numbers - Magnatiles","- iPads/Texture Table - Space Mini Book - Space Game - Dramatic Play Area","- iPads/Texture Table - Word Family House - Outer Space Number Countdown - Dramatic Play Area","Astronaut Training and Moon Snack"],
+        ["Art 10:15-10:45","Marble Painting Planets","Name Rockets","Moon Paintings","Astronaut Craft","Planet Headbands"],
+        ["Journals 12:30-12:45","Draw the Moon","Draw the Sun","Draw the Earth","Draw 5 Stars","Free Journal"],
+        ["Afternoon Circle 3:50-4:00","Book: Space Adventure","Book: Exploring Space","Book: Space Dog","Book: Otter in Space","Book: Nuts in Space"],
+        ["Bible Story and Crafts 4:00-4:30","Read and Discuss: The Brave Queen","Queen Crowns","Read and Discuss: Ruth and Naomi","Basket with Wheat","Free Art"],
+        ["Group Activity 4:30-5:00","Musical Chairs","Free Play","Ms. Darlene Story","Hide the Shoe Game","Free Play"]
+
+      ],
+      "bibleStory": "Bible Story of the Week :: The Brave Queen & Ruth and Naomi"
+    },
+    {
+      "title": "Helpful Hippos Lesson Plan",
+      "lessonDetails": [
+        {
+          "title": "Week Of:",
+          "subTitle": "April 17-21, 2017"
+        },
+        {
+          "title": "Teacher:",
+          "subTitle": "Ms. Heather C."
+        },
+        {
+          "title": "Theme",
+          "subTitle": "Weather"
+        }
+      ],
+      "lessons": [
+        ["","Monday","Tuesday","Wednesday","Thursday","Friday"],
+        ["Morning Circle","Book: Storms - Color/ Counting Activity: Color bucket / Counting w/fingers - Songs / Finger plays: rain rain go away, one pick from the kids","Book: Sun - Color / Counting Activity: Color bucket / Counting w/objects - Songs / Finger plays: Oh Mr. sun, one pick from the kids","Book: Water - Color/ Counting Activity: Color bucket/ Counting w/fingers - Songs/ Finger plays: old man rainy song, one pick from the kids","Book: Wind and weather - Color/ Counting Activity: Color bucket/ Counting song - Songs/ Finger plays: Mr. sun, one pick from the kids","Book: Storms - Color / Counting Activity: Color bucket / Counting w/fingers - Songs/ Finger plays: rain rain go away, one pick from the kids"],
+        ["Art/Learning Centers","Art: Make a Cloud with Cotton Balls - Learning Centers: Texture Table", "Art: Paper place unbrella - Learning Centers: Texture Table", "Art: Make a rain drop with ripped blue paper - Learning Centers: Texture Table", "Art: Puffy Paint Cloud - Learning Centers: Texture Table","Art: Finger paint sun - Learning Centers: Texture Table"],
+        ["Carpet Activity","Cars with ramps","Coloring matching","Waffle blocks","Songs and bubbles","Free choice"],
+        ["Large motor activity","Balls with music","Dance party","Ants march","Bubbles with music","Building with the big blocks"],
+        ["PM Activities","Water in the texture table","Paint with colored water","Shaving cream buckets","Color a rain drop","Free choice"]
+
+      ],
+      "bibleStory": "Story: Jesus is Risen and Jesus Returns"
+    }
+  ]
+}

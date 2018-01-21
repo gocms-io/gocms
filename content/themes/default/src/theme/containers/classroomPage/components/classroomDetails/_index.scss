@@ -1,0 +1,233 @@
+.classroom-details-wrapper {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero-wrapper-classes {
+  border-bottom: solid 2px $gray-light;
+}
+
+.classroom-details-left-col {
+  float: left;
+  width: 305px;
+}
+
+.classroom-details-right-col {
+  float: left;
+  width: 650px;
+}
+
+.callout-box-wrapper {
+  position: relative;
+  top: -121px;
+  min-height: 560px;
+  margin-bottom: -80px;
+
+
+  @media (max-width: 992px) {
+    top: -20px;
+    min-height: 0;
+  }
+
+  h1 {
+    font-family: Archer, sans-serif;
+    font-size: 32px;
+    text-align: center;
+    border: none;
+    color: $gray;
+    margin: 72px 0 0 0;
+    font-weight: 400;
+    width: 100%;
+    padding-bottom: 0;
+  }
+
+  h2 {
+    width: 100%;
+    font-family: Lato-Medium-Italic, sans-serif;
+    font-weight: 100;
+    font-size: 20px;
+    color: $teal;
+    text-align: center;
+    border: none;
+    margin: 0;
+  }
+
+  p {
+    font-family: Lato;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 19px;
+    text-align: center;
+    margin: 20px 0 0 0;
+  }
+}
+
+.callout-box-classroom-cta {
+  width: 315px;
+  padding: 0 21px 20px 21px;
+  display: block;
+  z-index: 1;
+  top: -90px;
+  position: relative;
+
+  &-mobile {
+  }
+}
+
+.callout-box-classroom-icon-wrapper {
+  width: 88px;
+  height: 88px;
+  padding: 8px;
+  border: 3px $green solid;
+  border-radius: 44px;
+  background: $white;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  top: -43px;
+  z-index: 2;
+}
+
+.callout-box-classroom-icon {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  border-radius: 30px;
+  background: $white;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.contact-form-wrapper-classroom-cta {
+  position: static;
+  margin-top: 30px;
+  height: 228px;
+
+  input {
+    width: 100%;
+    min-width: inherit;
+  }
+
+  &-mobile {
+    margin-top: 40px;
+  }
+}
+
+.wrapper-classroom-details {
+  display: inline-block;
+  padding-left: 45px;
+  margin-top: 37px;
+
+  h1 {
+    margin: 0 0 13px 0;
+    padding-bottom: 16px;
+    border-bottom: solid 1px $teal;
+    font-family: Archer, sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+
+  }
+
+  p {
+    margin-top: 13px;
+    font-family: Lato, sans-serif;
+    font-size: 12px;
+    line-height: 19px;
+    color: $gray;
+    font-weight: 300;
+  }
+
+  ul {
+    font-size: 12px;
+    font-family: Lato, sans-serif;
+    font-weight: 300;
+    line-height: 30px;
+    list-style: url("/themes/bslf/img/classes/checkMark.svg");
+
+    li {
+      margin-left: 4px;
+      padding-left: 4px;
+    }
+  }
+
+  &-mobile {
+    margin-top: 5px;
+    margin-bottom: 90px;
+    padding: 0;
+
+    h1 {
+      //text-align: center;
+    }
+
+    ul {
+      li {
+        margin-left: -20px;
+      }
+    }
+  }
+}
+
+.teacher-bio-classroom-wrapper {
+  margin-bottom: 30px;
+
+  h1 {
+    margin: -40px 0 0 0;
+    padding-bottom: 16px;
+    border-bottom: solid 1px $teal;
+    font-family: Archer, sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+
+  }
+
+  &-mobile {
+    height: auto;
+    margin-bottom: 80px;
+  }
+}
+
+.box-callout-section-classroom {
+  margin-top: 80px;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 300;
+    font-family: Archer, sans-serif;
+  }
+
+  img {
+    height: 159px;
+    width: 265px;
+  }
+
+  p {
+    font-family: Lato, sans-serif;
+    font-size: 12px;
+    line-height: 19px;
+  }
+}
+
+.classroom-details-video-feed {
+  text-align: center;
+  width: 100%;
+  display: block;
+  margin-top: 20px;
+  margin-bottom: -20px;
+
+  &-2 {
+    margin-top: 25px;
+  }
+
+  &-mobile {
+    margin-bottom: 0;
+
+    &-2 {
+      margin-top: 0;
+      padding-bottom: 5px;
+    }
+  }
+}

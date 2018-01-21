@@ -1,0 +1,115 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "heightMobile": "150px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/bslf_classroom_cheerful_chipmunks.jpg"
+    }
+  },
+  "classroomDetails": {
+    "calloutBox": {
+      "icon": {
+        "src": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/icons/chipmunk.jpg",
+        "alt": "Cheerful chipmunk icon"
+      },
+      "title": "Cheerful Chipmunks",
+      "subTitle": "26 months to 33 months",
+      "content": "Our Cheerful Chipmunks program has 16 toddlers ranging from approximately 26 month through approximately 33 month-old.  We have three consistent and nurturing staff caring for our toddlers daily."
+    },
+    "mainContent": {
+      "title": "Program Details",
+      "content": "During their time in the Cheerful Chipmunks classroom this is their first experience into a preschool type setting, consisting of a morning circle time with calendar and our weekly theme, learning area activities centered around art, math, and science skills and an introduction to Zoophonics, all the while continuing potty training practices. Each child in our Cheerful Chipmunks classroom is taking one nap a day, and enjoying our nutritional menu.",
+      "list": [
+        "Adult to child ratio 1:4 (under 2.5 yr old) 1:8 ratio (over 2.5 yrs old)",
+        "Personal cot and storage area provided",
+        "Parents provide extra set of clothes, crib sheet, diapers/ pull ups",
+        "Center provides wipes",
+        "Comfortable shoes required",
+        "Secure live video feed",
+        "Special art and various age development projects",
+        "2 Weekly Bible stories and prayers before meals",
+        "Breakfast, lunch, and snack provided"
+      ]
+    }
+  },
+  "boxCalloutSection": {
+    "title": "Meet the Cheerful Chipmunks Teachers",
+    "boxes": [
+      {
+        "title": "Ms. Sharon",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/Sharon.jpg",
+          "alt": "Ms. Sharon"
+        },
+        "text": "I live in Lowell and have been married to my wonderful husband, Ed, for 34 years and we have 3 children. I love working with children and started working at Big Steps in 2003. I also work part-time at MI Blood Center, calling donors to come and donate to save lives. I enjoy reading, gardening, fishing, and spend time with family."
+      },
+      {
+        "title": "Ms. Heather - Lead Teacher",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/Heather-V.jpg",
+          "alt": "Ms. Heather"
+        },
+        "text": "I graduated from Cornerstone University with a Bachelors degree in Elementary Education, Language Arts and certified in Early Childhood Education. I’ve been working at Big Steps since September 2011. When I’m not at Big Steps I enjoy reading and watching movies and making balloon animals with my sister at events."
+      },
+      {
+        "title": "Ms. Mallory",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/Mallory.jpg",
+          "alt": "Ms. Mallory"
+        },
+        "text": "I grew up in Corunna, Michigan with an older brother and younger sister. I enjoyed gymnastics from ages 4-15 and it has been a huge part of my life. I enjoyed it so much that I started teaching gymnastics when I was 14. I worked with ages 4-11 and that is where I realized that I love working with children."
+      },
+      {
+        "title": "Ms. Brandi",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/ms_brandi.jpg",
+          "alt": "Ms. Brandi"
+        },
+        "text": "I graduated from Lowell High School, where I met my husband, Justin, and we have been married since 2016. I have 3 dogs named; Bentley, Buddy, and Evee. I am attending Aquinas College in the Education department. I have a large family with 12 siblings and I love spending time with them on any occasion."
+      },
+      {
+        "title": "Ms. Lindsay",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/ms_lindsay.jpg",
+          "alt": "Ms. Lindsay"
+        },
+        "text": "I studied Early Childhood Education at Western Michigan university and I enjoy working with children. In my spare time, I like to listen to music, paint, or cook meals with my family. I love animals and I own a cat named Wilson. Someday I hope to travel to Ireland."
+      }
+    ]
+  },
+  "gallery": {
+    "title": "Classroom gallery",
+    "images": [
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/cheerful_chipmunk_01.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/cheerful_chipmunk_01.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/cheerful_chipmunk_02.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/cheerful_chipmunk_02.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/cheerful_chipmunk_03.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/cheerful_chipmunk_03.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/cheerful_chipmunk_04.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/cheerful_chipmunk_04.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/cheerful_chipmunk_05.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/cheerful_chipmunk_05.jpg",
+        "thumbnailAlt": "thumb alt"
+      }
+    ]
+  }
+}

@@ -1,0 +1,154 @@
+.wrapper-program-menu {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.programs-menu {
+  position: absolute;
+  display: inline-block;
+  top: 59px;
+  max-width: 970px;
+  height: 582px;
+  left: -401px;
+  background: $white;
+  z-index: 10;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  overflow: hidden;
+}
+
+.program-navigation-item-divide {
+  width: 124px;
+  height: 10px;
+  background: $white;
+  position: absolute;
+  top: 53px;
+  left: 0px;
+  z-index: 11;
+}
+
+.programs-menu-transition-enter {
+  max-height: 0;
+}
+
+.programs-menu-transition-enter.programs-menu-transition-enter-active {
+  max-height: 800px;
+  transition: max-height 300ms ease-in;
+  transition-delay: 50ms;
+}
+
+.programs-menu-transition-leave {
+  max-height: 800px;
+}
+
+.programs-menu-transition-leave.programs-menu-transition-leave-active {
+  max-height: 0;
+  transition: max-height 300ms ease-in;
+}
+
+.programs-menu-divide-transition-enter {
+  max-height: 0;
+}
+
+.programs-menu-divide-transition-enter.programs-menu-divide-transition-enter-active {
+  max-height: 10px;
+  transition: max-height 1ms linear;
+}
+
+.programs-menu-divide-transition-leave {
+  max-height: 10px;
+}
+
+.programs-menu-divide-transition-leave.programs-menu-divide-transition-leave-active {
+  max-height: 0;
+  transition: max-height 1ms linear;
+  transition-delay: 250ms;
+}
+
+.program-menu-left-1-col {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 20px 0 0 78px;
+
+  @media (max-width: 991px) {
+    padding: 20px 0 0 40px;
+  }
+  @media (max-width: 852px) {
+    padding: 20px 0 0 20px;
+  }
+}
+
+.program-menu-left-2-col {
+  position: absolute;
+  top: 0;
+  left: 280px;
+  padding: 20px 0 0 78px;
+
+  @media (max-width: 991px) {
+    padding: 20px 0 0 40px;
+  }
+  @media (max-width: 852px) {
+    padding: 20px 0 0 0;
+  }
+}
+
+.program-menu-divide {
+  position: absolute;
+  top: 31px;
+  left: 673px;
+  height: 388px;
+  width: 1px;
+  background-color: $teal;
+
+  @media (max-width: 991px) {
+    left: 570px;
+  }
+  @media (max-width: 852px) {
+    left: 523px;
+  }
+}
+
+.program-menu-right-col {
+  position: absolute;
+  top: 0px;
+  right: 1px;
+  height: 451px;
+  width: 312px;
+  padding: 62px 0 0 50px;
+
+  @media (max-width: 991px) {
+    padding: 62px 0 0 70px;
+  }
+  @media (max-width: 852px) {
+    padding: 62px 0 0 95px;
+  }
+}
+
+.wrapper-programs-menu-mobile {
+  display: inline-block;
+  border-top: 1px solid $teal;
+  margin-left: 7.5%;
+  padding-left: 8px;
+  width: 85%;
+  overflow: hidden;
+}
+
+.programs-menu-transition-mobile-enter {
+  max-height: 0;
+}
+
+.programs-menu-transition-mobile-enter.programs-menu-transition-mobile-enter-active {
+  max-height: 1500px;
+  transition: max-height 300ms ease-in;
+}
+
+.programs-menu-transition-mobile-leave {
+  max-height: 1500px;
+}
+
+.programs-menu-transition-mobile-leave.programs-menu-transition-mobile-leave-active {
+  max-height: 0;
+  transition: max-height 300ms ease-in;
+}

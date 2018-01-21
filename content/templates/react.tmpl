@@ -124,9 +124,12 @@
 <div id="app"></div>
 </body>
 
-<script src="/gocms/vendor.js"></script>
-<script src="/gocms/base.js"></script>
 <link rel="stylesheet" href="/gocms/base.css">
+<script  src="/gocms/vendor.js"></script>
+<script  src="/gocms/base.js"></script>
 
+{{template "theme_footer.tmpl" .}}
 
-{{/*{{template "theme_footer.tmpl" .}}*/}}
+<script>
+    gocms.init();
+</script>

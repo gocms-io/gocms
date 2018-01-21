@@ -1,0 +1,102 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "heightMobile": "150px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/curious-critters/curious-critters-toddlers_01.jpg"
+    }
+  },
+  "classroomDetails": {
+    "calloutBox": {
+      "cameraFeed": "http://old.bigstepslittlefeet.org/one/",
+      "icon": {
+        "src": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/icons/critter.jpg",
+        "alt": "curious critters icon"
+      },
+      "title": "Curious Critters",
+      "subTitle": "13 months to 18 months",
+      "content": "Our Curious Critters program consists of twelve toddlers, ranging from approximately 13 months to approximately 18 months old. Three consistent and nurturing staff members are caring for our toddlers daily."
+    },
+    "mainContent": {
+      "title": "Program Details",
+      "content": "During their time in the Curious Critters classroom, your child will experience a transitional room. They will enter as infants but during their time in the Critters, they will gain more toddler independence. The teachers will begin with short small group activities centered around story time, art, colors/shapes, texture table time, and an outdoor recess every day. Each child in our Curious Critters classroom will eventually be transitioning to one nap a day, enjoying our nutritional menu, and learning to use eating utensils and drink out of sippy cups. Our highly-qualified teachers enjoy enriching your child’s education and watching them grow each day.",
+      "list": [
+        "Adult to Child Ratio 1:4",
+        "Feeding, Naps, and Diapers are all recorded daily",
+        "Personal crib or cot, and storage area provided",
+        "Parents provide an extra set of clothes, crib sheet, and diapers",
+        "Center provides wipes",
+        "Comfortable toddler shoes required ",
+        "Room is enhanced with in-floor heating",
+        "Secure live video feed",
+        "Special art projects",
+        "Weekly Bible stories",
+        "Breakfast, lunch, and snack provided"
+      ]
+    }
+  },
+  "boxCalloutSection": {
+    "title": "Meet the Curious Critters Teachers",
+    "boxes": [
+      {
+        "title": "Ms. Brittney - Lead Teacher",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/curious-critters/Britney-P.jpg",
+          "alt": "Ms. Brittney"
+        },
+        "text": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy."
+      },
+      {
+        "title": "Ms. Sydney",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/gentle-giraffes/Sydney.jpg",
+          "alt": "Ms. Sydney"
+        },
+        "text": "I graduated from Oxford High school and went on to get my cosmetology certification from the Aveda Institute. I love traveling around the state and going on hikes. I have one brother, one sister, and a cat named Petey."
+      },
+      {
+        "title": "Ms. Kim",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/curious-critters/Kim-P.jpg",
+          "alt": "Ms. Kim"
+        },
+        "text": "I graduated from Lowell High School and have worked at Big Steps since December 2015. I am married with three children, two step children, and a black and tan coon hound. I enjoy spending time with my horse, gardening, camping, at the beach, and riding the ATV trails up north."
+      }
+    ]
+  },
+  "gallery": {
+    "title": "Classroom gallery",
+    "images": [
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/curious-critters/curious-critters_01.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/curious-critters/curious-critters_01.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/curious-critters/curious-critters_02.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/curious-critters/curious-critters_02.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/curious-critters/curious-critters_03.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/curious-critters/curious-critters_03.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/curious-critters/curious-critters_04.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/curious-critters/curious-critters_04.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/curious-critters/curious-critters_05.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/curious-critters/curious-critters_05.jpg",
+        "thumbnailAlt": "thumb alt"
+      }
+    ]
+  }
+}

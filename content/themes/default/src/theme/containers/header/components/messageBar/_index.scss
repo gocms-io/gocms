@@ -1,0 +1,59 @@
+.container-message-bar {
+  width: 100%;
+}
+.row-message-bar {
+  background-color: $green;
+  color: $white;
+  height: 35px;
+  text-align: center;
+
+  .message-bar-message {
+    font-family: Archer-Semibold, sans-serif;
+    font-size: 14px;
+    font-weight: 100;
+    margin: 0;
+    padding: 9px 0 0;
+    color: $white;
+    overflow: hidden;
+    height: 25px;
+    a {
+      color: $white;
+    }
+
+    a:hover {
+      color: $gray;
+    }
+  }
+}
+
+.message-bar-close-btn {
+  margin: 0;
+  padding: 0;
+  height: 0;
+  min-width: 0;
+  font-family: Lato, sans-serif;
+  font-size: 22px;
+  font-weight: bold;
+  color: $white;
+  background: none;
+  text-decoration: none;
+}
+
+.message-bar-appear {
+  max-height: 0;
+}
+
+.message-bar-appear.message-bar-appear-active {
+  max-height: 35px;
+  transition: max-height 500ms ease-in;
+  transition-delay: 1s;
+}
+
+.message-bar-leave {
+  max-height: 35px;
+}
+
+.message-bar-leave.message-bar-leave-active {
+  max-height: 0;
+  transition: max-height 300ms ease-in;
+}

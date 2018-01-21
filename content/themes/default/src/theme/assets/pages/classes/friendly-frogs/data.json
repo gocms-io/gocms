@@ -1,0 +1,94 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "heightMobile": "150px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/friendly-frogs/bslf_classroom_hero_friendly-frogs.jpg"
+    }
+  },
+  "classroomDetails": {
+    "calloutBox": {
+      "cameraFeed": "http://old.bigstepslittlefeet.org/one/",
+      "icon": {
+        "src": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/icons/frog.jpg",
+        "alt": "friendly frogs icon"
+      },
+      "title": "Friendly Frogs",
+      "subTitle": "56 months to 60 months",
+      "content": "Our Friendly Frogs program has 12 children ranging from approximately 56 months to approximately 60 months old. We have one consistent and nurturing staff member caring for our preschool children daily."
+    },
+    "mainContent": {
+      "title": "Program Details",
+      "content": "During their time in the Friendly Frogs classroom, each child is given the opportunity to learn in a preschool rich environment. This experience consists of a morning circle time with calendar and our weekly theme, learning area activities centered around art, more challenging math and science skills, with an emphasis on lowercase letters through Zoophonics and Handwriting Without Tears. Midway through the year, after a full letter review, the class will begin working with word families to begin their easy reading skills. Throughout the year, we continue to improve self help skills in our preparation for Kindergarten Readiness. Our Friendly Frogs classroom is taking one nap a day, playing outdoors twice a day, and enjoying our nutritional menu.",
+      "list": [
+        "Adult to child ratio: 1:12",
+        "Personal cot and storage area provided",
+        "Parents provide an extra set of clothes and a cot sheet",
+        "Center provides wipes",
+        "Comfortable shoes are required",
+        "Secure live video feed",
+        "Special art and various age development projects",
+        "Weekly Bible stories and prayers before each meal",
+        "Zoophonics and Handwriting Without Tears",
+        "Nutritious breakfast, lunch, and snack provided",
+        "Parent/Teacher Conferences twice a year"
+      ]
+    }
+  },
+  "boxCalloutSection": {
+    "title": "Meet the Friendly Frogs Teachers",
+    "boxes": [
+      {
+        "title": "Ms. Becky - Lead Teacher",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/friendly-frogs/Becky.jpg",
+          "alt": "Ms. Becky"
+        },
+        "text": "I grew up and still live in Lowell. I attended GRCC for Early Childhood and have been working at Big Steps since 2003. My children, Ava and Kaiden, keep me busy with driving them to dance and baseball, but in my free time I enjoy crafting, watching shows, and camping with my husband and children."
+      },
+      {
+        "title": "Ms. Darlene",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/friendly-frogs/Darlene.jpg",
+          "alt": "Ms. Darlene"
+        },
+        "text": "I have been a part of Big Steps since 2006 and have been a cook, van driver, and teacher aide. I tutored children in reading while I went to the Kent Skills Center for my Cosmetology License. My hobbies include enjoying time with my dogs, drawing, and reading. I so blessed to be part of the Big Steps family."
+      }
+    ]
+  },
+  "gallery": {
+    "title": "Classroom Gallery",
+    "images": [
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/friendly-frogs/friendly-frogs_01.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/friendly-frogs/friendly-frogs_01.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/friendly-frogs/friendly-frogs_02.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/friendly-frogs/friendly-frogs_02.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/friendly-frogs/friendly-frogs_03.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/friendly-frogs/friendly-frogs_03.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/friendly-frogs/friendly-frogs_04.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/friendly-frogs/friendly-frogs_04.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/friendly-frogs/friendly-frogs_05.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/friendly-frogs/friendly-frogs_05.jpg",
+        "thumbnailAlt": "thumb alt"
+      }
+    ]
+  }
+}

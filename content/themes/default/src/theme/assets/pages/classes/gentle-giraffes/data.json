@@ -1,0 +1,101 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "heightMobile": "150px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/gentle-giraffes/gentle-giraffes-infants_01.jpg"
+    }
+  },
+  "classroomDetails": {
+    "calloutBox": {
+      "cameraFeed": "http://old.bigstepslittlefeet.org/one/",
+      "icon": {
+        "src": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/icons/giraffe.jpg",
+        "alt": "gentle giraffes icon"
+      },
+      "title": "Gentle Giraffes",
+      "subTitle": "6 months to 13 months",
+      "content": "Our Gentle Giraffes program has twelve infants ranging from approximately 6 month through approximately 13 month-old.  We have 3 consistent and nurturing staff caring for our infants daily."
+    },
+    "mainContent": {
+      "title": "Program Details",
+      "content": "As they transition in to our Gentle Giraffees room we will adhere to their home feeding schedule until approximately 15 month (or sooner) to create a more toddler friendly schedule. Receiveing one nap per ay and eating 3 meals from the centers nutritional menu. Our loving teachers will be spending time with all the children throughout the day, however your child will have their own primary teacher. As they transition from infant to toddler we promote more texture table activites, outdoor play and sensory art for your child to explore.",
+      "list": [
+        "Separate Nap area",
+        "Adult to Child Ratio 1:4",
+        "Feeding, Naps, Diapers are all recorded daily",
+        "Center provides toys, equipment, bibs, sippy cups and wipes",
+        "Personal crib and storage area provided",
+        "Parents provide extra set of clothes, diapers, bottles, baby food, crib sheet",
+        "Comfortable, toddler shoes required ",
+        "Room is enhanced with in floor heating",
+        "Provide appropriate attire for daily outside time.",
+        "Secure live video feed"
+      ]
+    }
+  },
+  "boxCalloutSection": {
+    "title": "Meet the Gentle Giraffes Teachers",
+    "boxes": [
+      {
+        "title": "Ms. Lexie - Lead Teacher",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/gentle-giraffes/Lexie.jpg",
+          "alt": "Ms. Lexie"
+        },
+        "text": "I have been at Big Steps since April of 2015 and my passion for children grows each day! In my free time I enjoy the outdoors, camping, bonfires, fishing and spending time up north. I grew up in Lowell and have only one brother but also have 2 cats and 6 fish. My Fiancé and I are getting married in September of 2017."
+      },
+      {
+        "title": "Ms. Tiffany",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/gentle-giraffes/ms_tiffany.jpg",
+          "alt": "Ms. Tiffany"
+        },
+        "text": "I grew up in Belding and graduated from GVSU with a Bachelor's of Science Degree in Women's and Gender Studies. In 2013, I married my Airman and we moved to North Carolina. My husband and I were blessed to have a little boy named Holden. In my free time, I enjoy gardening, going on walks, reading anything by Nicholas Sparks, and tap dancing around the kitchen with Holden."
+      },
+      {
+        "title": "Ms. Cassie",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/gentle-giraffes/cassie.jpg",
+          "alt": "Ms. Cassie"
+        },
+        "text": "I am excited to be working in the Giraffes room and at Big Steps. My previous experience includes working at an in home childcare with toddlers. In my spare time I like to sing, read books, and hangout with friends. I am outgoing and sweet. When I begin college I want to major in Early Childhood Development. I am excited and passionate about my job. I look forward to meeting everyone."
+      }
+    ]
+  },
+  "gallery": {
+    "title": "Classroom gallery",
+    "images": [
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/gentle-giraffes/Gentle-Giraffes-01.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/gentle-giraffes/Gentle-Giraffes-01.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/gentle-giraffes/Gentle-Giraffes-02.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/gentle-giraffes/Gentle-Giraffes-02.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/gentle-giraffes/Gentle-Giraffes-03.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/gentle-giraffes/Gentle-Giraffes-03.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/gentle-giraffes/Gentle-Giraffes-04.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/gentle-giraffes/Gentle-Giraffes-04.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/gentle-giraffes/Gentle-Giraffes-05.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/gentle-giraffes/Gentle-Giraffes-05.jpg",
+        "thumbnailAlt": "thumb alt"
+      }
+    ]
+  }
+}

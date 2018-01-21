@@ -1,0 +1,52 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/parent-resources/bslf_classroom_hero_parentresources.jpg"
+    }
+  },
+  "title": "Parent Resources",
+  "moreButton": "Read More",
+  "posts": [
+    {
+      "title": "2017 Parent Handbook",
+      "date": "January 2017",
+      "fileUrl": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/files/Teacher_Application.pdf",
+      "thumb": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/parent-resources/parent_handbook.jpg",
+        "alt": "Handbook"
+      },
+      "summary": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper."
+    },
+    {
+      "title": "Child Emergency Card",
+      "date": "January 2017",
+      "fileUrl": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/files/emergency_card.pdf",
+      "thumb": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/parent-resources/emergency_card.jpg",
+        "alt": "Emergency Card"
+      },
+      "summary": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper."
+    },
+    {
+      "title": "Vaccines Required for Child Care in Michigan",
+      "date": "January 2017",
+      "fileUrl": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/files/immunizations.pdf",
+      "thumb": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/parent-resources/immunizations.jpg",
+        "alt": "Vaccines"
+      },
+      "summary": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper."
+    },
+    {
+      "title": "The Ins and Outs of the Child Care Tax Credit",
+      "date": "December 2016",
+      "fileUrl": "https://turbotax.intuit.com/tax-tools/tax-tips/Family/The-Ins-and-Outs-of-the-Child-and-Dependent-Care-Tax-Credit/INF27554.html",
+      "thumb": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/parent-resources/tax_credit.jpg",
+        "alt": "pic of kids"
+      },
+      "summary": "If you are paying someone to take care of your children or another person in your household while you work, you might be eligible for the child and dependent care credit. This credit gives back a portion of the money you spend on care, and can reduce your tax bill by hundreds or even thousands of dollars."
+    }
+  ]
+}

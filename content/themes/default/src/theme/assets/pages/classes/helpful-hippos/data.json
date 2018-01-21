@@ -1,0 +1,104 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "heightMobile": "150px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/helpful-hippos/bslf_classroom_hero_helpfulhippos.jpg"
+    }
+  },
+  "classroomDetails": {
+    "calloutBox": {
+      "cameraFeed": "http://old.bigstepslittlefeet.org/one/",
+      "icon": {
+        "src": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/icons/hippo.jpg",
+        "alt": "helpful hippos icon"
+      },
+      "title": "Helpful Hippos",
+      "subTitle": "19 month to 23 month",
+      "content": "Our Helpful Hippos program has twelve toddlers ranging from approximately 19 months through approximately 23 months old. We have 3 consistent and nurturing staff caring for our toddlers daily."
+    },
+    "mainContent": {
+      "title": "Program Details",
+      "content": "During their time in the Helpful Hippos classroom, they will experience a morning circle time, small group activities centered around art, colors/shapes and texture table, and an outside recess time. Each child in our Helpful Hippos classroom is taking one nap a day, enjoying our nutritional menu, and learning to use utensils. Each child will be given an opportunity to be introduced to potty training as well. Our loving teachers will be spending time with all the children throughout the day. ",
+      "list": [
+        "Adult to child ratio 1:4",
+        "Feeding, naps, and toileting are recorded daily",
+        "Personal cot and storage area provided",
+        "Parents provide an extra set of clothes, crib sheet, and diapers",
+        "Center provides wipes",
+        "Comfortable shoes required",
+        "Room is enhanced with in-floor heating",
+        "Secure live video feed",
+        "Special art and other age development projects",
+        "Weekly Bible stories and prayers before meals",
+        "Breakfast, lunch, and snack provided"
+      ]
+    }
+  },
+  "boxCalloutSection": {
+    "title": "Meet the Helpful Hippos Teachers",
+    "boxes": [
+      {
+        "title": "Ms. Heather - Lead Teacher",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/helpful-hippos/Heather-C.jpg",
+          "alt": "Ms. Heather"
+        },
+        "text": "I went to MCC and earned my Associates Degree in Early Childhood Development. Ever since then I have been working with children! When I’m not working, I am hanging out with my two daughters. In my spare time, I love being outside, enjoying the beach, and spending time with my family."
+      },
+      {
+        "title": "Ms. Brittany",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/helpful-hippos/Brittany.jpg",
+          "alt": "Ms. Brittany"
+        },
+        "text": "I graduated from Lowell High School in 2011 and I have a daughter who is my world. My fiancé and I plan on getting married in September of 2018. Outside of work, I enjoy listening to music, watching shows, and being outdoors! Spring is my favorite time of the year because the weather is not too hot and not too cold!"
+      },
+      {
+        "title": "Ms. Danie",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/helpful-hippos/msdanie.jpg",
+          "alt": "Ms. Danie"
+        },
+        "text": "I graduated from NorthPoine Christian School in 2016 and am now attending Cornerstone University for a degree in Early Childhood Education. I have two wonderful parents and four brothers who have always been there for me. I love to spend time hanging out with friends getting coffee and playing with the little ones at Big Steps."
+      },
+      {
+        "title": "Ms. Dustie",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/helpful-hippos/msdustie.jpg",
+          "alt": "Ms. Dustie"
+        },
+        "text": "I graduated from NorthPoine Christian School in 2016 and am now attending Cornerstone University for a degree in Early Childhood Education. I have two wonderful parents and four brothers who have always been there for me. I love to spend time hanging out with friends, getting coffee, and playing with the little ones at Big Steps."
+      }
+    ]
+  },
+  "gallery": {
+    "title": "Classroom gallery",
+    "images": [
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/helpful-hippos/helpful_hippos_1.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/helpful-hippos/helpful_hippos_1.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/helpful-hippos/helpful_hippos_2.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/helpful-hippos/helpful_hippos_2.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/helpful-hippos/helpful_hippos_3.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/helpful-hippos/helpful_hippos_3.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/helpful-hippos/helpful_hippos_4.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/helpful-hippos/helpful_hippos_4.jpg",
+        "thumbnailAlt": "thumb alt"
+      }
+    ]
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/menu/bslf_classroom_hero_menusampler.jpg"
+    }
+  },
+  "title": "Sample Daily Food Menu",
+  "content_raw": "<p>Here at Big Steps Little Feet, included in your weekly tuition, we provide a nutritious and healthy breakfast, lunch, and afternoon snack each day. Menus are posted in each classroom and you can also find them here on our website.  We are also happy to discuss alternatives for any special dietary issues or allergies your child may have.</p><p>*All lunches are served with milk. Children ages 12-24 months are served whole milk. Children ages 2 through school age are served 2% milk.<br/>*Water is served at snack and throughout the day.<br/>*Fresh fruit will be substituted when available.</p>",
+  "button": {
+    "content": "Download Sample",
+    "fileUrl": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/files/menu_april_SAMPLE.pdf"
+  },
+  "image": {
+    "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/menu/menu_img.jpg",
+    "alt": "food image",
+    "width": "466px",
+    "height":"287px"
+  },
+  "menu": [
+    {
+      "name": "Week 1",
+      "rows": [
+        ["","Monday","Tuesday","Wednesday","Thursday","Friday"],
+        ["Breakfast","Bagels & Juice","Cereal & Milk","Hot Biscuits & Gravy/Juice","Cereal & Milk","Cereal & Fruit/Milk"],
+        ["Lunch","Salibury Steak, Green Beans, Fruit Cocktail", "Chicken Nuggets, Corn, Oranges","Hamburgers, Peas and Carrots, Bananas","Beef Stroganoff, California Mix, Pineapples","Cooks Choice, Mixed Vegetables, Mixed Fruit"],
+        ["Snack","Pudding","Nutragrain Bars","Fruit Snacks","Crackers and Cheese","Oranges"]
+      ]
+    },
+    {
+      "name": "Week 2",
+      "rows": [
+        ["","Monday","Tuesday","Wednesday","Thursday","Friday"],
+        ["Breakfast","Muffins & Juice","Cereal & Milk","Pancake Wraps/Juice","Cereal & Milk","Cereal & Fruit/Milk"],
+        ["Lunch","Grilled Turkey & Cheese, Peas and Carrots, Peaches","Tacos, Salad, Pineapples","Bosco Sticks, Broccoli Mix, Pears","Fish Sticks, Cantaloupe, Carrots","Meatball Subs, Pasta Salad, Fruit Cocktail"],
+        ["Snack","Graham Crackers","Yogurt","Goldfish Crackers","Cooks Choice","Graham Crackers and Milk"]
+      ]
+    },
+    {
+      "name": "Week 3",
+      "rows": [
+        ["","Monday","Tuesday","Wednesday","Thursday","Friday"],
+        ["Breakfast","Pancakes/Juice","Cereal & Milk","Eggs & Sausage/Juice","Cereal & Milk","Cereal & Fruit/Milk"],
+        ["Lunch","Veggies, Fresh Fruit, Mixed Veggies","Cheese Bagels, Cucumbers, Grapes","Turkey Dogs, Tator Tots, Pineapple","Pizza Roll Ups, Corn, Peaches","Cooks Choice, Mixed Veggies, Mixed Fruit"],
+        ["Snack","Carrots/Celery & Water","Homemade Granola/Milk","Yogurt & Fruit and Water","Fresh Fruit and Water","Graham Crackers and Milk"]
+      ]
+    },
+    {
+      "name": "Week 4",
+      "rows": [
+        ["","Monday","Tuesday","Wednesday","Thursday","Friday"],
+        ["Breakfast","Oatmeal & Juice","Cereal & Milk","Waffles & Juice","Cereal & Milk","Cereal & Milk"],
+        ["Lunch","Grilled Ham and Cheese, Baked Beans, Bananas","Scallop Potatoes and Ham, Green Beans, Mandarin Oranges","Chicken Patty Wraps, Cucumbers, Apples","Meatballs, Mixed Veggies, Oranges","Tator Tot Cassarole, Mixed Veggies, Mixed Fruit"],
+        ["Snack","Chex Mix","Veggies & Dip","Apples","Animal Crackers","Fresh Fruit"]
+      ]
+    }
+  ]
+}

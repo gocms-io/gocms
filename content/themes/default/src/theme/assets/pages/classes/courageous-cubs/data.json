@@ -1,0 +1,102 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "heightMobile": "150px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/courageous-cubs/bslf_classroom_courageous_cubs.jpg"
+    }
+  },
+  "classroomDetails": {
+    "calloutBox": {
+      "cameraFeed": "http://old.bigstepslittlefeet.org/one/",
+      "icon": {
+        "src": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/icons/cub.jpg",
+        "alt": "courageous cubs icon"
+      },
+      "title": "Courageous Cubs",
+      "subTitle": "39 months to 43 months",
+      "content": "Our Courageous Cubs program has 17 children ranging from approximately 39 months to approximately 43 months old. We have two consistent and nurturing staff caring for our preschool children daily."
+    },
+    "mainContent": {
+      "title": "Program Details",
+      "content": "During their time in the Courageous Cubs classroom, each child is given the opportunity to learn in a preschool rich environment. This experience consists of a morning circle time with calendar and our weekly theme, learning area activities centered around art, math, and science skills with a more pronounced focus on Zoophonics. Children will now be continuing to grow their handwriting skills through Handwriting Without Tears, supporting each child in aiming for Kindergarten Readiness. Our Courageous Cubs classroom is taking one nap a day, playing outdoors twice a day, and enjoying our nutritional menu.",
+      "list": [
+        "Adult to child ratio: 1:10",
+        "Personal cot and storage area provided",
+        "Parents provide an extra set of clothes and a cot sheet ",
+        "Center provides wipes",
+        "Comfortable shoes are required",
+        "Secure live video feed",
+        "Special art and various age development projects",
+        "Weekly Bible stories and prayers before each meal",
+        "Zoophonics and Handwriting Without Tears",
+        "Nutritious breakfast, lunch, and snack provided",
+        "Parent/Teacher Conferences twice a year"
+      ]
+    }
+  },
+  "boxCalloutSection": {
+    "title": "Meet the Courageous Cubs Teachers",
+    "boxes": [
+      {
+        "title": "Ms. Amanda - Lead Teacher",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/courageous-cubs/Amanda.jpg",
+          "alt": "Ms. Amanda"
+        },
+        "text": "When I’m done chasing sticky-fingered preschoolers, I continue to wear my supermom cape for an amazing daughter. When I’m able to escape for a few minutes of peace, I enjoy drawing, writing, watching girly/mommy shows, and spending time with family at the lake. I run off Jesus, coffee, and jokes!"
+      },
+      {
+        "title": "Ms. Kaila",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/courageous-cubs/Kaila.jpg",
+          "alt": "Ms. Kaila"
+        },
+        "text": "I have a small family with one brother, Austin, and as a family, we love to travel. I have been to Jamaica, Haiti, Thailand, and my most recent trip was to Europe. I plan on going to GRCC to pursue a career in criminal justice. I love working with children because they keep me on my feet."
+      },
+      {
+        "title": "Ms. Sandi",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/courageous-cubs/Sandi.jpg",
+          "alt": "Ms. Sandi"
+        },
+        "text": "I have been married for 37 years and have raised 4 children. I graduated from WMU with a Bachelors Degree in English and Elementary Education. I taught 3rd grade in the Kentwood Public Schools for 4 years. I have also worked in the Forest Hills Schools for 16 years as a para-pro and 1st grade reading recovery teacher."
+      }
+    ]
+  },
+  "gallery": {
+    "title": "Classroom gallery",
+    "images": [
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/courageous-cubs/couragous_cub_01.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/courageous-cubs/couragous_cub_01.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/courageous-cubs/couragous_cub_02.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/courageous-cubs/couragous_cub_02.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/courageous-cubs/couragous_cub_03.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/courageous-cubs/couragous_cub_03.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/courageous-cubs/couragous_cub_04.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/courageous-cubs/couragous_cub_04.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/courageous-cubs/couragous_cub_05.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/courageous-cubs/couragous_cub_05.jpg",
+        "thumbnailAlt": "thumb alt"
+      }
+    ]
+  }
+}

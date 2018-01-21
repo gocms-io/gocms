@@ -1,0 +1,99 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "heightMobile": "150px",
+      "src": "https://cdn.bigstepslittlefeet.org/img/classes/cheerful-chipmunks/bslf_classroom_cheerful_chipmunks.jpg"
+    }
+  },
+  "classroomDetails": {
+    "calloutBox": {
+      "icon": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/icons/elephant.jpg",
+        "alt": "elephant icon"
+      },
+      "title": "Enthusiastic Elephants",
+      "subTitle": "24 months to 27 months",
+      "content": "Our Enthusiastic Elephants program includes 12 toddlers ranging from approximately 24 months to approximately 27 months old.  Three consistent and nurturing staff are caring for our toddlers daily."
+    },
+    "mainContent": {
+      "title": "Program Details",
+      "content": "During their time in the Enthusiastic Elephants classroom, your child will experience a morning circle time, small group activities centered around art, colors/shapes, texture table time, and an outdoor recess. Before leaving our Elephants class, we would like the children to have a solid foundation of colors and shapes. Each child in our Elephants classroom is taking one nap a day, enjoying our nutritional menu, and is learning to use utensils. Each child will be given an opportunity to be introduced to (or continue to work on) potty training as well.",
+      "list": [
+        "Adult to child ratio: 1:4",
+        "Personal cot and storage area provided",
+        "Parents provide an extra set of clothes, crib sheet, and diapers/pull-ups",
+        "Center provides wipes",
+        "Comfortable shoes are required",
+        "Secure live video feed",
+        "Special art and various age development projects",
+        "Bi-weekly Bible stories and prayers before each meal",
+        "Nutritious breakfast, lunch, and snack provided"
+      ]
+    }
+  },
+  "boxCalloutSection": {
+    "title": "Meet the Enthusiastic Elephant Teachers",
+    "boxes": [
+      {
+        "title": "Ms. Marge - Lead Teacher",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/elephants/Marge.jpg",
+          "alt": "Ms. Marge - Lead Teacher"
+        },
+        "text": "I have 7 siblings, 40+ nieces and nephews, and 40+ great nieces and nephews. I have a Bachelor’s Degree from Western University and an Elementary Education Degree from Calvin. In my free time, I knit, crochet, and cross stitch. The best part of my day is taking care of your children."
+      },
+      {
+        "title": "Ms. Mikayla",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/elephants/Mikayla.jpg",
+          "alt": "Ms. Mikayla"
+        },
+        "text": "I have a son named Kole and he is my whole world. Together, we love being outside fishing on our boat and going to the park. I am going to school to become a registered nurse in pediatrics or cardiology. I have worked at Big steps since 2016 and have enjoyed watching the children learn and grow."
+      },
+      {
+        "title": "Ms. Brandi",
+        "image": {
+          "src": "https://cdn.bigstepslittlefeet.org/img/classes/cheerful-chipmunks/ms_brandi.jpg",
+          "alt": "Ms. Brandi"
+        },
+        "text": "I graduated from Lowell High School, where I met my husband, Justin, and we have been married since 2016. I have 3 dogs named; Bentley, Buddy, and Evee. I am attending Aquinas College in the Education department. I have a large family with 12 siblings and I love spending time with them on any occasion."
+      }
+    ]
+  },
+  "gallery": {
+    "title": "Classroom gallery",
+    "images": [
+      {
+        "original": "https://cdn.bigstepslittlefeet.org/img/classes/cheerful-chipmunks/cheerful_chipmunk_01.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "https://cdn.bigstepslittlefeet.org/img/classes/cheerful-chipmunks/cheerful_chipmunk_01.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "https://cdn.bigstepslittlefeet.org/img/classes/cheerful-chipmunks/cheerful_chipmunk_02.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "https://cdn.bigstepslittlefeet.org/img/classes/cheerful-chipmunks/cheerful_chipmunk_02.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "https://cdn.bigstepslittlefeet.org/img/classes/cheerful-chipmunks/cheerful_chipmunk_03.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "https://cdn.bigstepslittlefeet.org/img/classes/cheerful-chipmunks/cheerful_chipmunk_03.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "https://cdn.bigstepslittlefeet.org/img/classes/cheerful-chipmunks/cheerful_chipmunk_04.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "https://cdn.bigstepslittlefeet.org/img/classes/cheerful-chipmunks/cheerful_chipmunk_04.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "https://cdn.bigstepslittlefeet.org/img/classes/cheerful-chipmunks/cheerful_chipmunk_05.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "https://cdn.bigstepslittlefeet.org/img/classes/cheerful-chipmunks/cheerful_chipmunk_05.jpg",
+        "thumbnailAlt": "thumb alt"
+      }
+    ]
+  }
+}

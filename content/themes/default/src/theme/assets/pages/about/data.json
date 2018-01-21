@@ -1,0 +1,97 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "heightMobile" : "150px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/about/bslf_classroom_hero_about.jpg"
+    }
+  },
+  "missionStatement": {
+    "title": "Our Mission",
+    "content": "To provide a safe and nurturing environment where care and learning become a stimulating adventure, as we partner with parents in developing positive character qualities for your children, our future generation."
+  },
+  "heroTwo": {
+    "backgroundImage": {
+      "height": "450px",
+      "heightMobile" : "200px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cheerful-chipmunks/bslf_classroom_cheerful_chipmunks.jpg"
+    }
+  },
+  "boxCalloutSection": {
+    "box1": {
+      "title": "Conveniently Located",
+      "content": "Big Steps Little Feet is centrally located in the heart of downtown Ada, providing walk-ability to local shops and parks for all our ages. Our convenient location allows us to take children to nearby events and activities aboard our child friendly buses. Many of these educational field trips take place during our Summer season. We also use our buses for transportation before and after school to local elementary schools."
+    },
+    "box2": {
+      "title": "Our Curriculum",
+      "content": "In our curriculum, we incorporate a Christian aspect including prayers before all our meals including breakfast,lunch, and snack. Our prayers are child friendly and easy to learn. In each classroom, we also incorporate Children’s Bible stories along with activities that correlate with the story that was read.  Our staff models character qualities to our children such as gratefulness, kindness, respect, and thankfulness. We also teach these character qualities in each class throughout the day."
+    },
+    "box3": {
+      "title": "Hours of Operation",
+      "content": "Big Steps Little Feet hours of operation are Monday through Friday 6:30AM-6:00PM. We provide a flexible schedule for both full-time and part-time families. We have a part-time minimum requirement of 2 full days or 4 half days per week. Our guidelines for half days are 5 hours or less, choosing from either AM or PM. We also offer before and after school care for our school age children through age 8. For children enrolled in our Big Steps After School Program, we also provide care for snow days and school breaks."
+    }
+  },
+  "facilityInfo": {
+    "title": "Facility Layout",
+    "content": "Since the opening of Big Steps Little Feet in 1994, we have grown from one classroom to 13 classrooms in our current facility. We provide care for children ages 6 weeks through 8 years. Our facility is divided into 2 infant, 3 toddler, 7 preschool, and 1 school age classrooms with an open floor concept. An added benefit in our infant and toddler rooms is our in-floor heating system which helps our littles stay warm in the winter. Both of our infant classrooms have a separate sleeping room to ensure a better nap experience. Each one of our classrooms, as well as our innovative playground, has a live video feed for our parents to enjoy anytime of the day. Parents utilize this feature while at work or traveling. Our playground is 75% AstroTurf with a variety of activities to keep any child entertained.",
+    "image": {
+      "height": "476px",
+      "src": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/about/facility.jpg",
+      "alt": "facility info"
+    }
+  },
+  "managementBoxCalloutSection": {
+    "title": "Meet the BSLF Leadership Team",
+    "boxes": [
+      {
+        "title": "Ms. Kim - Manager",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/about/kim_about.jpg",
+          "alt": "Ms. Kim"
+        },
+        "text": "I am the Manager here at Big Steps and this has been my home since 2009. I have worked in childcare since I was 18. I moved here from Wisconsin in 2009 with my husband, and now two grown children Austin and Kaila. I love going to my cottage every weekend boating and hanging out with friends."
+      },
+      {
+        "title": "Ms. Christina - Director",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/about/christina_about.jpg",
+          "alt": "Ms. Christina"
+        },
+        "text": "I started working at Big Steps in 2010 as a Teachers Aid until I finished my Associates Degree from GRCC then became the Director. I grew up in Grand Rapids with three sisters, one brother from Korea and amazing supportive parents.  I married my husband in 2015 and together we enjoy rollerblading, reading and spending time with family and friends."
+      }
+    ],
+    "owner": {
+     "title": "Mr Rob",
+      "image": {
+        "src" : "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/about/rob_about.jpg",
+        "alt": "rob"
+      },
+      "copy": "<p>Hello Parents!<br/><br/>My name is Rob Young and I have been married to my wife, Annette, for 36 years. I have six children and four grandchildren.<br/><br/>26 years ago, I began Big Steps Little Feet as a concept of helping parents to find a safe andnurturing option to place their children, while at work. Big Steps has become a place for childrento be able to learn and grow as an extension of their home. Applying Christian based values isimportant to me, while teaching a broad spectrum of skills to the appropriate ages.  Wewanted to create an environment where quality care and education harmonized with fun andgrowth. Big Steps Little Feet is a place where the future is born in your children.  Thank youfor allowing us to serve the community while inviting your child to thrive and grow. <br/><br/>Gratefully,<br/><br/><br/>Robert S. Young<br/>Owner  Founder</p>"
+    } 
+  },
+  "videoSection": {
+    "title": "Testimonial Videos",
+    "videos": [
+      {
+        "title": "Mr. Rob",
+        "description": "Owner and founder of Big Steps Little Feet",
+        "videoId": "VEoF57LA334"
+      },
+      {
+        "title": "Ms. Kim",
+        "description": "Manager of Big Steps Little Feet",
+        "videoId": "H3OecVVPfSI"
+      },
+      {
+        "title": "Ms. Christina",
+        "description": "Director of Big Steps Little Feet",
+        "videoId": "8keXk8JiOTk"
+      },
+      {
+        "title": "BSLF Fly-over",
+        "description": "Featuring a dynamic fly-over view of our facility.",
+        "videoId": "jAenmKGREv8"
+      }
+    ]
+  }
+}

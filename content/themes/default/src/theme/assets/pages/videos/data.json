@@ -1,0 +1,33 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "src": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/classes/classroom-hero.jpg"
+    }
+  },
+  "videosTitle": "Videos",
+  "videosContent": "From the opening date in May 1994, the building and business were designed to provide “wrap around childcare”. This included a preschool curriculum in an environment where parents would feel comfortable and their child would be cared for as well as taught essential skills that would prepare them for their early elementary years. BIG STEPS LITTLE FEET has progressively grown and developed its programs into a reputable, reliable environment for providing childcare and preschool. In 2010, a decision was made to further our agenda by building an innovative and unique new facility. We continue to provide an emphasis on operational excellence, customer intimacy, and innovation. It is our on-going aspiration to fulfill these commitments daily. Our mission statement continues to come alive.",
+  "contactFormTitle": "Schedule A Tour",
+  "videos": [
+    {
+      "videoId": "VEoF57LA334",
+      "title": "Mr. Rob",
+      "description": "Founder and Owner of Big Steps Little Feet"
+    },
+    {
+      "videoId": "H3OecVVPfSI",
+      "title": "Ms. Kim",
+      "description": "Manager of Big Steps Little Feet"
+    },
+    {
+      "videoId": "8keXk8JiOTk",
+      "title": "Ms. Christina",
+      "description": "Director of Big Steps Little Feet"
+    },
+    {
+      "videoId": "jAenmKGREv8",
+      "title": "BSLF Dynamic Fly-over",
+      "description": "Big Steps Little Feet Overview"
+    }
+  ]
+}

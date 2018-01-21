@@ -1,0 +1,29 @@
+// phones, up to 480px
+// tablets, 768px and up
+// desktops, 992px and up
+// large desktops, 1200px and up
+
+
+$white: #fff;
+$teal: #2CAFC1;
+$teal-fade: rgba(44, 175, 193, .5);
+$blue: #0073AE;
+$blue-hover: #005079;
+$green: #94B949;
+$gray: #4A4A4A;
+$gray-light: #9B9B9B;
+$gray-dark: #979797;
+$orange: #F69F2B;
+$orange-hover: #D68416;
+$red: #F05A2A;
+$red-hover: #CB390A;
+$brown: #A68364;
+$blue-facebook: #6678B1;
+$blue-twitter: #91C0F2;
+
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}

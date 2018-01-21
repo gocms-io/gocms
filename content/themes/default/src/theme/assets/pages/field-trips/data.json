@@ -1,0 +1,93 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "src": "/themes/bslf/img/classes/classroom-hero.jpg"
+    }
+  },
+  "fieldTripTitle": "Field Trips",
+  "fieldTripContent": "At Big Steps Little Feet, we are fortunate to offer a wide variety of hands-on field trip experiences for your children throughout the year.  Our field trips coincide with the themes we have planned for that particular week. We have the advantage of being able to venture to many exciting destinations, either walking or using our buses, as well as having community guests visit us on site to share their talents and experiences.",
+  "fieldTripCards": [
+    {
+      "title": "Kevin Kaameraad Puppet Show",
+      "subTitle": "Spring/Summer/Fall",
+      "content": "BSLF is excited to kick off our Summer Program having Kevin join us! This is a show mainly for family environments (or when you simply want high energy and excitement, ideal for the youngest audiences) !! Our Critters through our Cool Kids will be able to enjoy this entertaining show.",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/field_trips/Kevin_puppetshow.jpg",
+        "alt": "Kevin Kaameraad Puppet Show"
+      }
+    },
+    {
+      "title": "Ada Park Mondays",
+      "subTitle": "Spring/Summer/Fall",
+      "content": "Every Monday (or every other Monday) in the Summer, our Preschool classes will be heading to Ada Park for an exciting day of games, hiking, picnics, and educational classes. Make sure to check your children’s schedules for their dates.",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/field_trips/ada_park.jpg",
+        "alt": "Ada Park Mondays"
+      }
+    },
+    {
+      "title": "Michigan Storyteller Coming to BSLF",
+      "subTitle": "Spring/Summer/Fall",
+      "content": "Jenifer Strauss is a Michigan Storyteller and will be joining us here at Big Steps! Jenifer does a great job capturing the attention of the children and reading us Michigan and children based books!",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/field_trips/mi_storyteller.jpg",
+        "alt": "Michigan Storyteller Coming to BSLF"
+      }
+    },
+    {
+      "title": "Fredrick Meijer Gardens",
+      "subTitle": "Spring/Summer/Fall",
+      "content": "Our Turtle Room children through our Cool Kids will spend the day exploring the gardens. The day will include special classes, time to enjoy the various exhibits and having a picnic!",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/field_trips/fmg.jpg",
+        "alt": "Fredrick Meijer Gardens"
+      }
+    },
+    {
+      "title": "Tuesday's are Farmer's Market Days",
+      "subTitle": "Spring/Summer/Fall",
+      "content": "What a great way to explore what our community has to offer! The children enjoy fresh fruits and vegetables as well as delicious goodies like gourmet popcorn and cinnamon bread!",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/field_trips/farmer_market.jpg",
+        "alt": "Tuesday Farmers Market Days"
+      }
+    },
+    {
+      "title": "Dairy Discovery",
+      "subTitle": "Spring/Summer/Fall",
+      "content": "Who doesn’t enjoy a couple hours on a farm? Our Turtle Room children through our Cool Kids will be learning all about cows, their milking process, and are able to feed a couple of calves! After our tour, we will enjoy a picnic lunch before heading back!",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/field_trips/dairy_days.jpg",
+        "alt": "Dairy Discovery"
+      }
+     },
+      {
+      "title": "Coopersville Marne and Railway",
+      "subTitle": "Spring/Summer/Fall",
+      "content": "Our annual pilgrimage, with the Turtle Room children through Cool Kids, to Coopersville is always a great time and a staple in our Summer field trips!! While we are enjoying the train ride and all that it has to offer we even get to eat a pizza lunch!! Parents are welcome to join us on this experience!! Please let us know ASAP if you would like to join us!",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/field_trips/railway.jpg",
+        "alt": "Coopersville Marne and Railway"
+      }
+      },
+      {
+      "title": "Ho Down and Critter Barn",
+      "subTitle": "Spring/Summer/Fall",
+      "content": "This is such an exciting day filled with games and farm animals. Each child from our Critter Room all the way through our Cool Kids will get to enjoy a morning packed with age appropriate farm games. The Critter Barn is also featured which allows the children to feed, pet, and love on the farm animals, such as goats, calves, bunnies, and so many more. Be sure to dress in your cowboy/cowgirl best!",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/field_trips/ho_down.jpg",
+        "alt": "Ho Down and Critter Barn"
+      }
+       },
+      {
+      "title": "BSLF Art Prize",
+      "subTitle": "Spring/Summer/Fall",
+      "content": "During the week, the children will be learning about different art mediums and artists. On Friday, they will be displaying their art for everyone to see and enjoy!! The art will be ready for viewing at 3:00PM! Please join us for popcorn and check out our very own ART PRIZE event.",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/field_trips/art_prize.jpg",
+        "alt": "BSLF Art Prize"
+      }
+    }
+  ]
+}

@@ -1,0 +1,329 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/monthly-themes/bslf_classroom_hero_themes.jpg"
+    }
+  },
+  "title": "Monthly Themes",
+  "themes": [
+     {
+      "title": "January",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/monthly-themes/snowflake.png",
+        "alt": "theme image"
+      },
+      "description": "The color Blue, the character quality Kindness, and the following are the themes for this month",
+      "list": [
+        {
+          "type": "checked",
+          "content": "(2-6) Winter Time Fun"
+        },
+        {
+          "type": "checked",
+          "content": "(9-13) Hibernation / Winter Animals"
+        },
+        {
+          "type": "checked",
+          "content": "(16-20) Pirates"
+        },
+        {
+          "type": "checked",
+          "content": "(23-27) Human Body / Five Senses"
+        },
+        {
+          "type": "checked",
+          "content": "(30-3) Teachers Choice"
+        }
+      ]
+    },
+       {
+      "title": "February",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/monthly-themes/heart.png",
+        "alt": "theme image"
+      },
+      "description": "The color Pink, the character qualities of Love and Friendliness, and the following are the themes for this month:",
+      "list": [
+        {
+          "type": "checked",
+          "content": "(6-10) Transportation"
+        },
+        {
+          "type": "checked",
+          "content": "(13-17) Valentine’s Day"
+        },
+        {
+          "type": "checked",
+          "content": "(20-24) Friendship"
+        },
+        {
+          "type": "checked",
+          "content": "(27-3) Dr. Suess"
+        }
+      ]
+    },
+      {
+      "title": "March",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/monthly-themes/clover.png",
+        "alt": "theme image"
+      },
+      "description": "The color Green, the character quality Patience, and the following are the themes for this month:",
+      "list": [
+        {
+          "type": "checked",
+          "content": "(6-10) Space"
+        },
+        {
+          "type": "checked",
+          "content": "(13-17) Splashes of Color / St. Patrick’s Day"
+        },
+        {
+          "type": "checked",
+          "content": "(20-24) Circus"
+        },
+        {
+          "type": "checked",
+          "content": "(27-31) Birds and Eggs"
+        }
+      ]
+    },  
+    {
+      "title": "April",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/monthly-themes/cross.png",
+        "alt": "theme image"
+      },
+      "description": "The color Gray, the character quality of Citizenship, and the following are the themes this month:",
+      "list": [
+        {
+          "type": "checked",
+          "content": "(3-7) Baby Animals"
+        },
+        {
+          "type": "checked",
+          "content": "(7-14) Easter"
+        },
+        {
+          "type": "checked",
+          "content": "(17-24) Bugs and Crawly Things"
+        },
+        {
+          "type": "checked",
+          "content": "(24-28)  Planting a Garden"
+        }
+      ]
+    },
+      {
+      "title": "May",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/monthly-themes/earth.png",
+        "alt": "theme image"
+      },
+      "description": "The color Purple, the character qualites of Honesty and Truthfulness, and the following are the themes for this month:",
+      "list": [
+        {
+          "type": "checked",
+          "content": " (1-5) Rainforest"
+        },
+        {
+          "type": "checked",
+          "content": "(8-12) Oceans"
+        },
+        {
+          "type": "checked",
+          "content": "(15-19) Mother’s Day"
+        },
+        {
+          "type": "checked",
+          "content": "(22-26) Dinosaurs"
+        }
+      ]
+    },
+  {
+      "title": "June",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/monthly-themes/island.png",
+        "alt": "theme image"
+      },
+      "description": "The color Yellow, the character quality Trustworthiness, and the following are the themes for this month:",
+      "list": [
+        {
+          "type": "checked",
+          "content": "(29-2) Weather Week"
+        },
+        {
+          "type": "checked",
+          "content": "(5-9) Teacher Choice"
+        }
+      ]
+    },
+      {
+      "title": "July",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/monthly-themes/fireworks.png",
+        "alt": "theme image"
+      },
+      "description": "The color White, the character quality Bravery, and the following are the themes this month:",
+      "list": [
+        {
+          "type": "checked",
+          "content": "Independence Day"
+        },
+        {
+          "type": "checked",
+          "content": "Dinosaurs"
+        },
+        {
+          "type": "checked",
+          "content": "Sports / Water Games"
+        },
+        {
+          "type": "checked",
+          "content": "Reptiles"
+        }
+      ]
+    },
+   {
+      "title": "August",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/monthly-themes/fryingpan.png",
+        "alt": "theme image"
+      },
+      "description": "The color Black, the character quality of Respectfulness, and the following are the themes this month:",
+      "list": [
+        {
+          "type": "checked",
+          "content": "Favorite Authors"
+        },
+        {
+          "type": "checked",
+          "content": "Cooking is Fun / Fruits & Veggies"
+        },
+        {
+          "type": "checked",
+          "content": "Jungle / Zoo Animals"
+        },
+        {
+          "type": "checked",
+          "content": "Back to School"
+        }
+
+      ]
+    },
+   {
+      "title": "September",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/monthly-themes/tent.png",
+        "alt": "theme image"
+      },
+      "description": "The color Red, the character quality Helpfulness, and the following are the themes this month:",
+      "list": [
+        {
+          "type": "checked",
+          "content": "(6-9) Back to School"
+        },
+        {
+          "type": "checked",
+          "content": "(12-16) All About Me / Family"
+        },
+        {
+          "type": "checked",
+          "content": "Dads / Grandpas"
+        },
+        {
+          "type": "checked",
+          "content": "(19-23) Pet Week"
+        },
+        {
+          "type": "checked",
+          "content": "(26-30)  Apples by the Barrel"
+        }
+      ]
+    },
+        {
+      "title": "October",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/monthly-themes/pumpkins.png",
+        "alt": "theme image"
+      },
+      "description": "The color White, the character quality Bravery, and the following are the themes this month:",
+      "list": [
+        {
+          "type": "checked",
+          "content": "(3-7) Fire Safety"
+        },
+        {
+          "type": "checked",
+          "content": "(10-14) Friendly Monsters"
+        },
+        {
+          "type": "checked",
+          "content": "(17-21) Bats and Spiders"
+        },
+        {
+          "type": "checked",
+          "content": "(24-28) Pumpkin Patch / Fall Festival"
+        }
+      ]
+    },
+   {
+      "title": "November",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/monthly-themes/turkey.png",
+        "alt": "theme image"
+      },
+      "description": "The color Black, the character quality of Respectfulness, and the following are the themes this month:",
+      "list": [
+        {
+          "type": "checked",
+          "content": "(31-4) Farms and Barns"
+        },
+        {
+          "type": "checked",
+          "content": "(7-11) Farmer’s Market"
+        },
+        {
+          "type": "checked",
+          "content": "(14-18) Pilgrims and Indians"
+        },
+        {
+          "type": "checked",
+          "content": "(21-25) Thanksgiving Today / Giving Thanks"
+        },
+        {
+          "type": "checked",
+          "content": "(28-2) Community Helpers / Jobs"
+        }
+
+      ]
+    },
+   {
+      "title": "December",
+      "image": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/monthly-themes/christmastree.png",
+        "alt": "theme image"
+      },
+      "description": "The color Red, the character quality Helpfulness, and the following are the themes this month:",
+      "list": [
+        {
+          "type": "checked",
+          "content": "(5-9) Baking / Food and Nutrition"
+        },
+        {
+          "type": "checked",
+          "content": "(12-16) Christmas"
+        },
+        {
+          "type": "checked",
+          "content": "(19-23) Christmas around the World"
+        },
+        {
+          "type": "checked",
+          "content": "(26-30) New Year’s Celebration"
+        }
+      ]
+    }
+  ]
+}

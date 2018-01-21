@@ -1,0 +1,89 @@
+.wrapper-logo-and-nav {
+  display: block;
+  text-align: center;
+}
+.wrapper-logo {
+  display: inline-block;
+  vertical-align: top;
+  float: none;
+  margin-top: 10px;
+
+  @media (max-width: 991px) {
+    float: left;
+    margin: 10px 0 10px 20px;
+
+    img {
+      width: auto;
+      height: 74px;
+    }
+  }
+}
+
+
+.wrapper-navigation {
+  margin-left: 42px;
+  display: inline-block;
+
+  @media (max-width: 991px) {
+    margin-right: 40px;
+    margin-top: 26px;
+    margin-left: 0 !important;
+    float: right;
+  }
+}
+
+.wrapper-navigation-mobile-btn {
+  width: 37px;
+
+}
+
+.mobile-nav-menu-btn-icon {
+  font-size: 25px;
+  color: $red;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+.mobile-nav-menu-btn-text {
+  font-size: 12px;
+  font-family: Lato, sans-serif;
+  position: relative;
+  top: -8px;
+  font-weight: bold;
+  color: $red;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+.wrapper-navigation-mobile {
+  position: relative;
+}
+.wrapper-navigation-mobile-content {
+  position: absolute;
+  width: 100%;
+  top: 99px;
+  z-index: 8000;
+  overflow: hidden;
+  background: $white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.mobile-content-transition-enter {
+  max-height: 0;
+}
+
+.mobile-content-transition-enter.mobile-content-transition-enter-active {
+  transition: max-height 300ms linear;
+  max-height: 500px;
+}
+
+.mobile-content-transition-leave {
+  max-height: 500px;
+}
+
+.mobile-content-transition-leave.mobile-content-transition-leave-active{
+  max-height: 0;
+  transition: max-height 300ms linear;
+}

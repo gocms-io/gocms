@@ -1,0 +1,73 @@
+@import './components/index';
+
+.hero-title-home {
+  margin: 110px 0 0 0;
+  padding: 0;
+  font-family: Archer, sans-serif;
+  font-weight: 100;
+  color: $white;
+  font-size: 48px;
+  width: 442px;
+}
+
+.hero-title-home-btn {
+  margin: 10px 0 0 0;
+}
+
+.three-box-callout-box-home-contact {
+  height: 311px;
+}
+
+.callout-box-home-mission-statement {
+  position: relative;
+  top: 116px;
+  left: 70px;
+  width: 516px;
+  height: 321px;
+  padding: 32px 0 0 22px;
+}
+.box-callout-container.three-box-callout-home.no-news-and-events {
+  margin-bottom: -10px;
+}
+
+
+.text-home-mission-statement {
+  font-family: Lato;
+  font-size: 18px;
+  font-weight: 400;
+  color: $gray;
+  line-height: 33px;
+}
+
+.home-page-bottom-hero {
+  margin-bottom: -31px;
+  margin-top: 10px;
+
+  @media (max-width: 922px) {
+    margin-top: 70px;
+  }
+}
+
+.home-page-mission-statement-mobile {
+  margin-top: 50px;
+
+  h1 {
+    font-size: 42px;
+    font-family: Archer, sans-serif;
+    color: $gray;
+  }
+
+  p {
+    font-size: 18px;
+    font-family: Lato, sans-serif;
+    color: $gray;
+    line-height: 33px;
+    font-weight: 400;
+  }
+
+  button {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "heightMobile": "150px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/patient-penguins/bslf_classroom_hero_penguins.jpg"
+    }
+  },
+  "classroomDetails": {
+    "calloutBox": {
+      "cameraFeed": "http://old.bigstepslittlefeet.org/one/",
+      "icon": {
+        "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/icons/penguins.jpg",
+        "alt": "patient penguins icon"
+      },
+      "title": "Patient Penguins",
+      "subTitle": "49 months to 55 months",
+      "content": "Our Patient Penguins program has 12 children ranging from approximately 49 months to approximately 55 months old.  We have one consistent and nurturing staff member caring for our preschool children daily."
+    },
+    "mainContent": {
+      "title": "Program Details",
+      "content": "During their time in the Patient Penguins classroom, each child is given the opportunity to learn in a preschool rich environment. This experience consists of a morning circle time with calendar and our weekly theme, learning area activities centered around art, more challenging math and science skills, with an additional emphasis on both upper and lowercase letters through Zoophonics. Throughout the year, we continue with self-help skills in our preparation to Kindergarten Readiness. Our Patient Penguins classroom is taking one nap a day, playing outdoors twice a day, and enjoying our nutritional menu.",
+      "list": [
+        "Adult to child ratio: 1:12",
+        "Personal cot and storage area provided",
+        "Parents provide an extra set of clothes and a cot sheet",
+        "Center provides wipes",
+        "Comfortable shoes are required",
+        "Secure live video feed",
+        "Special art and various age development projects",
+        "Bi-Weekly Bible stories and prayers before each meal",
+        "Zoophonics and Handwriting Without Tears",
+        "Nutritious breakfast, lunch, and snack provided",
+        "Parent/Teacher Conferences twice a year"
+      ]
+    }
+  },
+  "boxCalloutSection": {
+    "title": "Meet the Patient Penguins Teachers",
+    "boxes": [
+      {
+        "title": "Ms. Tabitha – Lead Teacher",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/patient-penguins/ms_tabitha.jpg",
+          "alt": "Ms. Tabitha"
+        },
+        "text": "I live in Rockford with my husband Dan, children Nolan and Lorelie, and our pets Walter, Charlie, and Bella. Together we love bonfires, matching movies, and doing house projects. My educational background is in photography, with a Bachelor's degree from CMU, and I run a small photography business when not at Big Steps. My personal hobbies include crafting, reading, and baking."
+      },
+      {
+        "title": "Ms. Maggie",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/patient-penguins/ms_maggie.jpg",
+          "alt": "Ms. Maggie"
+        },
+        "text": "I graduated from Lowell High School and have been working at Big Steps since September 2015. In my free time, I enjoy coloring, watching movies, and spending time with my husband and son. I am the oldest out of all of my cousins and while watching them often growing up, I realized how much I love working with children."
+      }
+    ]
+  },
+  "gallery": {
+    "title": "Classroom gallery",
+    "images": [
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/patient-penguins/patient_pengiuns_01.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/patient-penguins/patient_pengiuns_01.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/patient-penguins/patient_pengiuns_02.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/patient-penguins/patient_pengiuns_02.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/patient-penguins/patient_pengiuns_03.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/patient-penguins/patient_pengiuns_03.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/patient-penguins/patient_pengiuns_04.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/patient-penguins/patient_pengiuns_04.jpg",
+        "thumbnailAlt": "thumb alt"
+      }
+    ]
+  }
+}

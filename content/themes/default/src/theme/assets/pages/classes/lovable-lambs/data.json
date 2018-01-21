@@ -1,0 +1,101 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "heightMobile": "150px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/lovable-lambs/lovable-lambs-infants_01.jpg"
+    }
+  },
+  "classroomDetails": {
+    "calloutBox": {
+      "cameraFeed": "http://old.bigstepslittlefeet.org/one/",
+      "cameraFeed2": "http://old.bigstepslittlefeet.org/one/",
+      "icon": {
+        "src": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/icons/lamb.jpg",
+        "alt": "lovable lambs icon"
+      },
+      "title": "Lovable Lambs",
+      "subTitle": "6 weeks to 5 months",
+      "content": "Our Lovable Lambs program has twelve infants ranging from 6 weeks through approximately 5 months old. We have 3 consistent and nurturing staff caring for our infants daily."
+    },
+    "mainContent": {
+      "title": "Program Details",
+      "content": "While your child is in our Lovable Lambs room, we will adhere to each child’s feeding schedule from home to ensure a smooth transition. Our highly-qualified teachers will be spending time with all the children throughout the day, however your child will have their own primary teacher during their time in the Lambs. Each child will be provided age appropriate sensory and physical developmental activities to promote a happy and healthy infant. In addition, your child will be cuddled, sung to, rocked, and talked to as part of their daily curriculum as well.",
+      "list": [
+        "Separate Nap area",
+        "Adult to Child Ratio 1:4",
+        "Feeding, Naps, and Diapers are all recorded daily",
+        "Center provides toys, equipment, bibs, sippy cups, and wipes",
+        "Personal crib and storage area provided",
+        "Parents provide extra set of clothes, diapers, bottles, baby food, crib sheet",
+        "Comfortable toddler shoes required ",
+        "Room is enhanced with in-floor heating",
+        "Secure live video feed"
+      ]
+    }
+  },
+  "boxCalloutSection": {
+    "title": "Meet the Lovable Lambs Teachers",
+    "boxes": [
+      {
+        "title": "Ms. Amy - Lead Teacher",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/lovable-lambs/Amy.jpg",
+          "alt": "Ms. Amy"
+        },
+        "text": "I Attended GRCC for my Early Childhood degree and also went to Cornerstone University for social work, psychology, and sociology. I have been married for four and a half years and between my husband and I, we have 17 nephews and nieces. In my spare time, my husband and I enjoy skiing and taking our foster dog on walks!"
+      },
+      {
+        "title": "Ms. Crystal",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/lovable-lambs/Crystal.jpg",
+          "alt": "Ms. Crystal"
+        },
+        "text": "I grew up and graduated high school in the small town of Middleville. Shortly after that, I pursued CAN classes at Thompson M-TEC in Holland. I have been working at Big Steps since February of 2015 and my son, Carson is able to enjoy Big Steps as well. In my free time, I enjoy volleyball, basketball, and spending time with family."
+      },
+      {
+        "title": "Ms. Taylor",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/lovable-lambs/Taylor.jpg",
+          "alt": "Ms. Taylor"
+        },
+        "text": "I went to Ionia High School and I enjoy hanging out with family, bowling, crafting, and watching my shows. I am an only child in my family and together we enjoy golfing during the Summer time. My husband and I go fishing together and like doing house projects."
+      }
+    ]
+  },
+  "gallery": {
+    "title": "Classroom gallery",
+    "images": [
+      {
+        "original": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/classes/lovable-lambs/lovable-lambs-gallery_01.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/classes/lovable-lambs/lovable-lambs-gallery_01.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/lovable-lambs/lovable-lambs-gallery_02.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/lovable-lambs/lovable-lambs-gallery_02.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/lovable-lambs/lovable-lambs-gallery_03.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/lovable-lambs/lovable-lambs-gallery_03.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/lovable-lambs/lovable-lambs-gallery_04.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/lovable-lambs/lovable-lambs-gallery_04.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/lovable-lambs/lovable-lambs-gallery_05.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/lovable-lambs/lovable-lambs-gallery_05.jpg",
+        "thumbnailAlt": "thumb alt"
+      }
+    ]
+  }
+}

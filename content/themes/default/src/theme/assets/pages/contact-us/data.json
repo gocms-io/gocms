@@ -1,0 +1,32 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/bslf_contact_hero_outside.jpg"
+    }
+  },
+  "pageTitle": "Contact Us",
+  "contentTitle": "We want to hear from you!",
+  "content": "We want to hear from you! Please contact us with any questions or comments you have about our services. We are more than happy to address any questions or concerns you may have. We look forward to hearing from you!",
+  "contactFormBtn": "Send",
+  "phone": "(616)682-8300",
+  "email": "info@bigstepslittlefeet.org",
+  "address": "7030 Fulton St. Ada, MI 49301",
+  "jobsSection": {
+    "title": "Interested in joining our Big Steps team?",
+    "content": "We’re always looking for great teachers to join our staff. If you’re interested in a position at Big Steps, fill out the attached application and email it to us or drop it off to discuss employment in person.",
+    "downloadBtn": "Download Application",
+    "positions": [
+      {
+        "title": "Full or Part-Time Child Care Teacher Aide",
+        "description": "Big Steps Little Feet Christian Childcare and Preschool, in downtown Ada, is looking for immediate full and part-time Assistant Teachers!! Big Steps is a large center with a newly renovated preschool playground. We have 13 active and fun classrooms and 40 amazing staff!! We are in the heart of beautiful downtown Ada, directly across from the Amway headquarters. We have competitive wages, paid vacation, paid holidays, health, dental, and vision insurance, along with reimbursement towards CDA classes! Don't hesitate! Call or stop in today to see what Big Steps Little Feet has to offer! We would love to have you as an essential part of our Big Steps team! The Assistant Teacher qualifications are as follows: Must be at least 18 years of age. Be a positive role model of caregiving for the other staff and children. Be CPR, First Aid, and Bloodborne Pathogen certified, or be willing to obtain certification upon hire. Qualities necessary are honesty, reliablity, punctuality, having minimal absences, and dependable transportation. Be customer service oriented and professional. Maintain a calm composure during busy times of the day. Be aware of the unique needs of our Infants. Be available for full-time employment, until 6:30pm Monday - Friday.",
+        "fileUrl": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/files/Teacher_Application.pdf"
+      },
+      {
+        "title": "Full-Time Lead Childcare Teachers",
+        "description": "Big Steps Little Feet Christian Childcare and Preschool, in downtown Ada, is looking for immediate full-time lead teachers for our toddler and preschool rooms!! Big Steps is a large center and features a newly renovated preschool playground! We have 13 active and fun classrooms and 40 amazing staff!! We are located in the heart of beautiful downtown Ada, directly across from the Amway headquarters. We have competitive wages, paid vacation, health, vision, and dental insurance, and paid holidays! Don't hesitate! Call or stop in today to see what Big Steps has to offer!! We would love to have you as an essential part of the Big Steps team! The Lead Teacher qualifications are as follows: Must be at least 18 years of age. Possess a minimum of an Associate's Degree in Early Childhood Development, or have your CDA. Applicants who do not possess these credentials will not be considered.  Be a positive role model of caregiving for other staff and children. Be CPR, First Aid, and Bloodborne Pathogen certified, or be willing to obtain certification upon hire. Qualities necessary are honesty, reliablity, punctuality, having minimal absences, and dependable transportation. Be customer service oriented and professional. Maintain a calm composure during the busy times of the day. Be aware of the unique needs of Infants. Be available for full-time employment, until 6:30pm Monday - Friday. Lead Teacher Job Responsibilities are as follows: Our Lead Teachers receive an hour of paid planning time (computers available) to prepare lesson plans. Create developmentally appropriate lesson plans. Engage children in activities and play that stimulates their developmental growth. Maintain a clean, safe, and organized classroom. Consistency in daily information sheets for parents. Assist children in daily learning activities. Maintain a professional self-image and project the values of Big Steps Little Feet at all times.",
+        "fileUrl": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/files/Teacher_Application.pdf"
+      }
+    ]
+  }
+}

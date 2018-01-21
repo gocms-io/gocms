@@ -1,0 +1,37 @@
+.programs-menu-item-basic-title {
+  clear: both;
+  margin-bottom: 32px;
+  padding-top: 10px;
+  height: 40px;
+  float: left;
+  font-family: Lato-Light, sans-serif;
+  font-size: 16px;
+  color: $gray;
+  text-align: left;
+}
+
+.programs-menu-item-basic-title-icon-padding {
+  margin-right: 19px;
+}
+
+.programs-menu-item-basic-mobile {
+  margin-top: 22px;
+
+  .programs-menu-item-basic-title {
+    font-size: 16px;
+    clear: both;
+    margin-bottom: 30px;
+    margin-left: 22px;
+    padding-top: 0;
+    font-weight: 600;
+    height: auto;
+  }
+  .programs-menu-item-basic-title-icon-padding {
+    font-size: 12px;
+  }
+}
+.programs-menu-mobile-divider {
+  border: none;
+  margin-top: 22px;
+  display: inline-block;
+}

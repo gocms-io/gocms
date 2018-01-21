@@ -1,0 +1,22 @@
+.contact-from-age-range-input-wrapper {
+  display: inline-block;
+
+ h4 {
+   margin-top: 12px;
+   line-height: 12px;
+   font-family: Lato, sans-serif;
+   font-weight: 700;
+   font-size: 12px;
+   color: $gray;
+ }
+
+  h5 {
+    margin-top: 8px;
+    line-height: 12px;
+    font-family: Lato, sans-serif;
+    font-weight: normal;
+    font-style: italic;
+    color: $teal;
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "topHero": {
+    "title": "Christian Child Care & Preschool",
+    "backgroundImage": {
+      "src": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/home/home-hero.jpg",
+      "height": "512px",
+      "heightMobile": "250px"
+    },
+    "button": {
+      "text": "Learn More"
+    }
+  },
+  "boxCalloutSection": {
+    "box1": {
+      "title": "Welcome",
+      "image": {
+        "src": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/home/home-3-box-col-1.jpg",
+        "alt": "bslf playground"
+      },
+      "text": "Welcome to Big Steps Little Feet Christian Child Care Center & Preschool! We’re conveniently located at 7030 Fulton St, across the street from Amway. You can quickly access our facility on your way to and from your destination."
+    },
+    "box2": {
+      "title": "Child Care Program",
+      "image": {
+        "src": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/home/home-3-box-col-2.jpg",
+        "alt": "bslf friendly faces"
+      },
+      "text": "Our program offers a stimulating and nurturing environment for ages 6 weeks through 8 years, while providing an enhanced preschool curriculum for our older children."
+    },
+    "box3": {
+      "title": "Schedule a Tour"
+    }
+  },
+  "newsAndEvents": [
+    {
+      "title": "First Day of the Fall Session",
+      "date": "Mon. August 28th",
+      "body": "What a busy and exciting day! We welcome new children and their parents to the Big Steps family, while our existing families continue being an intricate part of Big Steps. The teachers are excited to start a new school year with fun and educational activities to share throughout the year!",
+      "rawHtml": false
+    },
+    {
+      "title": "BSLF is CLOSED",
+      "date": "Mon. September 3rd",
+      "body": "Big Steps will be closed in observance of Labor Day! - Without LABOR NOTHING PROSPERS - Sophocles",
+      "rawHtml": false
+    },
+    {
+      "title": "Grandparents Day Tea Party",
+      "date": "Mon. September 11th",
+      "body": "We hope that all the grandparents can join us at 3:00PM for cookies and juice to hangout with your favorite little one!! - Grandparents hold our tiny hands for just a little while, our hearts forever. -Author Unknown",
+      "rawHtml": false
+    },
+    {
+      "title": "BSLF Picture Day",
+      "date": "Mon. Sept 25th thru Wed. Sept 27th",
+      "body": "Lifetouch will be joining us again for our Fall picture session. The photos this time will be able to be viewed and ordered online. As these dates approach please watch for days and times that your child (ren) will be having their pictures taken.  We take EVERYONE'S picture.",
+      "rawHtml": false
+    },
+       {
+      "title": "Fall Festival",
+      "date": "Tues. Oct 31st",
+      "body": "This day is full of Fall activities and games, a picnic lunch and a parade to the Fire Station!!  Costumes are welcome, just no weapons or any costumes that might scare other children. Parents are welcome at 2:45PM to join us for our parade! We hope to see you there!",
+      "rawHtml": false
+    }
+  ],
+  "heroMissionStatement": {
+    "title": "Our Mission",
+    "body": "To provide a safe and nurturing environment where care and learning become a stimulating adventure, as we partner with parents in developing positive character qualities for your children, our future generation.",
+    "button": {
+      "text": "Learn More"
+    },
+    "backgroundImage": {
+      "src": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/home/home-mission-statement-bg.jpg",
+      "height": "554px",
+      "heightMobile": "250px"
+    }
+  }
+}

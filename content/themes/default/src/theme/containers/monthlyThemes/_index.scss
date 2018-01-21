@@ -1,0 +1,81 @@
+.themes-page-wrapper {
+}
+
+.themes-page-callout-box {
+  margin-top: 36px;
+  width: 305px;
+  height: 415px;
+  display: inline-block;
+  box-shadow: none;
+  float: left;
+  padding: 19px 30px;
+
+  @media (max-width: 653px) {
+    width: 290px;
+  }
+
+  &-right {
+    float: right;
+  }
+
+  &-middle {
+    margin-left: 36px;
+  }
+
+  h2 {
+    font-family: Archer, sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    color: $gray;
+    line-height: 24px;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+  }
+
+  img {
+    margin: 10px auto;
+    height: 93px;
+    display: block;
+    text-align: center;
+  }
+
+  p {
+    margin: 0;
+    line-height: 19px;
+    text-align: center;
+  }
+
+  ul {
+    font-size: 12px;
+    font-family: Lato, sans-serif;
+    font-weight: normal;
+    line-height: 12px;
+    color: $gray;
+    width: 100%;
+    padding: 0;
+    list-style-position: inside;
+    list-style-type: none;
+    margin-top: 10px;
+  }
+
+  .checked {
+    list-style-image: url('/themes/bslf/img/classes/checkMark.svg');
+    list-style-position: inside;
+  }
+
+  .bible {
+    padding-left: 21px;
+  }
+
+  li {
+    margin-top: 9px;
+  }
+}
+.themes-page-callout-box-mobile-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  width: 305px;
+  height: 100%;
+}
+

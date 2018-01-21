@@ -1,0 +1,48 @@
+.two-column-template-wrapper {
+  margin-top: 38px;
+}
+
+.two-column-template-title {
+  font-size: 32px;
+  font-family: Archer, sans-serif;
+  font-weight: bold;
+  color: $gray;
+}
+
+.two-column-template-content {
+  font-size: 12px;
+  font-family: Lato, sans-serif;
+  font-weight: 300;
+  color: $gray;
+  line-height: 19px;
+}
+
+.two-column-template-content-break {
+  margin: 15px 0 15px 0;
+}
+
+.two-column-template-contact-form-title {
+  font-size: 24px;
+  font-family: Archer, sans-serif;
+  font-weight: bold;
+  color: $gray;
+}
+
+.two-column-template-col-left {
+  float: left;
+  display: inline-block;
+  width: 302px;
+}
+
+.two-column-template-col-right {
+  float: right;
+  display: inline-block;
+  width: 632px;
+}
+
+.two-column-template-contact-form {
+  margin-top: 17px;
+  input {
+    width: 100%;
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "heightMobile": "150px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cool-kids/bslf_classroom_hero_coolkids.jpg"
+    }
+  },
+  "classroomDetails": {
+    "calloutBox": {
+      "icon": {
+        "src": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/icons/cool.jpg",
+        "alt": "cool kids icon"
+      },
+      "title": "Cool Kids",
+      "subTitle": "6 years to 12 years",
+      "content": "Our Cool Kids program has 18 children ranging from Kindergarten through Age 8. We have one consistent and nurturing staff member caring for our school age children daily."
+    },
+    "mainContent": {
+      "title": "Program Details",
+      "content": "Our Cool Kids Program provides before and after school care during the school year, as well as full-time Summer care and any school breaks. Transportation is provided to certain local area schools. After school care consists of snacks, homework support, group games, and outdoor activities. Summer care consists of a daily schedule, field trips to surrounding areas, as well as group and individual activities.",
+      "list": [
+        "Adult to child ratio 1:18",
+        "Secure live video feed",
+        "Nutritious breakfast, lunch, and snack provided"
+      ]
+    }
+  },
+  "boxCalloutSection": {
+    "title": "Meet the Cool Kids Teachers",
+    "boxes": [
+      {
+        "title": "Ms. Kayleigh",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cool-kids/Kaleigh.jpg",
+          "alt": "Ms. Kayleigh"
+        },
+        "text": "I attend Aquinas College and am pursuing my teaching certification for grades 6-12. My passion for teaching has been inspired by my mother. In the spring of 2016, I lived in Germany for four months studying abroad. Outside of work, I love spending time with my dog, enjoying Chinese food, and watching the Big Bang Theory."
+      },
+      {
+        "title": "Ms. Lindsay",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cool-kids/ms_lindsay.jpg",
+          "alt": "Ms. Lindsay"
+        },
+        "text": "I studied Early Childhood Education at Western Michigan university and I enjoy working with children. In my spare time, I like to listen to music, paint, and cook meals with my family. I love animals and I own a cat named Wilson. Someday I hope to travel to Ireland."
+      }
+    ]
+  },
+  "gallery": {
+    "title": "Classroom gallery",
+    "images": [
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cool-kids/cool_1.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cool-kids/cool_1.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cool-kids/cool_2.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cool-kids/cool_2.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cool-kids/cool_3.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cool-kids/cool_3.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cool-kids/cool_4.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/cool-kids/cool_4.jpg",
+        "thumbnailAlt": "thumb alt"
+      }
+    ]
+  }
+}

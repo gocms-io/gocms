@@ -1,0 +1,76 @@
+.field-trip-page-field-trip-cards-wrapper {
+  margin-top: -22px;
+}
+
+.field-trip-page-callout-box {
+  margin-top: 22px;
+  width: 100%;
+  display: inline-block;
+  box-shadow: none;
+  padding: 15px 26px;
+
+  h2 {
+    font-family: Archer, sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    color: $gray;
+    line-height: 24px;
+    width: 100%;
+    margin: 0;
+  }
+
+  h3 {
+    font-family: Lato, sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+    font-style: italic;
+    color: $teal;
+    width: 100%;
+    line-height: 18px;
+  }
+
+  p {
+    float: left;
+    margin-top: 20px;
+    font-family: Lato, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    color: $gray;
+    width: 256px;
+    line-height: 19px;
+  }
+
+  img {
+    float: right;
+    margin-top: 20px;
+    margin-bottom: 0;
+    width: 282px;
+    height: 190px;
+  }
+
+  &-mobile {
+
+    padding: 0;
+
+    h2 {
+      width: 100%;
+    }
+    h3 {
+      width: 100%;
+    }
+    p {
+      width: 100%;
+      font-size: 14px;
+      margin-top: 14px;
+    }
+    img {
+      width: 100%;
+      max-width: 282px;
+      height: auto;
+      float: none;
+      margin-top: 8px;
+      display: block;
+    }
+  }
+}
+

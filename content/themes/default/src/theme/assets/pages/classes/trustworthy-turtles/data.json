@@ -1,0 +1,94 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "heightMobile": "150px",
+      "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/trustworthy-turtles/bslf_classroom_hero_trustworthy_turtles.jpg"
+    }
+  },
+  "classroomDetails": {
+    "calloutBox": {
+      "cameraFeed": "http://old.bigstepslittlefeet.org/one/",
+      "icon": {
+        "src": "https://s3.amazonaws.com/s3.bigstepslittlefeet.org/dev/assets/img/icons/turtle.jpg",
+        "alt": "trustworthy turtles icon"
+      },
+      "title": "Trustworthy Turtles",
+      "subTitle": "34 months to 39 months",
+      "content": "Our Trustworthy Turtles program has 15 children ranging from approximately 34 months to approximately 39 months old.  We have two consistent and nurturing staff caring for our preschool children daily."
+    },
+    "mainContent": {
+      "title": "Program Details",
+      "content": "During their time in the Trustworthy Turtles classroom, each child is given the opportunity of learning in a preschool rich environment. This experience consists of a morning circle time with calendar and our weekly theme, learning area activities centered around art, math, and science skills, with a continued focus on Zoophonics. Children will now be introduced to the beginning stages of Handwriting Without Tears, designed to encourage and develop each child’s handwriting skills. Our Trustworthy Turtles classroom is taking one nap a day, playing outdoors twice a day, and enjoying our nutritional menu.",
+      "list": [
+        "Adult to child ratio: 1:8",
+        "Personal cot and storage area provided",
+        "Parents provide an extra set of clothes, a cot sheet, and diapers/pull-ups",
+        "Center provides wipes",
+        "Comfortable shoes are required",
+        "Secure live video feed",
+        "Special art and various age development projects",
+        "Weekly Bible stories and prayers before each meal",
+        "Zoophonics and Handwriting Skills",
+        "Nutritious breakfast, lunch, and snack provided",
+        "Parent/Teacher Conferences twice a year"
+      ]
+    }
+  },
+  "boxCalloutSection": {
+    "title": "Meet the Trustworthy Turtles Teachers",
+    "boxes": [
+      {
+        "title": "Ms. Emily",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/trustworthy-turtles/Emily.jpg",
+          "alt": "Ms. Emily"
+        },
+        "text": "I am the middle child and have two brothers. Summer is my favorite time of year because I enjoy swimming, sunshine, and warm weather! In my free time, I enjoy reading, writing, and dabbling in my photography. I have been working with children since age 12 and it never ceases to amaze me what children can show you from their perspective."
+      },
+      {
+        "title": "Ms. Karissa - Lead Teacher",
+        "image": {
+          "src": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/trustworthy-turtles/Karissa.jpg",
+          "alt": "Ms. Karissa"
+        },
+        "text": "I grew up in Grand Rapids with 10 brothers and sisters. I went to Union High School and graduated college with an Associates Degree in Child Development. I’ve been working with children since 2014, started at Big Steps in August of 2016 and love every minute. In my free time, I enjoy skiing, swimming, traveling, and shopping."
+      }
+    ]
+  },
+  "gallery": {
+    "title": "Classroom gallery",
+    "images": [
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/trustworthy-turtles/trustworth_turtles_01.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/trustworthy-turtles/trustworth_turtles_01.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/trustworthy-turtles/trustworth_turtles_02.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/trustworthy-turtles/trustworth_turtles_02.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/trustworthy-turtles/trustworth_turtles_03.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/trustworthy-turtles/trustworth_turtles_03.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/trustworthy-turtles/trustworth_turtles_04.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/trustworthy-turtles/trustworth_turtles_04.jpg",
+        "thumbnailAlt": "thumb alt"
+      },
+      {
+        "original": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/trustworthy-turtles/trustworth_turtles_05.jpg",
+        "originalAlt": "alt text",
+        "thumbnail": "http://s3.bigstepslittlefeet.org.s3.amazonaws.com/dev/assets/img/classes/trustworthy-turtles/trustworth_turtles_05.jpg",
+        "thumbnailAlt": "thumb alt"
+      }
+    ]
+  }
+}

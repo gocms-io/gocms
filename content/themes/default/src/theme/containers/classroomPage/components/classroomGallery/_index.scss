@@ -1,0 +1,71 @@
+.classroom-gallery-wrapper {
+  padding-bottom: 20px;
+  margin-top: 40px;
+
+  h1 {
+    margin: 20px 0 22px 0;
+    padding-bottom: 16px;
+    border-bottom: solid 1px $teal;
+    font-family: Archer, sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+  }
+
+  &-mobile {
+    margin-top: 60px;
+  }
+}
+
+.classroom-image-gallery-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  width: 653px;
+
+  .classroom-gallery-primary-image {
+    img {
+      height: 435px;
+      width: 653px;
+    }
+  }
+
+  .image-gallery-thumbnails-container {
+    margin-top: 15px;
+  }
+
+  .classroom-gallery-thumb-image {
+    width: 128px;
+
+    &.active {
+      border: solid 5px $teal;
+    }
+  }
+
+  @media (max-width: 653px) {
+    width: 100%;
+
+
+    .classroom-gallery-primary-image {
+      img {
+        height: auto;
+        width: 100%;
+      }
+    }
+  }
+
+  .image-gallery-bullets {
+    bottom: -30px;
+
+    .active {
+      background-color: $blue;
+
+    }
+
+    .image-gallery-bullet {
+      box-shadow: none;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid $blue;
+    }
+  }
+}

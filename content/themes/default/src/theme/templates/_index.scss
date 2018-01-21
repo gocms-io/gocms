@@ -1,0 +1,19 @@
+@import './layouts/twoColumnLayout/index';
+@import './layouts/topHeroLayout/index';
+@import './layouts/topHeroWithTitleLayout/index';
+
+.page-content-transition-enter {
+  opacity: .2;
+  position: relative;
+}
+
+.page-content-transition-enter.page-content-transition-enter-active {
+  opacity: 1;
+  transition: all ease-in 500ms;
+}
+
+.page-content-transition-leave {
+}
+
+.page-content-transition-leave.page-content-transition-leave-active {
+}

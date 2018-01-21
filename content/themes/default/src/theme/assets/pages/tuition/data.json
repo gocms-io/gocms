@@ -1,0 +1,127 @@
+{
+  "topHero": {
+    "backgroundImage": {
+      "height": "327px",
+      "src": "/themes/bslf/img/classes/classroom-hero.jpg"
+    }
+  },
+  "tuitionTitle": "Tuition",
+  "tuitionContent": "We understand that having quality child care at predictable rates is important to your family budget. Your weekly tuition provides a nurturing environment, amazing and qualified staff, and a nutritional menu. In addition to the above items, Big Steps provides health insurance for our staff, partial tuition reimbursement (for staff receiving their CDA), and new equipment that continues to enhance our innovative playground and our stimulating classrooms.",
+  "tuitionCards": [
+    {
+      "title": "Lovable Lambs - Helpful Hippos",
+      "subTitle": "-",
+      "programUrl": "/classes/helpful-hippos",
+      "cost": [
+        "5 days $252.75/week",
+        "4 days $234.75/week",
+        "3 days $197.00/week",
+        "2 days $138.25/week",
+        "1 day $70.75/week",
+        "1/2 days $42.00/half day"
+      ]
+    },
+    {
+      "title": "Kindhearted Kangaroos - Cheerful Chipmunks",
+      "subTitle": "Toilet Trained",
+      "programUrl": "/classes/helpful-hippos",
+      "cost": [
+        "5 days $212.00/week",
+        "4 days $190.75/week",
+        "3 days $149.75/week",
+        "2 days $103.75/week",
+        "1 day $58.75/week",
+        "1/2 days $30.50/half day"
+      ]
+    },
+    {
+      "title": "Trustworthy Turtles - Responsible Raccoons",
+      "subTitle": "NOT Toilet Trained",
+      "programUrl": "/classes/helpful-hippos",
+      "cost": [
+        "5 days $230.75/week",
+        "4 days $212.00/week",
+        "3 days $165.50/week",
+        "2 days $116.50/week",
+        "1 day $65.00/week",
+        "1/2 days $33.50/half day"
+      ]
+    },
+    {
+      "title": "Trustworthy Turtles - Joyful Jaguars",
+      "subTitle": "Toilet Trained",
+      "programUrl": "/classes/helpful-hippos",
+      "cost": [
+        "5 days $202.25/week",
+        "4 days $186.50/week",
+        "3 days $145.00/week",
+        "2 days $102.75/week",
+        "1 day $53.00/week",
+        "1/2 days $28.00/half day"
+      ]
+    },
+    {
+      "title": "Patient Penguins - Responsible Raccoons",
+      "subTitle": "Toilet Trained",
+      "programUrl": "/classes/helpful-hippos",
+      "cost": [
+        "5 days $190.75/week",
+        "4 days $179.75/week",
+        "3 days $140.50/week",
+        "2 days $98.50/week",
+        "1 day $50.00/week",
+        "1/2 days $26.25/half day"
+      ]
+    },
+    {
+      "title": "Pre/Young 5's Before & After School",
+      "subTitle": "",
+      "programUrl": "/classes/helpful-hippos",
+      "cost": [
+        "5 days $157.75/week",
+        "4 days $151.00/week",
+        "3 days $118.00/week",
+        "2 days $89.00/week",
+        "1 day $47.00/week",
+        "..."
+      ]
+    },
+    {
+      "title": "School Ager's Before OR After School",
+      "subTitle": "Cool Kids",
+      "cost": [
+        "5 days $65.00/week",
+        "4 days $52.00/week",
+        "3 days $39.00/week",
+        "2 days $26.00/week",
+        "1 day $13.00/week",
+        "..."
+      ]
+      },
+    {
+      "title": "School Ager's Before AND After School",
+      "subTitle": "Cool Kids",
+      "cost": [
+        "5 days $130.00/week",
+        "4 days $104.00/week",
+        "3 days $78.00/week",
+        "2 days $52.00/week",
+        "1 day $26.00/week",
+        "..."
+      ]
+      },
+    {
+      "title": "School Age Summer",
+      "subTitle": "Cool Kids",
+      "cost": [
+        "5 days $182.75/week",
+        "4 days $167.75/week",
+        "3 days $130.00/week",
+        "2 days $98.50/week",
+        "1 day $47.25/week",
+        "1/2 days $24.00/half day",
+        "..."
+      ]
+    }
+  ]
+}

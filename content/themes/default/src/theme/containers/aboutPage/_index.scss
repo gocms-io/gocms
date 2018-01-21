@@ -1,0 +1,203 @@
+.about-mission-statement-wrapper {
+  width: 627px;
+  margin: 0 auto;
+  padding-top: 121px;
+
+  h1 {
+    font-size: 32px;
+    font-family: Archer, sans-serif;
+    font-weight: bold;
+    text-align: center;
+    color: $white;
+  }
+
+  hr {
+    border-top: solid 2px $white;
+    margin: 20px 0 12px 0;
+  }
+
+  p {
+    font-family: Lato, sans-serif;
+    font-size: 28px;
+    line-height: 50px;
+    font-weight: 100;
+    text-align: center;
+    color: $white;
+  }
+
+  &-mobile {
+
+    width: 100%;
+    padding-top: 30px;
+
+    h1 {
+      font-size: 36px;
+    }
+    hr {
+      margin: 15px 0 8px 0;
+    }
+    p {
+      font-size: 18px;
+      line-height: 40px;
+      font-weight: 300;
+    }
+  }
+}
+
+.three-box-callout-box-about {
+  padding: 24px;
+}
+
+.three-box-callout-about {
+  margin-top: -65px;
+
+  &-mobile {
+    height: 1000px;
+    //height: 950px;
+  }
+}
+
+.three-box-callout-box-about {
+  h2 {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: Archer, sans-serif;
+  }
+
+  p {
+    font-family: Lato, sans-serif;
+    font-size: 12px;
+    line-height: 19px;
+  }
+}
+
+.about-facility-container {
+  h1 {
+    font-size: 32px;
+    font-family: Archer, sans-serif;
+    font-weight: normal;
+    color: $gray;
+  }
+
+  hr {
+
+  }
+
+  p {
+    margin-top: 15px;
+    font-family: Lato, sans-serif;
+    font-size: 12px;
+    line-height: 19px;
+    color: $gray;
+  }
+
+  img {
+    //margin-top: 10px;
+    width: 100%;
+  }
+
+  &-mobile {
+    //margin-top: 25px;
+  }
+}
+
+.container-box-callout-section-about-management {
+  margin-top: 80px;
+
+  &-mobile {
+    margin-top: 45px;
+    display: inline-block;
+    background-image: url("/themes/bslf/img/home/hero-pattern-bg.png");
+    h1 {
+      font-size: 32px;
+      font-family: Archer, sans-serif;
+      font-weight: normal;
+      color: #4A4A4A;
+    }
+  }
+}
+
+.box-callout-section-about {
+  &-management {
+    margin-top: 80px;
+
+    &-mobile {
+      margin-top: 50px;
+    }
+  }
+}
+
+.box-callout-section-about-management {
+  margin-bottom: 0;
+  img {
+    height: 159px;
+    width: 265px;
+  }
+}
+
+.box-callout-section-about-management-rob {
+  .box-callout-section-wrapper {
+    top: 2px;
+  }
+
+  &-mobile {
+
+    .box-callout-section-wrapper {
+      top: -40px;
+      margin-bottom: -24px;
+    }
+  }
+}
+
+.callout-box.callout-box-about-rob {
+  width: 796px;
+  h2 {
+    display: block;
+  }
+  img {
+    float: left;
+    width: 250px;
+    height: initial;
+  }
+  div {
+    float: left;
+    margin-left: 12px;
+    width: 490px;
+  }
+  p {
+    font-family: Lato, sans-serif;
+    font-size: 12px;
+    color: #4A4A4A;
+  }
+
+  &-mobile {
+    img {
+      height: initial;
+      width: 100%;
+    }
+  }
+}
+
+.about-video-container {
+  margin-top: 20px;
+
+  &-mobile {
+    margin-top: 0;
+  }
+}
+
+.about-video-thumbs-container {
+  margin-top: 45px;
+
+  &-mobile {
+
+  }
+}
+
+.about-page-video-thumb {
+  width: 465px;
+
+  &-mobile {
+    width: auto;
+  }
+}
