@@ -13,6 +13,7 @@ func Default() *migrate.MemoryMigrationSource {
 			AddACL(),
 			AddExternalPlugin(),
 			MigrateToRSAKeys(),
+			AddDocumentationToggle(),
 		},
 	}
 	return &migrationsList

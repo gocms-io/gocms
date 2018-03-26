@@ -11,6 +11,7 @@ type ISettingsService interface {
 	RefreshSettingsCache() error
 	GetSettings() map[string]setting_model.Setting
 	RegisterRefreshCallback(func(map[string]setting_model.Setting))
+	GetByName(string) (*setting_model.Setting, error)
 }
 
 type SettingsService struct {
@@ -66,4 +67,8 @@ func (ss *SettingsService) RefreshSettingsCache() error {
 
 func (ss *SettingsService) GetSettings() map[string]setting_model.Setting {
 	return ss.SettingsCache
+}
+
+func (ss *SettingsService) GetByName(name string) (*setting_model.Setting, error) {
+	return ss.RepositoriesGroup.SettingsRepository.GetByName(name)
 }

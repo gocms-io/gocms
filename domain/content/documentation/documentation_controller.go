@@ -37,7 +37,16 @@ func (dc *DocumentationController) Default() {
 	docsMap["GoCMS"] = "/docs/gocms"
 
 	dc.routes.Root.GET("/docs", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "docs.tmpl", docsMap)
+		doc,err := dc.serviceGroup.SettingsService.GetByName("DOCUMENTATION")
+		if err != nil {
+			fmt.Println("There was an error when loading docs")
+			c.Redirect(http.StatusTemporaryRedirect, "/")
+		}
+		if doc.Value == "TRUE" {
+			c.HTML(http.StatusOK, "docs.tmpl", docsMap)
+		} else {
+			c.Redirect(http.StatusTemporaryRedirect, "/")
+		}
 	})
 
 	dc.routes.Root.GET("/docs/", func(c *gin.Context) {
