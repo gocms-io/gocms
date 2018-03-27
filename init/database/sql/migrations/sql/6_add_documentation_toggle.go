@@ -6,7 +6,7 @@ func AddDocumentationToggle() *migrate.Migration {
 	migrateToRSAKeys := migrate.Migration{
 		Id: "6",
 		Up: []string{`
-			INSERT INTO gocms_settings (name, value, description) VALUES ('DOCUMENTATION', 'TRUE', 'Display documentation at /docs.  Boolean. ');
+			INSERT INTO gocms_settings (name, value, description) VALUES ('DISABLE_DOCUMENTATION_DISPLAY', 'false', 'Display documentation at /docs.  Boolean. ');
 			`,
 		},
 		Down: []string{

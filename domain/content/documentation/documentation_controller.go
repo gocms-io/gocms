@@ -38,11 +38,11 @@ func (dc *DocumentationController) Default() {
 	docsMap["GoCMS"] = "/docs/gocms"
 
 	dc.routes.Root.GET("/docs", func(c *gin.Context) {
-		doc := context.Config.DbVars.DocumentationDisplay
+		doc := context.Config.DbVars.DisableDocumentationDisplay
 		if doc == true {
-			c.HTML(http.StatusOK, "docs.tmpl", docsMap)
-		} else {
 			c.Redirect(http.StatusTemporaryRedirect, "/")
+		} else {
+			c.HTML(http.StatusOK, "docs.tmpl", docsMap)
 		}
 	})
 
