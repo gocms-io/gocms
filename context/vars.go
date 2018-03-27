@@ -64,6 +64,7 @@ type dbVars struct {
 	ActiveThemeAssetsBase string
 	LoginTitle            string
 	LoginSuccessRedirect  string
+	DocumentationDisplay   bool
 }
 
 func (dbVars *dbVars) LoadDbVars(settings map[string]setting_model.Setting) {
@@ -123,6 +124,7 @@ func (dbVars *dbVars) LoadDbVars(settings map[string]setting_model.Setting) {
 	dbVars.ActiveThemeAssetsBase = GetStringOrFail("ACTIVE_THEME_ASSETS_BASE", settings)
 	dbVars.LoginTitle = GetStringOrFail("GOCMS_LOGIN_TITLE", settings)
 	dbVars.LoginSuccessRedirect = GetStringOrFail("GOCMS_LOGIN_SUCCESS_REDIRECT", settings)
+	dbVars.DocumentationDisplay = GetBoolOrFail("DOCUMENTATION", settings)
 
 }
 
