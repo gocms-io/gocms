@@ -18,7 +18,7 @@ type SQL struct {
 
 func DefaultSQL() *SQL {
 	// create db connection
-	connectionString := context.Config.EnvVars.DbName + ":" + context.Config.EnvVars.DbPassword + "@" + context.Config.EnvVars.DbServer + "/" + context.Config.EnvVars.DbName + "?parseTime=true"
+	connectionString := context.Config.EnvVars.DbUser + ":" + context.Config.EnvVars.DbPassword + "@" + context.Config.EnvVars.DbServer + "/" + context.Config.EnvVars.DbName + "?parseTime=true"
 	dbHandle, err := sql.Open("mysql", connectionString)
 	if err != nil {
 		log.Criticalf("Database Error opening connection: %v\n", err.Error())
