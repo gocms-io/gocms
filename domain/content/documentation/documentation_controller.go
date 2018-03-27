@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/routes"
+	"github.com/gocms-io/gocms/context"
 	"net/http"
 	"github.com/gocms-io/gocms/init/service"
 )
@@ -37,12 +38,8 @@ func (dc *DocumentationController) Default() {
 	docsMap["GoCMS"] = "/docs/gocms"
 
 	dc.routes.Root.GET("/docs", func(c *gin.Context) {
-		doc,err := dc.serviceGroup.SettingsService.GetByName("DOCUMENTATION")
-		if err != nil {
-			fmt.Println("There was an error when loading docs")
-			c.Redirect(http.StatusTemporaryRedirect, "/")
-		}
-		if doc.Value == "TRUE" {
+		doc := context.Config.DbVars.DocumentationDisplay
+		if doc == true {
 			c.HTML(http.StatusOK, "docs.tmpl", docsMap)
 		} else {
 			c.Redirect(http.StatusTemporaryRedirect, "/")
