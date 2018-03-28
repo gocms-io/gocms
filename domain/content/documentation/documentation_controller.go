@@ -25,29 +25,26 @@ func DefaultDocumentationController(routes *routes.Routes, sg *service.ServicesG
 }
 
 func (dc *DocumentationController) Default() {
-	// register goCMS Docs Route
-	dc.routes.Root.Static("/docs/gocms", "./content/docs")
-	docsMap := make(map[string]string)
+	doc := context.Config.DbVars.DisableDocumentationDisplay
+	if doc != true {
+		// register goCMS Docs Route
+		dc.routes.Root.Static("/docs/gocms", "./content/docs")
+		docsMap := make(map[string]string)
 
-	// build map for docs page render
-	for _, plugin := range dc.serviceGroup.PluginsService.GetActivePlugins() {
-		link := fmt.Sprintf("docs/%s", plugin.Manifest.Id)
-		docsMap[plugin.Manifest.Name] = link
-	}
-
-	docsMap["GoCMS"] = "/docs/gocms"
-
-	dc.routes.Root.GET("/docs", func(c *gin.Context) {
-		doc := context.Config.DbVars.DisableDocumentationDisplay
-		if doc == true {
-			c.Redirect(http.StatusTemporaryRedirect, "/")
-		} else {
-			c.HTML(http.StatusOK, "docs.tmpl", docsMap)
+		// build map for docs page render
+		for _, plugin := range dc.serviceGroup.PluginsService.GetActivePlugins() {
+			link := fmt.Sprintf("docs/%s", plugin.Manifest.Id)
+			docsMap[plugin.Manifest.Name] = link
 		}
-	})
 
-	dc.routes.Root.GET("/docs/", func(c *gin.Context) {
-		c.Redirect(http.StatusTemporaryRedirect, "/docs")
-	})
+		docsMap["GoCMS"] = "/docs/gocms"
 
+		dc.routes.Root.GET("/docs", func(c *gin.Context) {
+			
+		})
+
+		dc.routes.Root.GET("/docs/", func(c *gin.Context) {
+			c.Redirect(http.StatusTemporaryRedirect, "/docs")
+		})
+	}
 }
