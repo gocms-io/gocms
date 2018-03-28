@@ -40,7 +40,7 @@ func (dc *DocumentationController) Default() {
 		docsMap["GoCMS"] = "/docs/gocms"
 
 		dc.routes.Root.GET("/docs", func(c *gin.Context) {
-			
+			c.HTML(http.StatusOK, "docs.tmpl", docsMap)
 		})
 
 		dc.routes.Root.GET("/docs/", func(c *gin.Context) {
