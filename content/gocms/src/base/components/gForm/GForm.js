@@ -6,7 +6,8 @@ import Formsy from 'formsy-react';
 import GSubmit from './GSubmit'
 import GInput from './GInput'
 import GTextArea from './GTextArea'
-
+import GSelect from './GSelect'
+import GDatePicker from './GDatePicker'
 
 class GForm extends React.Component {
     constructor(props) {
@@ -102,7 +103,7 @@ class GForm extends React.Component {
                     childProps.children = this.recursiveCloneChildren(child.props.children);
                 }
                 // if child is GInput add dirty prop
-                if (child.type === GInput || child.type === GTextArea) {
+                if ([GInput, GTextArea, GSelect, GDatePicker].indexOf(child.type) >= 0) {
                     childProps.dirty = this.state.dirty;
                     return React.cloneElement(child, childProps);
                 }
