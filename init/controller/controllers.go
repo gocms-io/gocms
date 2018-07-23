@@ -2,6 +2,8 @@ package controller
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/context"
@@ -14,13 +16,13 @@ import (
 	"github.com/gocms-io/gocms/domain/content/theme"
 	"github.com/gocms-io/gocms/domain/email/email_controller"
 	"github.com/gocms-io/gocms/domain/health/health_controller"
+	"github.com/gocms-io/gocms/domain/health/health_middleware"
+	"github.com/gocms-io/gocms/domain/plugin/plugin_services"
 	"github.com/gocms-io/gocms/domain/user/user_admin_controller"
 	"github.com/gocms-io/gocms/domain/user/user_controller"
 	"github.com/gocms-io/gocms/domain/user/user_middleware"
 	"github.com/gocms-io/gocms/init/service"
 	"github.com/gocms-io/gocms/routes"
-	"strings"
-	"github.com/gocms-io/gocms/domain/plugin/plugin_services"
 )
 
 type ControllersGroup struct {
@@ -55,12 +57,12 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 	// apply plugin middleware rank 1
 	r.Use(pluginMiddlewareProxy.ApplyForRank(plugin_services.MIDDLEWARE_RANK_1)...)
 
-
 	// top level middleware
 	r.Use(user_middleware.UUID())
 	r.Use(cors.CORS())
 	r.Use(user_middleware.Timezone())
 	am := authentication_middleware.DefaultAuthMiddleware(sg)
+	hm := health_middleware.DefaultHealthMiddleware(sg)
 	r.Use(am.AddUserToContextIfValidToken())
 
 	// apply plugin middleware rank 1000
@@ -78,6 +80,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 
 	// apply auth middleware
 	am.ApplyAuthToRoutes(routes)
+	hm.ApplyHealthToRoutes(routes)
 
 	// apply plugin middleware rank 2000
 	r.Use(pluginMiddlewareProxy.ApplyForRank(plugin_services.MIDDLEWARE_RANK_2000)...)

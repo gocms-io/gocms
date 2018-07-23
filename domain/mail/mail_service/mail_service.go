@@ -1,14 +1,15 @@
 package mail_service
 
 import (
-	"github.com/gocms-io/gocms/context"
-	"gopkg.in/gomail.v2"
+	"fmt"
 	"io"
 	"path/filepath"
 	"text/template"
 	"time"
+
+	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/utility/log"
-	"fmt"
+	"gopkg.in/gomail.v2"
 )
 
 type IMailService interface {

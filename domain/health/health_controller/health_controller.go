@@ -1,11 +1,12 @@
 package health_controller
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/init/service"
 	"github.com/gocms-io/gocms/routes"
 	"github.com/gocms-io/gocms/utility/errors"
-	"net/http"
 )
 
 type HealthController struct {
@@ -23,9 +24,8 @@ func DefaultHealthController(routes *routes.Routes, serviceGroup *service.Servic
 	return hc
 }
 
-
 func (hc *HealthController) Default() {
-	hc.routes.Public.GET("/healthy", hc.health)
+	hc.routes.Root.GET("/healthy", hc.health)
 }
 
 /**

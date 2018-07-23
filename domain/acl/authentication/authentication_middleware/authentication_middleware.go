@@ -1,15 +1,16 @@
 package authentication_middleware
 
 import (
+	"net/http"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/gocms-io/gocms/context"
 	"github.com/gocms-io/gocms/context/consts"
 	"github.com/gocms-io/gocms/init/service"
 	"github.com/gocms-io/gocms/routes"
-	"github.com/gocms-io/gocms/utility/errors"
-	"net/http"
 	"github.com/gocms-io/gocms/utility/api_utility"
+	"github.com/gocms-io/gocms/utility/errors"
 	"github.com/gocms-io/gocms/utility/log"
 )
 

@@ -14,5 +14,6 @@ export function registeredRoutes() {
     return <Route>
         {registeredLoginRoutes()}
         {registeredAdminRoutes()}
+        <Route path="*" component={NoMatch} status={404}/>
     </Route>;
 }
