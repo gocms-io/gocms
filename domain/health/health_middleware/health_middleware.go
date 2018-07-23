@@ -7,10 +7,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/domain/mail/mail_service"
-	"github.com/gocms-io/gocms/init/service"
-	"github.com/gocms-io/gocms/routes"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/myanrichal/gocms/domain/mail/mail_service"
+	"github.com/myanrichal/gocms/init/service"
+	"github.com/myanrichal/gocms/routes"
+	"github.com/myanrichal/gocms/utility/log"
 )
 
 //Setup
@@ -47,7 +47,9 @@ func (w bodyLogWriter) Write(b []byte) (int, error) {
 func (hm *HealthMiddleware) ApplyHealthToRoutes(routes *routes.Routes) {
 	fmt.Println("\nSetup Health Middleware\n")
 	log.Debugf("Adding Health Services Middleware\n")
+	//setup as auth route only 
 	routes.Auth.Use(hm.CheckForErrors())
+	routes.Public.Use(hm.CheckForErrors())
 }
 
 //wrapper for middleware

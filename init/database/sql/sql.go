@@ -3,9 +3,9 @@ package sql
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/init/database/sql/migrations/sql"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/myanrichal/gocms/context"
+	"github.com/myanrichal/gocms/init/database/sql/migrations/sql"
+	"github.com/myanrichal/gocms/utility/log"
 	"github.com/jmoiron/sqlx"
 	"github.com/rubenv/sql-migrate"
 )

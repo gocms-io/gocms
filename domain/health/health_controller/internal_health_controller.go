@@ -5,9 +5,9 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/init/service"
-	"github.com/gocms-io/gocms/routes"
-	"github.com/gocms-io/gocms/utility/errors"
+	"github.com/myanrichal/gocms/init/service"
+	"github.com/myanrichal/gocms/routes"
+	"github.com/myanrichal/gocms/utility/errors"
 )
 
 type InternalHealthController struct {

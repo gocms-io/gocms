@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/myanrichal/gocms/utility/log"
 )
 
 func GenerateRandomBytes(n int) ([]byte, error) {

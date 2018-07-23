@@ -2,10 +2,10 @@ package rest
 
 import (
 	"bytes"
-	"github.com/gocms-io/gocms/utility/errors"
+	"github.com/myanrichal/gocms/utility/errors"
 	"io/ioutil"
 	"net/http"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/myanrichal/gocms/utility/log"
 )
 
 var GET string = "GET"

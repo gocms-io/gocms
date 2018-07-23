@@ -1,8 +1,8 @@
 package permission_repository
 
 import (
-	"github.com/gocms-io/gocms/domain/acl/permissions/permission_model"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/myanrichal/gocms/domain/acl/permissions/permission_model"
+	"github.com/myanrichal/gocms/utility/log"
 	"github.com/jmoiron/sqlx"
 )
 

@@ -1,7 +1,7 @@
 package template_controller
 
 import (
-	"github.com/gocms-io/gocms/routes"
+	"github.com/myanrichal/gocms/routes"
 )
 
 type TemplatesController struct {

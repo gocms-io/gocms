@@ -1,13 +1,13 @@
 package user_service
 
 import (
-	"github.com/gocms-io/gocms/utility"
-	"github.com/gocms-io/gocms/utility/errors"
-	"github.com/gocms-io/gocms/domain/user/user_model"
-	"github.com/gocms-io/gocms/init/repository"
-	"github.com/gocms-io/gocms/domain/mail/mail_service"
-	"github.com/gocms-io/gocms/domain/email/email_model"
-	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_service"
+	"github.com/myanrichal/gocms/utility"
+	"github.com/myanrichal/gocms/utility/errors"
+	"github.com/myanrichal/gocms/domain/user/user_model"
+	"github.com/myanrichal/gocms/init/repository"
+	"github.com/myanrichal/gocms/domain/mail/mail_service"
+	"github.com/myanrichal/gocms/domain/email/email_model"
+	"github.com/myanrichal/gocms/domain/acl/authentication/authentication_service"
 )
 
 type IUserService interface {

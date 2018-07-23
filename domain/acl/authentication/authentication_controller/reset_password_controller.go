@@ -2,10 +2,10 @@ package authentication_controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/utility/errors"
+	"github.com/myanrichal/gocms/utility/errors"
 	"net/http"
-	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_model"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/myanrichal/gocms/domain/acl/authentication/authentication_model"
+	"github.com/myanrichal/gocms/utility/log"
 )
 
 /**

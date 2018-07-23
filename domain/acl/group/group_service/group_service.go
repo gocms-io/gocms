@@ -1,7 +1,7 @@
 package group_service
 
 import (
-	"github.com/gocms-io/gocms/init/repository"
+	"github.com/myanrichal/gocms/init/repository"
 )
 
 type IGroupService interface {

@@ -4,15 +4,15 @@ import (
 	"database/sql"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/utility/errors"
+	"github.com/myanrichal/gocms/utility/errors"
 	"net/http"
 	"strings"
 
 	"fmt"
-	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/domain/user/user_model"
-	"github.com/gocms-io/gocms/utility/log"
-	"github.com/gocms-io/gocms/utility/rest"
+	"github.com/myanrichal/gocms/context"
+	"github.com/myanrichal/gocms/domain/user/user_model"
+	"github.com/myanrichal/gocms/utility/log"
+	"github.com/myanrichal/gocms/utility/rest"
 )
 
 type gImage struct {

@@ -1,8 +1,8 @@
 package group_repository
 
 import (
-	"github.com/gocms-io/gocms/domain/acl/group/group_model"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/myanrichal/gocms/domain/acl/group/group_model"
+	"github.com/myanrichal/gocms/utility/log"
 	"github.com/jmoiron/sqlx"
 )
 

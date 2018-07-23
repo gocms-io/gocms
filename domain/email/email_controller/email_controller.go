@@ -3,12 +3,12 @@ package email_controller
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/domain/email/email_model"
-	"github.com/gocms-io/gocms/init/service"
-	"github.com/gocms-io/gocms/routes"
-	"github.com/gocms-io/gocms/utility/api_utility"
-	"github.com/gocms-io/gocms/utility/errors"
+	"github.com/myanrichal/gocms/context"
+	"github.com/myanrichal/gocms/domain/email/email_model"
+	"github.com/myanrichal/gocms/init/service"
+	"github.com/myanrichal/gocms/routes"
+	"github.com/myanrichal/gocms/utility/api_utility"
+	"github.com/myanrichal/gocms/utility/errors"
 	"net/http"
 )
 

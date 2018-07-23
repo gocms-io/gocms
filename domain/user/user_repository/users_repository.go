@@ -2,9 +2,9 @@ package user_repository
 
 import (
 	"database/sql"
-	"github.com/gocms-io/gocms/domain/user/user_model"
-	"github.com/gocms-io/gocms/utility/errors"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/myanrichal/gocms/domain/user/user_model"
+	"github.com/myanrichal/gocms/utility/errors"
+	"github.com/myanrichal/gocms/utility/log"
 	"github.com/jmoiron/sqlx"
 	"time"
 )
