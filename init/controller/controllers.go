@@ -117,8 +117,6 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 		c.Redirect(http.StatusMovedPermanently, "/");
 		
 		return
-		//present default 404 error
-		
 		
 		// previously if the page was not found it was handed to react to look. This is unneccesary. Go knows what react routes work.  
 		// React was continue looking for non existing pages and "load" forever. 
