@@ -1,8 +1,8 @@
 package controller
 
 import (
+	"net/http"
 	"fmt"
-	"strings"
 
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
@@ -113,6 +113,8 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 
 	// add no route controller
 	routes.NoRoute(func(c *gin.Context) {
+		
+		c.Redirect(http.StatusMovedPermanently, "/");
 		
 		return
 		//present default 404 error
