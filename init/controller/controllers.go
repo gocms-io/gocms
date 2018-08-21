@@ -113,12 +113,23 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 
 	// add no route controller
 	routes.NoRoute(func(c *gin.Context) {
-		paths := strings.Split(c.Request.RequestURI, "/")
-		if paths[1] == "api" {
-			return // handle default not route
-		}
-		// otherwise return homepage
-		contentControllers.ReactControllers.ServeReact(c)
+		
+		return
+		//present default 404 error
+		
+		
+		// previously if the page was not found it was handed to react to look. This is unneccesary. Go knows what react routes work.  
+		// React was continue looking for non existing pages and "load" forever. 
+		// returning here insures we keep a uniform 404 page instead of having to write seperate 404 handlers on back/front end. 
+
+
+		/* OLD CODE 
+			paths := strings.Split(c.Request.RequestURI, "/")
+			if paths[1] == "api" {
+				return // handle default not route
+			}
+			contentControllers.ReactControllers.ServeReact(c)
+		*/
 	})
 
 	controllersGroup := &ControllersGroup{
