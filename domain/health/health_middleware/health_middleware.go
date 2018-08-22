@@ -11,6 +11,7 @@ import (
 	"github.com/myanrichal/gocms/init/service"
 	"github.com/myanrichal/gocms/routes"
 	"github.com/myanrichal/gocms/utility/log"
+	"github.com/myanrichal/gocms/context"
 )
 
 //Setup
@@ -59,8 +60,7 @@ func (hm *HealthMiddleware) CheckForErrors() gin.HandlerFunc {
 
 //middleware activity
 func (hm *HealthMiddleware) errorMiddleware(c *gin.Context) {
-
-	fmt.Println("\n -- Trying Health Middleware -- ")
+	fmt.Println("error middleware")
 
 	//setup writer
 	blw := &bodyLogWriter{body: bytes.NewBufferString(""), ResponseWriter: c.Writer}
@@ -70,14 +70,17 @@ func (hm *HealthMiddleware) errorMiddleware(c *gin.Context) {
 
 	//initalize vairables
 	var (
-		responseBody, routeProblem, date string
+		responseBody, routeProblem string
 	)
+
 
 	//check status
 	statusCode := c.Writer.Status()
 
 	//There is an error send an error report
 	if statusCode >= 400 {
+
+		//send only one error report of identical type  within 10 minutes. 
 		//Print Body
 		responseBody = blw.body.String()
 
@@ -85,14 +88,27 @@ func (hm *HealthMiddleware) errorMiddleware(c *gin.Context) {
 		routeProblem = c.Request.URL.Path
 
 		//find date
-		date = time.Now().String()
+		date := time.Now()
+
+		emailBody := (`
+			<!DOCTYPE html>
+			<html>
+			<h2> Error Report :    ` + context.Config.DbVars.LoginTitle + ` </h2>
+			<ul>
+				<li> Route:  		  ` + routeProblem 				+ `</li>
+				<li> Status: 		  ` + strconv.Itoa(statusCode) 	+ `</li>
+				<li> Body:   		  ` + responseBody 				+ `</li>
+				<li> Time of Incident ` + date.String() 			+ `</li>
+			</ul>
+			</html>
+			`)
 
 		//setup mail
 		ms := mail_service.DefaultMailService()
 		mail := &mail_service.Mail{
-			To:      "ryan.michal@cqlcorp.com",
-			Subject: "PMD - Health Monitor",
-			Body:    "\nRoute: " + routeProblem + "\nStatus: " + strconv.Itoa(statusCode) + "\nBody: " + responseBody + "Time of Incident: " + date,
+			To:      context.Config.DbVars.ErrorReportAddress,
+			Subject: "GoCms - Health Monitor",
+			Body: emailBody,
 		}
 
 		err := ms.Send(mail)
@@ -100,5 +116,7 @@ func (hm *HealthMiddleware) errorMiddleware(c *gin.Context) {
 		if err != nil {
 			fmt.Println("\nThere was an error in sending\n")
 		}
+
 	}
 }
+

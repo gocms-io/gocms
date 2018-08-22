@@ -29,6 +29,7 @@ type ServicesGroup struct {
 	EmailService      email_service.IEmailService
 	PluginsService    plugin_services.IPluginsService
 	HealthService     health_service.IHealthService
+	LogService		  log_service.ILogService
 }
 
 func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup, db *database.Database) *ServicesGroup {
@@ -83,6 +84,7 @@ func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup, db *d
 		EmailService:      emailService,
 		PluginsService:    pluginsService,
 		HealthService:     healthService,
+		LogService: 	   logService,
 	}
 
 	return sg
