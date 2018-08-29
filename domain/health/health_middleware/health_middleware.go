@@ -1,6 +1,7 @@
 package health_middleware
 
 import (
+	"github.com/myanrichal/gocms/domain/logs/log_model"
 	"bytes"
 	"fmt"
 	"strconv"
@@ -49,6 +50,7 @@ func (hm *HealthMiddleware) ApplyHealthToRoutes(routes *routes.Routes) {
 	fmt.Println("\nSetup Health Middleware\n")
 	log.Debugf("Adding Health Services Middleware\n")
 	//setup as auth route only 
+	// todo: SHOULD APPLY ON ALL ROUTES
 	routes.Auth.Use(hm.CheckForErrors())
 	routes.Public.Use(hm.CheckForErrors())
 }
@@ -60,63 +62,58 @@ func (hm *HealthMiddleware) CheckForErrors() gin.HandlerFunc {
 
 //middleware activity
 func (hm *HealthMiddleware) errorMiddleware(c *gin.Context) {
-	fmt.Println("error middleware")
-
 	//setup writer
-	blw := &bodyLogWriter{body: bytes.NewBufferString(""), ResponseWriter: c.Writer}
-	c.Writer = blw
+		blw := &bodyLogWriter{body: bytes.NewBufferString(""), ResponseWriter: c.Writer}
+		c.Writer = blw
 
-	c.Next()
-
-	//initalize vairables
-	var (
-		responseBody, routeProblem string
-	)
-
+		c.Next()
 
 	//check status
-	statusCode := c.Writer.Status()
+	statusCode := c.Writer.Status()	
 
-	//There is an error send an error report
 	if statusCode >= 400 {
+		//check database
+		var errorReport log_model.ErrorLog
+			errorReport.Status = strconv.Itoa(statusCode)
+			errorReport.Route = c.Request.URL.Path
+			errorReport.Body = blw.body.String()
+			errorReport.Time = time.Now()
 
-		//send only one error report of identical type  within 10 minutes. 
-		//Print Body
-		responseBody = blw.body.String()
-
-		//print problem route
-		routeProblem = c.Request.URL.Path
-
-		//find date
-		date := time.Now()
-
-		emailBody := (`
-			<!DOCTYPE html>
-			<html>
-			<h2> Error Report :    ` + context.Config.DbVars.LoginTitle + ` </h2>
-			<ul>
-				<li> Route:  		  ` + routeProblem 				+ `</li>
-				<li> Status: 		  ` + strconv.Itoa(statusCode) 	+ `</li>
-				<li> Body:   		  ` + responseBody 				+ `</li>
-				<li> Time of Incident ` + date.String() 			+ `</li>
-			</ul>
-			</html>
-			`)
-
-		//setup mail
-		ms := mail_service.DefaultMailService()
-		mail := &mail_service.Mail{
-			To:      context.Config.DbVars.ErrorReportAddress,
-			Subject: "GoCms - Health Monitor",
-			Body: emailBody,
-		}
-
-		err := ms.Send(mail)
-
+		//check if this error recently happened
+		RecentError,err := hm.ServicesGroup.LogService.RecentError(&errorReport)
 		if err != nil {
-			fmt.Println("\nThere was an error in sending\n")
+			fmt.Println("Health Middleware: ", err)
+			return
 		}
 
+		if RecentError {			
+			emailBody := (`
+				<!DOCTYPE html>
+				<html>
+				<h2> Error Report :    ` + context.Config.DbVars.LoginTitle + ` </h2>
+				<ul>
+					<li> Route:  		  ` + errorReport.Route 		+ `</li>
+					<li> Status: 		  ` + errorReport.Status 		+ `</li>
+					<li> Body:   		  ` + errorReport.Body			+ `</li>
+					<li> Time of Incident ` + errorReport.Time.String()	+ `</li>
+				</ul>
+				</html>
+				`)
+
+			//setup mail
+			ms := mail_service.DefaultMailService()
+			mail := &mail_service.Mail{
+				To:      context.Config.DbVars.ErrorReportAddress,
+				Subject: "GoCms - Health Monitor",
+				Body: emailBody,
+			}
+
+			err := ms.Send(mail)
+
+			if err != nil {
+				fmt.Println("\nThere was an error in sending\n")
+			}
+		}
 	}
 }
 

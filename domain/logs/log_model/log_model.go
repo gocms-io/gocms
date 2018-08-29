@@ -12,8 +12,8 @@ import (
 * @apiSuccess (Response) {string} time
 **/
 type ErrorLog struct {
-	route  string  `json:"route" db:"route"`
-	status string  `json:"status" db:"status"`
-	body   string  `json:"body" db:"body"`
-	time   time.Time  `json:"time" db:"time"`
+	Route  string  `json:"route" db:"route"`
+	Status string  `json:"status" db:"status"`
+	Body   string  `json:"body" db:"body"`
+	Time   time.Time  `json:"date" db:"date"`
 }

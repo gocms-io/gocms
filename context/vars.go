@@ -66,6 +66,7 @@ type dbVars struct {
 	LoginSuccessRedirect  string
 	DisableDocumentationDisplay   bool
 	ErrorReportAddress	  string
+	ErrorReportDelay	  int64
 }
 
 func (dbVars *dbVars) LoadDbVars(settings map[string]setting_model.Setting) {
@@ -127,6 +128,7 @@ func (dbVars *dbVars) LoadDbVars(settings map[string]setting_model.Setting) {
 	dbVars.LoginSuccessRedirect = GetStringOrFail("GOCMS_LOGIN_SUCCESS_REDIRECT", settings)
 	dbVars.DisableDocumentationDisplay = GetBoolOrFail("DISABLE_DOCUMENTATION_DISPLAY", settings)
 	dbVars.ErrorReportAddress = GetStringOrFail("ERROR_REPORT_ADDRESS", settings)
+	dbVars.ErrorReportDelay = GetIntOrFail("ERROR_EMAIL_DELAY", settings)
 
 }
 

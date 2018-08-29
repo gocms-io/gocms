@@ -11,6 +11,7 @@ import (
 	"github.com/myanrichal/gocms/domain/plugin/plugin_services"
 	"github.com/myanrichal/gocms/domain/setting/setting_service"
 	"github.com/myanrichal/gocms/domain/user/user_service"
+	"github.com/myanrichal/gocms/domain/logs/log_service"
 	"github.com/myanrichal/gocms/init/database"
 	"github.com/myanrichal/gocms/init/repository"
 	"github.com/myanrichal/gocms/utility/log"
@@ -69,6 +70,7 @@ func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup, db *d
 	} else {
 		pluginRelatedErr = pluginsService.StartPluginsService()
 	}
+	logService := log_service.DefaultLogService(repositoriesGroup)
 
 	// heath service
 	healthService := health_service.DefaultHealthService(db, pluginsService)
