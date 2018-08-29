@@ -53,6 +53,7 @@ func (hm *HealthMiddleware) ApplyHealthToRoutes(routes *routes.Routes) {
 	// todo: SHOULD APPLY ON ALL ROUTES
 	routes.Auth.Use(hm.CheckForErrors())
 	routes.Public.Use(hm.CheckForErrors())
+	routes.Root.Use(hm.CheckForErrors())
 }
 
 //wrapper for middleware
@@ -86,7 +87,8 @@ func (hm *HealthMiddleware) errorMiddleware(c *gin.Context) {
 			return
 		}
 
-		if RecentError {			
+		if RecentError {	
+			//write email		
 			emailBody := (`
 				<!DOCTYPE html>
 				<html>
