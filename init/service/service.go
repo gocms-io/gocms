@@ -1,21 +1,21 @@
 package service
 
 import (
-	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_service"
-	"github.com/gocms-io/gocms/domain/acl/authentication/authentication_service"
-	"github.com/gocms-io/gocms/domain/acl/permissions/permissions_service"
-	"github.com/gocms-io/gocms/domain/email/email_service"
-	"github.com/gocms-io/gocms/domain/health/health_service"
-	"github.com/gocms-io/gocms/domain/mail/mail_service"
-	"github.com/gocms-io/gocms/domain/plugin/plugin_services"
-	"github.com/gocms-io/gocms/domain/setting/setting_service"
-	"github.com/gocms-io/gocms/domain/user/user_service"
-	"github.com/gocms-io/gocms/init/database"
-	"github.com/gocms-io/gocms/init/repository"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/cqlcorp/gocms/context"
+	"github.com/cqlcorp/gocms/domain/acl/access_control/access_control_service"
+	"github.com/cqlcorp/gocms/domain/acl/authentication/authentication_service"
+	"github.com/cqlcorp/gocms/domain/acl/permissions/permissions_service"
+	"github.com/cqlcorp/gocms/domain/email/email_service"
+	"github.com/cqlcorp/gocms/domain/health/health_service"
+	"github.com/cqlcorp/gocms/domain/mail/mail_service"
+	"github.com/cqlcorp/gocms/domain/plugin/plugin_services"
+	"github.com/cqlcorp/gocms/domain/setting/setting_service"
+	"github.com/cqlcorp/gocms/domain/user/user_service"
+	"github.com/cqlcorp/gocms/init/database"
+	"github.com/cqlcorp/gocms/init/repository"
+	"github.com/cqlcorp/gocms/utility/log"
 	"time"
-	"github.com/gocms-io/gocms/domain/acl/group/group_service"
+	"github.com/cqlcorp/gocms/domain/acl/group/group_service"
 )
 
 type ServicesGroup struct {

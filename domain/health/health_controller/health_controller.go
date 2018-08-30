@@ -2,9 +2,9 @@ package health_controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/init/service"
-	"github.com/gocms-io/gocms/routes"
-	"github.com/gocms-io/gocms/utility/errors"
+	"github.com/cqlcorp/gocms/init/service"
+	"github.com/cqlcorp/gocms/routes"
+	"github.com/cqlcorp/gocms/utility/errors"
 	"net/http"
 )
 

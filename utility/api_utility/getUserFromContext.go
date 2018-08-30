@@ -2,8 +2,8 @@ package api_utility
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/context/consts"
-	"github.com/gocms-io/gocms/domain/user/user_model"
+	"github.com/cqlcorp/gocms/context/consts"
+	"github.com/cqlcorp/gocms/domain/user/user_model"
 )
 
 func GetUserFromContext(c *gin.Context) (*user_model.User, bool) {

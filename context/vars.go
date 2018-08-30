@@ -1,9 +1,9 @@
 package context
 
 import (
-	"github.com/gocms-io/gocms/domain/setting/setting_model"
+	"github.com/cqlcorp/gocms/domain/setting/setting_model"
 	"crypto/rsa"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/cqlcorp/gocms/utility/log"
 	"github.com/dgrijalva/jwt-go"
 )
 

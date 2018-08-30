@@ -2,8 +2,8 @@ package user_middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/context/consts"
-	"github.com/gocms-io/gocms/domain/user/user_model"
+	"github.com/cqlcorp/gocms/context/consts"
+	"github.com/cqlcorp/gocms/domain/user/user_model"
 )
 
 // example of how to grab user header context for use in plugins.

@@ -2,9 +2,9 @@ package security
 
 import (
 	"github.com/jmoiron/sqlx"
-	"github.com/gocms-io/gocms/domain/setting/setting_model"
-	"github.com/gocms-io/gocms/utility/log"
-	"github.com/gocms-io/gocms/utility"
+	"github.com/cqlcorp/gocms/domain/setting/setting_model"
+	"github.com/cqlcorp/gocms/utility/log"
+	"github.com/cqlcorp/gocms/utility"
 )
 
 func msSecret(db *sqlx.DB) bool {

@@ -2,8 +2,8 @@ package theme_controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/routes"
+	"github.com/cqlcorp/gocms/context"
+	"github.com/cqlcorp/gocms/routes"
 )
 
 type ThemesController struct {
