@@ -3,8 +3,8 @@ package plugin_model
 import (
 	"os/exec"
 	"time"
-	"github.com/gocms-io/gocms/domain/plugin/plugin_proxies/plugin_routes_proxy"
-	"github.com/gocms-io/gocms/domain/plugin/plugin_proxies/plugin_middleware_proxy"
+	"github.com/cqlcorp/gocms/domain/plugin/plugin_proxies/plugin_routes_proxy"
+	"github.com/cqlcorp/gocms/domain/plugin/plugin_proxies/plugin_middleware_proxy"
 	"database/sql"
 )
 

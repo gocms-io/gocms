@@ -3,15 +3,15 @@ package main
 import (
 	"flag"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/init/controller"
-	"github.com/gocms-io/gocms/init/database"
-	"github.com/gocms-io/gocms/init/repository"
-	"github.com/gocms-io/gocms/init/service"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/cqlcorp/gocms/context"
+	"github.com/cqlcorp/gocms/init/controller"
+	"github.com/cqlcorp/gocms/init/database"
+	"github.com/cqlcorp/gocms/init/repository"
+	"github.com/cqlcorp/gocms/init/service"
+	"github.com/cqlcorp/gocms/utility/log"
 	"net/http"
 	"os"
-	"github.com/gocms-io/gocms/utility/security"
+	"github.com/cqlcorp/gocms/utility/security"
 	"golang.org/x/sync/errgroup"
 )
 

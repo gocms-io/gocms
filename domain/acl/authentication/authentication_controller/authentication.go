@@ -2,12 +2,12 @@ package authentication_controller
 
 import (
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/init/service"
-	"github.com/gocms-io/gocms/routes"
-	"github.com/gocms-io/gocms/utility"
+	"github.com/cqlcorp/gocms/context"
+	"github.com/cqlcorp/gocms/init/service"
+	"github.com/cqlcorp/gocms/routes"
+	"github.com/cqlcorp/gocms/utility"
 	"time"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/cqlcorp/gocms/utility/log"
 )
 
 const (

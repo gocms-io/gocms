@@ -1,9 +1,9 @@
 package setting_service
 
 import (
-	"github.com/gocms-io/gocms/domain/setting/setting_model"
-	"github.com/gocms-io/gocms/init/repository"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/cqlcorp/gocms/domain/setting/setting_model"
+	"github.com/cqlcorp/gocms/init/repository"
+	"github.com/cqlcorp/gocms/utility/log"
 	"time"
 )
 

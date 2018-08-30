@@ -3,10 +3,10 @@ package documentation_controller
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/routes"
-	"github.com/gocms-io/gocms/context"
+	"github.com/cqlcorp/gocms/routes"
+	"github.com/cqlcorp/gocms/context"
 	"net/http"
-	"github.com/gocms-io/gocms/init/service"
+	"github.com/cqlcorp/gocms/init/service"
 )
 
 type DocumentationController struct {

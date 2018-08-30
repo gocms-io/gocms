@@ -2,7 +2,7 @@ package plugin_services
 
 import (
 	"encoding/json"
-	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
+	"github.com/cqlcorp/gocms/domain/plugin/plugin_model"
 	"io/ioutil"
 	"log"
 )
