@@ -1,7 +1,10 @@
 package health_controller
 
 import (
-	"fmt"
+	"github.com/gin-gonic/gin"
+	"github.com/cqlcorp/gocms/init/service"
+	"github.com/cqlcorp/gocms/routes"
+	"github.com/cqlcorp/gocms/utility/errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -45,8 +48,6 @@ func (hc *InternalHealthController) internalHealth(c *gin.Context) {
 		errors.Response(c, http.StatusInternalServerError, msg, nil)
 		return
 	}
-
-	fmt.Print("\ninternal_health_controler\n")
 
 	c.Status(http.StatusOK)
 }

@@ -23,6 +23,7 @@ import (
 	"github.com/cqlcorp/gocms/domain/user/user_middleware"
 	"github.com/cqlcorp/gocms/init/service"
 	"github.com/cqlcorp/gocms/routes"
+	"strings"
 )
 
 type ControllersGroup struct {
