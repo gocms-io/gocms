@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"time"
-	"github.com/myanrichal/gocms/utility/log"
+	"github.com/cqlcorp/gocms/utility/log"
 )
 
 var matchX *regexp.Regexp

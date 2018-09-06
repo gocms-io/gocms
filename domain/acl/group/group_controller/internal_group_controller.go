@@ -2,12 +2,12 @@ package group_controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/myanrichal/gocms/init/service"
-	"github.com/myanrichal/gocms/routes"
+	"github.com/cqlcorp/gocms/init/service"
+	"github.com/cqlcorp/gocms/routes"
 	"net/http"
 	"strconv"
-	"github.com/myanrichal/gocms/utility/errors"
-	"github.com/myanrichal/gocms/utility/sqlUtl"
+	"github.com/cqlcorp/gocms/utility/errors"
+	"github.com/cqlcorp/gocms/utility/sqlUtl"
 )
 
 type InternalGroupController struct {

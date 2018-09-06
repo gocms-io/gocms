@@ -7,13 +7,13 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/myanrichal/gocms/context"
-	"github.com/myanrichal/gocms/init/controller"
-	"github.com/myanrichal/gocms/init/database"
-	"github.com/myanrichal/gocms/init/repository"
-	"github.com/myanrichal/gocms/init/service"
-	"github.com/myanrichal/gocms/utility/log"
-	"github.com/myanrichal/gocms/utility/security"
+	"github.com/cqlcorp/gocms/context"
+	"github.com/cqlcorp/gocms/init/controller"
+	"github.com/cqlcorp/gocms/init/database"
+	"github.com/cqlcorp/gocms/init/repository"
+	"github.com/cqlcorp/gocms/init/service"
+	"github.com/cqlcorp/gocms/utility/log"
+	"github.com/cqlcorp/gocms/utility/security"
 	"golang.org/x/sync/errgroup"
 )
 

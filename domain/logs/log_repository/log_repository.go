@@ -1,7 +1,7 @@
 package log_repository
 
 import (
-	"github.com/myanrichal/gocms/domain/logs/log_model"
+	"github.com/cqlcorp/gocms/domain/logs/log_model"
 	"github.com/jmoiron/sqlx"
 	"database/sql"
 	"fmt"

@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/myanrichal/gocms/context"
-	"github.com/myanrichal/gocms/utility/api_utility"
-	"github.com/myanrichal/gocms/utility"
-	"github.com/myanrichal/gocms/utility/errors"
+	"github.com/cqlcorp/gocms/context"
+	"github.com/cqlcorp/gocms/utility/api_utility"
+	"github.com/cqlcorp/gocms/utility"
+	"github.com/cqlcorp/gocms/utility/errors"
 )
 
 // Verify device form structure

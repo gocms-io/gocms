@@ -2,12 +2,12 @@ package user_admin_controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/myanrichal/gocms/domain/acl/access_control/access_control_middleware"
-	"github.com/myanrichal/gocms/domain/acl/permissions"
-	"github.com/myanrichal/gocms/domain/user/user_model"
-	"github.com/myanrichal/gocms/init/service"
-	"github.com/myanrichal/gocms/routes"
-	"github.com/myanrichal/gocms/utility/errors"
+	"github.com/cqlcorp/gocms/domain/acl/access_control/access_control_middleware"
+	"github.com/cqlcorp/gocms/domain/acl/permissions"
+	"github.com/cqlcorp/gocms/domain/user/user_model"
+	"github.com/cqlcorp/gocms/init/service"
+	"github.com/cqlcorp/gocms/routes"
+	"github.com/cqlcorp/gocms/utility/errors"
 	"net/http"
 	"strconv"
 )

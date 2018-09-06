@@ -1,7 +1,7 @@
 package context
 
 import (
-	"github.com/myanrichal/gocms/utility/log"
+	"github.com/cqlcorp/gocms/utility/log"
 	_ "github.com/joho/godotenv/autoload"
 	"os"
 	"strconv"

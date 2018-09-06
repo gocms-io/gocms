@@ -3,16 +3,16 @@ package plugin_services
 import (
 	"bufio"
 	"fmt"
-	"github.com/myanrichal/gocms/context"
-	"github.com/myanrichal/gocms/domain/plugin/plugin_model"
-	"github.com/myanrichal/gocms/utility"
-	"github.com/myanrichal/gocms/utility/log"
+	"github.com/cqlcorp/gocms/context"
+	"github.com/cqlcorp/gocms/domain/plugin/plugin_model"
+	"github.com/cqlcorp/gocms/utility"
+	"github.com/cqlcorp/gocms/utility/log"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"github.com/myanrichal/gocms/domain/plugin/plugin_proxies/plugin_routes_proxy"
-	"github.com/myanrichal/gocms/domain/plugin/plugin_proxies/plugin_middleware_proxy"
-	"github.com/myanrichal/gocms/utility/errors"
+	"github.com/cqlcorp/gocms/domain/plugin/plugin_proxies/plugin_routes_proxy"
+	"github.com/cqlcorp/gocms/domain/plugin/plugin_proxies/plugin_middleware_proxy"
+	"github.com/cqlcorp/gocms/utility/errors"
 )
 
 func (ps *PluginsService) StartPluginsService() (err error) {

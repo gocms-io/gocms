@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/myanrichal/gocms/init/database/sql"
+	"github.com/cqlcorp/gocms/init/database/sql"
 )
 
 type Database struct {

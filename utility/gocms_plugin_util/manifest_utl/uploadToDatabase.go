@@ -2,11 +2,11 @@ package manifest_utl
 
 import (
 	"io/ioutil"
-	"github.com/myanrichal/gocms/utility/log"
-	"github.com/myanrichal/gocms/domain/plugin/plugin_model"
+	"github.com/cqlcorp/gocms/utility/log"
+	"github.com/cqlcorp/gocms/domain/plugin/plugin_model"
 	"encoding/json"
 	"fmt"
-	"github.com/myanrichal/gocms/utility/errors"
+	"github.com/cqlcorp/gocms/utility/errors"
 	"database/sql"
 )
 

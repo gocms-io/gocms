@@ -1,12 +1,12 @@
 package access_control_service
 
 import (
-	"github.com/myanrichal/gocms/context"
-	"github.com/myanrichal/gocms/domain/acl/permissions/permission_model"
-	"github.com/myanrichal/gocms/init/repository"
-	"github.com/myanrichal/gocms/utility/log"
+	"github.com/cqlcorp/gocms/context"
+	"github.com/cqlcorp/gocms/domain/acl/permissions/permission_model"
+	"github.com/cqlcorp/gocms/init/repository"
+	"github.com/cqlcorp/gocms/utility/log"
 	"time"
-	"github.com/myanrichal/gocms/domain/acl/group/group_model"
+	"github.com/cqlcorp/gocms/domain/acl/group/group_model"
 )
 
 type IAclService interface {

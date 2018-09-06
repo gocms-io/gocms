@@ -1,8 +1,8 @@
 package permission_service
 
 import (
-	"github.com/myanrichal/gocms/domain/acl/permissions/permission_model"
-	"github.com/myanrichal/gocms/init/repository"
+	"github.com/cqlcorp/gocms/domain/acl/permissions/permission_model"
+	"github.com/cqlcorp/gocms/init/repository"
 )
 
 type IPermissionService interface {

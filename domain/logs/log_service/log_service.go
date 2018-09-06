@@ -1,12 +1,12 @@
 package log_service
 
 import (
-	// "github.com/myanrichal/gocms/utility"
-	"github.com/myanrichal/gocms/domain/logs/log_model"
-	// "github.com/myanrichal/gocms/utility/errors"
-	"github.com/myanrichal/gocms/init/repository"
+	// "github.com/cqlcorp/gocms/utility"
+	"github.com/cqlcorp/gocms/domain/logs/log_model"
+	// "github.com/cqlcorp/gocms/utility/errors"
+	"github.com/cqlcorp/gocms/init/repository"
 	"time"
-	"github.com/myanrichal/gocms/context"
+	"github.com/cqlcorp/gocms/context"
 )
 
 type ILogService interface {

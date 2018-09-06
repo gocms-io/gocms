@@ -1,7 +1,7 @@
 package gocms_plugin_util
 
 import (
-	"github.com/myanrichal/gocms/utility/gocms_plugin_util/manifest_utl"
+	"github.com/cqlcorp/gocms/utility/gocms_plugin_util/manifest_utl"
 	"flag"
 )
 

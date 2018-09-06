@@ -2,8 +2,8 @@ package authentication_controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/myanrichal/gocms/utility/api_utility"
-	"github.com/myanrichal/gocms/utility/errors"
+	"github.com/cqlcorp/gocms/utility/api_utility"
+	"github.com/cqlcorp/gocms/utility/errors"
 	"net/http"
 	"strconv"
 )

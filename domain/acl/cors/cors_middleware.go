@@ -2,8 +2,8 @@ package cors
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/myanrichal/gocms/context"
-	"github.com/myanrichal/gocms/utility/log"
+	"github.com/cqlcorp/gocms/context"
+	"github.com/cqlcorp/gocms/utility/log"
 )
 
 func CORS() gin.HandlerFunc {

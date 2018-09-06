@@ -3,7 +3,7 @@ package user_middleware
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/nu7hatch/gouuid"
-	"github.com/myanrichal/gocms/utility/log"
+	"github.com/cqlcorp/gocms/utility/log"
 )
 
 func UUID() gin.HandlerFunc {

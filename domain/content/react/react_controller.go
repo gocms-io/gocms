@@ -3,11 +3,11 @@ package react_controller
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/myanrichal/gocms/context"
-	"github.com/myanrichal/gocms/routes"
+	"github.com/cqlcorp/gocms/context"
+	"github.com/cqlcorp/gocms/routes"
 	"html/template"
 	"net/http"
-	"github.com/myanrichal/gocms/init/service"
+	"github.com/cqlcorp/gocms/init/service"
 )
 
 type ReactController struct {

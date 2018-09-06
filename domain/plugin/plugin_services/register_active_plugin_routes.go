@@ -3,12 +3,12 @@ package plugin_services
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/myanrichal/gocms/domain/acl/permissions"
-	"github.com/myanrichal/gocms/routes"
-	"github.com/myanrichal/gocms/utility/errors"
-	"github.com/myanrichal/gocms/utility/log"
-	"github.com/myanrichal/gocms/domain/plugin/plugin_model"
-	"github.com/myanrichal/gocms/domain/acl/access_control/access_control_middleware"
+	"github.com/cqlcorp/gocms/domain/acl/permissions"
+	"github.com/cqlcorp/gocms/routes"
+	"github.com/cqlcorp/gocms/utility/errors"
+	"github.com/cqlcorp/gocms/utility/log"
+	"github.com/cqlcorp/gocms/domain/plugin/plugin_model"
+	"github.com/cqlcorp/gocms/domain/acl/access_control/access_control_middleware"
 )
 
 type ProxyRoute struct {

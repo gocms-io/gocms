@@ -1,15 +1,15 @@
 package repository
 
 import (
-	"github.com/myanrichal/gocms/domain/acl/group/group_repository"
-	"github.com/myanrichal/gocms/domain/acl/permissions/permission_repository"
-	"github.com/myanrichal/gocms/domain/email/email_respository"
-	"github.com/myanrichal/gocms/domain/plugin/plugin_repository"
-	"github.com/myanrichal/gocms/domain/runtime/runtime_repository"
-	"github.com/myanrichal/gocms/domain/secure_code/secure_code_repository"
-	"github.com/myanrichal/gocms/domain/setting/setting_repository"
-	"github.com/myanrichal/gocms/domain/user/user_repository"
-	"github.com/myanrichal/gocms/domain/logs/log_repository"
+	"github.com/cqlcorp/gocms/domain/acl/group/group_repository"
+	"github.com/cqlcorp/gocms/domain/acl/permissions/permission_repository"
+	"github.com/cqlcorp/gocms/domain/email/email_respository"
+	"github.com/cqlcorp/gocms/domain/plugin/plugin_repository"
+	"github.com/cqlcorp/gocms/domain/runtime/runtime_repository"
+	"github.com/cqlcorp/gocms/domain/secure_code/secure_code_repository"
+	"github.com/cqlcorp/gocms/domain/setting/setting_repository"
+	"github.com/cqlcorp/gocms/domain/user/user_repository"
+	"github.com/cqlcorp/gocms/domain/logs/log_repository"
 	"github.com/jmoiron/sqlx"
 )
 

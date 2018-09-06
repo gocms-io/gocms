@@ -1,9 +1,9 @@
 package runtime_repository
 
 import (
-	"github.com/myanrichal/gocms/domain/runtime/runtime_model"
+	"github.com/cqlcorp/gocms/domain/runtime/runtime_model"
 	"github.com/jmoiron/sqlx"
-	"github.com/myanrichal/gocms/utility/log"
+	"github.com/cqlcorp/gocms/utility/log"
 )
 
 type IRuntimeRepository interface {

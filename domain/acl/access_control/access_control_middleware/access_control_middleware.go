@@ -3,11 +3,11 @@ package access_control_middleware
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/myanrichal/gocms/context/consts"
-	"github.com/myanrichal/gocms/domain/acl/access_control/access_control_service"
-	"github.com/myanrichal/gocms/utility/api_utility"
-	"github.com/myanrichal/gocms/utility/errors"
-	"github.com/myanrichal/gocms/utility/log"
+	"github.com/cqlcorp/gocms/context/consts"
+	"github.com/cqlcorp/gocms/domain/acl/access_control/access_control_service"
+	"github.com/cqlcorp/gocms/utility/api_utility"
+	"github.com/cqlcorp/gocms/utility/errors"
+	"github.com/cqlcorp/gocms/utility/log"
 	"net/http"
 )
 

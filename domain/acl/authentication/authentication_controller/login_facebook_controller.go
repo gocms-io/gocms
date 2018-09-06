@@ -4,12 +4,12 @@ import (
 	"database/sql"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"github.com/myanrichal/gocms/context"
-	"github.com/myanrichal/gocms/domain/user/user_model"
-	"github.com/myanrichal/gocms/utility/errors"
-	"github.com/myanrichal/gocms/utility/rest"
+	"github.com/cqlcorp/gocms/context"
+	"github.com/cqlcorp/gocms/domain/user/user_model"
+	"github.com/cqlcorp/gocms/utility/errors"
+	"github.com/cqlcorp/gocms/utility/rest"
 	"net/http"
-	"github.com/myanrichal/gocms/utility/log"
+	"github.com/cqlcorp/gocms/utility/log"
 )
 
 type fbData struct {

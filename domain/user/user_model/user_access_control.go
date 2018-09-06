@@ -2,7 +2,7 @@ package user_model
 
 import (
 	"encoding/json"
-	"github.com/myanrichal/gocms/utility/log"
+	"github.com/cqlcorp/gocms/utility/log"
 )
 
 type UserContextHeader struct {

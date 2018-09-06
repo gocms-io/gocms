@@ -2,9 +2,9 @@ package plugin_services
 
 import (
 	"sort"
-	"github.com/myanrichal/gocms/domain/plugin/plugin_proxies/plugin_middleware_proxy"
+	"github.com/cqlcorp/gocms/domain/plugin/plugin_proxies/plugin_middleware_proxy"
 	"github.com/gin-gonic/gin"
-	"github.com/myanrichal/gocms/utility/log"
+	"github.com/cqlcorp/gocms/utility/log"
 )
 
 type MiddlewareRank string

@@ -1,18 +1,18 @@
 package health_middleware
 
 import (
-	"github.com/myanrichal/gocms/domain/logs/log_model"
+	"github.com/cqlcorp/gocms/domain/logs/log_model"
 	"bytes"
 	"fmt"
 	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/myanrichal/gocms/domain/mail/mail_service"
-	"github.com/myanrichal/gocms/init/service"
-	"github.com/myanrichal/gocms/routes"
-	"github.com/myanrichal/gocms/utility/log"
-	"github.com/myanrichal/gocms/context"
+	"github.com/cqlcorp/gocms/domain/mail/mail_service"
+	"github.com/cqlcorp/gocms/init/service"
+	"github.com/cqlcorp/gocms/routes"
+	"github.com/cqlcorp/gocms/utility/log"
+	"github.com/cqlcorp/gocms/context"
 )
 
 //Setup

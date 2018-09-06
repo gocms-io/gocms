@@ -2,14 +2,14 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/myanrichal/gocms/init/service"
-	"github.com/myanrichal/gocms/utility/log"
-	"github.com/myanrichal/gocms/context/consts"
-	"github.com/myanrichal/gocms/context"
+	"github.com/cqlcorp/gocms/init/service"
+	"github.com/cqlcorp/gocms/utility/log"
+	"github.com/cqlcorp/gocms/context/consts"
+	"github.com/cqlcorp/gocms/context"
 	"net/http"
-	"github.com/myanrichal/gocms/routes"
-	"github.com/myanrichal/gocms/domain/health/health_controller"
-	"github.com/myanrichal/gocms/domain/acl/group/group_controller"
+	"github.com/cqlcorp/gocms/routes"
+	"github.com/cqlcorp/gocms/domain/health/health_controller"
+	"github.com/cqlcorp/gocms/domain/acl/group/group_controller"
 )
 
 type InternalControllersGroup struct {

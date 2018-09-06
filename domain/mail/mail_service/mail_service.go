@@ -7,8 +7,8 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/myanrichal/gocms/context"
-	"github.com/myanrichal/gocms/utility/log"
+	"github.com/cqlcorp/gocms/context"
+	"github.com/cqlcorp/gocms/utility/log"
 	"gopkg.in/gomail.v2"
 )
 

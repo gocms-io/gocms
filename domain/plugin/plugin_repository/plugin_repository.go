@@ -2,8 +2,8 @@ package plugin_repository
 
 import (
 	"github.com/jmoiron/sqlx"
-	"github.com/myanrichal/gocms/domain/plugin/plugin_model"
-	"github.com/myanrichal/gocms/utility/log"
+	"github.com/cqlcorp/gocms/domain/plugin/plugin_model"
+	"github.com/cqlcorp/gocms/utility/log"
 	"encoding/json"
 )
 

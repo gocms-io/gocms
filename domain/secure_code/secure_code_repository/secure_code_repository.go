@@ -1,8 +1,8 @@
 package secure_code_repository
 
 import (
-	"github.com/myanrichal/gocms/domain/secure_code/security_code_model"
-	"github.com/myanrichal/gocms/utility/log"
+	"github.com/cqlcorp/gocms/domain/secure_code/security_code_model"
+	"github.com/cqlcorp/gocms/utility/log"
 	"github.com/jmoiron/sqlx"
 	"time"
 )
