@@ -9,7 +9,6 @@ export function injectAuthedRoutes(r) {
 }
 
 export function registeredRoutes() {
-    console.log("handing routes");
     return <Route>
         {registeredLoginRoutes()}
         {registeredAdminRoutes()}

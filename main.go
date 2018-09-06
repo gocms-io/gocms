@@ -106,8 +106,7 @@ func Default() (e *Engine, ie *InternalEngine) {
 		Database:                 db,
 	}
 
-	fmt.Println("\n-- GOCMS IS RUNNING --")
-	fmt.Println("-- Ryan's Version --\n")
+	fmt.Println("\n-- CQL/GOCMS IS RUNNING --")
 
 	return e, ie
 }

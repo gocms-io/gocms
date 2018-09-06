@@ -47,8 +47,6 @@ func (w bodyLogWriter) Write(b []byte) (int, error) {
 //Apply Middleware on startup
 //Connect middleware to routes
 func (hm *HealthMiddleware) ApplyHealthToRoutes(routes *routes.Routes) {
-	fmt.Println("\nSetup Health Middleware\n")
-	log.Debugf("Adding Health Services Middleware\n")
 	//setup as auth route only 
 	// todo: SHOULD APPLY ON ALL ROUTES
 	routes.Auth.Use(hm.CheckForErrors())
@@ -83,7 +81,6 @@ func (hm *HealthMiddleware) errorMiddleware(c *gin.Context) {
 		//check if this error recently happened
 		RecentError,err := hm.ServicesGroup.LogService.RecentError(&errorReport)
 		if err != nil {
-			fmt.Println("Health Middleware: ", err)
 			return
 		}
 
@@ -113,7 +110,7 @@ func (hm *HealthMiddleware) errorMiddleware(c *gin.Context) {
 			err := ms.Send(mail)
 
 			if err != nil {
-				fmt.Println("\nThere was an error in sending\n")
+				fmt.Println("\nThere was an error in sending email\n")
 			}
 		}
 	}
