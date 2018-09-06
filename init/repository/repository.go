@@ -9,6 +9,7 @@ import (
 	"github.com/cqlcorp/gocms/domain/secure_code/secure_code_repository"
 	"github.com/cqlcorp/gocms/domain/setting/setting_repository"
 	"github.com/cqlcorp/gocms/domain/user/user_repository"
+	"github.com/cqlcorp/gocms/domain/logs/log_repository"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -21,6 +22,7 @@ type RepositoriesGroup struct {
 	PermissionsRepository permission_repository.IPermissionsRepository
 	GroupsRepository      group_repository.IGroupsRepository
 	PluginRepository      plugin_repository.IPluginRepository
+	LogRepository		  log_repository.ILogRepository
 	dbx                   *sqlx.DB
 }
 
@@ -37,6 +39,7 @@ func DefaultRepositoriesGroup(dbx *sqlx.DB) *RepositoriesGroup {
 		PermissionsRepository: permission_repository.DefaultPermissionsRepository(dbx),
 		GroupsRepository:      group_repository.DefaultGroupsRepository(dbx),
 		PluginRepository:      plugin_repository.DefaultPluginRepository(dbx),
+		LogRepository:	 	   log_repository.DefaultLogRepository(dbx),
 	}
 	return rg
 }

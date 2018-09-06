@@ -10,6 +10,7 @@ func AddDocumentationToggle() *migrate.Migration {
 			`,
 		},
 		Down: []string{
+			`DELETE FROM gocms_settings WHERE name='DISABLE_DOCUMENTATION_DISPLAY';`,
 		},
 	}
 

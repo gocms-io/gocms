@@ -8,8 +8,6 @@ export function injectAuthedRoutes(r) {
     injectAdminRoutes(r);
 }
 
-
-
 export function registeredRoutes() {
     return <Route>
         {registeredLoginRoutes()}

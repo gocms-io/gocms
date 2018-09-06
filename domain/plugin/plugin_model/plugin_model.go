@@ -9,7 +9,7 @@ import (
 )
 
 // Plugin is the default plugin object used by GoCMS. For a default plugin look at:
-// github.com/gocms-io/plugin-contact-form
+// github.com/myanrichal/plugin-contact-form
 type Plugin struct {
 	PluginRoot        string
 	BinaryFile        string
@@ -65,7 +65,7 @@ type PluginManifestRoute struct {
 	// Name the name of the route. This will be used in the future for logging and other items.
 	Name string `json:"name"`
 	// Route the actual GoCMS route to register an endpoint against. Available routes can be found here:
-	// github.com/gocms-io/gocms/blob/alpha-release/routes/routes.go
+	// github.com/myanrichal/gocms/blob/alpha-release/routes/routes.go
 	Route string `json:"route"`
 	// Method for the HTTP request. Ex GET, POST, UPDATE, DELETE
 	Method string `json:"method"`
@@ -77,7 +77,7 @@ type PluginManifestRoute struct {
 	// Permissions required for access to this endpoint. This requires "Route=Auth". If no permissions are specified the assumption is that the user must simply be authenticated.
 	// Plugin specific permissions can be specified. Additionally, default GoCMS permissions can be specified. For a list of GoCMS provided permissions
 	// look here:
-	// github.com/gocms-io/gocms/tree/alpha-release/domain/acl/permissions/permissions.go
+	// github.com/myanrichal/gocms/tree/alpha-release/domain/acl/permissions/permissions.go
 	Permissions []string `json:"permissions,omitempty"`
 }
 
@@ -108,7 +108,7 @@ type PluginManifestMiddleware struct {
 }
 
 // PluginInterface when plugins provide front-end functionality they must serve specific files. More details on this later. For now see the Contact Form Plugin Example:
-// github.com/gocms-io/plugin-contact-form
+// github.com/myanrichal/plugin-contact-form
 type PluginInterface struct {
 	Public       string `json:"public"`
 	PublicVendor string `json:"publicVendor"`

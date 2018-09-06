@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gocms-io/gocms"
+    "url": "https://github.com/myanrichal/gocms"
   },
   "scripts": {
     "start": "brunch watch",

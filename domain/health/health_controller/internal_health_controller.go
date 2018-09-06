@@ -6,17 +6,22 @@ import (
 	"github.com/cqlcorp/gocms/routes"
 	"github.com/cqlcorp/gocms/utility/errors"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/cqlcorp/gocms/init/service"
+	"github.com/cqlcorp/gocms/routes"
+	"github.com/cqlcorp/gocms/utility/errors"
 )
 
 type InternalHealthController struct {
-	internalRoutes       *routes.InternalRoutes
-	serviceGroup *service.ServicesGroup
+	internalRoutes *routes.InternalRoutes
+	serviceGroup   *service.ServicesGroup
 }
 
 func DefaultInternalHealthController(iRoutes *routes.InternalRoutes, serviceGroup *service.ServicesGroup) *InternalHealthController {
 	ihc := &InternalHealthController{
-		internalRoutes:       iRoutes,
-		serviceGroup: serviceGroup,
+		internalRoutes: iRoutes,
+		serviceGroup:   serviceGroup,
 	}
 
 	ihc.DefaultInternal()
