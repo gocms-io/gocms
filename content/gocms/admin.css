@@ -6,7 +6,7 @@
   font-weight: normal;
   font-style: normal; }
 
-/* line 14, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_icomoon.scss */
+/* line 14, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_icomoon.scss */
 [class^="gocms-icon-"], [class*=" gocms-icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'gocms' !important;
@@ -20,58 +20,58 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
-/* line 30, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_icomoon.scss */
+/* line 30, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_icomoon.scss */
 .gocms-icon-circle-left:before {
   content: ""; }
 
-/* line 35, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_icomoon.scss */
+/* line 35, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_icomoon.scss */
 .gocms-icon-menu:before {
   content: ""; }
 
-/* line 40, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_icomoon.scss */
+/* line 40, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_icomoon.scss */
 .gocms-icon-user:before {
   content: ""; }
 
-/* line 11, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
+/* line 11, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
 .flex {
   display: flex;
   flex-flow: row wrap; }
 
-/* line 16, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
+/* line 16, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
 .g-container {
   display: flex;
   flex-flow: row;
   justify-content: space-around; }
-  /* line 21, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
+  /* line 21, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
   .g-container input {
     display: flex; }
-  /* line 24, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
+  /* line 24, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
   .g-container label {
     display: flex; }
-  /* line 28, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
+  /* line 28, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
   .g-container-col {
     display: flex;
     flex-flow: column wrap; }
 
-/* line 34, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
+/* line 34, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
 .no-padding {
   padding: 0; }
 
-/* line 37, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
+/* line 37, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
 .no-margin {
   margin: 0; }
 
-/* line 41, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
+/* line 41, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
 .g-row {
   flex-direction: row; }
-  /* line 44, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
+  /* line 44, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
   .g-row-reverse {
     flex-direction: row-reverse; }
 
-/* line 48, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
+/* line 48, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
 .g-column {
   flex-direction: column; }
-  /* line 51, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
+  /* line 51, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_flex-grid.scss */
   .g-column-reverse {
     flex-direction: column-reverse; }
 
@@ -99,45 +99,45 @@
   /* Safari, Android, iOS */
   src: url("./fonts/lato/Lato-MediumItalic.ttf") format("embedded-opentype"); }
 
-/* line 41, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 41, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .text-blue {
   color: #006797; }
 
-/* line 45, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 45, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .text-yellow {
   color: #F1A000; }
 
-/* line 49, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 49, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .text-orange {
   color: #DB4F20; }
 
-/* line 53, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 53, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .text-white {
   color: #ffffff; }
 
-/* line 57, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 57, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .text-gray {
   color: #5D5C5B; }
 
-/* line 61, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 61, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .text-gray-light {
   color: #F6F2EF; }
 
-/* line 65, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 65, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .text-gray-dark {
   color: #3E3E3D; }
 
-/* line 69, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 69, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .text-green {
   color: #7EB500; }
 
-/* line 73, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+/* line 73, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
 .g-a {
   display: flex;
   position: absolute;
   width: 100%;
   height: 100%; }
-  /* line 80, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 80, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a h1,
   .g-a h2,
   .g-a h3,
@@ -147,23 +147,23 @@
   .g-a form {
     margin: 10px 0;
     font-family: Lato-Medium, sans-serif; }
-  /* line 91, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 91, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a input[type=text],
   .g-a input[type=password] {
     box-sizing: border-box; }
-  /* line 96, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 96, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a input {
     margin: 10px 0; }
-  /* line 100, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 100, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a label {
     margin: 0 0 5px 0; }
-  /* line 104, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 104, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a button {
     margin: 10px 0; }
-  /* line 108, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 108, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a button:focus {
     outline: 0; }
-  /* line 111, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 111, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a .btn {
     padding: 0 24px;
     height: 50px;
@@ -174,32 +174,32 @@
     font-size: 18px;
     border: none;
     outline: none; }
-  /* line 123, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 123, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a a.btn {
     display: inline-block;
     text-decoration: none;
     text-align: center;
     padding: 14px 18px;
     width: 100%; }
-  /* line 131, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 131, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a .btn-default {
     background-color: #006797; }
-    /* line 134, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+    /* line 134, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
     .g-a .btn-default:hover, .g-a .btn-default:focus {
       background-color: #00567e; }
-    /* line 138, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+    /* line 138, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
     .g-a .btn-default:disabled {
       background-color: #0078b1; }
-  /* line 143, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 143, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a .btn-primary {
     background-color: #DB4F20; }
-    /* line 146, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+    /* line 146, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
     .g-a .btn-primary:hover, .g-a .btn-primary:focus {
       background-color: #c5471d; }
-    /* line 150, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+    /* line 150, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
     .g-a .btn-primary:disabled {
       background-color: #e15f33; }
-  /* line 155, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 155, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a input,
   .g-a input:focus {
     outline: none;
@@ -212,37 +212,37 @@
     width: 100%;
     padding: 4px 15px 4px 15px;
     font-size: 20px; }
-  /* line 169, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 169, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a .text-center {
     text-align: center; }
-  /* line 173, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 173, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a .no-padding {
     padding: 0; }
-  /* line 176, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 176, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a .no-margin {
     margin: 0; }
-  /* line 179, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/config/styles/_theme.scss */
+  /* line 179, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/config/styles/_theme.scss */
   .g-a .no-decoration {
     text-decoration: none; }
 
-/* line 1, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/components/basicComponent/_index.scss */
+/* line 1, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/components/basicComponent/_index.scss */
 .basic-component {
   color: gray; }
 
-/* line 1, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/templates/_index.scss */
+/* line 1, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/templates/_index.scss */
 #g-a-main-container {
   display: flex;
   margin-left: 70px;
   flex-flow: row wrap; }
 
-/* line 7, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/templates/_index.scss */
+/* line 7, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/templates/_index.scss */
 #g-a {
   background: #F6F2EF;
   width: 100%;
   height: 100%;
   display: flex; }
 
-/* line 3, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
+/* line 3, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
 #container-login-page {
   display: block;
   width: 100%;
@@ -251,50 +251,50 @@
   justify-content: center;
   box-sizing: content-box; }
 
-/* line 16, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
+/* line 16, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
 .wrapper-login-form {
   padding: 50px 10px 10px 10px;
   margin: auto; }
 
-/* line 21, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
+/* line 21, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
 .main-login-form {
   width: 600px; }
 
-/* line 25, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
+/* line 25, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
 .error-message-login {
   height: 50px;
   width: 100%; }
-  /* line 29, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
+  /* line 29, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
   .error-message-login h3 {
     color: #DB4F20; }
 
-/* line 37, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
+/* line 37, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
 .g-error-message-box-login-animate-enter {
   opacity: 0;
   top: 10px;
   position: relative; }
 
-/* line 43, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
+/* line 43, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
 .g-error-message-box-login-animate-enter.g-error-message-box-login-animate-enter-active {
   opacity: 1;
   top: 0;
   position: relative;
   transition: all 200ms ease-in; }
 
-/* line 51, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
+/* line 51, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
 .g-error-message-box-login-animate-leave {
   opacity: 1;
   top: 0;
   position: relative;
   transition: all 200ms ease-in; }
 
-/* line 58, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
+/* line 58, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/loginPage/_index.scss */
 .g-error-message-box-login-animate-leave.g-error-message-box-login-animate-leave-active {
   opacity: 0;
   top: 10px;
   position: relative; }
 
-/* line 1, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
+/* line 1, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
 .g-a-main-menu-container {
   position: absolute;
   height: 100%;
@@ -302,16 +302,16 @@
   z-index: 9000;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 1px 26px 0 rgba(0, 0, 0, 0.19);
   overflow: hidden; }
-  /* line 9, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
+  /* line 9, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
   .g-a-main-menu-container-open {
     transition: width 200ms 200ms ease-in;
     width: 400px; }
-  /* line 14, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
+  /* line 14, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
   .g-a-main-menu-container-close {
     transition: width 200ms ease-in;
     width: 50px; }
 
-/* line 21, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
+/* line 21, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
 .g-a-main-menu-title-container {
   padding: 10px;
   background: #5D5C5B;
@@ -321,46 +321,48 @@
   flex-shrink: 0;
   flex-grow: 0;
   width: 400px; }
-  /* line 31, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
+  /* line 31, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
   .g-a-main-menu-title-container .g-a-main-menu-title {
     margin: 0 0 0 10px;
     padding: 0;
     font-size: 28px;
     color: #F6F2EF;
     display: inline-block; }
-  /* line 38, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
+  /* line 38, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
   .g-a-main-menu-title-container .g-a-main-menu-sub-title {
     margin: 0 0 0 10px;
     padding: 0;
     font-size: 18px;
     color: #F6F2EF;
     display: inline-block; }
-    /* line 45, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
+    /* line 45, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
     .g-a-main-menu-title-container .g-a-main-menu-sub-title a {
       text-decoration: none;
       color: #F6F2EF; }
-  /* line 51, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
+  /* line 51, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
   .g-a-main-menu-title-container .g-a-main-menu-sign-out {
     font-size: 12px;
     font-weight: 100;
     margin-left: 25px; }
-    /* line 56, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
+    /* line 56, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
     .g-a-main-menu-title-container .g-a-main-menu-sign-out a {
       color: #DB4F20;
       text-decoration: underline; }
-  /* line 62, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
+  /* line 62, C:/Users/ryan.michal/go/src/github.com/cqlcorp//gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
   .g-a-main-menu-title-container-open {
-    transition: height 200ms ease-in, margin-left 200ms 200ms ease-in;
-    height: 85px; }
+    transition: height 200ms ease-in,
+ margin-left 200ms 200ms ease-in;
+    height: 85px; }github.com/cqlcorp/
   /* line 69, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
   .g-a-main-menu-title-container-close {
-    transition: margin-left 200ms ease-in, height 200ms 200ms ease-in;
+    transition: margin-left 200ms ease-in,
+ height 200ms 200ms ease-in;
     margin-left: -350px;
-    height: 60px; }
+    height: 60px; }github.com/cqlcorp/
 
 /* line 77, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
 .g-a-main-menu-profile-img-container {
-  display: inline-block; }
+  display: inline-block; }github.com/cqlcorp/
 
 /* line 81, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
 .g-a-main-menu-profile-img {
@@ -369,14 +371,14 @@
   border: solid 2px #3E3E3D;
   border-radius: 60px;
   display: flex;
-  text-decoration: none;
+  text-decoration: none;github.com/cqlcorp/
   overflow: hidden; }
   /* line 90, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
   .g-a-main-menu-profile-img i {
     display: inline-block;
     margin: -1px 0 0 -2px;
     color: #3E3E3D;
-    font-size: 65px; }
+    font-size: 65px; }github.com/cqlcorp/
 
 /* line 98, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
 .g-a-main-menu-btn {
@@ -385,15 +387,17 @@
   background: none;
   position: absolute;
   z-index: 9001;
-  top: 0;
+  top: 0;github.com/cqlcorp/
   border: none; }
   /* line 107, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
   .g-a-main-menu-btn-open {
-    transition: left 200ms 200ms ease-in, color 500ms 500ms ease-in;
+    transition: left 200ms 200ms ease-in,github.com/cqlcorp/
+ color 500ms 500ms ease-in;
     left: 350px; }
   /* line 114, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */
   .g-a-main-menu-btn-close {
-    transition: left 200ms ease-in, color 500ms 500ms ease-in;
+    transition: left 200ms ease-in,github.com/cqlcorp/
+ color 500ms 500ms ease-in;
     left: 3px;
     color: #F6F2EF; }
   /* line 121, C:/Users/ryan.michal/go/src/github.com/myanrichal/gocms/content/gocms/src/admin/containers/adminPages/components/mainMenu/_index.scss */

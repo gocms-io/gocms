@@ -1,11 +1,10 @@
 package controller
 
 import (
-	"net/http"
 	"fmt"
+	"net/http"
+	// "strings"
 
-	"github.com/gin-contrib/multitemplate"
-	"github.com/gin-gonic/gin"
 	"github.com/cqlcorp/gocms/context"
 	"github.com/cqlcorp/gocms/domain/acl/authentication/authentication_controller"
 	"github.com/cqlcorp/gocms/domain/acl/authentication/authentication_middleware"
@@ -23,7 +22,8 @@ import (
 	"github.com/cqlcorp/gocms/domain/user/user_middleware"
 	"github.com/cqlcorp/gocms/init/service"
 	"github.com/cqlcorp/gocms/routes"
-	"strings"
+	"github.com/gin-contrib/multitemplate"
+	"github.com/gin-gonic/gin"
 )
 
 type ControllersGroup struct {
@@ -114,22 +114,21 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 
 	// add no route controller
 	routes.NoRoute(func(c *gin.Context) {
-		
-		c.Redirect(http.StatusMovedPermanently, "/");
-		
+
+		c.Redirect(http.StatusMovedPermanently, "/")
+
 		return
-		
-		// previously if the page was not found it was handed to react to look. This is unneccesary. Go knows what react routes work.  
-		// React was continue looking for non existing pages and "load" forever. 
-		// returning here insures we keep a uniform 404 page instead of having to write seperate 404 handlers on back/front end. 
 
+		// previously if the page was not found it was handed to react to look. This is unneccesary. Go knows what react routes work.
+		// React was continue looking for non existing pages and "load" forever.
+		// returning here insures we keep a uniform 404 page instead of having to write seperate 404 handlers on back/front end.
 
-		/* OLD CODE 
-			paths := strings.Split(c.Request.RequestURI, "/")
-			if paths[1] == "api" {
-				return // handle default not route
-			}
-			contentControllers.ReactControllers.ServeReact(c)
+		/* OLD CODE
+		paths := strings.Split(c.Request.RequestURI, "/")
+		if paths[1] == "api" {
+			return // handle default not route
+		}
+		contentControllers.ReactControllers.ServeReact(c)
 		*/
 	})
 

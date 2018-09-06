@@ -1,14 +1,12 @@
 package mail_service
 
 import (
-	"github.com/cqlcorp/gocms/context"
-	"gopkg.in/gomail.v2"
+	"fmt"
+	"html/template"
 	"io"
-  "fmt" 
-  
 	"path/filepath"
-	"text/template"
 	"time"
+
 	"github.com/cqlcorp/gocms/context"
 	"github.com/cqlcorp/gocms/utility/log"
 	"gopkg.in/gomail.v2"
