@@ -2,12 +2,12 @@ package health_service
 
 import (
 	"fmt"
-	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/domain/health/health_model"
-	"github.com/gocms-io/gocms/domain/plugin/plugin_services"
-	"github.com/gocms-io/gocms/init/database"
-	"github.com/gocms-io/gocms/utility/log"
-	"github.com/gocms-io/gocms/utility/rest"
+	"github.com/cqlcorp/gocms/context"
+	"github.com/cqlcorp/gocms/domain/health/health_model"
+	"github.com/cqlcorp/gocms/domain/plugin/plugin_services"
+	"github.com/cqlcorp/gocms/init/database"
+	"github.com/cqlcorp/gocms/utility/log"
+	"github.com/cqlcorp/gocms/utility/rest"
 	"net/http"
 	"time"
 )

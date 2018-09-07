@@ -2,7 +2,7 @@ package user_middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/cqlcorp/gocms/utility/log"
 	"time"
 )
 

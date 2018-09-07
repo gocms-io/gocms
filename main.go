@@ -2,16 +2,18 @@ package main
 
 import (
 	"flag"
-	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/init/controller"
-	"github.com/gocms-io/gocms/init/database"
-	"github.com/gocms-io/gocms/init/repository"
-	"github.com/gocms-io/gocms/init/service"
-	"github.com/gocms-io/gocms/utility/log"
+	"fmt"
 	"net/http"
 	"os"
-	"github.com/gocms-io/gocms/utility/security"
+
+	"github.com/gin-gonic/gin"
+	"github.com/cqlcorp/gocms/context"
+	"github.com/cqlcorp/gocms/init/controller"
+	"github.com/cqlcorp/gocms/init/database"
+	"github.com/cqlcorp/gocms/init/repository"
+	"github.com/cqlcorp/gocms/init/service"
+	"github.com/cqlcorp/gocms/utility/log"
+	"github.com/cqlcorp/gocms/utility/security"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -30,19 +32,18 @@ type Engine struct {
 }
 
 type InternalEngine struct {
-	Gin               *gin.Engine
-	InternalControllersGroup  *controller.InternalControllersGroup
-	ServicesGroup     *service.ServicesGroup
-	RepositoriesGroup *repository.RepositoriesGroup
-	Database          *database.Database
+	Gin                      *gin.Engine
+	InternalControllersGroup *controller.InternalControllersGroup
+	ServicesGroup            *service.ServicesGroup
+	RepositoriesGroup        *repository.RepositoriesGroup
+	Database                 *database.Database
 }
 
 type gocmsFlags struct {
-
 }
 
 type gocmsRuntimeSettings struct {
-	help bool
+	help                bool
 	port                string
 	msPort              string
 	noExtneralServices  bool
@@ -98,12 +99,14 @@ func Default() (e *Engine, ie *InternalEngine) {
 
 	// create engine
 	ie = &InternalEngine{
-		Gin:               ir,
+		Gin: ir,
 		InternalControllersGroup: icg,
-		ServicesGroup:     sg,
-		RepositoriesGroup: rg,
-		Database:          db,
+		ServicesGroup:            sg,
+		RepositoriesGroup:        rg,
+		Database:                 db,
 	}
+
+	fmt.Println("\n-- CQL/GOCMS IS RUNNING --")
 
 	return e, ie
 }
@@ -155,9 +158,7 @@ func main() {
 	}
 }
 
-
 func getRuntimeSettings() *gocmsRuntimeSettings {
-
 
 	// define flags
 	portFlag := flag.String("port", "", "port to run on. Overrides all.")
@@ -165,7 +166,6 @@ func getRuntimeSettings() *gocmsRuntimeSettings {
 	noExternalServiceFlag := flag.Bool("noExternal", false, "noExternal when this flag is set gocms will not run external services.")
 	runInternalServiceFlag := flag.Bool("runInternal", false, "runInternal when this flag is set gocms will run internal services.")
 	flag.Parse()
-
 
 	noExternalService := *noExternalServiceFlag
 	runInternalService := *runInternalServiceFlag

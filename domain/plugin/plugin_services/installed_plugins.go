@@ -2,8 +2,8 @@ package plugin_services
 
 import (
 	"fmt"
-	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/cqlcorp/gocms/domain/plugin/plugin_model"
+	"github.com/cqlcorp/gocms/utility/log"
 	"os"
 	"path/filepath"
 	"runtime"

@@ -1,16 +1,17 @@
 package authentication_middleware
 
 import (
+	"net/http"
+
+	"github.com/cqlcorp/gocms/context"
+	"github.com/cqlcorp/gocms/context/consts"
+	"github.com/cqlcorp/gocms/init/service"
+	"github.com/cqlcorp/gocms/routes"
+	"github.com/cqlcorp/gocms/utility/api_utility"
+	"github.com/cqlcorp/gocms/utility/errors"
+	"github.com/cqlcorp/gocms/utility/log"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"github.com/gocms-io/gocms/context"
-	"github.com/gocms-io/gocms/context/consts"
-	"github.com/gocms-io/gocms/init/service"
-	"github.com/gocms-io/gocms/routes"
-	"github.com/gocms-io/gocms/utility/errors"
-	"net/http"
-	"github.com/gocms-io/gocms/utility/api_utility"
-	"github.com/gocms-io/gocms/utility/log"
 )
 
 type AuthMiddleware struct {

@@ -1,8 +1,8 @@
 package email_respository
 
 import (
-	"github.com/gocms-io/gocms/domain/email/email_model"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/cqlcorp/gocms/domain/email/email_model"
+	"github.com/cqlcorp/gocms/utility/log"
 	"github.com/jmoiron/sqlx"
 	"time"
 )

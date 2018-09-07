@@ -1,9 +1,9 @@
 package user_model
 
 import (
-	"github.com/gocms-io/gocms/domain/acl/group/group_model"
-	"github.com/gocms-io/gocms/domain/acl/permissions/permission_model"
-	"github.com/gocms-io/gocms/domain/email/email_model"
+	"github.com/cqlcorp/gocms/domain/acl/group/group_model"
+	"github.com/cqlcorp/gocms/domain/acl/permissions/permission_model"
+	"github.com/cqlcorp/gocms/domain/email/email_model"
 	"time"
 )
 

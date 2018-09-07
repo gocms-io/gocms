@@ -2,11 +2,11 @@ package plugin_services
 
 import (
 	"database/sql"
-	"github.com/gocms-io/gocms/domain/acl/access_control/access_control_service"
-	"github.com/gocms-io/gocms/domain/plugin/plugin_model"
-	"github.com/gocms-io/gocms/init/repository"
-	"github.com/gocms-io/gocms/routes"
-	"github.com/gocms-io/gocms/utility/log"
+	"github.com/cqlcorp/gocms/domain/acl/access_control/access_control_service"
+	"github.com/cqlcorp/gocms/domain/plugin/plugin_model"
+	"github.com/cqlcorp/gocms/init/repository"
+	"github.com/cqlcorp/gocms/routes"
+	"github.com/cqlcorp/gocms/utility/log"
 )
 
 type IPluginsService interface {
