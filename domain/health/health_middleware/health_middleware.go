@@ -67,7 +67,7 @@ func (hm *HealthMiddleware) errorMiddleware(c *gin.Context) {
 	//check status
 	statusCode := c.Writer.Status()
 
-	if statusCode >= 400 {
+	if statusCode >= 400 && statusCode != 401 {
 		//check database
 		var errorReport log_model.ErrorLog
 		errorReport.Status = strconv.Itoa(statusCode)
