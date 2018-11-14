@@ -2,8 +2,9 @@ package controller
 
 import (
 	"fmt"
-	"github.com/gin-contrib/multitemplate"
-	"github.com/gin-gonic/gin"
+	"net/http"
+	// "strings"
+
 	"github.com/cqlcorp/gocms/context"
 	"github.com/cqlcorp/gocms/domain/acl/authentication/authentication_controller"
 	"github.com/cqlcorp/gocms/domain/acl/authentication/authentication_middleware"
@@ -14,13 +15,15 @@ import (
 	"github.com/cqlcorp/gocms/domain/content/theme"
 	"github.com/cqlcorp/gocms/domain/email/email_controller"
 	"github.com/cqlcorp/gocms/domain/health/health_controller"
+	"github.com/cqlcorp/gocms/domain/health/health_middleware"
+	"github.com/cqlcorp/gocms/domain/plugin/plugin_services"
 	"github.com/cqlcorp/gocms/domain/user/user_admin_controller"
 	"github.com/cqlcorp/gocms/domain/user/user_controller"
 	"github.com/cqlcorp/gocms/domain/user/user_middleware"
 	"github.com/cqlcorp/gocms/init/service"
 	"github.com/cqlcorp/gocms/routes"
-	"strings"
-	"github.com/cqlcorp/gocms/domain/plugin/plugin_services"
+	"github.com/gin-contrib/multitemplate"
+	"github.com/gin-gonic/gin"
 )
 
 type ControllersGroup struct {
@@ -55,12 +58,12 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 	// apply plugin middleware rank 1
 	r.Use(pluginMiddlewareProxy.ApplyForRank(plugin_services.MIDDLEWARE_RANK_1)...)
 
-
 	// top level middleware
 	r.Use(user_middleware.UUID())
 	r.Use(cors.CORS())
 	r.Use(user_middleware.Timezone())
 	am := authentication_middleware.DefaultAuthMiddleware(sg)
+	hm := health_middleware.DefaultHealthMiddleware(sg)
 	r.Use(am.AddUserToContextIfValidToken())
 
 	// apply plugin middleware rank 1000
@@ -78,6 +81,7 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 
 	// apply auth middleware
 	am.ApplyAuthToRoutes(routes)
+	hm.ApplyHealthToRoutes(routes)
 
 	// apply plugin middleware rank 2000
 	r.Use(pluginMiddlewareProxy.ApplyForRank(plugin_services.MIDDLEWARE_RANK_2000)...)
@@ -110,12 +114,22 @@ func DefaultControllerGroup(r *gin.Engine, sg *service.ServicesGroup) *Controlle
 
 	// add no route controller
 	routes.NoRoute(func(c *gin.Context) {
+
+		c.Redirect(http.StatusMovedPermanently, "/")
+
+		return
+
+		// previously if the page was not found it was handed to react to look. This is unneccesary. Go knows what react routes work.
+		// React was continue looking for non existing pages and "load" forever.
+		// returning here insures we keep a uniform 404 page instead of having to write seperate 404 handlers on back/front end.
+
+		/* OLD CODE
 		paths := strings.Split(c.Request.RequestURI, "/")
 		if paths[1] == "api" {
 			return // handle default not route
 		}
-		// otherwise return homepage
 		contentControllers.ReactControllers.ServeReact(c)
+		*/
 	})
 
 	controllersGroup := &ControllersGroup{

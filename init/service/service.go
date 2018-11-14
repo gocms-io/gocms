@@ -11,6 +11,7 @@ import (
 	"github.com/cqlcorp/gocms/domain/plugin/plugin_services"
 	"github.com/cqlcorp/gocms/domain/setting/setting_service"
 	"github.com/cqlcorp/gocms/domain/user/user_service"
+	"github.com/cqlcorp/gocms/domain/logs/log_service"
 	"github.com/cqlcorp/gocms/init/database"
 	"github.com/cqlcorp/gocms/init/repository"
 	"github.com/cqlcorp/gocms/utility/log"
@@ -29,6 +30,7 @@ type ServicesGroup struct {
 	EmailService      email_service.IEmailService
 	PluginsService    plugin_services.IPluginsService
 	HealthService     health_service.IHealthService
+	LogService		  log_service.ILogService
 }
 
 func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup, db *database.Database) *ServicesGroup {
@@ -68,6 +70,7 @@ func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup, db *d
 	} else {
 		pluginRelatedErr = pluginsService.StartPluginsService()
 	}
+	logService := log_service.DefaultLogService(repositoriesGroup)
 
 	// heath service
 	healthService := health_service.DefaultHealthService(db, pluginsService)
@@ -83,6 +86,7 @@ func DefaultServicesGroup(repositoriesGroup *repository.RepositoriesGroup, db *d
 		EmailService:      emailService,
 		PluginsService:    pluginsService,
 		HealthService:     healthService,
+		LogService: 	   logService,
 	}
 
 	return sg
